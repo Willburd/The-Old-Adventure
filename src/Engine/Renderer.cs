@@ -1,4 +1,4 @@
-﻿using ActorComponents;
+﻿using EntComponents;
 
 namespace Engine
 {
@@ -14,7 +14,7 @@ namespace Engine
         public void Prepare()
         {
             ClearQueue();
-            foreach(Renders check in ActorComponent.GetAllOfType(typeof(Renders)).Cast<Renders>())
+            foreach(Renders check in EntComponent.GetAllOfType(typeof(Renders)).Cast<Renders>())
             {
                 render_queue.Add(check);
             }

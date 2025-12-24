@@ -1,7 +1,6 @@
-
 namespace Engine
 {
-    public class Actor
+    public class Actor : Entity
     {
         
     }

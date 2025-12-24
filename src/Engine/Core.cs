@@ -3,6 +3,12 @@ namespace Engine
 {
     public class Core
     {
+        public enum Signals
+        {
+            test,
+
+        }
+
         protected Renderer renderer;
         protected AssetLoader asset_loader;
 
