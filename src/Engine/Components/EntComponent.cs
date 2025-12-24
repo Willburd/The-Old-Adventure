@@ -69,7 +69,7 @@ namespace EntComponents
         /// <summary>
         /// Fired when a signal is sent from the host entity. Signals are sent based on registeration order, so an assumed order should not be expected when designing component behaviors.
         /// </summary>
-        public virtual int RecieveSignal(Core.Signals signal)
+        public virtual int ReceiveSignal(Core.Signals signal)
         {
             return 0;
         }

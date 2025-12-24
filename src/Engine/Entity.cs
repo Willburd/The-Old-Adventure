@@ -75,7 +75,7 @@ namespace Engine
             int return_flags = 0;
             foreach(EntComponent comp in linked_signals[signal])
             {
-                return_flags |= comp.RecieveSignal(signal);
+                return_flags |= comp.ReceiveSignal(signal);
             }
             return return_flags;
         }
