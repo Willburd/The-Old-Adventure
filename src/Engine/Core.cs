@@ -25,6 +25,9 @@ namespace Engine
             // Load adventure specific assets
             OnLoadAssets();
 
+            // Start up renderer
+            Renderer.Init();
+
             // Finalize setup with gamespecific postinit.
             OnInit();
 
@@ -136,6 +139,7 @@ namespace Engine
         {
             AssetLoader.UnloadAllAssets();
             Entity.DestroyAllEntities();
+            Renderer.End();
             OnEnd();
         }
 

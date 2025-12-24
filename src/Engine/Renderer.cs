@@ -8,6 +8,16 @@
         {
             assigned_fps = 60;
         }
+        
+        public static void Init()
+        {
+            
+        }
+
+        public static void End()
+        {
+            
+        }
 
         public static int FPS
         {
