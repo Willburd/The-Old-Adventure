@@ -30,7 +30,7 @@ namespace EntComponents
                 if(col == this) continue;
                 if(IsColliding(col) && col.IsColliding(this)) // we must BOTH collide!
                 {
-                    Host.SendSignal(Engine.Core.Signals.collision, col.Host, col);
+                    Host.SendSignal(Core.Signals.collision, col.Host, col);
                 }
             }
         }
