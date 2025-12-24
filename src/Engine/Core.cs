@@ -17,15 +17,10 @@ namespace Engine
             trigger
         }
 
-        protected AssetLoader asset_loader;
-
         public Core()
         {
             // Start setup with gamespecific preinit.
             OnPreInit();
-
-            // Prepare asset loader and load the game's assets.
-            asset_loader = new();
 
             // Load adventure specific assets
             OnLoadAssets();
@@ -105,7 +100,7 @@ namespace Engine
 
             // Collision
             List<EntComponent> all_colliders = EntComponent.GetAllOfType(typeof(Collider));
-            foreach(Collider collider in all_colliders)
+            foreach(Collider collider in all_colliders.Cast<Collider>())
             {
                 if(!collider.Host.Enabled || !collider.Active) continue;
                 collider.CheckCollisions(all_colliders);
@@ -117,24 +112,24 @@ namespace Engine
             {
                 ent.OnProcess();
             }
-
-            // Render queue prepare
-            Renderer.Prepare();
         }
 
         /// <summary>
-        /// Game tick fired. This processes all game objects, and any special logic during them.
+        /// Render tick, fired at the game's framerate. Sends a render signals to all entities depending on their enabled state.
         /// </summary>
         private void RenderTick(double delta_time)
         {
             OnPreRenderTick();
-
-            // Draw render queue
-            Renderer.Fire(delta_time);
-
+            foreach(Entity check in Entity.EntityList)
+            {
+                check.SendSignal(check.Enabled ? Signals.render_standard : Signals.render_on_disabled, delta_time);
+            }
             OnRenderTick();
         }
 
+        /// <summary>
+        /// Fired when the mainloop is ended, and the game is shutting down. Used to safely unload assets and run postgame events.
+        /// </summary>
         public void MainLoopEnd()
         {
             AssetLoader.UnloadAllAssets();
@@ -153,6 +148,14 @@ namespace Engine
         {
             
         }
+
+        /// <summary>
+        /// Virtual function for adventure specific behaviors. Used to load adventure specific assets during engine init.
+        /// </summary>
+        public virtual void OnLoadAssets()
+        {
+            
+        }
         
         /// <summary>
         /// Virtual function for adventure specific behaviors. Called at the end of the Engine.Core's constructor, after all engine setup has completed.
@@ -166,14 +169,6 @@ namespace Engine
         /// Virtual function for adventure specific behaviors. Called at the start of the Engine.Core's destructor, to allow cleanup of adventure specific engine code.
         /// </summary>
         public virtual void OnEnd()
-        {
-            
-        }
-
-        /// <summary>
-        /// Virtual function for adventure specific behaviors. Used to load adventure specific assets during engine init.
-        /// </summary>
-        public virtual void OnLoadAssets()
         {
             
         }
