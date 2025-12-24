@@ -13,5 +13,3 @@ class TestGameEngine : Engine.Core
         Console.WriteLine("END");
     }
 }
-
-

@@ -17,13 +17,11 @@ namespace Engine
             trigger
         }
 
-        protected Renderer renderer;
         protected AssetLoader asset_loader;
 
         public Core()
         {
             // Start setup with gamespecific preinit.
-            Console.WriteLine("Core started");
             OnPreInit();
 
             // Prepare asset loader and load the game's assets.
@@ -31,26 +29,15 @@ namespace Engine
 
             // Load adventure specific assets
             OnLoadAssets();
-            
-            // Prepare renderer
-            renderer = new();
 
             // Finalize setup with gamespecific postinit.
             OnInit();
 
             // Enter gameloop
-            Console.WriteLine("Core entering main");
             MainLoopHandler();
-            Console.WriteLine("Core exiting main");
             
             // Shutdown
             MainLoopEnd();
-        }
-
-        ~Core()
-        {
-            OnEnd();
-            Console.WriteLine("Core shutdown");
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,7 +47,7 @@ namespace Engine
         protected const int game_tick_rate = 20;
         protected long tick_count = 0;
         long GameTickInterval {get{ return 1000 / game_tick_rate * 10000; }}
-        long FpsTickInterval {get{ return 1000 /  renderer.FPS * 10000; }}
+        long FpsTickInterval {get{ return 1000 /  Renderer.FPS * 10000; }}
 
         /// <summary>
         /// Gameloop handler. Keeps game timing, and calls the various functions that make up the main gameloop.
@@ -132,7 +119,7 @@ namespace Engine
             }
 
             // Render queue prepare
-            renderer.Prepare();
+            Renderer.Prepare();
         }
 
         /// <summary>
@@ -143,13 +130,15 @@ namespace Engine
             OnPreRenderTick();
 
             // Draw render queue
-            renderer.Fire(delta_time);
+            Renderer.Fire(delta_time);
 
             OnRenderTick();
         }
 
         public void MainLoopEnd()
         {
+            AssetLoader.UnloadAllAssets();
+            Entity.DestroyAllEntities();
             OnEnd();
         }
 

@@ -10,6 +10,14 @@ namespace Engine
         private static readonly List<Entity> entity_list = [];
         public static List<Entity> EntityList { get {return entity_list;} }
 
+        public static void DestroyAllEntities()
+        {
+            foreach(Entity ent in EntityList)
+            {
+                ent.Destroy();
+            }
+        }
+
         /// <summary>
         /// If an entity is currently processed in the game update loop. Also disables rendering.
         /// </summary>
