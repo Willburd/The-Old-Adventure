@@ -85,7 +85,7 @@ namespace Engine
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
-        /// Used to design render behavior at atom level, as making a render component for every type of actor would quickly get out of hand.
+        /// Used to implement render behavior at actor level, as making a render component for every type of actor would quickly get out of hand.
         /// </summary>
         public virtual void OnRender()
         {
