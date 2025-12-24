@@ -1,3 +1,5 @@
+using Engine;
+
 namespace EntComponents
 {
     /// <summary>
@@ -7,21 +9,40 @@ namespace EntComponents
     {
         public bool Visible { get; set; }
 
-        public override int ReceiveSignal(Engine.Core.Signals signal, object[] args)
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Signal handling
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        public override void RegisterSignals()
+        {
+            Host.RegisterSignal(Core.Signals.render_standard, this);
+            Host.RegisterSignal(Core.Signals.render_on_disabled, this);
+        }
+        public override void UnregisterSignals()
+        {
+            Host.UnregisterSignal(Core.Signals.render_standard, this);
+            Host.UnregisterSignal(Core.Signals.render_on_disabled, this);
+        }
+        public override int ReceiveSignal(Core.Signals signal, object[] args)
         {
             switch(signal)
             {
-                case Engine.Core.Signals.render_standard:
+                case Core.Signals.render_standard:
                     HandleRender((double)args[0]);
                     return 1;
                     
-                case Engine.Core.Signals.render_on_disabled:
+                case Core.Signals.render_on_disabled:
                     HandleRenderDisabled((double)args[0]);
                     return 1;
             }
             return 0;
         }
 
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Virtual functions
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
         /// <summary>
         /// Render function run if the component is Visible.
         /// </summary>

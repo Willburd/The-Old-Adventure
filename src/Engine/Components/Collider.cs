@@ -10,6 +10,10 @@ namespace EntComponents
         public bool Active { get; set; }
         private readonly bool debug_vis = false; // Debugging only
 
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Signal handling
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public override void RegisterSignals()
         {
             if(debug_vis) Host.RegisterSignal(Core.Signals.render_standard, this);
@@ -18,8 +22,23 @@ namespace EntComponents
         {
             if(debug_vis) Host.UnregisterSignal(Core.Signals.render_standard, this);
         }
+        public override int ReceiveSignal(Core.Signals signal, object[] args)
+        {
+            switch(signal)
+            {
+                case Core.Signals.render_standard:
+                case Core.Signals.render_on_disabled:
+                    // Render our collider shape
+                    return 1;
+            }
+            return 0;
+        }
 
 
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Virtual functions
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
         /// <summary>
         /// Checks against all colliders in a list and handle collisions for each.
         /// </summary>
@@ -41,18 +60,6 @@ namespace EntComponents
         public virtual bool IsColliding(Collider other_col)
         {
             return false;
-        }
-
-        public override int ReceiveSignal(Core.Signals signal, object[] args)
-        {
-            switch(signal)
-            {
-                case Core.Signals.render_standard:
-                case Core.Signals.render_on_disabled:
-                    // Render our collider shape
-                    return 1;
-            }
-            return 0;
         }
     }
 }
