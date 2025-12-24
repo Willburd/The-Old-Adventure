@@ -8,6 +8,7 @@ namespace Engine
         public static void LoadAsset(string asset_key, string file_path)
         {
             
+            Console.WriteLine("Asset-> " + asset_key + " : " + file_path);
         }
 
         public static void UnloadAllAssets()

@@ -40,9 +40,10 @@ namespace Engine
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
         protected const int game_tick_rate = 20;
-        protected long tick_count = 0;
-        long GameTickInterval {get{ return 1000 / game_tick_rate * 10000; }}
-        long FpsTickInterval {get{ return 1000 /  Renderer.FPS * 10000; }}
+        private static long tick_count = 0;
+        private static long GameTickInterval {get{ return 1000 / game_tick_rate * 10000; }}
+        private static long FpsTickInterval {get{ return 1000 /  Renderer.FPS * 10000; }}
+        public static long ElapsedGameTicks {get{ return tick_count; }}
 
         /// <summary>
         /// Gameloop handler. Keeps game timing, and calls the various functions that make up the main gameloop.

@@ -3,7 +3,7 @@
 TestGameEngine game_engine = new();
 
 // Override of base game for testing
-class TestGameEngine : Engine.Core
+class TestGameEngine : Core
 {
     public override void OnInit()
     {
