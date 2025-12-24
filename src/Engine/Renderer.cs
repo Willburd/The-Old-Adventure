@@ -16,7 +16,7 @@ namespace Engine
             ClearQueue();
             foreach(Renders check in EntComponent.GetAllOfType(typeof(Renders)).Cast<Renders>())
             {
-                render_queue.Add(check);
+                if(check.Visible) render_queue.Add(check);
             }
         }
 
@@ -25,8 +25,10 @@ namespace Engine
         /// </summary>
         public void Fire(double delta_time)
         {
-
-            
+            foreach(Renders check in render_queue)
+            {
+                check.Host.SendSignal(check.Host.Enabled ? Core.Signals.render_standard : Core.Signals.render_on_disabled, delta_time);
+            }
         }
 
         /// <summary>

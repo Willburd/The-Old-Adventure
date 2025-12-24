@@ -1,4 +1,5 @@
-﻿
+﻿using EntComponents;
+
 namespace Engine
 {
     public class Core
@@ -7,6 +8,13 @@ namespace Engine
         {
             test,
 
+            // Rendering
+            render_standard,
+            render_on_disabled,
+
+            // Collision and triggers
+            collision,
+            trigger
         }
 
         protected Renderer renderer;
@@ -49,7 +57,7 @@ namespace Engine
         // Gameloop processing
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
-        protected int game_tick_rate = 40;
+        protected const int game_tick_rate = 20;
         protected long tick_count = 0;
         long GameTickInterval {get{ return 1000 / game_tick_rate * 10000; }}
         long FpsTickInterval {get{ return 1000 /  renderer.FPS * 10000; }}
@@ -99,13 +107,31 @@ namespace Engine
         /// </summary>
         private void GameTick()
         {
+            // Preprocessing
             OnPreGameTick();
-            
-            // Process scene
-            // Process actors in scene
+            List<Entity> active_entities = [];
+            foreach(Entity ent in Entity.EntityList)
+            {
+                ent.OnPreProcess(ent.Enabled);
+                if(ent.Enabled) active_entities.Add(ent);
+            }
 
+            // Collision
+            List<EntComponent> all_colliders = EntComponent.GetAllOfType(typeof(Collider));
+            foreach(Collider collider in all_colliders)
+            {
+                if(!collider.Host.Enabled || !collider.Active) continue;
+                collider.CheckCollisions(all_colliders);
+            }
+
+            // Processing
             OnGameTick();
+            foreach(Entity ent in active_entities)
+            {
+                ent.OnProcess();
+            }
 
+            // Render queue prepare
             renderer.Prepare();
         }
 
