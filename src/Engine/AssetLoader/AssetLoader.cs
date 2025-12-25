@@ -6,39 +6,14 @@ namespace Engine
     {
         private static Dictionary<string,Asset> asset_library = [];
 
-        public static void Init()
-        {
-            Gl = Core.OpenGLContext;
-        }
-
-        public static void LoadAsset(string asset_key, string file_path)
-        {
-            // TODO open file for asset create file_path
-            AddAsset(asset_key, new Asset(100));
-        }
-        
-        private static void AddAsset(string asset_key, Asset new_asset)
-        {
-            if(asset_library.ContainsKey(asset_key)) 
-            {
-                if(asset_library[asset_key].Persistent) return;
-                RemoveAsset(asset_key); // Clear it and recall it!
-            }
-            asset_library.Add(asset_key, new_asset);
-            Console.WriteLine("Asset-> " + asset_key);
-        }
-
-        public static Asset GetAsset(string asset_key)
-        {
-            asset_library.TryGetValue(asset_key, out Asset? found_asset);
-            Debug.Assert(found_asset != null);
-            return found_asset;
-        }
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Asset management
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public static void RemoveAsset(string asset_key)
         {
             if(!asset_library.ContainsKey(asset_key)) return;
-            asset_library[asset_key].Cleanup();
+            asset_library[asset_key].Unload();
             asset_library.Remove(asset_key);
         }
 
@@ -49,7 +24,7 @@ namespace Engine
             {
                 if(!asset.Persistent || even_persistent)
                 {
-                    asset.Cleanup();
+                    asset.Unload();
                     removed_keys.Add(key);
                 }
             }
@@ -57,6 +32,53 @@ namespace Engine
             {
                 asset_library.Remove(key);
             }
+        }
+
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Asset loading
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        private static void AddAsset(string asset_key, Asset new_asset)
+        {
+            if(asset_library.ContainsKey(asset_key)) 
+            {
+                if(asset_library[asset_key].Persistent) return;
+                RemoveAsset(asset_key); // Clear it and recall it!
+            }
+            if(!new_asset.CheckIntegrity())
+            {
+                Console.WriteLine("ASSET LOAD FAILURE - " + asset_key + " : " + new_asset.FilePath);
+            }
+            asset_library.Add(asset_key, new_asset);
+        }
+
+        public static void LoadAsset(string asset_key, string file_path)
+        {
+            // TODO open file for asset create file_path
+            AddAsset(asset_key, new Asset(asset_key, file_path));
+        }
+        
+        public static void ShaderAssetCreate(string asset_key, string VertexShaderSource, string FragmentShaderSource)
+        {
+            AddAsset(asset_key, new AssetShader(asset_key, "", VertexShaderSource,FragmentShaderSource));
+        }
+
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Asset retrieval
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        public static Asset GetAsset(string asset_key)
+        {
+            asset_library.TryGetValue(asset_key, out Asset? found_asset);
+            Debug.Assert(found_asset != null);
+            return found_asset;
+        }
+        
+        public static uint ShaderAssetGet(string asset_key)
+        {
+            return (uint)GetAsset(asset_key).Data;
         }
     }
 }

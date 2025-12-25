@@ -69,7 +69,6 @@ namespace Engine
             OpenGLContext?.ClearColor(Color.CornflowerBlue);
 
             // Load adventure specific assets
-            AssetLoader.Init();
             singleton?.OnLoadAssets();
 
             // Request the first frame right away!

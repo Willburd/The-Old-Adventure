@@ -8,6 +8,7 @@ namespace EntComponents
 #pragma warning disable CS8618 // We get this during binding InitBindings() due to constructor call order being unsuitable for our needs
         protected GL Gl;
 #pragma warning restore CS8618
+
         protected uint Vbo;
         protected uint Ebo;
         protected uint Vao;
