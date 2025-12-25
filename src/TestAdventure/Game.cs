@@ -6,7 +6,8 @@ namespace TestAdventure
     {
         public static void Main(string[] args) 
         { 
-            TestGameEngine game_engine = new();
+            // Start the engine
+            new TestGameEngine();
         }
     }
 
