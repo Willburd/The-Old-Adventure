@@ -96,7 +96,7 @@ namespace Engine
         // tick and render control
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
-        protected const double game_tick_rate = 40;
+        protected static double game_tick_rate = 40;
         private static double FPS {get; set;} = 60;
         private static double game_tick_accumulator = 0;
         private static double game_fps_accumulator = 0;
@@ -107,6 +107,7 @@ namespace Engine
         private static long frame_count = 0;
         public static long ElapsedGameTicks {get{ return tick_count; }}
         public static long ElapsedGameFrames {get{ return frame_count; }}
+        public static double GameTickDelta {get{ return game_tick_accumulator / GameTickInterval; }}
 
         
         /// <summary>
@@ -132,7 +133,8 @@ namespace Engine
             if(game_fps_accumulator >= FpsTickInterval || RequestRender)
             {
                 frame_count++;
-                singleton?.RenderTick(deltaTime);
+                // We're effectively lerping between the previous draw and the new draw based on how far the gametick has progressed
+                singleton?.RenderTick(GameTickDelta); 
                 game_fps_accumulator -= FpsTickInterval;
                 RequestRender = false;
             }
@@ -185,30 +187,30 @@ namespace Engine
         /// <summary>
         /// Render tick, fired at the game's framerate. Sends a render signals to all entities depending on their enabled state.
         /// </summary>
-        private void RenderTick(double delta_time)
+        private void RenderTick(double tick_delta)
         {
             // Assemble a list in order of priority.
             SortedList<int,Entity> render_queue = [];
             foreach(Entity check in Entity.EntityList)
             {
-                int priority = check.SendSignal(Signals.render_priority, delta_time);
+                int priority = check.SendSignal(Signals.render_priority, tick_delta);
                 if(priority == 0) continue; // Not visible if no component responds.
                 render_queue.Add(priority, check);
-                check.SendSignal(Signals.pre_render, delta_time); // perform prerender while we're here.
+                check.SendSignal(Signals.pre_render, tick_delta); // perform prerender while we're here.
             }
             OnPreRenderTick();
 
             // Primary rendering
             foreach((int key, Entity check) in render_queue)
             {
-                check.SendSignal(Signals.render, delta_time);
+                check.SendSignal(Signals.render, tick_delta);
             }
             OnRenderTick();
             
             // Hud rendering
             foreach((int key, Entity check) in render_queue)
             {
-                check.SendSignal(Signals.hud_render, delta_time);
+                check.SendSignal(Signals.hud_render, tick_delta);
             }
             OnRenderHudTick();
         }
