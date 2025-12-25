@@ -7,7 +7,8 @@ namespace Engine
         {
             Texture,
             Model,
-            Sound
+            Sound,
+            Shader
         }
     }
 
