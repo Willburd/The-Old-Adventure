@@ -1,22 +1,31 @@
 ﻿using Engine;
 
-TestGameEngine game_engine = new();
-
-// Override of base game for testing
-class TestGameEngine : Core
+namespace TestAdventure
 {
-    public override void OnInit()
+    public class Program
     {
-        Console.WriteLine("START");
+        public static void Main(string[] args) 
+        { 
+            TestGameEngine game_engine = new();
+        }
     }
 
-    public override void OnLoadAssets()
+    // Override of base game for testing
+    class TestGameEngine : Core
     {
-        AssetLoader.LoadAsset("test","path");
-    }
+        public override void OnInit()
+        {
+            Console.WriteLine("START");
+        }
 
-    public override void OnEnd()
-    {
-        Console.WriteLine("END");
+        public override void OnLoadAssets()
+        {
+            AssetLoader.LoadAsset("test","path");
+        }
+
+        public override void OnEnd()
+        {
+            Console.WriteLine("END");
+        }
     }
 }

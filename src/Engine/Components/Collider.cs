@@ -16,18 +16,28 @@ namespace EntComponents
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public override void RegisterSignals()
         {
-            if(debug_vis) Host.RegisterSignal(Core.Signals.render_standard, this);
+            if(debug_vis)
+            {
+                Host.RegisterSignal(Core.Signals.render_priority, this);
+                Host.RegisterSignal(Core.Signals.render, this);
+            }
         }
         public override void UnregisterSignals()
         {
-            if(debug_vis) Host.UnregisterSignal(Core.Signals.render_standard, this);
+            if(debug_vis) 
+            {
+                Host.UnregisterSignal(Core.Signals.render_priority, this);
+                Host.UnregisterSignal(Core.Signals.render, this);
+            }
         }
         public override int ReceiveSignal(Core.Signals signal, object[] args)
         {
             switch(signal)
             {
-                case Core.Signals.render_standard:
-                case Core.Signals.render_on_disabled:
+                case Core.Signals.render_priority:
+                    return 256;
+
+                case Core.Signals.render:
                     // Render our collider shape
                     return 1;
             }

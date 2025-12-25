@@ -9,6 +9,8 @@ namespace EntComponents
         /// </summary>
         private static readonly Dictionary<Type,List<EntComponent>> all_components = [];
 
+        protected List<Core.Signals> create_with_signals = []; // Used for basic signal registeration and nothing more.
+
         private readonly Entity host;
 
         public Entity Host
@@ -51,19 +53,25 @@ namespace EntComponents
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
-        /// Connects specific signals to the host entity, based on the component's desired design.
+        /// Connects specific signals to the host entity, based on the component's desired design. Default behavior uses the signals listed in create_with_signals, to automagically do the work for you.
         /// </summary>
         public virtual void RegisterSignals()
         {
-            // Example: host.RegisterSignal(Core.Signals.test, this);
+            foreach(Core.Signals sig in create_with_signals)
+            {
+                host.RegisterSignal(sig, this);
+            }
         }
 
         /// <summary>
-        /// Disconnects the signals previously attached using RegisterSignals().
+        /// Disconnects the signals previously attached using RegisterSignals(). Default behavior uses the signals listed in create_with_signals, to automagically do the work for you.
         /// </summary>
         public virtual void UnregisterSignals()
         {
-            // Example: host.UnregisterSignal(Core.Signals.test, this);
+            foreach(Core.Signals sig in create_with_signals)
+            {
+                host.UnregisterSignal(sig, this);
+            }
         }
         
         /// <summary>

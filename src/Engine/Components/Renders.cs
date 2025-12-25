@@ -10,17 +10,11 @@ namespace EntComponents
         public bool Visible { get; set; } = true;
         private int Priority { get; set; } = 1;
 
+        protected new List<Core.Signals> create_with_signals = [Core.Signals.render_priority,Core.Signals.render];
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        public override void RegisterSignals()
-        {
-            Host.RegisterSignal(Core.Signals.render, this);
-        }
-        public override void UnregisterSignals()
-        {
-            Host.UnregisterSignal(Core.Signals.render, this);
-        }
         public override int ReceiveSignal(Core.Signals signal, object[] args)
         {
             switch(signal)
