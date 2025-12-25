@@ -43,9 +43,6 @@ namespace Engine
             // Start setup with gamespecific preinit.
             OnPreInit();
 
-            // Load adventure specific assets
-            OnLoadAssets();
-
             // Start the window. Everything from here is handled by HandleWindowUpdate() and HandleWindowRender()
             WindowContext.Run();
             WindowContext.Dispose();
@@ -70,6 +67,10 @@ namespace Engine
             // Get the openGL context from the window
             OpenGLContext = WindowContext.CreateOpenGL();
             OpenGLContext?.ClearColor(Color.CornflowerBlue);
+
+            // Load adventure specific assets
+            AssetLoader.Init();
+            singleton?.OnLoadAssets();
 
             // Request the first frame right away!
             RequestRender = true;

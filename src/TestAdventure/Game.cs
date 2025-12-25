@@ -15,23 +15,29 @@ namespace TestAdventure
     {
         public override void OnLoadAssets()
         {
-            AssetLoader.LoadAsset("test","path");
+            // Load assets with the assetloader
+            base.OnLoadAssets();
+
         }
 
         public override void OnInit()
         {
-            Console.WriteLine("START");
+            // Start up initial scene
+            base.OnInit();
             new TestActor();
         }
 
         public override void OnGameTick()
         {
-            
+            // Handle global tick events
+            base.OnGameTick();
+
         }
 
         public override void OnEnd()
         {
-            Console.WriteLine("END");
+            // Cleanup during shutdown
+            base.OnEnd();
         }
     }
 }
