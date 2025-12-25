@@ -96,17 +96,46 @@ namespace Engine
         // tick and render control
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
-        protected static double game_tick_rate = 40;
+        /// <summary>
+        /// Number of game ticks per second for gameplay updates.
+        /// </summary>
+        protected static double TICKRATE {get; set;} = 40;
+        
+        /// <summary>
+        /// Number of frames per second for rendering.
+        /// </summary>
         private static double FPS {get; set;} = 60;
+        
+        /// <summary>
+        /// The threshold needed for the delta_time accumulator to trigger a gametick.
+        /// </summary>
+        private static double GameTickInterval {get{ return 1.0 / TICKRATE; }}
         private static double game_tick_accumulator = 0;
-        private static double game_fps_accumulator = 0;
-        private static double GameTickInterval {get{ return 1.0 / game_tick_rate; }}
+
+        /// <summary>
+        /// The threshold needed for the delta_time accumulator to trigger a frame render.
+        /// </summary>
         private static double FpsTickInterval {get{ return 1.0 /  FPS; }}
+        private static double game_fps_accumulator = 0;
+        
+        /// <summary>
+        /// Skips delta_time check for rendering frames, forcing a frame to be renderer as soon as possible. Used when changing scenes for example.
+        /// </summary>
         private static bool RequestRender {get; set;}
-        private static long tick_count = 0;
-        private static long frame_count = 0;
-        public static long ElapsedGameTicks {get{ return tick_count; }}
-        public static long ElapsedGameFrames {get{ return frame_count; }}
+
+        /// <summary>
+        /// Number of game ticks since launch.
+        /// </summary>
+        public static long ElapsedGameTicks {get; set;}
+
+        /// <summary>
+        /// Number of renderer frames since launch.
+        /// </summary>
+        public static long ElapsedGameFrames {get; set;}
+
+        /// <summary>
+        /// Percent difference from the previous game tick, to the next gametick. Used to do "inbetween" frames during rendering. 
+        /// </summary>
         public static double GameTickDelta {get{ return game_tick_accumulator / GameTickInterval; }}
 
         
@@ -118,7 +147,7 @@ namespace Engine
             game_tick_accumulator += deltaTime;
             if(game_tick_accumulator >= GameTickInterval)
             {
-                tick_count++;
+                ElapsedGameTicks++;
                 singleton?.GameTick();
                 game_tick_accumulator -= GameTickInterval;
             }
@@ -132,7 +161,7 @@ namespace Engine
             game_fps_accumulator += deltaTime;
             if(game_fps_accumulator >= FpsTickInterval || RequestRender)
             {
-                frame_count++;
+                ElapsedGameFrames++;
                 // We're effectively lerping between the previous draw and the new draw based on how far the gametick has progressed
                 singleton?.RenderTick(GameTickDelta); 
                 game_fps_accumulator -= FpsTickInterval;
