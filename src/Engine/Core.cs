@@ -21,6 +21,8 @@ namespace Engine
 
         public Core()
         {
+            Console.WriteLine("CORE INIT");
+
             // Start setup with gamespecific preinit.
             OnPreInit();
 
