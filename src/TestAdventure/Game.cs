@@ -30,7 +30,7 @@ namespace TestAdventure
 
         public override void OnGameTick()
         {
-            Console.WriteLine("Tick " + ElapsedGameTicks);
+            
         }
     }
 }

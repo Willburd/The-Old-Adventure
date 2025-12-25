@@ -96,17 +96,18 @@ namespace Engine
         // tick and render control
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
-        protected const int game_tick_rate = 20;
-        private static int FPS {get; set;} = 60;
+        protected const double game_tick_rate = 40;
+        private static double FPS {get; set;} = 60;
         private static double game_tick_accumulator = 0;
         private static double game_fps_accumulator = 0;
-        private static double GameTickInterval {get{ return 1 / game_tick_rate; }}
-        private static double FpsTickInterval {get{ return 1 /  FPS; }}
+        private static double GameTickInterval {get{ return 1.0 / game_tick_rate; }}
+        private static double FpsTickInterval {get{ return 1.0 /  FPS; }}
         private static bool RequestRender {get; set;}
         private static long tick_count = 0;
         private static long frame_count = 0;
         public static long ElapsedGameTicks {get{ return tick_count; }}
         public static long ElapsedGameFrames {get{ return frame_count; }}
+
         
         /// <summary>
         /// Handles calling GameTicks at the desired interval
@@ -128,11 +129,11 @@ namespace Engine
         private static void HandleWindowRender(double deltaTime)
         {
             game_fps_accumulator += deltaTime;
-            if(game_fps_accumulator >= GameTickInterval || RequestRender)
+            if(game_fps_accumulator >= FpsTickInterval || RequestRender)
             {
                 frame_count++;
                 singleton?.RenderTick(deltaTime);
-                game_fps_accumulator -= GameTickInterval;
+                game_fps_accumulator -= FpsTickInterval;
                 RequestRender = false;
             }
         }
