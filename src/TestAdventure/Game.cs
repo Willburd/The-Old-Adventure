@@ -16,6 +16,7 @@ namespace TestAdventure
         public override void OnInit()
         {
             Console.WriteLine("START");
+            new TestActor();
         }
 
         public override void OnLoadAssets()

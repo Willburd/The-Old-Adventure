@@ -16,7 +16,7 @@ namespace EntComponents
         public EntComponent(Entity host_entity)
         {
             Host = host_entity;
-            if(all_components[GetType()] == null) all_components[GetType()] = [];
+            if(!all_components.ContainsKey(GetType())) all_components.Add(GetType(),[]);
             all_components[GetType()].Add(this);
             Host.AddComponent(this);
             RegisterSignals();
@@ -27,6 +27,7 @@ namespace EntComponents
             UnregisterSignals();
             all_components[GetType()].Remove(this);
             Host.RemoveComponent(this);
+            OnDestroy();
         }
 
         /// <summary>
@@ -72,6 +73,14 @@ namespace EntComponents
         public virtual int ReceiveSignal(Core.Signals signal, object[] args)
         {
             return 0;
+        }
+
+        /// <summary>
+        /// Fired during component destroy. Used to cleanup.
+        /// </summary>
+        public virtual void OnDestroy()
+        {
+            
         }
     }
 }

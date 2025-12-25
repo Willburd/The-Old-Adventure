@@ -1,12 +1,57 @@
 using Engine;
+using Silk.NET.OpenGL;
 
 namespace EntComponents
 {
-    /// <summary>
-    /// Component that enables the OnRender() function in an entity, and stores various other rendering information.
-    /// </summary>
     public class Renders(Entity host_entity) : EntComponent(host_entity)
-    {
+    { 
+        // Get the render context
+        protected GL Gl;
+        protected uint Vbo;
+        protected uint Ebo;
+        protected uint Vao;
+        protected uint Shader;
+
+        //Vertex data, uploaded to the VBO.
+        protected float[] Vertices = [];
+
+        //Index data, uploaded to the EBO.
+        protected uint[] Indices = [];
+
+        public unsafe void InitBindings()
+        {
+            // Set context
+            Gl = Core.OpenGLContext;
+            
+            //Creating a vertex array.
+            Vao = Gl.GenVertexArray();
+            Gl.BindVertexArray(Vao);
+
+            //Initializing a vertex buffer that holds the vertex data.
+            Vbo = Gl.GenBuffer(); //Creating the buffer.
+            Gl.BindBuffer(BufferTargetARB.ArrayBuffer, Vbo); //Binding the buffer.
+            fixed (void* v = &Vertices[0])
+            {
+                Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint) (Vertices.Length * sizeof(uint)), v, BufferUsageARB.StaticDraw); //Setting buffer data.
+            }
+
+            //Initializing a element buffer that holds the index data.
+            Ebo = Gl.GenBuffer(); //Creating the buffer.
+            Gl.BindBuffer(BufferTargetARB.ElementArrayBuffer, Ebo); //Binding the buffer.
+            fixed (void* i = &Indices[0])
+            {
+                Gl.BufferData(BufferTargetARB.ElementArrayBuffer, (nuint) (Indices.Length * sizeof(uint)), i, BufferUsageARB.StaticDraw); //Setting buffer data.
+            }
+        }
+
+        public override void OnDestroy()
+        {
+            Gl.DeleteBuffer(Vbo);
+            Gl.DeleteBuffer(Ebo);
+            Gl.DeleteVertexArray(Vao);
+            Gl.DeleteProgram(Shader);
+        }
+
         public bool Visible { get; set; } = true;
         private int Priority { get; set; } = 1;
 

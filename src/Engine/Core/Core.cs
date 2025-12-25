@@ -13,7 +13,7 @@ namespace Engine
         protected const string adventure_title = "The Old Adventure";
 
         public static IWindow WindowContext {get; set;}
-        public static GL? OpenGLContext {get; set;}
+        public static GL OpenGLContext {get; set;}
 
         static Core()
         {
@@ -46,6 +46,7 @@ namespace Engine
 
             // Start the window. Everything from here is handled by HandleWindowUpdate() and HandleWindowRender()
             WindowContext.Run();
+            WindowContext.Dispose();
         }
 
 

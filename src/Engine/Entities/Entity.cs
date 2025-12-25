@@ -12,16 +12,18 @@ namespace Engine
 
         public static void DestroyAllEntities()
         {
-            foreach(Entity ent in EntityList)
+            List<Entity> removal_list = [.. EntityList]; 
+            foreach(Entity ent in removal_list)
             {
                 ent.Destroy();
             }
+            EntityList.Clear();
         }
 
         /// <summary>
         /// If an entity is currently processed in the game update loop. Also disables rendering.
         /// </summary>
-        public bool Enabled { get; set; }
+        public bool Enabled { get; set; } = true;
 
         public Entity()
         {
@@ -41,6 +43,7 @@ namespace Engine
             {
                 RemoveComponent(component);
             }
+            attached_components.Clear();
         }
 
 
@@ -56,7 +59,7 @@ namespace Engine
         /// </summary>
         public EntComponent AddComponent(EntComponent component)
         {
-            if(attached_components[component.GetType()] == null) attached_components[component.GetType()] = [];
+            if(!attached_components.ContainsKey(component.GetType())) attached_components.Add(component.GetType(),[]);
             attached_components[component.GetType()].Add(component);
             return component;
         }
@@ -128,9 +131,9 @@ namespace Engine
 
         public int SendSignal(Core.Signals signal, params object[] args)
         {
-            if(linked_signals[signal] == null) return 0;
+            if(!linked_signals.TryGetValue(signal, out List<EntComponent>? signal_list)) return 0;
             int return_flags = 0;
-            foreach(EntComponent comp in linked_signals[signal])
+            foreach(EntComponent comp in signal_list)
             {
                 return_flags |= comp.ReceiveSignal(signal, args);
             }

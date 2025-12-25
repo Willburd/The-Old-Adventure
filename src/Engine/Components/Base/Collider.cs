@@ -2,9 +2,6 @@ using Engine;
 
 namespace EntComponents
 {
-    /// <summary>
-    /// Component that enables the OnCollision() function in an entity, and stores various other collision information. Sends a collision signal with the two colliding objects when a collider overlap is happening.
-    /// </summary>
     public class Collider(Entity host_entity) : EntComponent(host_entity)
     {
         public bool Active { get; set; }
