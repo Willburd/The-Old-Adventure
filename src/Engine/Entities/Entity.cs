@@ -55,7 +55,7 @@ namespace Engine
         private readonly Dictionary<Core.Signals,List<EntComponent>> linked_signals = [];
 
         /// <summary>
-        /// Adds a component to the entity. Do not call directly, called by EntComponent constructor.
+        /// Adds a component to the entity. Do not call directly, called by EntComponent constructor. You only need to instantiate the component, and provide the entity as it's target.
         /// </summary>
         public EntComponent AddComponent(EntComponent component)
         {
@@ -118,6 +118,7 @@ namespace Engine
         /// </summary>
         public void RegisterSignal(Core.Signals signal, EntComponent target)
         {
+            if(!linked_signals.ContainsKey(signal)) linked_signals.Add(signal,[]);
             linked_signals[signal].Add(target);
         }
 

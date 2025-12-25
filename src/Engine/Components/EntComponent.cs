@@ -9,8 +9,6 @@ namespace EntComponents
         /// </summary>
         private static readonly Dictionary<Type,List<EntComponent>> all_components = [];
 
-        protected readonly List<Core.Signals> create_with_signals = []; // Used for basic signal registeration and nothing more.
-
         public Entity Host { get; }
 
         public EntComponent(Entity host_entity)
@@ -39,18 +37,25 @@ namespace EntComponents
             if(found_list == null) return [];
             return found_list;
         }
-        
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Virtual functions
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        /// <summary>
+        /// Returns a list of signals that this component subscribes to by default, for both register and unregister. Making it easy to sub to multiple signals with minimal conditions. Otherwise override RegisterSignals() and UnregisterSignals().
+        /// </summary>
+        public virtual List<Core.Signals> DefaultSignals()
+        {
+            return [];
+        }
 
         /// <summary>
         /// Connects specific signals to the host entity, based on the component's desired design. Default behavior uses the signals listed in create_with_signals, to automagically do the work for you.
         /// </summary>
         public virtual void RegisterSignals()
         {
-            foreach(Core.Signals sig in create_with_signals)
+            foreach(Core.Signals sig in DefaultSignals())
             {
                 Host.RegisterSignal(sig, this);
             }
@@ -61,7 +66,7 @@ namespace EntComponents
         /// </summary>
         public virtual void UnregisterSignals()
         {
-            foreach(Core.Signals sig in create_with_signals)
+            foreach(Core.Signals sig in DefaultSignals())
             {
                 Host.UnregisterSignal(sig, this);
             }

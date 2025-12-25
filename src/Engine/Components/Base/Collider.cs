@@ -11,22 +11,12 @@ namespace EntComponents
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        public override void RegisterSignals()
+        public override List<Core.Signals> DefaultSignals()
         {
-            if(debug_vis)
-            {
-                Host.RegisterSignal(Core.Signals.render_priority, this);
-                Host.RegisterSignal(Core.Signals.render, this);
-            }
+            if(!debug_vis) return [];
+            return [Core.Signals.render_priority,Core.Signals.render];
         }
-        public override void UnregisterSignals()
-        {
-            if(debug_vis) 
-            {
-                Host.UnregisterSignal(Core.Signals.render_priority, this);
-                Host.UnregisterSignal(Core.Signals.render, this);
-            }
-        }
+
         public override int ReceiveSignal(Core.Signals signal, object[] args)
         {
             switch(signal)

@@ -13,25 +13,25 @@ namespace TestAdventure
     // Override of base game for testing
     class TestGameEngine : Core
     {
+        public override void OnLoadAssets()
+        {
+            AssetLoader.LoadAsset("test","path");
+        }
+
         public override void OnInit()
         {
             Console.WriteLine("START");
             new TestActor();
         }
 
-        public override void OnLoadAssets()
+        public override void OnGameTick()
         {
-            AssetLoader.LoadAsset("test","path");
+            
         }
 
         public override void OnEnd()
         {
             Console.WriteLine("END");
-        }
-
-        public override void OnGameTick()
-        {
-            
         }
     }
 }
