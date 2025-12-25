@@ -19,6 +19,17 @@ namespace Engine
         }
 #pragma warning restore CS8618
 
+        public enum AssetType
+        {
+            invalid,
+            texture,
+            mesh,
+            sound,
+            shader
+        }
+
+        protected AssetType asset_type = AssetType.invalid;
+
         /// <summary>
         /// Asset key, mostly for debugging.
         /// </summary>
@@ -64,6 +75,9 @@ namespace Engine
             }
         }
 
+        /// <summary>
+        /// Get original file path used to load asset.
+        /// </summary>
         public string FilePath
         {
             get
@@ -85,6 +99,15 @@ namespace Engine
         /// </summary>
         public virtual bool CheckIntegrity()
         {
+            return false;
+        }
+
+        /// <summary>
+        /// Checks that the asset is the correct type.
+        /// </summary>
+        public virtual bool CheckType(AssetType check_type)
+        {
+            if(asset_type == check_type) return true;
             return false;
         }
     }

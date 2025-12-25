@@ -12,8 +12,8 @@ namespace Engine
 
         public static void RemoveAsset(string asset_key)
         {
-            if(!asset_library.ContainsKey(asset_key)) return;
-            asset_library[asset_key].Unload();
+            if(!asset_library.TryGetValue(asset_key, out Asset? value)) return;
+            value.Unload();
             asset_library.Remove(asset_key);
         }
 
@@ -39,6 +39,9 @@ namespace Engine
         // Asset loading
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
+        /// <summary>
+        /// Add asset to the asset library, 
+        /// </summary>
         private static void AddAsset(string asset_key, Asset new_asset)
         {
             if(asset_library.ContainsKey(asset_key)) 
@@ -52,13 +55,27 @@ namespace Engine
             }
             asset_library.Add(asset_key, new_asset);
         }
-
+        
+        /// <summary>
+        /// Load asset from a file, automatically creating the correct type from the file provided.
+        /// </summary>
         public static void LoadAsset(string asset_key, string file_path)
         {
             // TODO open file for asset create file_path
             AddAsset(asset_key, new Asset(asset_key, file_path));
         }
+
+        /// <summary>
+        /// Checks that an asset is loaded.
+        /// </summary>
+        public static bool AssetExists(string asset_key)
+        {
+            return asset_library.ContainsKey(asset_key);
+        }
         
+        /// <summary>
+        /// Create a shader asset from raw shader source code strings.
+        /// </summary>
         public static void ShaderAssetCreate(string asset_key, string VertexShaderSource, string FragmentShaderSource)
         {
             AddAsset(asset_key, new AssetShader(asset_key, "", VertexShaderSource,FragmentShaderSource));
@@ -69,6 +86,9 @@ namespace Engine
         // Asset retrieval
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
+        /// <summary>
+        /// Get an asset from asset_library. The asset must exist.
+        /// </summary>
         public static Asset GetAsset(string asset_key)
         {
             asset_library.TryGetValue(asset_key, out Asset? found_asset);
@@ -76,9 +96,14 @@ namespace Engine
             return found_asset;
         }
         
+        /// <summary>
+        /// Get a shader program from the asset key. The asset must exist.
+        /// </summary>
         public static uint ShaderAssetGet(string asset_key)
         {
-            return (uint)GetAsset(asset_key).Data;
+            Asset ast = GetAsset(asset_key);
+            Debug.Assert(ast.CheckType(Asset.AssetType.shader));
+            return (uint)ast.Data;
         }
     }
 }

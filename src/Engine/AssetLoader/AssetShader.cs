@@ -15,6 +15,7 @@ namespace Engine
 
             // Get the shader program as our asset
             data = ShaderCompileLink(vertexShader, fragmentShader);
+            asset_type = AssetType.shader;
         }
 
         public override void Unload()
