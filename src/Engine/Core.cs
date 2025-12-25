@@ -9,8 +9,10 @@ namespace Engine
             test,
 
             // Rendering
-            render_standard,
-            render_on_disabled,
+            render_priority,
+            pre_render,
+            render,
+            hud_render,
 
             // Collision and triggers
             collision,
@@ -124,12 +126,30 @@ namespace Engine
         /// </summary>
         private void RenderTick(double delta_time)
         {
-            OnPreRenderTick();
+            // Assemble a list in order of priority.
+            SortedList<int,Entity> render_queue = [];
             foreach(Entity check in Entity.EntityList)
             {
-                check.SendSignal(check.Enabled ? Signals.render_standard : Signals.render_on_disabled, delta_time);
+                int priority = check.SendSignal(Signals.render_priority, delta_time);
+                if(priority == 0) continue; // Not visible if no component responds.
+                render_queue.Add(priority, check);
+                check.SendSignal(Signals.pre_render, delta_time); // perform prerender while we're here.
+            }
+            OnPreRenderTick();
+
+            // Primary rendering
+            foreach((int key, Entity check) in render_queue)
+            {
+                check.SendSignal(Signals.render, delta_time);
             }
             OnRenderTick();
+            
+            // Hud rendering
+            foreach((int key, Entity check) in render_queue)
+            {
+                check.SendSignal(Signals.hud_render, delta_time);
+            }
+            OnRenderHudTick();
         }
 
         /// <summary>
@@ -205,9 +225,17 @@ namespace Engine
         }
 
         /// <summary>
-        /// Virtual function for game specific behaviors. Called at the end of a render tick, after everything is rendered.
+        /// Virtual function for game specific behaviors. Called at the end of a render tick, after everything is rendered, but before the hud.
         /// </summary>
         public virtual void OnRenderTick()
+        {
+            
+        }
+
+        /// <summary>
+        /// Virtual function for game specific behaviors. Called at the end of a render tick, after the hud is rendered.
+        /// </summary>
+        public virtual void OnRenderHudTick()
         {
             
         }
