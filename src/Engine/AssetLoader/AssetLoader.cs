@@ -1,21 +1,7 @@
 ﻿using System.Diagnostics;
-using Silk.NET.OpenGL;
 
 namespace Engine
 {
-    public class Asset(Object new_asset)
-    {
-        protected readonly Object data = new_asset;
-
-        public Object GetAsset 
-        {
-            get
-            {
-                return data;
-            }
-        }
-    }
-
     public static partial class AssetLoader
     {
         private static Dictionary<string,Asset> asset_library = [];
@@ -33,6 +19,11 @@ namespace Engine
         
         private static void AddAsset(string asset_key, Asset new_asset)
         {
+            if(asset_library.ContainsKey(asset_key)) 
+            {
+                if(asset_library[asset_key].Persistent) return;
+                RemoveAsset(asset_key); // Clear it and recall it!
+            }
             asset_library.Add(asset_key, new_asset);
             Console.WriteLine("Asset-> " + asset_key);
         }
@@ -44,9 +35,28 @@ namespace Engine
             return found_asset;
         }
 
-        public static void UnloadAllAssets()
+        public static void RemoveAsset(string asset_key)
         {
-            asset_library = [];
+            if(!asset_library.ContainsKey(asset_key)) return;
+            asset_library[asset_key].Cleanup();
+            asset_library.Remove(asset_key);
+        }
+
+        public static void UnloadAllAssets(bool even_persistent)
+        {
+            List<string> removed_keys = [];
+            foreach((string key, Asset asset) in asset_library)
+            {
+                if(!asset.Persistent || even_persistent)
+                {
+                    asset.Cleanup();
+                    removed_keys.Add(key);
+                }
+            }
+            foreach(string key in removed_keys)
+            {
+                asset_library.Remove(key);
+            }
         }
     }
 }

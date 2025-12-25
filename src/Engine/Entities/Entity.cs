@@ -28,6 +28,7 @@ namespace Engine
         public Entity()
         {
             entity_list.Add(this);
+            OnAssetLoad();
             OnCreate();
         }
 
@@ -144,6 +145,23 @@ namespace Engine
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Virtual functions
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        /// <summary>
+        /// Used to load assets specific to the entity itself.
+        /// </summary>
+        public virtual void OnAssetLoad()
+        {
+            
+        }
+
+        /// <summary>
+        /// Used to implement entity unique behavior.
+        /// </summary>
+        public virtual void OnCreate()
+        {
+            
+        }
+
         /// <summary>
         /// Used to implement entity unique behavior. Called after all enabled entities are collected, this is the ONLY stage of the process handler called by entities that are disabled.
         /// </summary>
@@ -156,14 +174,6 @@ namespace Engine
         /// Used to implement entity unique behavior.
         /// </summary>
         public virtual void OnProcess()
-        {
-            
-        }
-
-        /// <summary>
-        /// Used to implement entity unique behavior.
-        /// </summary>
-        public virtual void OnCreate()
         {
             
         }

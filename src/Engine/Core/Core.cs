@@ -105,7 +105,7 @@ namespace Engine
         /// </summary>
         public void MainLoopEnd()
         {
-            AssetLoader.UnloadAllAssets();
+            AssetLoader.UnloadAllAssets(true);
             Entity.DestroyAllEntities();
             OnEnd();
         }

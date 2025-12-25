@@ -4,8 +4,14 @@ namespace Engine
 {
     public static partial class AssetLoader
     {
-        public class AssetShader(uint new_shader) : Asset(new_shader)
+        public class AssetShader : Asset
         {
+            public AssetShader(uint new_shader) : base(new_shader)
+            {
+                // Shaders always stay once loaded, unlike other assets
+                SetPersistent();
+            }
+
             public new uint GetAsset 
             {
                 get
