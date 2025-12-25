@@ -1,4 +1,8 @@
 ﻿using EntComponents;
+using Silk.NET.Input;
+using Silk.NET.Maths;
+using Silk.NET.Windowing;
+using System.Diagnostics;
 
 namespace Engine
 {
@@ -19,9 +23,34 @@ namespace Engine
             trigger
         }
 
+
+        private static Core? singleton;
+        private readonly static IWindow window_context;
+
+        protected const string adventure_title = "The Old Adventure";
+
+        static Core()
+        {
+            // Prepare window
+            WindowOptions options = WindowOptions.Default with
+            {
+                Size = new Vector2D<int>(800, 600),
+                Title = adventure_title
+            };
+
+            // Create window
+            window_context = Window.Create(options);
+            window_context.Load += HandleWindowLoad;
+            window_context.Update += HandleWindowUpdate;
+            window_context.Render += HandleWindowRender;
+            window_context.Closing += HandleWindowClosing;
+        }
+
         public Core()
         {
-            Console.WriteLine("CORE INIT");
+            Debug.Assert(singleton == null,"Multiple cores created - " + adventure_title);
+            singleton = this;
+            Console.WriteLine("CORE INIT - " + adventure_title);
 
             // Start setup with gamespecific preinit.
             OnPreInit();
@@ -29,69 +58,98 @@ namespace Engine
             // Load adventure specific assets
             OnLoadAssets();
 
-            // Start up renderer
-            Renderer.Init();
+            // Start the window. Everything from here is handled by HandleWindowUpdate() and HandleWindowRender()
+            window_context.Run();
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Window Handlers
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            
+        private static void HandleWindowLoad()
+        {
+            IInputContext input = window_context.CreateInput();
+            for (int i = 0; i < input.Keyboards.Count; i++)
+            {
+                input.Keyboards[i].KeyDown += KeyDown;
+            }
+
+            // Request the first frame right away!
+            RequestRender = true;
 
             // Finalize setup with gamespecific postinit.
-            OnInit();
+            singleton?.OnInit();
+        }
 
-            // Enter gameloop
-            MainLoopHandler();
-            
+        private static void KeyDown(IKeyboard keyboard, Key key, int keyCode)
+        {
+            // TEMP, we need an input handler here...
+            if (key == Key.Escape)
+            {
+                window_context.Close();
+            }
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // tick and render control
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        protected const int game_tick_rate = 20;
+        private static int FPS {get; set;} = 60;
+        private static double game_tick_accumulator = 0;
+        private static double game_fps_accumulator = 0;
+        private static double GameTickInterval {get{ return 1 / game_tick_rate; }}
+        private static double FpsTickInterval {get{ return 1 /  FPS; }}
+        private static bool RequestRender {get; set;}
+        private static long tick_count = 0;
+        private static long frame_count = 0;
+        public static long ElapsedGameTicks {get{ return tick_count; }}
+        public static long ElapsedGameFrames {get{ return frame_count; }}
+        
+        /// <summary>
+        /// Handles calling GameTicks at the desired interval
+        /// </summary>
+        private static void HandleWindowUpdate(double deltaTime)
+        {
+            game_tick_accumulator += deltaTime;
+            if(game_tick_accumulator >= GameTickInterval)
+            {
+                tick_count++;
+                singleton?.GameTick();
+                game_tick_accumulator -= GameTickInterval;
+            }
+        }
+
+        /// <summary>
+        /// Handles rendering the game at the desired interval
+        /// </summary>
+        private static void HandleWindowRender(double deltaTime)
+        {
+            game_fps_accumulator += deltaTime;
+            if(game_fps_accumulator >= GameTickInterval || RequestRender)
+            {
+                frame_count++;
+                singleton?.RenderTick(deltaTime);
+                game_fps_accumulator -= GameTickInterval;
+                RequestRender = false;
+            }
+        }
+        
+        /// <summary>
+        /// Handles the game shutting down.
+        /// </summary>
+        private static void HandleWindowClosing()
+        {
             // Shutdown
-            MainLoopEnd();
+            singleton?.MainLoopEnd();
         }
 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Gameloop processing
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            
-        protected const int game_tick_rate = 20;
-        private static long tick_count = 0;
-        private static long GameTickInterval {get{ return 1000 / game_tick_rate * 10000; }}
-        private static long FpsTickInterval {get{ return 1000 /  Renderer.FPS * 10000; }}
-        public static long ElapsedGameTicks {get{ return tick_count; }}
-
-        /// <summary>
-        /// Gameloop handler. Keeps game timing, and calls the various functions that make up the main gameloop.
-        /// </summary>
-        public void MainLoopHandler()
-        {
-            long game_accum = 0;
-            long fps_accumulator = 0;
-
-            bool quit = false;
-            long prevTicks = DateTime.Now.Ticks;
-            while (!quit)
-            {
-                long ticks = DateTime.Now.Ticks;
-                long delta = ticks - prevTicks;
-                prevTicks = ticks;
-
-                // Update the game at a fixed rate 
-                long game_tick_interval = GameTickInterval;
-                game_accum += delta;
-                if (game_accum >= game_tick_interval)
-                {
-                    GameTick();
-                    tick_count += 1;
-                    game_accum -= game_tick_interval;
-                }
-
-                // Render at much faster rates, but use the current progress toward the next gametick as the delta_time for animations
-                long fps_tick_interval = FpsTickInterval;
-                fps_accumulator += delta;
-                if (fps_accumulator >= fps_tick_interval)
-                {
-                    double delta_time = game_accum / game_tick_interval; // Use the current game tick here, not the renderer's
-                    RenderTick(delta_time);
-                    fps_accumulator -= fps_tick_interval;
-                }
-
-                if(tick_count > 500) quit = true;
-            }
-        }
 
         /// <summary>
         /// Game tick fired. This processes all game objects, and any special logic during them.
@@ -161,7 +219,6 @@ namespace Engine
         {
             AssetLoader.UnloadAllAssets();
             Entity.DestroyAllEntities();
-            Renderer.End();
             OnEnd();
         }
 
@@ -187,7 +244,7 @@ namespace Engine
         }
         
         /// <summary>
-        /// Virtual function for adventure specific behaviors. Called at the end of the Engine.Core's constructor, after all engine setup has completed.
+        /// Virtual function for adventure specific behaviors. Called after the game window has be started, after all engine setup has completed.
         /// </summary>
         public virtual void OnInit()
         {
@@ -195,7 +252,7 @@ namespace Engine
         }
 
         /// <summary>
-        /// Virtual function for adventure specific behaviors. Called at the start of the Engine.Core's destructor, to allow cleanup of adventure specific engine code.
+        /// Virtual function for adventure specific behaviors. Called at the start of MainLoopEnd(), to allow cleanup of adventure specific engine code.
         /// </summary>
         public virtual void OnEnd()
         {

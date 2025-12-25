@@ -27,5 +27,10 @@ namespace TestAdventure
         {
             Console.WriteLine("END");
         }
+
+        public override void OnGameTick()
+        {
+            Console.WriteLine("Tick " + ElapsedGameTicks);
+        }
     }
 }
