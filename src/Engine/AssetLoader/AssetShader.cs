@@ -27,10 +27,10 @@ namespace Engine
             base.Unload();
         }
         
-        public override bool CheckIntegrity()
+        public override bool CheckIntegrity(bool valid = true)
         {
             GL Gl = Core.OpenGLContext;
-            return Gl.IsProgram((uint)data);
+            return base.CheckIntegrity(Gl.IsProgram((uint)data));
         }
 
         /// <summary>

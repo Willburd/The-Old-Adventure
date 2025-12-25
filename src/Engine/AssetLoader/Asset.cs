@@ -21,11 +21,12 @@ namespace Engine
 
         public enum AssetType
         {
-            invalid,
-            texture,
-            mesh,
-            sound,
-            shader
+            invalid,            // Invalid or broken resource
+            texture,            // Images for rendering on meshes
+            mesh,               // 3D model information, including skeletons
+            sound,              // Sounds for music and sfx 
+            shader,             // Shaders for rendering meshes and textures
+            scene_environment   // Color, fog, effects and other settings for a scene's appearance
         }
 
         protected AssetType asset_type = AssetType.invalid;
@@ -71,7 +72,7 @@ namespace Engine
         {
             get
             {
-                return always_loaded;
+                return always_loaded && asset_type != AssetType.invalid; // If an asset becomes invalid, always allow it to be reloaded
             }
         }
 
@@ -97,9 +98,14 @@ namespace Engine
         /// <summary>
         /// Checks if an asset loaded correctly.
         /// </summary>
-        public virtual bool CheckIntegrity()
+        public virtual bool CheckIntegrity(bool valid = true)
         {
-            return false;
+            if(!valid)
+            {
+                asset_type = AssetType.invalid;
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
