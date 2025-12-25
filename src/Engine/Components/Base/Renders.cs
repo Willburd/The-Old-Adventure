@@ -4,9 +4,10 @@ using Silk.NET.OpenGL;
 namespace EntComponents
 {
     public class Renders(Entity host_entity) : EntComponent(host_entity)
-    { 
-        // Get the render context
+    {
+#pragma warning disable CS8618 // We get this during binding InitBindings() due to constructor call order being unsuitable for our needs
         protected GL Gl;
+#pragma warning restore CS8618
         protected uint Vbo;
         protected uint Ebo;
         protected uint Vao;

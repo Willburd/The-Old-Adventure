@@ -13,8 +13,9 @@ namespace Engine
         protected const string adventure_title = "The Old Adventure";
 
         public static IWindow WindowContext {get; set;}
+        
+#pragma warning disable CS8618 // I don't care if you're upset the static constructor doesn't set it. We're doing it on instantilize.
         public static GL OpenGLContext {get; set;}
-
         static Core()
         {
             // Prepare window
@@ -31,6 +32,7 @@ namespace Engine
             WindowContext.Render += HandleWindowRender;
             WindowContext.Closing += HandleWindowClosing;
         }
+#pragma warning restore CS8618
 
         public Core()
         {
