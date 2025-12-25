@@ -9,24 +9,16 @@ namespace EntComponents
         /// </summary>
         private static readonly Dictionary<Type,List<EntComponent>> all_components = [];
 
-        protected List<Core.Signals> create_with_signals = []; // Used for basic signal registeration and nothing more.
+        protected readonly List<Core.Signals> create_with_signals = []; // Used for basic signal registeration and nothing more.
 
-        private readonly Entity host;
-
-        public Entity Host
-        {
-            get
-            {
-                return host;
-            }
-        }
+        public Entity Host { get; }
 
         public EntComponent(Entity host_entity)
         {
-            host = host_entity;
+            Host = host_entity;
             if(all_components[GetType()] == null) all_components[GetType()] = [];
             all_components[GetType()].Add(this);
-            host.AddComponent(this);
+            Host.AddComponent(this);
             RegisterSignals();
         }
         
@@ -34,7 +26,7 @@ namespace EntComponents
         {
             UnregisterSignals();
             all_components[GetType()].Remove(this);
-            host.RemoveComponent(this);
+            Host.RemoveComponent(this);
         }
 
         /// <summary>
@@ -59,7 +51,7 @@ namespace EntComponents
         {
             foreach(Core.Signals sig in create_with_signals)
             {
-                host.RegisterSignal(sig, this);
+                Host.RegisterSignal(sig, this);
             }
         }
 
@@ -70,7 +62,7 @@ namespace EntComponents
         {
             foreach(Core.Signals sig in create_with_signals)
             {
-                host.UnregisterSignal(sig, this);
+                Host.UnregisterSignal(sig, this);
             }
         }
         

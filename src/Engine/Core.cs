@@ -10,11 +10,10 @@ namespace Engine
     public partial class Core 
     {
         private static Core? singleton;
-
         protected const string adventure_title = "The Old Adventure";
-        protected static IWindow WindowContext {get; set;}
-        protected static GL? OpenGLContext {get; set;}
 
+        public static IWindow WindowContext {get; set;}
+        public static GL? OpenGLContext {get; set;}
 
         static Core()
         {
@@ -32,7 +31,6 @@ namespace Engine
             WindowContext.Render += HandleWindowRender;
             WindowContext.Closing += HandleWindowClosing;
         }
-
 
         public Core()
         {
