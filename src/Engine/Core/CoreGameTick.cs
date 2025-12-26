@@ -56,7 +56,11 @@ namespace Engine
             {
                 if(!ent.IsInitilized) ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
                 uint has_update_registered = ent.SendSignal(Signals.pre_update, ent.Enabled);
-                if(ent.Enabled && has_update_registered > 0) active_entities.Add(ent);
+                if(ent.Enabled && has_update_registered > 0) 
+                {
+                    ent.SendSignal(Signals.prepare_transform);
+                    active_entities.Add(ent);
+                }
             }
 
             // Collision
@@ -71,6 +75,7 @@ namespace Engine
             OnGameTick();
             foreach(Entity ent in active_entities)
             {
+                ent.SendSignal(Signals.apply_physics);
                 ent.SendSignal(Signals.update);
             }
             OnPostGameTick();

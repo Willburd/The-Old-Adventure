@@ -2,10 +2,14 @@ using Engine;
 
 namespace EntComponents
 {
+    /// <summary>
+    /// Entity Component that detects collisions with other colliders. Intended for handling physics.
+    /// </summary>
     public class Collider(Entity host_entity) : EntComponent(host_entity)
     {
         public bool Active { get; set; }
         private readonly bool debug_vis = false; // Debugging only
+        public bool IsTrigger { get; set; } = false;
 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,14 +45,37 @@ namespace EntComponents
         /// </summary>
         public void CheckCollisions(List<EntComponent> all_colliders)
         {
+            // TODO - Update these from a list of colliders, to be structs of collision information, with the nearest position on the collider, the colliders involve, the origin position, distance to, etc.
+            List<EntComponent> all_collisions = [];
+            List<EntComponent> all_triggers = [];
+
             foreach(Collider col in all_colliders.Cast<Collider>())
             {
+                // No self detection
                 if(col == this) continue;
-                if(IsColliding(col) && col.IsColliding(this)) // we must BOTH collide!
+                // Forbid trigger reverse detection
+                if(col.IsTrigger) continue;
+
+                // Check for overlap, we must BOTH collide!
+                if(IsColliding(col) && col.IsColliding(this)) 
                 {
-                    Host.SendSignal(Core.Signals.collision, col.Host, col);
+                    // Triggers only detect collisions with physics colliders, and not with other triggers
+                    if(IsTrigger)
+                    {
+                        if(!col.IsTrigger)
+                        {
+                            all_triggers.Add(col);
+                        }
+                        continue;
+                    }
+                    // The other colliders cannot be a trigger, so we've found an actual collision!
+                    all_collisions.Add(col);
                 }
             }
+
+            // Inform our host of everything we've faceplanted into this frame
+            if(all_collisions.Count > 0) Host.SendSignal(Core.Signals.collision, all_collisions);
+            if(all_triggers.Count > 0) Host.SendSignal(Core.Signals.trigger, all_triggers);
         }
 
         /// <summary>

@@ -72,6 +72,13 @@ namespace Engine
             }
             OnRenderTick();
             
+            // Late rendering
+            foreach((uint key, Entity check) in render_queue)
+            {
+                check.SendSignal(Signals.post_render, tick_delta);
+            }
+            OnPostRenderTick();
+
             // Hud rendering
             foreach((uint key, Entity check) in render_queue)
             {

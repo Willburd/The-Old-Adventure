@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace EntComponents
 {
+    /// <summary>
+    /// Entity Component that handles the basics of rendering a 3D model's meshes, using materials assigned to each mesh. Intended to be overriden.
+    /// </summary>
     public class Renders(Entity host_entity) : EntComponent(host_entity)
     {
         public bool Visible { get; set; } = true;

@@ -6,24 +6,27 @@ namespace Engine
         {
             test,
             // Spawning
-            asset_load,
-            create,
-            destroy,
+            asset_load,             // () : Called during entity OnInit() before anything else. Used to load assets.
+            create,                 // () : Called at the end of entity OnInit()
+            destroy,                // () : Called when an entity is destroyed.
 
             // Update
-            pre_update,
-            update,
-            post_update,
+            prepare_transform,      // () : Update last entity position for draw code
+            pre_update,             // () : Custom entity early update
+            apply_physics,          // () : Apply physics from components to transforms
+            update,                 // () : Custom entity update
+            post_update,            // () : ustom entity late update
 
             // Rendering
-            render_priority,
-            pre_render,
-            render,
-            hud_render,
+            render_priority,        // () : Must be registered, for rendering to know the priority of what is being drawn
+            pre_render,             // (double tick_delta) : Custom entity early render
+            render,                 // (double tick_delta) : Custom entity render
+            post_render,            // (double tick_delta) : Custom entity early render
+            hud_render,             // (double tick_delta) : Custom hud render
 
             // Collision and triggers
-            collision,
-            trigger
+            collision,              // (List<Collider>) : Called from Collider component, returns all collisions during the game tick.
+            trigger                 // (List<Collider>) : Called from Collider component, returns all collisions during the game tick.
         }
     }
 }
