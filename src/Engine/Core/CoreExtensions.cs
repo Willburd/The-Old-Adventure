@@ -44,9 +44,17 @@ namespace Engine
         }
 
         /// <summary>
-        /// Virtual function for game specific behaviors. Called at the end of a game tick, after everything is processed.
+        /// Virtual function for game specific behaviors. Called before the game tick processes all active entities.
         /// </summary>
         public virtual void OnGameTick()
+        {
+            
+        }
+
+        /// <summary>
+        /// Virtual function for game specific behaviors. Called after the game tick processes all active entities.
+        /// </summary>
+        public virtual void OnPostGameTick()
         {
             
         }

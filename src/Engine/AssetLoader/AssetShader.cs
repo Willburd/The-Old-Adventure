@@ -16,13 +16,15 @@ namespace Engine
 
         public override void Unload()
         {
-            (data as Rendering.Shader).Dispose();
+            (data as Rendering.Shader)?.Dispose();
             base.Unload();
         }
         
         public override bool CheckIntegrity(bool valid = true)
         {
-            return base.CheckIntegrity((data as Rendering.Shader).IsValid());
+            if(data == null) return false;
+            Rendering.Shader check = (Rendering.Shader)data;
+            return base.CheckIntegrity(check.IsValid());
         }
     }
 }

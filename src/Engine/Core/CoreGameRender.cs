@@ -55,10 +55,10 @@ namespace Engine
             OpenGLContext?.Clear(ClearBufferMask.ColorBufferBit);
 
             // Assemble a list in order of priority.
-            SortedList<int,Entity> render_queue = [];
+            SortedList<uint,Entity> render_queue = [];
             foreach(Entity check in Entity.EntityList)
             {
-                int priority = check.SendSignal(Signals.render_priority, tick_delta);
+                uint priority = check.SendSignal(Signals.render_priority, tick_delta);
                 if(priority == 0) continue; // Not visible if no component responds.
                 render_queue.Add(priority, check);
                 check.SendSignal(Signals.pre_render, tick_delta); // perform prerender while we're here.
@@ -66,14 +66,14 @@ namespace Engine
             OnPreRenderTick();
 
             // Primary rendering
-            foreach((int key, Entity check) in render_queue)
+            foreach((uint key, Entity check) in render_queue)
             {
                 check.SendSignal(Signals.render, tick_delta);
             }
             OnRenderTick();
             
             // Hud rendering
-            foreach((int key, Entity check) in render_queue)
+            foreach((uint key, Entity check) in render_queue)
             {
                 check.SendSignal(Signals.hud_render, tick_delta);
             }

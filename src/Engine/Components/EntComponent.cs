@@ -22,10 +22,10 @@ namespace EntComponents
         
         ~EntComponent()
         {
+            OnDestroy();
             UnregisterSignals();
             all_components[GetType()].Remove(this);
             Host.RemoveComponent(this);
-            OnDestroy();
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace EntComponents
         /// </summary>
         public virtual List<Core.Signals> DefaultSignals()
         {
-            return [];
+            return [Core.Signals.create, Core.Signals.update];
         }
 
         /// <summary>
@@ -75,17 +75,79 @@ namespace EntComponents
         /// <summary>
         /// Fired when a signal is sent from the host entity. Signals are sent based on registeration order, so an assumed order should not be expected when designing component behaviors.
         /// </summary>
-        public virtual int ReceiveSignal(Core.Signals signal, object[] args)
+        public virtual uint ReceiveSignal(Core.Signals signal, object[] args)
         {
+            switch(signal)            
+            {
+                case Core.Signals.asset_load:
+                    return HandleAssetLoad();
+
+                case Core.Signals.create:
+                    return HandleCreate();
+
+                case Core.Signals.pre_update:
+                    return HandlePreUpdate();
+
+                case Core.Signals.update:
+                    return HandleUpdate();
+
+                case Core.Signals.post_update:
+                    return HandlePostUpdate();
+            }
             return 0;
         }
 
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Virtual functions
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
         /// <summary>
-        /// Fired during component destroy. Used to cleanup.
+        /// Asset loading for components to prepare for drawing or other actions.
         /// </summary>
-        public virtual void OnDestroy()
+        public virtual uint HandleAssetLoad()
         {
-            
+            return 1;
+        }
+
+        /// <summary>
+        /// Used to set data after resources are loaded by HandleAssetLoad()
+        /// </summary>
+        public virtual uint HandleCreate()
+        {
+            return 1;
+        }
+
+        /// <summary>
+        /// Used to respond to preupdate game ticks.
+        /// </summary>
+        public virtual uint HandlePreUpdate()
+        {
+            return 1;
+        }
+
+        /// <summary>
+        /// Used to respond to standard game ticks.
+        /// </summary>
+        public virtual uint HandleUpdate()
+        {
+            return 1;
+        }
+
+        /// <summary>
+        /// Used to respond to post update game ticks.
+        /// </summary>
+        public virtual uint HandlePostUpdate()
+        {
+            return 1;
+        }
+
+        /// <summary>
+        /// Called at the start of component destroy. Used to cleanup.
+        /// </summary>
+        public virtual uint OnDestroy()
+        {
+            return 1;
         }
     }
 }

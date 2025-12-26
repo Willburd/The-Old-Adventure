@@ -58,9 +58,9 @@ namespace Engine
         }
         
         /// <summary>
-        /// Load asset from a file, automatically creating the correct type from the file provided.
+        /// Loads a shader asset from disk. Internal use, use the type specific ones instead.
         /// </summary>
-        public static void LoadAsset(string asset_key, string file_path)
+        private static void LoadAsset(string asset_key, string file_path)
         {
             // TODO open file for asset create file_path
             AddAsset(asset_key, new Asset(asset_key, file_path));
@@ -75,11 +75,19 @@ namespace Engine
         }
         
         /// <summary>
-        /// Create a shader asset from raw shader source code strings.
+        /// Loads a shader asset from disk into the asset library
         /// </summary>
-        public static void ShaderAssetCreate(string asset_key, string file_path_without_type)
+        public static void ShaderAssetLoad(string asset_key, string file_path_without_type)
         {
             AddAsset(asset_key, new AssetShader(asset_key, file_path_without_type));
+        }
+
+        /// <summary>
+        /// Loads a 3d Model asset from disk into the asset library
+        /// </summary>
+        public static void ModelAssetLoad(string asset_key, string file_path)
+        {
+            AddAsset(asset_key, new AssetModel(asset_key, file_path));
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,11 +117,11 @@ namespace Engine
         /// <summary>
         /// Get a Assimp scene of a model. The asset must exist.
         /// </summary>
-        public static Scene MeshAssetGet(string asset_key)
+        public static Rendering.Model ModelAssetGet(string asset_key)
         {
             Asset ast = GetAsset(asset_key);
-            Debug.Assert(ast.CheckType(Asset.AssetType.shader));
-            return (Scene)ast.Data;
+            Debug.Assert(ast.CheckType(Asset.AssetType.model));
+            return (Rendering.Model)ast.Data;
         }
     }
 }

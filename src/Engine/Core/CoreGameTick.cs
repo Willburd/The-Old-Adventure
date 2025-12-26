@@ -54,8 +54,9 @@ namespace Engine
             List<Entity> active_entities = [];
             foreach(Entity ent in Entity.EntityList)
             {
-                ent.OnPreProcess(ent.Enabled);
-                if(ent.Enabled) active_entities.Add(ent);
+                if(!ent.IsInitilized) ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
+                uint has_update_registered = ent.SendSignal(Signals.pre_update, ent.Enabled);
+                if(ent.Enabled && has_update_registered > 0) active_entities.Add(ent);
             }
 
             // Collision
@@ -70,7 +71,12 @@ namespace Engine
             OnGameTick();
             foreach(Entity ent in active_entities)
             {
-                ent.OnProcess();
+                ent.SendSignal(Signals.update);
+            }
+            OnPostGameTick();
+            foreach(Entity ent in active_entities)
+            {
+                ent.SendSignal(Signals.post_update);
             }
         }
     }

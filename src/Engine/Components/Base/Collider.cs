@@ -17,7 +17,7 @@ namespace EntComponents
             return [Core.Signals.render_priority,Core.Signals.render];
         }
 
-        public override int ReceiveSignal(Core.Signals signal, object[] args)
+        public override uint ReceiveSignal(Core.Signals signal, object[] args)
         {
             switch(signal)
             {
@@ -28,7 +28,7 @@ namespace EntComponents
                     // Render our collider shape
                     return 1;
             }
-            return 0;
+            return base.ReceiveSignal(signal,args);
         }
 
 

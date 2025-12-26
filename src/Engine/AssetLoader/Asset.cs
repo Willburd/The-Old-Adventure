@@ -23,7 +23,7 @@ namespace Engine
         {
             invalid,            // Invalid or broken resource
             texture,            // Images for rendering on meshes
-            mesh,               // 3D model information, including skeletons
+            model,               // 3D model information, including skeletons
             sound,              // Sounds for music and sfx 
             shader,             // Shaders for rendering meshes and textures
             scene_environment   // Color, fog, effects and other settings for a scene's appearance

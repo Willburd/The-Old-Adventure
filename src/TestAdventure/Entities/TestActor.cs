@@ -6,10 +6,5 @@ namespace Engine
         {
             new EntComponents.TestRender(this);
         }
-
-        public override void OnAssetLoad()
-        {
-            AssetLoader.ShaderAssetCreate("shader_test", Tools.AssetDirectory + "/Shaders/test");
-        }
     }
 }

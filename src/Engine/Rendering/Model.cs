@@ -188,8 +188,12 @@ namespace Rendering
             {
                 mesh.Dispose();
             }
+            _texturesLoaded = [];
+        }
 
-            _texturesLoaded = null;
+        public bool IsValid()
+        {
+            return Meshes.Count > 0;
         }
     }
 }

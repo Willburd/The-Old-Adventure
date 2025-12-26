@@ -20,6 +20,20 @@ namespace Engine
             EntityList.Clear();
         }
 
+
+        /// <summary>
+        /// If an entity has completed initilization, this happens before the pre_update signal is called during the game loop
+        /// </summary>
+        private bool initilized = false;
+        public bool IsInitilized { get {return initilized;} }
+
+        public void OnInit()
+        {
+            initilized = true;
+            SendSignal(Core.Signals.asset_load);
+            SendSignal(Core.Signals.create);
+        }
+
         /// <summary>
         /// If an entity is currently processed in the game update loop. Also disables rendering.
         /// </summary>
@@ -28,8 +42,6 @@ namespace Engine
         public Entity()
         {
             entity_list.Add(this);
-            OnAssetLoad();
-            OnCreate();
         }
 
         /// <summary>
@@ -37,7 +49,7 @@ namespace Engine
         /// </summary>
         public void Destroy()
         {
-            OnDestroy();
+            SendSignal(Core.Signals.destroy);
             entity_list.Remove(this);
             Enabled = false;
             foreach(EntComponent component in GetAllComponents())
@@ -131,59 +143,15 @@ namespace Engine
             linked_signals[signal].Remove(target);
         }
 
-        public int SendSignal(Core.Signals signal, params object[] args)
+        public uint SendSignal(Core.Signals signal, params object[] args)
         {
             if(!linked_signals.TryGetValue(signal, out List<EntComponent>? signal_list)) return 0;
-            int return_flags = 0;
+            uint return_flags = 0;
             foreach(EntComponent comp in signal_list)
             {
                 return_flags |= comp.ReceiveSignal(signal, args);
             }
             return return_flags;
-        }
-        
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Virtual functions
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        /// <summary>
-        /// Used to load assets specific to the entity itself.
-        /// </summary>
-        public virtual void OnAssetLoad()
-        {
-            
-        }
-
-        /// <summary>
-        /// Used to implement entity unique behavior.
-        /// </summary>
-        public virtual void OnCreate()
-        {
-            
-        }
-
-        /// <summary>
-        /// Used to implement entity unique behavior. Called after all enabled entities are collected, this is the ONLY stage of the process handler called by entities that are disabled.
-        /// </summary>
-        public virtual void OnPreProcess(bool enabled)
-        {
-            
-        }
-
-        /// <summary>
-        /// Used to implement entity unique behavior.
-        /// </summary>
-        public virtual void OnProcess()
-        {
-            
-        }
-
-        /// <summary>
-        /// Used to implement entity unique behavior.
-        /// </summary>
-        public virtual void OnDestroy()
-        {
-            
         }
     }
 }

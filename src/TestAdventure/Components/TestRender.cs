@@ -3,44 +3,36 @@ using Silk.NET.OpenGL;
 
 namespace EntComponents
 {
-    public class TestRender : Renders
+    public class TestRender(Entity host_entity) : Renders(host_entity)
     {
-        public unsafe TestRender(Entity host_entity) : base(host_entity)
+        private Rendering.Model model;
+        protected Rendering.Shader shader;
+
+        public override uint HandleAssetLoad()
         {
-            // Setup vertex data
-            Vertices =
-            [
-                //X    Y      Z
-                0.5f,  0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                -0.5f,  0.5f, 0.5f
-            ];
+            AssetLoader.ShaderAssetLoad("shader_test", Tools.AssetDirectory + "/Shaders/test");
+            AssetLoader.ModelAssetLoad("model_test", Tools.AssetDirectory + "/Models/test.obj");
 
-            //Index data, uploaded to the EBO.
-            Indices =
-            [
-                0, 1, 3,
-                1, 2, 3
-            ];
+            shader = AssetLoader.ShaderAssetGet("shader_test");
+            model = AssetLoader.ModelAssetGet("model_test");
 
-            // Setup the base bindings
-            InitBindings();
-
-            // Tell opengl how to give the data to the shaders.
-            Shader = AssetLoader.ShaderAssetGet("shader_test");
-            Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), null);
-            Gl.EnableVertexAttribArray(0);
+            return 1;
         }
 
-        public unsafe override void HandleRender(double delta_time)
+        public override uint HandleCreate()
         {
-            // Draw test quad
-            Gl.BindVertexArray(Vao);
-            Shader.Use();
+            return 1;
+        }
 
-            //Draw the geometry.
-            Gl.DrawElements(PrimitiveType.Triangles, (uint) Indices.Length, DrawElementsType.UnsignedInt, null);
+        public override uint HandleRender(double delta_time)
+        {  
+            foreach (var mesh in model.Meshes)
+            {
+                mesh.Bind();
+                shader.Use();
+                Core.OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Vertices.Length);
+            }
+            return 1;
         }
     }
 }
