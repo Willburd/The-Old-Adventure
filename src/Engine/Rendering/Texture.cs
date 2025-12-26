@@ -1,6 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Diagnostics;
+using Engine;
 using Silk.NET.Assimp;
 using Silk.NET.OpenGL;
 using SixLabors.ImageSharp;
@@ -8,33 +10,34 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace Rendering
 {
-    public class Texture : IDisposable
+    public class TextureData : IDisposable
     {
         private uint _handle;
         private GL _gl;
 
-        public string Path { get; set; }
+        public string Path { get; set; } = "NO PATH";
         public TextureType Type { get; }
 
-        public unsafe Texture(GL gl, string path, TextureType type = TextureType.None)
+        public unsafe TextureData(string path)
         {
-            _gl = gl;
+            _gl = Core.OpenGLContext;
             Path = path;
-            Type = type;
             _handle = _gl.GenTexture();
+
             Bind();
+
+            Debug.Assert(System.IO.File.Exists(path),"Texture Asset file does not exist : " + path);
 
             using (var img = Image.Load<Rgba32>(path))
             {
-                gl.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgba8, (uint) img.Width, (uint) img.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, null);
-
+                _gl.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgba8, (uint) img.Width, (uint) img.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, null);
                 img.ProcessPixelRows(accessor =>
                 {
                     for (int y = 0; y < accessor.Height; y++)
                     {
                         fixed (void* data = accessor.GetRowSpan(y))
                         {
-                            gl.TexSubImage2D(TextureTarget.Texture2D, 0, 0, y, (uint) accessor.Width, 1, PixelFormat.Rgba, PixelType.UnsignedByte, data);
+                            _gl.TexSubImage2D(TextureTarget.Texture2D, 0, 0, y, (uint) accessor.Width, 1, PixelFormat.Rgba, PixelType.UnsignedByte, data);
                         }
                     }
                 });
@@ -43,11 +46,11 @@ namespace Rendering
             SetParameters();
         }
 
-        public unsafe Texture(GL gl, Span<byte> data, uint width, uint height)
+        public unsafe TextureData(Span<byte> data, uint width, uint height)
         {
-            _gl = gl;
-
+            _gl = Core.OpenGLContext;
             _handle = _gl.GenTexture();
+
             Bind();
 
             fixed (void* d = &data[0])
@@ -72,6 +75,11 @@ namespace Rendering
         {
             _gl.ActiveTexture(textureSlot);
             _gl.BindTexture(TextureTarget.Texture2D, _handle);
+        }
+
+        public bool IsValid()
+        {
+            return _handle > 0;
         }
 
         public void Dispose()

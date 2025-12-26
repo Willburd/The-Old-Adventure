@@ -6,14 +6,14 @@ using Silk.NET.OpenGL;
 
 namespace Rendering
 {
-    public class Shader : IDisposable
+    public class ShaderData : IDisposable
     {
         private uint _handle;
         private GL _gl;
 
-        public Shader(GL gl, string vertexPath, string fragmentPath)
+        public ShaderData(string vertexPath, string fragmentPath)
         {
-            _gl = gl;
+            _gl = Engine.Core.OpenGLContext;
 
             uint vertex = LoadShader(ShaderType.VertexShader, vertexPath);
             uint fragment = LoadShader(ShaderType.FragmentShader, fragmentPath);

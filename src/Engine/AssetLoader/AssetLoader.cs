@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using Rendering;
+using Silk.NET.Assimp;
 
 namespace Engine
 {
@@ -40,13 +42,13 @@ namespace Engine
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         /// <summary>
-        /// Add asset to the asset library, 
+        /// Add asset to the asset library, weirdly named to avoid accidental use. Use the proper load asset functions.
         /// </summary>
-        private static void AddAsset(string asset_key, Asset new_asset)
+        private static Object InvokeAsset(string asset_key, Asset new_asset)
         {
             if(asset_library.ContainsKey(asset_key)) 
             {
-                if(asset_library[asset_key].Persistent) return;
+                if(asset_library[asset_key].Persistent) return asset_library[asset_key].Data;
                 RemoveAsset(asset_key); // Clear it and recall it!
             }
             if(!new_asset.CheckIntegrity())
@@ -54,15 +56,7 @@ namespace Engine
                 Console.WriteLine("ASSET LOAD FAILURE - " + asset_key + " : " + new_asset.FilePath);
             }
             asset_library.Add(asset_key, new_asset);
-        }
-        
-        /// <summary>
-        /// Loads a shader asset from disk. Internal use, use the type specific ones instead.
-        /// </summary>
-        private static void LoadAsset(string asset_key, string file_path)
-        {
-            // TODO open file for asset create file_path
-            AddAsset(asset_key, new Asset(asset_key, file_path));
+            return new_asset.Data;
         }
 
         /// <summary>
@@ -76,17 +70,25 @@ namespace Engine
         /// <summary>
         /// Loads a shader asset from disk into the asset library
         /// </summary>
-        public static void ShaderAssetLoad(string asset_key, string file_path_without_type)
+        public static Rendering.ShaderData ShaderAssetLoad(string asset_key, string file_path_without_type)
         {
-            AddAsset(asset_key, new AssetShader(asset_key, file_path_without_type));
+            return (ShaderData)InvokeAsset(asset_key, new AssetShader(asset_key, file_path_without_type));
         }
 
         /// <summary>
         /// Loads a 3d Model asset from disk into the asset library
         /// </summary>
-        public static void ModelAssetLoad(string asset_key, string file_path)
+        public static ModelData ModelAssetLoad(string asset_key, string file_path)
         {
-            AddAsset(asset_key, new AssetModel(asset_key, file_path));
+            return (ModelData)InvokeAsset(asset_key, new AssetModel(asset_key, file_path));
+        }
+        
+        /// <summary>
+        /// Loads a 3d Model asset from disk into the asset library
+        /// </summary>
+        public static TextureData TextureAssetLoad(string asset_key, string file_path)
+        {
+            return (TextureData)InvokeAsset(asset_key, new AssetTexture(asset_key, file_path));
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,23 +106,33 @@ namespace Engine
         }
         
         /// <summary>
-        /// Get a shader program from the asset key. The asset must exist.
+        /// Gets a shader from the asset library
         /// </summary>
-        public static Rendering.Shader ShaderAssetGet(string asset_key)
+        public static Rendering.ShaderData ShaderAssetGet(string asset_key)
         {
             Asset ast = GetAsset(asset_key);
             Debug.Assert(ast.CheckType(Asset.AssetType.shader));
-            return (Rendering.Shader)ast.Data;
+            return (Rendering.ShaderData)ast.Data;
         }
         
         /// <summary>
-        /// Get a Assimp scene of a model. The asset must exist.
+        /// Gets a Model from the asset library
         /// </summary>
-        public static Rendering.Model ModelAssetGet(string asset_key)
+        public static Rendering.ModelData ModelAssetGet(string asset_key)
         {
             Asset ast = GetAsset(asset_key);
             Debug.Assert(ast.CheckType(Asset.AssetType.model));
-            return (Rendering.Model)ast.Data;
+            return (Rendering.ModelData)ast.Data;
+        }
+
+        /// <summary>
+        /// Gets a texture from the asset library
+        /// </summary>
+        public static Rendering.TextureData TextureAssetGet(string asset_key)
+        {
+            Asset ast = GetAsset(asset_key);
+            Debug.Assert(ast.CheckType(Asset.AssetType.textures));
+            return (Rendering.TextureData)ast.Data;
         }
     }
 }

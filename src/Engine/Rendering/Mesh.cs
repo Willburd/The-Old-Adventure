@@ -5,20 +5,18 @@ using Silk.NET.OpenGL;
 
 namespace Rendering
 {
-    public class Mesh : IDisposable
+    public class MeshData : IDisposable
     {
-        public Mesh(GL gl, float[] vertices, uint[] indices, List<Texture> textures)
+        public MeshData(GL gl, float[] vertices, uint[] indices)
         {
             GL = gl;
             Vertices = vertices;
             Indices = indices;
-            Textures = textures;
             SetupMesh();
         }
 
         public float[] Vertices { get; private set; }
         public uint[] Indices { get; private set; }
-        public IReadOnlyList<Texture> Textures { get; private set; }
         public VertexArrayObject<float, uint> VAO { get; set; }
         public BufferObject<float> VBO { get; set; }
         public BufferObject<uint> EBO { get; set; }
@@ -40,7 +38,6 @@ namespace Rendering
 
         public void Dispose()
         {
-            Textures = null;
             VAO.Dispose();
             VBO.Dispose();
             EBO.Dispose();

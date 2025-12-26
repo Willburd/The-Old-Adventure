@@ -1,5 +1,6 @@
 using Engine;
-using Silk.NET.OpenGL;
+using Rendering;
+using System.Diagnostics;
 
 namespace EntComponents
 {
@@ -7,6 +8,8 @@ namespace EntComponents
     {
         public bool Visible { get; set; } = true;
         private uint Priority { get; set; } = 1;
+        protected Rendering.ModelData model;
+        protected List<Rendering.MaterialData> materials = [];
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
@@ -83,6 +86,15 @@ namespace EntComponents
         /// </summary>
         public virtual uint HandleHudRender(double delta_time)
         {
+            Debug.Assert(model.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
+            int mesh_index = 0;
+            foreach (var mesh in model.Meshes)
+            {
+                mesh.Bind();
+                materials[mesh_index].Shader.Use(); // Each mesh can use a different material, and that also means shader!
+                Core.OpenGLContext.DrawArrays( Silk.NET.OpenGL.PrimitiveType.Triangles, 0, (uint)mesh.Vertices.Length);
+                mesh_index++;
+            }
             return 1;
         }
     }
