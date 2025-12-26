@@ -11,7 +11,7 @@ namespace EntComponents
     {
         public bool Visible { get; set; } = true;
         private uint Priority { get; set; } = 1;
-        protected Rendering.ModelData model;
+        protected Rendering.ModelData? model;
         protected List<Rendering.MaterialData> materials = [];
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,7 +89,7 @@ namespace EntComponents
         /// </summary>
         public virtual uint HandleHudRender(double delta_time)
         {
-            Debug.Assert(model.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
+            Debug.Assert(model?.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
             int mesh_index = 0;
             foreach (var mesh in model.Meshes)
             {

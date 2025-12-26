@@ -17,9 +17,9 @@ namespace Rendering
 
         public float[] Vertices { get; private set; }
         public uint[] Indices { get; private set; }
-        public VertexArrayObject<float, uint> VAO { get; set; }
-        public BufferObject<float> VBO { get; set; }
-        public BufferObject<uint> EBO { get; set; }
+        public VertexArrayObject<float, uint>? VAO { get; set; }
+        public BufferObject<float>? VBO { get; set; }
+        public BufferObject<uint>? EBO { get; set; }
         public GL GL { get; }
 
         public unsafe void SetupMesh()
@@ -33,14 +33,14 @@ namespace Rendering
 
         public void Bind()
         {
-            VAO.Bind();
+            VAO?.Bind();
         }
 
         public void Dispose()
         {
-            VAO.Dispose();
-            VBO.Dispose();
-            EBO.Dispose();
+            VAO?.Dispose();
+            VBO?.Dispose();
+            EBO?.Dispose();
         }
     }
 }

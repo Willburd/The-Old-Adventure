@@ -5,7 +5,6 @@ namespace EntComponents
 {
     public class TestRender(Entity host_entity) : Renders(host_entity)
     {
-
         public override uint HandleAssetLoad()
         {
             AssetLoader.ModelAssetLoad("model_test", Tools.AssetDirectory + "/Models/test.obj");
@@ -19,6 +18,13 @@ namespace EntComponents
 
             // Load the model with the materials we assigned
             model = AssetLoader.ModelAssetGet("model_test");
+
+            return 1;
+        }
+
+        public override uint HandleUpdate()
+        {
+            Transform? curloc = (Transform?)Host.GetComponent(typeof(Transform));
 
             return 1;
         }
