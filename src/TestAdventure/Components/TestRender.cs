@@ -14,9 +14,9 @@ namespace EntComponents
             TextureData test_tex = AssetLoader.TextureAssetLoad("texture_test", Tools.AssetDirectory + "/Textures/test.png");
 
             // Materials for each mesh in the model
-            materials.Add(new MaterialData([new MaterialTexData( test_tex, TextureType.Diffuse)], test_shader));
-            materials.Add(new MaterialData([new MaterialTexData( test_tex, TextureType.Diffuse)], test_shader));
-            materials.Add(new MaterialData([new MaterialTexData( test_tex, TextureType.Diffuse)], test_shader));
+            materials.Add(new MaterialData([new MaterialUniformData("uTexture0", (int)test_tex.Handle())], test_shader));
+            materials.Add(new MaterialData([new MaterialUniformData("uTexture0", (int)test_tex.Handle())], test_shader));
+            materials.Add(new MaterialData([new MaterialUniformData("uTexture0", (int)test_tex.Handle())], test_shader));
 
             // Load the model with the materials we assigned
             model = AssetLoader.ModelAssetGet("model_test");

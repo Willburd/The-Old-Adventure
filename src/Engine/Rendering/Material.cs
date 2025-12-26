@@ -2,22 +2,22 @@ using Silk.NET.Assimp;
 
 namespace Rendering
 {
-    public struct MaterialTexData(TextureData tex, TextureType texture_type)
+    public struct MaterialUniformData(string uniform_name, int uni_value)
     {
-        public TextureData texture_data = tex;
-        public TextureType texture_type = texture_type;
+        public string set_uniform = uniform_name;
+        public int shader_uni_value = uni_value;
     }
 
     public class MaterialData : IDisposable
     {
-        public MaterialData(List<MaterialTexData> mat_tex_data, ShaderData shader)
+        public MaterialData(List<MaterialUniformData> mat_tex_data, ShaderData shader)
         {
             render_shader = shader;
-            textures = mat_tex_data;
+            uniforms = mat_tex_data;
         }
 
         private readonly ShaderData render_shader;
-        private List<MaterialTexData> textures;
+        private List<MaterialUniformData> uniforms;
         
         public ShaderData Shader
         {
@@ -29,7 +29,15 @@ namespace Rendering
 
         public bool IsValid()
         {
-            return textures.Count > 0 && Shader.IsValid();
+            return uniforms.Count > 0 && Shader.IsValid();
+        }
+
+        public List<MaterialUniformData> Uniforms
+        {
+            get
+            {
+                return uniforms;
+            }
         }
         
         public void Dispose()

@@ -82,6 +82,11 @@ namespace Rendering
             return _handle > 0;
         }
 
+        public uint Handle()
+        {
+            return _handle;
+        }
+
         public void Dispose()
         {
             _gl.DeleteTexture(_handle);

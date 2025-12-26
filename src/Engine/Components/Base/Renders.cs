@@ -91,7 +91,13 @@ namespace EntComponents
             foreach (var mesh in model.Meshes)
             {
                 mesh.Bind();
-                materials[mesh_index].Shader.Use(); // Each mesh can use a different material, and that also means shader!
+                MaterialData mat_data = materials[mesh_index];
+                ShaderData shader = mat_data.Shader;
+                shader.Use(); // Each mesh can use a different material, and that also means shader!
+                foreach(MaterialUniformData matuni in mat_data.Uniforms)
+                {
+                    shader.SetUniform(matuni.set_uniform, matuni.shader_uni_value);
+                }
                 Core.OpenGLContext.DrawArrays( Silk.NET.OpenGL.PrimitiveType.Triangles, 0, (uint)mesh.Vertices.Length);
                 mesh_index++;
             }
