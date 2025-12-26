@@ -4,33 +4,12 @@ using Engine;
 namespace EntComponents
 {
     /// <summary>
-    /// Lightweight class used for holding a position and rotation in 3D space.
-    /// </summary>
-    public class Location
-    {
-        public Vector3 position;
-        public Quaternion rotation;
-
-        public Vector3 Position
-        {
-            get {return position;}
-            set {position = value;}
-        }
-
-        public Quaternion Rotation
-        {
-            get {return rotation;}
-            set {rotation = value;}
-        }
-    }
-
-    /// <summary>
     /// Entity Component that holds the location in 3D space of an entity.
     /// </summary>
     public class Transform(Entity host_entity) : EntComponent(host_entity)
     {
-        protected readonly Location location = new();     
-        protected readonly Location last_location = new();  
+        protected readonly Tools.Location location = new();     
+        protected readonly Tools.Location last_location = new();  
 
 
         public Vector3 Position
