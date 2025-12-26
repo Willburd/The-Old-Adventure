@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Silk.NET.Assimp;
 
 namespace Engine
 {

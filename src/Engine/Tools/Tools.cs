@@ -7,7 +7,7 @@ namespace Engine
             get
             {
                 // TODO - get this to not be godawful and actually use the project folder
-                return "../../../";
+                return AppDomain.CurrentDomain.BaseDirectory + "../../../";
             }
         }
 
