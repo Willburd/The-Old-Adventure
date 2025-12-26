@@ -37,7 +37,7 @@ namespace EntComponents
         {
             // Draw test quad
             Gl.BindVertexArray(Vao);
-            Gl.UseProgram(Shader);
+            Shader.Use();
 
             //Draw the geometry.
             Gl.DrawElements(PrimitiveType.Triangles, (uint) Indices.Length, DrawElementsType.UnsignedInt, null);

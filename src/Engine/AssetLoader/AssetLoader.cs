@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Silk.NET.Assimp;
 
 namespace Engine
 {
@@ -76,12 +77,11 @@ namespace Engine
         /// <summary>
         /// Create a shader asset from raw shader source code strings.
         /// </summary>
-        public static void ShaderAssetCreate(string asset_key, string VertexShaderSource, string FragmentShaderSource)
+        public static void ShaderAssetCreate(string asset_key, string file_path_without_type)
         {
-            AddAsset(asset_key, new AssetShader(asset_key, "", VertexShaderSource,FragmentShaderSource));
+            AddAsset(asset_key, new AssetShader(asset_key, file_path_without_type));
         }
 
-        
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Asset retrieval
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,11 +99,21 @@ namespace Engine
         /// <summary>
         /// Get a shader program from the asset key. The asset must exist.
         /// </summary>
-        public static uint ShaderAssetGet(string asset_key)
+        public static Rendering.Shader ShaderAssetGet(string asset_key)
         {
             Asset ast = GetAsset(asset_key);
             Debug.Assert(ast.CheckType(Asset.AssetType.shader));
-            return (uint)ast.Data;
+            return (Rendering.Shader)ast.Data;
+        }
+        
+        /// <summary>
+        /// Get a Assimp scene of a model. The asset must exist.
+        /// </summary>
+        public static Scene MeshAssetGet(string asset_key)
+        {
+            Asset ast = GetAsset(asset_key);
+            Debug.Assert(ast.CheckType(Asset.AssetType.shader));
+            return (Scene)ast.Data;
         }
     }
 }

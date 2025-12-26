@@ -1,7 +1,7 @@
 
 namespace Engine
 {
-    public class Scene : Entity
+    public class Field : Entity
     {
         
     }

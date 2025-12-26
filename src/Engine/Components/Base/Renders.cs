@@ -12,7 +12,7 @@ namespace EntComponents
         protected uint Vbo;
         protected uint Ebo;
         protected uint Vao;
-        protected uint Shader;
+        protected Rendering.Shader Shader;
 
         //Vertex data, uploaded to the VBO.
         protected float[] Vertices = [];
@@ -51,7 +51,6 @@ namespace EntComponents
             Gl.DeleteBuffer(Vbo);
             Gl.DeleteBuffer(Ebo);
             Gl.DeleteVertexArray(Vao);
-            Gl.DeleteProgram(Shader);
         }
 
         public bool Visible { get; set; } = true;
