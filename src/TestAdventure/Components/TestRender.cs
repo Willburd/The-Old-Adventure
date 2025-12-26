@@ -1,5 +1,4 @@
 using Engine;
-using Silk.NET.Assimp;
 using Rendering;
 
 namespace EntComponents
