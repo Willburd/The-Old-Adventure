@@ -8,8 +8,8 @@ namespace EntComponents
     /// </summary>
     public class Transform(Entity host_entity) : EntComponent(host_entity)
     {
-        protected readonly Tools.Location location = new();     
-        protected readonly Tools.Location last_location = new();  
+        protected readonly Location location = new();     
+        protected readonly Location last_location = new();  
 
 
         public Vector3 Position
