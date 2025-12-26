@@ -22,7 +22,7 @@ namespace Engine
 
 
         /// <summary>
-        /// If an entity has completed initilization, this happens before the pre_update signal is called during the game loop
+        /// If an entity has completed initilization. Initilization happens before the pre_update signal is called during the game loop. As doing this in the constructor is not possible due to execution order. (The signal system is not yet init on the entity, but the child is calling assetload/create signals.)
         /// </summary>
         private bool initilized = false;
         public bool IsInitilized { get {return initilized;} }
