@@ -13,7 +13,7 @@ namespace EntComponents
 
         protected override uint HandleAssetLoad()
         {
-            model = AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/test.fbx"); // FBX 0.01 scale, Y up, X forward
+            model = AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/test.fbx"); // FBX 0.1 scale, Y up, X forward
             ShaderData test_shader = AssetLoader.ShaderAssetLoad("shader_test1", AssetLoader.AssetDirectoryAdventure + "/Shaders/test");
             TextureData test_tex1 = AssetLoader.TextureAssetLoad("texture_test", AssetLoader.AssetDirectoryAdventure + "/Textures/test1.png");
             TextureData test_tex2 = AssetLoader.TextureAssetLoad("texture_test2", AssetLoader.AssetDirectoryAdventure + "/Textures/test2.png");
