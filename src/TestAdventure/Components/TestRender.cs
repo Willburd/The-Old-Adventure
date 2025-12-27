@@ -1,6 +1,7 @@
 using System.Numerics;
 using Engine;
 using Rendering;
+using Silk.NET.Assimp;
 
 namespace EntComponents
 {
@@ -18,9 +19,10 @@ namespace EntComponents
             TextureData test_tex = AssetLoader.TextureAssetLoad("texture_test", Tools.AssetDirectory + "/Textures/test.png");
 
             // Materials for each mesh in the model
-            materials.Add(new MaterialData([new MaterialUniformData("uTexture0", (int)test_tex.Handle())], test_shader));
-            materials.Add(new MaterialData([new MaterialUniformData("uTexture0", (int)test_tex.Handle())], test_shader));
-            materials.Add(new MaterialData([new MaterialUniformData("uTexture0", (int)test_tex.Handle())], test_shader));
+            MaterialData shared_mat = new( [test_tex], [new MaterialUniformData("uTexture0", 0)], test_shader);
+            materials.Add(shared_mat);
+            materials.Add(shared_mat);
+            materials.Add(shared_mat);
 
             // Load the model with the materials we assigned
             model = AssetLoader.ModelAssetGet("model_test");

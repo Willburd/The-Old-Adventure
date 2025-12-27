@@ -3,6 +3,7 @@ using Rendering;
 using System.Diagnostics;
 using System.Numerics;
 using Silk.NET.Maths;
+using Silk.NET.OpenGL;
 
 namespace EntComponents
 {
@@ -94,6 +95,14 @@ namespace EntComponents
                 shader.Use(); 
                 shader.SetUniform("uModel", model_matrix);
 
+                // Bind textures to texunits
+                int tex_unit_id = 0;
+                foreach(TextureData tex in materials[mesh_index].Textures)
+                {
+                    tex.Bind((TextureUnit)tex_unit_id);
+                    tex_unit_id++;
+                }
+                
                 // Apply shader uniforms
                 foreach(MaterialUniformData matuni in mat_data.Uniforms)
                 {

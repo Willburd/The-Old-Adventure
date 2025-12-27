@@ -10,14 +10,16 @@ namespace Rendering
 
     public class MaterialData : IDisposable
     {
-        public MaterialData(List<MaterialUniformData> mat_tex_data, ShaderData shader)
+        public MaterialData(List<TextureData> textures_data,  List<MaterialUniformData> mat_unitform_data, ShaderData shader)
         {
             render_shader = shader;
-            uniforms = mat_tex_data;
+            uniforms = mat_unitform_data;
+            textures = textures_data;
         }
 
         private readonly ShaderData render_shader;
         private List<MaterialUniformData> uniforms;
+        private List<TextureData> textures;
         
         public ShaderData Shader
         {
@@ -37,6 +39,14 @@ namespace Rendering
             get
             {
                 return uniforms;
+            }
+        }
+
+        public List<TextureData> Textures
+        {
+            get
+            {
+                return textures;
             }
         }
         
