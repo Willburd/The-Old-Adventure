@@ -94,6 +94,31 @@ namespace Engine
         // Asset retrieval
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
+        public static string WorkingDirectory
+        {
+            get
+            {
+                // TODO - get this to not be godawful and actually use the project folder
+                return AppDomain.CurrentDomain.BaseDirectory + "../../";
+            }
+        }
+
+        public static string AssetDirectoryAdventure
+        {
+            get
+            {
+                return WorkingDirectory + "Assets/" + Core.AdventureID;
+            }
+        }
+
+        public static string AssetDirectoryEngine
+        {
+            get
+            {
+                return WorkingDirectory + "Assets/Engine";
+            }
+        }
+
         /// <summary>
         /// Get an asset from asset_library. The asset must exist.
         /// </summary>

@@ -7,12 +7,12 @@ namespace TestAdventure
         public static void Main(string[] args) 
         { 
             // Start the engine
-            new TestGameEngine();
+            new TestGameEngine("TestAdventure");
         }
     }
 
     // Override of base game for testing
-    class TestGameEngine : Core
+    class TestGameEngine(string ID) : Core(ID)
     {
         public override void OnLoadAssets()
         {

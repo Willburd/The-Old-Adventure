@@ -14,9 +14,9 @@ namespace EntComponents
 
         protected override uint HandleAssetLoad()
         {
-            AssetLoader.ModelAssetLoad("model_test", Tools.AssetDirectory + "/Models/test.obj");
-            ShaderData test_shader = AssetLoader.ShaderAssetLoad("shader_test", Tools.AssetDirectory + "/Shaders/test");
-            TextureData test_tex = AssetLoader.TextureAssetLoad("texture_test", Tools.AssetDirectory + "/Textures/test.png");
+            AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/test.obj");
+            ShaderData test_shader = AssetLoader.ShaderAssetLoad("shader_test", AssetLoader.AssetDirectoryAdventure + "/Shaders/test");
+            TextureData test_tex = AssetLoader.TextureAssetLoad("texture_test", AssetLoader.AssetDirectoryAdventure + "/Textures/test.png");
 
             // Materials for each mesh in the model
             MaterialData shared_mat = new( [test_tex], [new MaterialUniformData("uTexture0", 0)], test_shader);

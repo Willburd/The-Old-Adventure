@@ -6,11 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>../Build/Bin</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="Engine">
-      <HintPath>..\Engine\bin\Debug\net10.0\Engine.dll</HintPath>
+      <HintPath>..\Build\Bin\net10.0\Engine.dll</HintPath>
     </Reference>
     <PackageReference Include="Silk.NET.Assimp" Version="2.22.0" />
     <PackageReference Include="Silk.NET.Input" Version="2.22.0" />

@@ -10,7 +10,17 @@ namespace Engine
     public partial class Core 
     {
         private static Core? singleton;
-        protected const string adventure_title = "The Old Adventure";
+        protected const string AdventureTitle = "The Old Adventure";
+        protected readonly string adventure_id;
+
+        public static string? AdventureID
+        {
+            get
+            {
+                if(singleton == null) return "Engine";
+                return singleton?.adventure_id;
+            }
+        }
 
         public static IWindow WindowContext {get; set;}
         
@@ -22,7 +32,7 @@ namespace Engine
             WindowOptions options = WindowOptions.Default with
             {
                 Size = new Vector2D<int>(800, 600),
-                Title = adventure_title
+                Title = AdventureTitle
             };
 
             // Create window
@@ -34,11 +44,13 @@ namespace Engine
         }
 #pragma warning restore CS8618
 
-        public Core()
+        public Core(string id = "Engine")
         {
-            Debug.Assert(singleton == null,"Multiple cores created - " + adventure_title);
+            adventure_id = id;
+
+            Debug.Assert(singleton == null,"Multiple cores created - " + adventure_id);
             singleton = this;
-            Console.WriteLine("CORE INIT - " + adventure_title);
+            Console.WriteLine("CORE INIT - " + AdventureTitle);
 
             // Start setup with gamespecific preinit.
             OnPreInit();
