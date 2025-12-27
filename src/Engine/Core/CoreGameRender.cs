@@ -54,7 +54,7 @@ namespace Engine
             OpenGLContext?.CullFace(GLEnum.Back);
 
             // GLTF format
-            OpenGLContext?.FrontFace(FrontFaceDirection.Ccw); 
+            OpenGLContext?.FrontFace(FrontFaceDirection.CW); 
         }
 
         /// <summary>

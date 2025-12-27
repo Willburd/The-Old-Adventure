@@ -25,7 +25,7 @@ namespace Rendering
         
         private unsafe void LoadModel(string path)
         {
-            var scene = _assimp.ImportFile(path, (uint)PostProcessSteps.Triangulate);
+            var scene = _assimp.ImportFile(path, (uint)PostProcessSteps.Triangulate | (uint)PostProcessSteps.SortByPrimitiveType | (uint)PostProcessSteps.FixInFacingNormals);
 
             if (scene == null || scene->MFlags == Assimp.SceneFlagsIncomplete || scene->MRootNode == null)
             {

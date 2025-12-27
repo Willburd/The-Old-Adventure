@@ -17,6 +17,19 @@ namespace EntComponents
         protected Rendering.ModelData? model;
         protected List<Rendering.MaterialData> materials = [];
 
+        public void ApplyMaterial(MaterialData apply_mat, int mesh_count = 1)
+        {
+            for(int i = 0; i < mesh_count; i++)
+            {
+                materials.Add(apply_mat);
+            }
+        }
+
+        public void ChangeMaterial(MaterialData apply_mat, int mesh_index)
+        {
+            materials[mesh_index] = apply_mat;
+        }
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
