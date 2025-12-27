@@ -13,7 +13,7 @@ namespace EntComponents
 
         protected override uint HandleAssetLoad()
         {
-            model = AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/fieldtest.obj");
+            model = AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/test.fbx"); // FBX 0.01 scale, Y up, X forward
             ShaderData test_shader = AssetLoader.ShaderAssetLoad("shader_test1", AssetLoader.AssetDirectoryAdventure + "/Shaders/test");
             TextureData test_tex1 = AssetLoader.TextureAssetLoad("texture_test", AssetLoader.AssetDirectoryAdventure + "/Textures/test1.png");
             TextureData test_tex2 = AssetLoader.TextureAssetLoad("texture_test2", AssetLoader.AssetDirectoryAdventure + "/Textures/test2.png");
@@ -23,10 +23,6 @@ namespace EntComponents
             MaterialData alt_mat = new( [test_tex2], [new MaterialUniformData("uTexture0", 0)], test_shader);
             ApplyMaterial(shared_mat, model.Meshes.Count);
             ChangeMaterial(alt_mat, 1);
-            ChangeMaterial(alt_mat, 20);
-            ChangeMaterial(alt_mat, 44);
-            ChangeMaterial(alt_mat, 23);
-            ChangeMaterial(alt_mat, 92);
             
             return 1;
         }
@@ -38,7 +34,7 @@ namespace EntComponents
             curloc?.Position += new Vector3(0f,-0.5f,0f);
             curloc?.Rotation = Quaternion.CreateFromAxisAngle(Tools.Up, 15f);
             curloc?.Rotation = Quaternion.CreateFromAxisAngle(Tools.Forward, 75f);
-            curloc?.Scale *= 0.02f;
+            curloc?.Scale *= 1f;
             curloc?.SnapTransform();
 
             return 1;

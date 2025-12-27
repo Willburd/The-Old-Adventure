@@ -10,7 +10,7 @@ namespace Rendering
 {
     public class ModelData : IDisposable
     {
-        public ModelData(string path, bool gamma = false)
+        public ModelData(string path)
         {
             var assimp = Assimp.GetApi();
             _assimp = assimp;
@@ -25,7 +25,7 @@ namespace Rendering
         
         private unsafe void LoadModel(string path)
         {
-            var scene = _assimp.ImportFile(path, (uint)PostProcessSteps.Triangulate | (uint)PostProcessSteps.SortByPrimitiveType | (uint)PostProcessSteps.FixInFacingNormals);
+            var scene = _assimp.ImportFile(path, (uint)PostProcessSteps.FixInFacingNormals | (uint)PostProcessSteps.CalculateTangentSpace | (uint)PostProcessSteps.FindInstances);
 
             if (scene == null || scene->MFlags == Assimp.SceneFlagsIncomplete || scene->MRootNode == null)
             {
