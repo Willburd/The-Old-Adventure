@@ -44,7 +44,7 @@ namespace EntComponents
         protected override uint HandleUpdate()
         {
             WorldLocation? curloc = (WorldLocation?)Host.GetComponent(typeof(WorldLocation));
-            curloc?.Rotation *= Quaternion.CreateFromAxisAngle(Tools.Up, 0.1f);
+            curloc?.Rotation *= Quaternion.CreateFromAxisAngle(Tools.Up, 0.04f);
             curloc?.SnapTransform();
 
             return 1;
