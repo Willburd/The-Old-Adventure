@@ -2,7 +2,6 @@
 using Silk.NET.Maths;
 using Silk.NET.Windowing;
 using System.Diagnostics;
-using System.Drawing;
 using Silk.NET.OpenGL;
 
 namespace Engine
@@ -88,15 +87,6 @@ namespace Engine
 
             // Finalize setup with gamespecific postinit.
             singleton?.OnInit();
-        }
-
-        /// <summary>
-        /// Configures GL settings
-        /// </summary>
-        public virtual void ConfigureGL()
-        {
-            OpenGLContext?.ClearColor(Color.CornflowerBlue);
-            OpenGLContext?.Enable(EnableCap.CullFace);
         }
 
         /// <summary>

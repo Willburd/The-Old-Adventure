@@ -110,7 +110,7 @@ namespace EntComponents
                 }
 
                 // Draw mesh
-                Core.OpenGLContext.DrawArrays( PrimitiveType.TriangleStrip, 0, (uint)mesh.Indices.Length);
+                Core.OpenGLContext.DrawArrays( PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
                 mesh_index++;
             }
 

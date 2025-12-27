@@ -22,9 +22,9 @@ namespace Rendering
             ebo.Bind();
         }
 
-        public unsafe void VertexAttributePointer(uint index, int count, VertexAttribPointerType type, uint vertexSize, int offSet)
+        public unsafe void VertexAttributePointer(uint index, int size, VertexAttribPointerType type, bool normalized, uint stride, uint offSet)
         {
-            _gl.VertexAttribPointer(index, count, type, false, vertexSize * (uint) sizeof(TVertexType), (void*) (offSet * sizeof(TVertexType)));
+            _gl.VertexAttribPointer(index, size, type, normalized, stride * (uint) sizeof(TVertexType), (void*) (offSet * sizeof(TVertexType)));
             _gl.EnableVertexAttribArray(index);
         }
 

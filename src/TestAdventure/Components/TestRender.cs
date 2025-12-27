@@ -14,7 +14,7 @@ namespace EntComponents
 
         protected override uint HandleAssetLoad()
         {
-            AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/cube.model");
+            AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/cube.obj");
             ShaderData test_shader = AssetLoader.ShaderAssetLoad("shader_test", AssetLoader.AssetDirectoryAdventure + "/Shaders/test");
             TextureData test_tex = AssetLoader.TextureAssetLoad("texture_test", AssetLoader.AssetDirectoryAdventure + "/Textures/test.png");
 

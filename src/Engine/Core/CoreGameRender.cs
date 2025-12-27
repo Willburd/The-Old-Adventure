@@ -1,4 +1,5 @@
 using Silk.NET.OpenGL;
+using System.Drawing;
 
 namespace Engine
 {
@@ -35,6 +36,26 @@ namespace Engine
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
+        /// Configures GL settings
+        /// </summary>
+        public virtual void ConfigureGL()
+        {
+            // Default draw color
+            OpenGLContext?.ClearColor(Color.CornflowerBlue);
+            
+            // Depth control
+            OpenGLContext?.Enable(EnableCap.DepthTest);
+            OpenGLContext?.DepthFunc(DepthFunction.Less);
+
+            // Backface culling
+            OpenGLContext?.Enable(EnableCap.CullFace);
+            OpenGLContext?.CullFace(GLEnum.Back);
+
+            // GLTF format
+            OpenGLContext?.FrontFace(FrontFaceDirection.CW); 
+        }
+
+        /// <summary>
         /// Handles rendering the game at the desired interval, called by the window itself.
         /// </summary>
         private static void HandleWindowRender(double deltaTime)
@@ -56,7 +77,7 @@ namespace Engine
         private void RenderTick(double tick_delta)
         {
             // Clear screen
-            OpenGLContext?.Clear(ClearBufferMask.ColorBufferBit);
+            OpenGLContext?.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Assemble a list in order of priority.
             SortedList<uint,Entity> render_queue = [];
