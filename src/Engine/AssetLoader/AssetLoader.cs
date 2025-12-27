@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Rendering;
-using Silk.NET.Assimp;
 
 namespace Engine
 {

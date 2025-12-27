@@ -7,7 +7,8 @@ namespace Engine
             test,
             // Spawning
             asset_load,             // () : Called during entity OnInit() before anything else. Used to load assets.
-            create,                 // () : Called at the end of entity OnInit()
+            create,                 // () : Called after asset load during OnInit()
+            cache_components,      // () : Called after create during OnInit(). Allows for components to cache each other for quicker use. Done as it's own step to ensure all components have finished being added.
             destroy,                // () : Called when an entity is destroyed.
 
             // Update

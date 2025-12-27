@@ -20,11 +20,6 @@ namespace Engine
         /// </summary>
         public static long ElapsedGameTicks {get; set;}
 
-        /// <summary>
-        /// Percent difference from the previous game tick, to the next gametick. Used to do "inbetween" frames during rendering. 
-        /// </summary>
-        public static double GameTickDelta {get{ return game_tick_accumulator / GameTickInterval; }}
-
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Gameloop processing
@@ -55,8 +50,8 @@ namespace Engine
             foreach(Entity ent in Entity.EntityList)
             {
                 if(!ent.IsInitilized) ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
-                uint has_update_registered = ent.SendSignal(Signals.pre_update, ent.Enabled);
-                if(ent.Enabled && has_update_registered > 0) 
+                ent.SendSignal(Signals.pre_update, ent.Enabled);
+                if(ent.Enabled) 
                 {
                     ent.SendSignal(Signals.prepare_transform);
                     active_entities.Add(ent);

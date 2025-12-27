@@ -6,22 +6,29 @@ namespace EntComponents
     /// <summary>
     /// Entity Component that holds the location in 3D space of an entity.
     /// </summary>
-    public class Transform(Entity host_entity) : EntComponent(host_entity)
+    public class WorldLocation(Entity host_entity) : EntComponent(host_entity)
     {
-        protected readonly Location location = new();     
-        protected readonly Location last_location = new();  
+        protected readonly Transform transform = new();     
+        protected readonly Transform last_transform = new();  
+
 
 
         public Vector3 Position
         {
-            get {return location.Position;}
-            set {location.Position = value;}
+            get {return transform.Position;}
+            set {transform.Position = value;}
         }
 
         public Quaternion Rotation
         {
-            get {return location.Rotation;}
-            set {location.Rotation = value;}
+            get {return transform.Rotation;}
+            set {transform.Rotation = value;}
+        }
+
+        public Vector3 Scale
+        {
+            get {return transform.Scale;}
+            set {transform.Scale = value;}
         }
 
 
@@ -30,8 +37,9 @@ namespace EntComponents
         /// </summary>
         public void SnapTransform()
         {
-            last_location.Position = location.Position;
-            last_location.Rotation = location.Rotation;
+            last_transform.Position = transform.Position;
+            last_transform.Rotation = transform.Rotation;
+            last_transform.Scale = transform.Scale;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,14 +48,32 @@ namespace EntComponents
          
         public Vector3 GetInterpolatedPosition(double tick_delta)
         {
-            return Vector3.Lerp( last_location.Position, location.Position, (float)tick_delta);
+            return Vector3.Lerp( last_transform.Position, transform.Position, (float)tick_delta);
         }
 
         public Quaternion GetInterpolatedRotation(double tick_delta)
         {
-            return Quaternion.Slerp( last_location.Rotation, location.Rotation, (float)tick_delta);
+            return Quaternion.Lerp( last_transform.Rotation, transform.Rotation, (float)tick_delta);
+        }
+        
+        public Vector3 GetInterpolatedScale(double tick_delta)
+        {
+            return Vector3.Lerp( last_transform.Scale, transform.Scale, (float)tick_delta);
         }
 
+        public Matrix4x4 GetViewMatrix()
+        {
+            return GetInterpolatedViewMatrix(1);
+        }
+        public Matrix4x4 GetLastViewMatrix()
+        {
+            return GetInterpolatedViewMatrix(0);
+        }
+
+        public Matrix4x4 GetInterpolatedViewMatrix(double tick_delta)
+        {
+            return Matrix4x4.Identity * Matrix4x4.CreateFromQuaternion(GetInterpolatedRotation(tick_delta)) * Matrix4x4.CreateScale(GetInterpolatedScale(tick_delta)) * Matrix4x4.CreateTranslation(GetInterpolatedPosition(tick_delta));
+        } 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling

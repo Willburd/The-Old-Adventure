@@ -1,6 +1,8 @@
 using Engine;
 using Rendering;
 using System.Diagnostics;
+using System.Numerics;
+using Silk.NET.Maths;
 
 namespace EntComponents
 {
@@ -19,7 +21,7 @@ namespace EntComponents
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public override List<Core.Signals> DefaultSignals()
         {
-            return [Core.Signals.asset_load, Core.Signals.create, Core.Signals.render_priority, Core.Signals.render, Core.Signals.hud_render];
+            return [Core.Signals.asset_load, Core.Signals.create, Core.Signals.cache_components, Core.Signals.render_priority, Core.Signals.render, Core.Signals.hud_render];
         }
 
         public override uint ReceiveSignal(Core.Signals signal, object[] args)
@@ -71,8 +73,38 @@ namespace EntComponents
         /// <summary>
         /// Render function run if the component is Visible.
         /// </summary>
-        public virtual uint HandleRender(double delta_time)
+        public virtual uint HandleRender(double tick_delta)
         {
+            Debug.Assert(model?.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
+            
+            // Get the transform if we have one, and apply it to the model's meshs.
+            WorldLocation? curloc = (WorldLocation?)Host.GetComponent(typeof(WorldLocation));
+            Matrix4x4 model_matrix = Matrix4x4.Identity;
+            if(curloc != null) model_matrix = curloc.GetInterpolatedViewMatrix(tick_delta);
+
+            // Render each mesh!
+            int mesh_index = 0;
+            foreach (var mesh in model.Meshes)
+            {
+                mesh.Bind();
+
+                // Each mesh can use a different material, and that also means shader!
+                MaterialData mat_data = materials[mesh_index];
+                ShaderData shader = mat_data.Shader;
+                shader.Use(); 
+                shader.SetUniform("uModel", model_matrix);
+
+                // Apply shader uniforms
+                foreach(MaterialUniformData matuni in mat_data.Uniforms)
+                {
+                    shader.SetUniform(matuni.set_uniform, matuni.shader_uni_value);
+                }
+
+                // Draw mesh
+                Core.OpenGLContext.DrawArrays( Silk.NET.OpenGL.PrimitiveType.Triangles, 0, (uint)mesh.Vertices.Length);
+                mesh_index++;
+            }
+
             return 1;
         }
 
@@ -89,21 +121,6 @@ namespace EntComponents
         /// </summary>
         public virtual uint HandleHudRender(double delta_time)
         {
-            Debug.Assert(model?.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
-            int mesh_index = 0;
-            foreach (var mesh in model.Meshes)
-            {
-                mesh.Bind();
-                MaterialData mat_data = materials[mesh_index];
-                ShaderData shader = mat_data.Shader;
-                shader.Use(); // Each mesh can use a different material, and that also means shader!
-                foreach(MaterialUniformData matuni in mat_data.Uniforms)
-                {
-                    shader.SetUniform(matuni.set_uniform, matuni.shader_uni_value);
-                }
-                Core.OpenGLContext.DrawArrays( Silk.NET.OpenGL.PrimitiveType.Triangles, 0, (uint)mesh.Vertices.Length);
-                mesh_index++;
-            }
             return 1;
         }
     }

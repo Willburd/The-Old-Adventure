@@ -25,6 +25,10 @@ namespace Engine
         /// </summary>
         public static long ElapsedGameFrames {get; set;}
         
+        /// <summary>
+        /// Percent difference from the previous game tick, to the next gametick. Used to do "inbetween" frames during rendering. 
+        /// </summary>
+        public static double GameTickDelta {get{ return game_tick_accumulator % GameTickInterval / GameTickInterval; }}
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Game Rendering

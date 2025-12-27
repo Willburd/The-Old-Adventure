@@ -84,6 +84,9 @@ namespace EntComponents
 
                 case Core.Signals.create:
                     return HandleCreate();
+                    
+                case Core.Signals.cache_components:
+                    return HandleCacheComponents();
 
                 case Core.Signals.pre_update:
                     return HandlePreUpdate();
@@ -105,7 +108,7 @@ namespace EntComponents
         /// <summary>
         /// Asset loading for components to prepare for drawing or other actions.
         /// </summary>
-        public virtual uint HandleAssetLoad()
+        protected virtual uint HandleAssetLoad()
         {
             return 1;
         }
@@ -113,7 +116,15 @@ namespace EntComponents
         /// <summary>
         /// Used to set data after resources are loaded by HandleAssetLoad()
         /// </summary>
-        public virtual uint HandleCreate()
+        protected virtual uint HandleCreate()
+        {
+            return 1;
+        }
+
+        /// <summary>
+        /// Used to cache components for faster lookup on complex components that interact with multiple other components at once. Done after create to ensure all components have finished being added.
+        /// </summary>
+        protected virtual uint HandleCacheComponents()
         {
             return 1;
         }
@@ -121,7 +132,7 @@ namespace EntComponents
         /// <summary>
         /// Used to respond to preupdate game ticks.
         /// </summary>
-        public virtual uint HandlePreUpdate()
+        protected virtual uint HandlePreUpdate()
         {
             return 1;
         }
@@ -129,7 +140,7 @@ namespace EntComponents
         /// <summary>
         /// Used to respond to standard game ticks.
         /// </summary>
-        public virtual uint HandleUpdate()
+        protected virtual uint HandleUpdate()
         {
             return 1;
         }
@@ -137,7 +148,7 @@ namespace EntComponents
         /// <summary>
         /// Used to respond to post update game ticks.
         /// </summary>
-        public virtual uint HandlePostUpdate()
+        protected virtual uint HandlePostUpdate()
         {
             return 1;
         }
@@ -145,7 +156,7 @@ namespace EntComponents
         /// <summary>
         /// Called at the start of component destroy. Used to cleanup.
         /// </summary>
-        public virtual uint OnDestroy()
+        protected virtual uint OnDestroy()
         {
             return 1;
         }

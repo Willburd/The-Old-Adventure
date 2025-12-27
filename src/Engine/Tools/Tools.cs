@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Engine
 {
-    public static class Tools
+    public static partial class Tools
     {
         public static string WorkingDirectory
         {
@@ -19,6 +19,11 @@ namespace Engine
             {
                 return WorkingDirectory + "Assets";
             }
+        }
+
+        public static float DegreesToRadians(float degrees)
+        {
+            return MathF.PI / 180f * degrees;
         }
     }
 }

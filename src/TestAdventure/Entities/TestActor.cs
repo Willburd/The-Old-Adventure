@@ -4,8 +4,8 @@ namespace Engine
     {
         public TestActor() : base()
         {
-            new EntComponents.TestRender(this);
-            new EntComponents.Transform(this);
+            new EntComponents.WorldLocation(this);
+            new EntComponents.TestActorBehavior(this);
         }
     }
 }
