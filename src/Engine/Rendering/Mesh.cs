@@ -56,12 +56,7 @@ namespace Rendering
                 current_offset += vbo_dat.size;
                 current_index++;
             }
-            
-            //VAO.VertexAttributePointer(0, 3, VertexAttribPointerType.Float, false, 5, 0);
-            //VAO.VertexAttributePointer(1, 2, VertexAttribPointerType.Float, true, 5, 3);
         }
-
-
 
         public void Bind()
         {

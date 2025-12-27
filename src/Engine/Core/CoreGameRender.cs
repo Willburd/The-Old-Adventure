@@ -38,7 +38,7 @@ namespace Engine
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
-        /// Configures GL settings
+        /// Configures GL settings, can be overriden to replace or extend configuration for your own adventure.
         /// </summary>
         public virtual void ConfigureGL()
         {

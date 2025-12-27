@@ -1,8 +1,6 @@
-﻿using Silk.NET.Input;
-using Silk.NET.Maths;
+﻿using Silk.NET.Maths;
 using Silk.NET.Windowing;
 using System.Diagnostics;
-using Silk.NET.OpenGL;
 
 namespace Engine
 {
