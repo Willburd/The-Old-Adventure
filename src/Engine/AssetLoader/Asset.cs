@@ -103,6 +103,7 @@ namespace Engine
         {
             if(!valid)
             {
+                Console.WriteLine("Asset " + asset_key + " was invalid!");
                 asset_type = AssetType.invalid;
                 return false;
             }

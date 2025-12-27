@@ -5,10 +5,10 @@ namespace Engine
     /// </summary>
     public class AssetShader : Asset
     {
-        public AssetShader(string asset_key, string file_path_without_type) : base(asset_key, file_path_without_type)
+        public AssetShader(string asset_key, string vertex_shader, string frag_shader) : base(asset_key, frag_shader)
         {
             // Compile source strings
-            Rendering.ShaderData shader_data = new(file_path_without_type + ".vert", file_path_without_type + ".frag");
+            Rendering.ShaderData shader_data = new(vertex_shader, frag_shader);
             // Get the shader program as our asset
             data = shader_data;
             asset_type = AssetType.shader;

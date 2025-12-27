@@ -19,6 +19,9 @@ namespace Engine
             asset_library.Remove(asset_key);
         }
 
+        /// <summary>
+        /// Unloads all non-persistent assets. Called by shutdown with a flag to delete even the persistent assets.
+        /// </summary>
         public static void UnloadAllAssets(bool even_persistent)
         {
             List<string> removed_keys = [];
@@ -34,6 +37,30 @@ namespace Engine
             {
                 asset_library.Remove(key);
             }
+        }
+
+        /// <summary>
+        /// Used for flagging the base assets as persistently loaded. Shouldn't really be used anywhere else.
+        /// </summary>
+        public static void PersistAllAssets()
+        {
+            foreach((string key, Asset asset) in asset_library)
+            {
+                asset.SetPersistent();
+            }
+        }
+
+        public enum AssetSource
+        {
+            engine,
+            adventure
+        }
+
+        public static string AssetKey(Asset.AssetType type, string asset_name, AssetSource asset_source = AssetSource.engine)
+        {
+            string src_str = "Engine";
+            if(Core.AdventureID != null && asset_source == AssetSource.adventure) src_str = Core.AdventureID;
+            return src_str + "::" + type + "::" + asset_name;
         }
 
         
@@ -70,9 +97,9 @@ namespace Engine
         /// <summary>
         /// Loads a shader asset from disk into the asset library
         /// </summary>
-        public static Rendering.ShaderData ShaderAssetLoad(string asset_key, string file_path_without_type)
+        public static Rendering.ShaderData ShaderAssetLoad(string asset_key, string vertext_path, string frag_path)
         {
-            return (ShaderData)InvokeAsset(asset_key, new AssetShader(asset_key, file_path_without_type));
+            return (ShaderData)InvokeAsset(asset_key, new AssetShader(asset_key, vertext_path, frag_path));
         }
 
         /// <summary>
@@ -84,11 +111,19 @@ namespace Engine
         }
         
         /// <summary>
-        /// Loads a 3d Model asset from disk into the asset library
+        /// Loads a texture asset from disk into the asset library
         /// </summary>
         public static TextureData TextureAssetLoad(string asset_key, string file_path)
         {
             return (TextureData)InvokeAsset(asset_key, new AssetTexture(asset_key, file_path));
+        }
+
+        /// <summary>
+        /// Creates a material asset and adds it to the asset library for reuse
+        /// </summary>
+        public static MaterialData MaterialAssetLoad(string asset_key, MaterialData new_material)
+        {
+            return (MaterialData)InvokeAsset(asset_key, new AssetMaterial(asset_key, new_material));
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,9 +156,9 @@ namespace Engine
         }
 
         /// <summary>
-        /// Get an asset from asset_library. The asset must exist.
+        /// Get an asset from asset_library. The asset must exist, weirdly named to avoid accidental use. Use the proper get asset functions.
         /// </summary>
-        public static Asset GetAsset(string asset_key)
+        public static Asset LocateAsset(string asset_key)
         {
             asset_library.TryGetValue(asset_key, out Asset? found_asset);
             Debug.Assert(found_asset != null);
@@ -135,7 +170,7 @@ namespace Engine
         /// </summary>
         public static Rendering.ShaderData ShaderAssetGet(string asset_key)
         {
-            Asset ast = GetAsset(asset_key);
+            Asset ast = LocateAsset(asset_key);
             Debug.Assert(ast.CheckType(Asset.AssetType.shader));
             return (Rendering.ShaderData)ast.Data;
         }
@@ -145,7 +180,7 @@ namespace Engine
         /// </summary>
         public static Rendering.ModelData ModelAssetGet(string asset_key)
         {
-            Asset ast = GetAsset(asset_key);
+            Asset ast = LocateAsset(asset_key);
             Debug.Assert(ast.CheckType(Asset.AssetType.model));
             return (Rendering.ModelData)ast.Data;
         }
@@ -155,9 +190,19 @@ namespace Engine
         /// </summary>
         public static Rendering.TextureData TextureAssetGet(string asset_key)
         {
-            Asset ast = GetAsset(asset_key);
+            Asset ast = LocateAsset(asset_key);
             Debug.Assert(ast.CheckType(Asset.AssetType.textures));
             return (Rendering.TextureData)ast.Data;
+        }
+
+        /// <summary>
+        /// Gets a material from the asset library
+        /// </summary>
+        public static Rendering.MaterialData MaterialAssetGet(string asset_key)
+        {
+            Asset ast = LocateAsset(asset_key);
+            Debug.Assert(ast.CheckType(Asset.AssetType.material));
+            return (Rendering.MaterialData)ast.Data;
         }
     }
 }

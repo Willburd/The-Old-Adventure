@@ -13,16 +13,20 @@ namespace EntComponents
 
         protected override uint HandleAssetLoad()
         {
-            model = AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/test.fbx"); // FBX 0.1 scale, Y up, X forward
-            ShaderData test_shader = AssetLoader.ShaderAssetLoad("shader_test1", AssetLoader.AssetDirectoryAdventure + "/Shaders/test");
+            model = AssetLoader.ModelAssetLoad( AssetLoader.AssetKey(Asset.AssetType.model, "test", AssetLoader.AssetSource.adventure) , AssetLoader.AssetDirectoryAdventure + "/Models/test.fbx"); // FBX 0.1 scale, Y up, X forward
+            
+            /*
+            ShaderData test_shader = AssetLoader.ShaderAssetGet("shader_base_standard");
+            
             TextureData test_tex1 = AssetLoader.TextureAssetLoad("texture_test", AssetLoader.AssetDirectoryAdventure + "/Textures/test1.png");
             TextureData test_tex2 = AssetLoader.TextureAssetLoad("texture_test2", AssetLoader.AssetDirectoryAdventure + "/Textures/test2.png");
 
             // Materials for each mesh in the model
             MaterialData shared_mat = new( [test_tex1], [new MaterialUniformData("uTexture0", 0)], test_shader);
             MaterialData alt_mat = new( [test_tex2], [new MaterialUniformData("uTexture0", 0)], test_shader);
-            ApplyMaterial(shared_mat, model.Meshes.Count);
-            ChangeMaterial(alt_mat, 1);
+            */
+
+            ApplyMaterial(AssetLoader.MaterialAssetGet( AssetLoader.AssetKey(Asset.AssetType.material, "debug_normals") ), model.Meshes.Count);
             
             return 1;
         }

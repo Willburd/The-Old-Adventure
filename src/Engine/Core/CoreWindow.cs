@@ -26,6 +26,7 @@ namespace Engine
             singleton?.ConfigureGL();
 
             // Load adventure specific assets
+            singleton?.LoadBaseAssets();
             singleton?.OnLoadAssets();
 
             // Request the first frame right away!
@@ -46,7 +47,7 @@ namespace Engine
                 WindowContext.Close();
             }
         }
-        
+
         /// <summary>
         /// Handles the game shutting down.
         /// </summary>

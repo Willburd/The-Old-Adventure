@@ -31,7 +31,7 @@ namespace Rendering
 
         public bool IsValid()
         {
-            return uniforms.Count > 0 && Shader.IsValid();
+            return Shader.IsValid();
         }
 
         public List<MaterialUniformData> Uniforms
