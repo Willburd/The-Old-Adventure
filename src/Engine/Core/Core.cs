@@ -78,7 +78,7 @@ namespace Engine
 
             // Get the openGL context from the window
             OpenGLContext = WindowContext.CreateOpenGL();
-            OpenGLContext?.ClearColor(Color.CornflowerBlue);
+            singleton?.ConfigureGL();
 
             // Load adventure specific assets
             singleton?.OnLoadAssets();
@@ -88,6 +88,15 @@ namespace Engine
 
             // Finalize setup with gamespecific postinit.
             singleton?.OnInit();
+        }
+
+        /// <summary>
+        /// Configures GL settings
+        /// </summary>
+        public virtual void ConfigureGL()
+        {
+            OpenGLContext?.ClearColor(Color.CornflowerBlue);
+            OpenGLContext?.Enable(EnableCap.CullFace);
         }
 
         /// <summary>

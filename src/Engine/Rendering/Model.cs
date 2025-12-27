@@ -21,7 +21,6 @@ namespace Rendering
         private readonly GL _gl;
         private Assimp _assimp;
         private List<TextureData> _texturesLoaded = new List<TextureData>();
-        public string Directory { get; protected set; } = string.Empty;
         public List<MeshData> Meshes { get; protected set; } = new List<MeshData>();
         
         private unsafe void LoadModel(string path)
@@ -33,8 +32,6 @@ namespace Rendering
                 var error = _assimp.GetErrorStringS();
                 throw new Exception(error);
             }
-
-            Directory = path;
 
             ProcessNode(scene->MRootNode, scene);
         }

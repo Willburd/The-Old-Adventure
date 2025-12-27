@@ -93,7 +93,7 @@ namespace EntComponents
                 MaterialData mat_data = materials[mesh_index];
                 ShaderData shader = mat_data.Shader;
                 shader.Use(); 
-                shader.SetUniform("uModel", model_matrix);
+                shader.SetUniform("uTransform", model_matrix);
 
                 // Bind textures to texunits
                 int tex_unit_id = 0;
@@ -110,7 +110,7 @@ namespace EntComponents
                 }
 
                 // Draw mesh
-                Core.OpenGLContext.DrawArrays( Silk.NET.OpenGL.PrimitiveType.Triangles, 0, (uint)mesh.Vertices.Length);
+                Core.OpenGLContext.DrawArrays( PrimitiveType.TriangleStrip, 0, (uint)mesh.Indices.Length);
                 mesh_index++;
             }
 

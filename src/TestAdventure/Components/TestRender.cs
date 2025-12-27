@@ -14,16 +14,13 @@ namespace EntComponents
 
         protected override uint HandleAssetLoad()
         {
-            AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/test.obj");
+            AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/cube.model");
             ShaderData test_shader = AssetLoader.ShaderAssetLoad("shader_test", AssetLoader.AssetDirectoryAdventure + "/Shaders/test");
             TextureData test_tex = AssetLoader.TextureAssetLoad("texture_test", AssetLoader.AssetDirectoryAdventure + "/Textures/test.png");
 
             // Materials for each mesh in the model
-            MaterialData shared_mat = new( [test_tex], [new MaterialUniformData("uTexture0", 0)], test_shader);
-            materials.Add(shared_mat);
-            materials.Add(shared_mat);
-            materials.Add(shared_mat);
-
+            materials.Add( new( [test_tex], [new MaterialUniformData("uTexture0", 0)], test_shader));
+            
             // Load the model with the materials we assigned
             model = AssetLoader.ModelAssetGet("model_test");
 
@@ -35,7 +32,8 @@ namespace EntComponents
             WorldLocation? curloc = (WorldLocation?)Host.GetComponent(typeof(WorldLocation));
             
             curloc?.Rotation = Quaternion.CreateFromAxisAngle(Tools.Up, 15f);
-            curloc?.Scale *= 6;
+            curloc?.Rotation = Quaternion.CreateFromAxisAngle(Tools.Forward, 75f);
+            curloc?.Scale *= 0.6f;
             curloc?.SnapTransform();
 
             return 1;
