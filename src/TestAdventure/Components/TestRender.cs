@@ -1,7 +1,6 @@
 using System.Numerics;
 using Engine;
 using Rendering;
-using Silk.NET.Assimp;
 
 namespace EntComponents
 {
@@ -14,12 +13,16 @@ namespace EntComponents
 
         protected override uint HandleAssetLoad()
         {
-            AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/cube.obj");
-            ShaderData test_shader = AssetLoader.ShaderAssetLoad("shader_test", AssetLoader.AssetDirectoryAdventure + "/Shaders/test");
-            TextureData test_tex = AssetLoader.TextureAssetLoad("texture_test", AssetLoader.AssetDirectoryAdventure + "/Textures/test.png");
+            AssetLoader.ModelAssetLoad("model_test", AssetLoader.AssetDirectoryAdventure + "/Models/sign.obj");
+            ShaderData test_shader = AssetLoader.ShaderAssetLoad("shader_test1", AssetLoader.AssetDirectoryAdventure + "/Shaders/test");
+            TextureData test_tex1 = AssetLoader.TextureAssetLoad("texture_test", AssetLoader.AssetDirectoryAdventure + "/Textures/test1.png");
+            TextureData test_tex2 = AssetLoader.TextureAssetLoad("texture_test2", AssetLoader.AssetDirectoryAdventure + "/Textures/test2.png");
 
             // Materials for each mesh in the model
-            materials.Add( new( [test_tex], [new MaterialUniformData("uTexture0", 0)], test_shader));
+            MaterialData shared_mat = new( [test_tex1], [new MaterialUniformData("uTexture0", 0)], test_shader);
+            materials.Add(new( [test_tex2], [new MaterialUniformData("uTexture0", 0)], test_shader));
+            materials.Add(shared_mat);
+            materials.Add(shared_mat);
             
             // Load the model with the materials we assigned
             model = AssetLoader.ModelAssetGet("model_test");
@@ -31,9 +34,10 @@ namespace EntComponents
         {
             WorldLocation? curloc = (WorldLocation?)Host.GetComponent(typeof(WorldLocation));
             
+            curloc?.Position += new Vector3(-0.2f,-0.5f,0f);
             curloc?.Rotation = Quaternion.CreateFromAxisAngle(Tools.Up, 15f);
             curloc?.Rotation = Quaternion.CreateFromAxisAngle(Tools.Forward, 75f);
-            curloc?.Scale *= 0.6f;
+            curloc?.Scale *= 8f;
             curloc?.SnapTransform();
 
             return 1;

@@ -37,7 +37,8 @@ namespace Rendering
                     {
                         fixed (void* data = accessor.GetRowSpan(y))
                         {
-                            _gl.TexSubImage2D(TextureTarget.Texture2D, 0, 0, y, (uint) accessor.Width, 1, PixelFormat.Rgba, PixelType.UnsignedByte, data);
+                            // Flip texture on import. Because there is literally no stanrdards in 3D software, GL uses bottom left, d3d uses top left.
+                            _gl.TexSubImage2D(TextureTarget.Texture2D, 0, 0, (accessor.Height-1)-y, (uint)accessor.Width, 1, PixelFormat.Rgba, PixelType.UnsignedByte, data);
                         }
                     }
                 });
