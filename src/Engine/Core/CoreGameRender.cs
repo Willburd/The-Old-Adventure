@@ -5,6 +5,8 @@ namespace Engine
 {
     public partial class Core
     {
+        public static GL OpenGLContext {get; set;}
+
         /// <summary>
         /// Number of frames per second for rendering.
         /// </summary>
