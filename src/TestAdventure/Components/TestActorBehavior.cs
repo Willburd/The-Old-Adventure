@@ -1,13 +1,28 @@
 using System.Numerics;
 using Engine;
+using Rendering;
 
 namespace EntComponents
 {
     public class TestActorBehavior(Entity host_entity) : Renders(host_entity)
     {
-        public override List<Core.Signals> DefaultSignals()
+        protected override uint HandleAssetLoad()
         {
-            return [Core.Signals.create, Core.Signals.cache_components, Core.Signals.update, Core.Signals.render_priority, Core.Signals.render];
+            // Shaders
+            ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
+            
+            // Textures
+            TextureData sign_wood = AssetLoader.TextureAssetLoad( "sign_wood", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_wood.png");
+            TextureData sign_face = AssetLoader.TextureAssetLoad( "sign_face", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_face.png");
+            
+            // Materials
+            AssetLoader.MaterialAssetLoad( "sign_wood", new( [sign_wood], [new MaterialUniformData("uTexture0", 0)], standard_shader));
+            AssetLoader.MaterialAssetLoad( "sign_face", new( [sign_face], [new MaterialUniformData("uTexture0", 0)], standard_shader));
+            
+            // Model
+            AssetLoader.ModelAssetLoad( "sign", AssetLoader.AssetDirectoryAdventure + "/Models/sign.fbx");
+
+            return 1;
         }
 
         float spin_speed = 0;
@@ -30,8 +45,6 @@ namespace EntComponents
 
         protected override uint HandleUpdate()
         {
-            float speed = 0.01f;
-            //Host.Position += new Vector3( Tools.RandRange(-speed,speed), Tools.RandRange(-speed,speed), Tools.RandRange(-speed,speed));
             Host.Rotation *= Quaternion.CreateFromAxisAngle(Tools.Up, spin_speed);
             return 1;
         }

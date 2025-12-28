@@ -21,7 +21,6 @@ namespace Engine
             EntityList.Clear();
         }
 
-
         /// <summary>
         /// If an entity has completed initilization. Initilization happens before the pre_update signal is called during the game loop. As doing this in the constructor is not possible due to execution order. (The signal system is not yet init on the entity, but the child is calling assetload/create signals.)
         /// </summary>
@@ -31,6 +30,7 @@ namespace Engine
         public void OnInit()
         {
             initilized = true;
+            SendSignal(Core.Signals.load_assets);
             SendSignal(Core.Signals.create);
             SendSignal(Core.Signals.cache_components);
         }

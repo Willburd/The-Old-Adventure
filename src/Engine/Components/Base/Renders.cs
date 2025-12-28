@@ -35,7 +35,7 @@ namespace EntComponents
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public override List<Core.Signals> DefaultSignals()
         {
-            return [Core.Signals.create, Core.Signals.cache_components, Core.Signals.render_priority, Core.Signals.render, Core.Signals.hud_render];
+            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.cache_components, Core.Signals.render_priority, Core.Signals.render, Core.Signals.hud_render];
         }
 
         public override uint ReceiveSignal(Core.Signals signal, object[] args)

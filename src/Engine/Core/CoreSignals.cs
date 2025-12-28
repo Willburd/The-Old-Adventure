@@ -6,8 +6,9 @@ namespace Engine
         {
             test,
             // Spawning
+            load_assets,            // () : Called just before the create signal, ensuring all assets are loaded
             create,                 // () : Called after asset load during OnInit()
-            cache_components,      // () : Called after create during OnInit(). Allows for components to cache each other for quicker use. Done as it's own step to ensure all components have finished being added.
+            cache_components,       // () : Called after create during OnInit(). Allows for components to cache each other for quicker use. Done as it's own step to ensure all components have finished being added.
             destroy,                // () : Called when an entity is destroyed.
 
             // Update

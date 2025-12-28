@@ -27,7 +27,7 @@ namespace EntComponents
             all_components[GetType()].Remove(this);
             Host.RemoveComponent(this);
         }
-
+        
         /// <summary>
         /// Returns a list with all components of the type specified. If an invalid component type, or no components are instantiated of that type, it will return an empty list.
         /// </summary>
@@ -79,6 +79,9 @@ namespace EntComponents
         {
             switch(signal)            
             {
+                case Core.Signals.load_assets:
+                    return HandleAssetLoad();
+
                 case Core.Signals.create:
                     return HandleCreate();
                     
@@ -101,6 +104,17 @@ namespace EntComponents
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Virtual functions
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Loads all related assets. Called before Init()
+        /// </summary>
+        protected virtual uint HandleAssetLoad()
+        {
+            // You would call AssetLoader.MaterialAssetLoad() and such here for the asset!
+            // Shaders should be loaded by the game itself, and assets used in nearly every scene should be treated the same way!
+
+            return 1;
+        }
 
         /// <summary>
         /// Used to set data after resources are loaded by HandleAssetLoad()
