@@ -30,7 +30,6 @@ namespace Engine
         public void OnInit()
         {
             initilized = true;
-            SendSignal(Core.Signals.asset_load);
             SendSignal(Core.Signals.create);
             SendSignal(Core.Signals.cache_components);
         }

@@ -79,9 +79,6 @@ namespace EntComponents
         {
             switch(signal)            
             {
-                case Core.Signals.asset_load:
-                    return HandleAssetLoad();
-
                 case Core.Signals.create:
                     return HandleCreate();
                     
@@ -104,14 +101,6 @@ namespace EntComponents
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Virtual functions
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        /// <summary>
-        /// Asset loading for components to prepare for drawing or other actions.
-        /// </summary>
-        protected virtual uint HandleAssetLoad()
-        {
-            return 1;
-        }
 
         /// <summary>
         /// Used to set data after resources are loaded by HandleAssetLoad()
