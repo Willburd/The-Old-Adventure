@@ -76,7 +76,7 @@ namespace Engine
             List<EntComponent> all_colliders = EntComponent.GetAllOfType(typeof(Collider));
             foreach(Collider collider in all_colliders.Cast<Collider>())
             {
-                if(!collider.Host.Enabled || !collider.Active) continue;
+                if(!collider.Host.IsInitilized || !collider.Host.Enabled || !collider.Active) continue;
                 collider.CheckCollisions(all_colliders);
             }
 

@@ -125,7 +125,7 @@ namespace Engine
         /// </summary>
         public static MaterialData MaterialAssetLoad(string asset_key, MaterialData new_material, AssetSource source = AssetSource.adventure)
         {
-            return (MaterialData)InvokeAsset( AssetLoader.AssetKey(Asset.AssetType.shader, asset_key, source), new AssetMaterial(asset_key, new_material));
+            return (MaterialData)InvokeAsset( AssetLoader.AssetKey(Asset.AssetType.material, asset_key, source), new AssetMaterial(asset_key, new_material));
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
