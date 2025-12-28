@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Numerics;
 using Rendering;
 
 namespace Engine
@@ -59,11 +58,11 @@ namespace Engine
         /// <summary>
         /// Creates asset keys based on the type of asset and if it is an engine or adventure resource.
         /// </summary>
-        public static string AssetKey(Asset.AssetType type, string asset_name, AssetSource asset_source = AssetSource.adventure)
+        public static string AssetKey(Asset.AssetType type, string asset_key, AssetSource asset_source = AssetSource.adventure)
         {
             string src_str = "Engine"; // We default to the engine if no arguments are provided, as this will usually be called by the adventure for non-engine assets anyway.
             if(Core.AdventureID != null && asset_source == AssetSource.adventure) src_str = Core.AdventureID;
-            return src_str + "::" + type + "::" + asset_name;
+            return src_str + "::" + type + "::" + asset_key;
         }
 
         
@@ -100,33 +99,33 @@ namespace Engine
         /// <summary>
         /// Loads a shader asset from disk into the asset library
         /// </summary>
-        public static Rendering.ShaderData ShaderAssetLoad(string asset_key, string vertext_path, string frag_path)
+        public static Rendering.ShaderData ShaderAssetLoad(string asset_key, string vertext_path, string frag_path, AssetSource source = AssetSource.adventure)
         {
-            return (ShaderData)InvokeAsset(asset_key, new AssetShader(asset_key, vertext_path, frag_path));
+            return (ShaderData)InvokeAsset( AssetLoader.AssetKey(Asset.AssetType.shader, asset_key, source), new AssetShader(asset_key, vertext_path, frag_path));
         }
 
         /// <summary>
         /// Loads a 3d Model asset from disk into the asset library
         /// </summary>
-        public static ModelData ModelAssetLoad(string asset_key, string file_path)
+        public static ModelData ModelAssetLoad(string asset_key, string file_path, AssetSource source = AssetSource.adventure)
         {
-            return (ModelData)InvokeAsset(asset_key, new AssetModel(asset_key, file_path));
+            return (ModelData)InvokeAsset( AssetLoader.AssetKey(Asset.AssetType.model, asset_key, source), new AssetModel(asset_key, file_path));
         }
         
         /// <summary>
         /// Loads a texture asset from disk into the asset library
         /// </summary>
-        public static TextureData TextureAssetLoad(string asset_key, string file_path)
+        public static TextureData TextureAssetLoad(string asset_key, string file_path, AssetSource source = AssetSource.adventure)
         {
-            return (TextureData)InvokeAsset(asset_key, new AssetTexture(asset_key, file_path));
+            return (TextureData)InvokeAsset( AssetLoader.AssetKey(Asset.AssetType.textures, asset_key, source), new AssetTexture(asset_key, file_path));
         }
 
         /// <summary>
         /// Creates a material asset and adds it to the asset library for reuse
         /// </summary>
-        public static MaterialData MaterialAssetLoad(string asset_key, MaterialData new_material)
+        public static MaterialData MaterialAssetLoad(string asset_key, MaterialData new_material, AssetSource source = AssetSource.adventure)
         {
-            return (MaterialData)InvokeAsset(asset_key, new AssetMaterial(asset_key, new_material));
+            return (MaterialData)InvokeAsset( AssetLoader.AssetKey(Asset.AssetType.shader, asset_key, source), new AssetMaterial(asset_key, new_material));
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,9 +171,9 @@ namespace Engine
         /// Gets a shader from the asset library
         /// </summary>
         /// 
-        public static Rendering.ShaderData ShaderAssetGet(string asset_name, AssetSource source = AssetSource.adventure)
+        public static Rendering.ShaderData ShaderAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
-            Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.shader, asset_name, source));
+            Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.shader, asset_key, source));
             Debug.Assert(ast.CheckType(Asset.AssetType.shader));
             return (Rendering.ShaderData)ast.Data;
         }
@@ -182,9 +181,9 @@ namespace Engine
         /// <summary>
         /// Gets a Model from the asset library
         /// </summary>
-        public static Rendering.ModelData ModelAssetGet(string asset_name, AssetSource source = AssetSource.adventure)
+        public static Rendering.ModelData ModelAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
-            Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.model, asset_name, source));
+            Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.model, asset_key, source));
             Debug.Assert(ast.CheckType(Asset.AssetType.model));
             return (Rendering.ModelData)ast.Data;
         }
@@ -192,9 +191,9 @@ namespace Engine
         /// <summary>
         /// Gets a texture from the asset library
         /// </summary>
-        public static Rendering.TextureData TextureAssetGet(string asset_name, AssetSource source = AssetSource.adventure)
+        public static Rendering.TextureData TextureAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
-            Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.textures, asset_name, source));
+            Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.textures, asset_key, source));
             Debug.Assert(ast.CheckType(Asset.AssetType.textures));
             return (Rendering.TextureData)ast.Data;
         }
@@ -202,9 +201,9 @@ namespace Engine
         /// <summary>
         /// Gets a material from the asset library
         /// </summary>
-        public static Rendering.MaterialData MaterialAssetGet(string asset_name, AssetSource source = AssetSource.adventure)
+        public static Rendering.MaterialData MaterialAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
-            Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.material, asset_name, source));
+            Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.material, asset_key, source));
             Debug.Assert(ast.CheckType(Asset.AssetType.material));
             return (Rendering.MaterialData)ast.Data;
         }

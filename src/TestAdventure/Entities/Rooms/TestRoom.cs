@@ -11,21 +11,15 @@ namespace TestAdventure
             ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
 
             // Textures
-            TextureData sign_wood = AssetLoader.TextureAssetLoad( AssetLoader.AssetKey(Asset.AssetType.textures, "sign_wood"), 
-                                                                    AssetLoader.AssetDirectoryAdventure + "/Textures/sign_wood.png");
-            TextureData sign_face = AssetLoader.TextureAssetLoad( AssetLoader.AssetKey(Asset.AssetType.textures, "sign_face"), 
-                                                                    AssetLoader.AssetDirectoryAdventure + "/Textures/sign_face.png");
+            TextureData sign_wood = AssetLoader.TextureAssetLoad( "sign_wood", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_wood.png");
+            TextureData sign_face = AssetLoader.TextureAssetLoad( "sign_face", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_face.png");
 
             // Materials
-            AssetLoader.MaterialAssetLoad( AssetLoader.AssetKey(Asset.AssetType.material, "sign_wood"),
-                                            new( [sign_wood], [new MaterialUniformData("uTexture0", 0)], standard_shader));
-            AssetLoader.MaterialAssetLoad( AssetLoader.AssetKey(Asset.AssetType.material, "sign_face"),
-                                            new( [sign_face], [new MaterialUniformData("uTexture0", 0)], standard_shader));
+            AssetLoader.MaterialAssetLoad( "sign_wood", new( [sign_wood], [new MaterialUniformData("uTexture0", 0)], standard_shader));
+            AssetLoader.MaterialAssetLoad( "sign_face", new( [sign_face], [new MaterialUniformData("uTexture0", 0)], standard_shader));
 
             // Models
-            AssetLoader.ModelAssetLoad( AssetLoader.AssetKey(Asset.AssetType.model,"sign"), 
-                                            AssetLoader.AssetDirectoryAdventure + "/Models/sign.fbx");
-
+            AssetLoader.ModelAssetLoad( "sign", AssetLoader.AssetDirectoryAdventure + "/Models/sign.fbx");
         }
 
         public override void LoadActors()
