@@ -43,7 +43,6 @@ namespace Engine
         public Entity(Transform initial_location)
         {
             entity_list.Add(this);
-            WorldLocation? curloc = (WorldLocation?)GetComponent(typeof(WorldLocation));
             SetTransform(initial_location);
         }
 

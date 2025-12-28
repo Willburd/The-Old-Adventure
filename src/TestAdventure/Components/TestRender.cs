@@ -20,8 +20,6 @@ namespace EntComponents
             materials.Add(AssetLoader.MaterialAssetGet( "sign_face")); // face
             
             // Set location
-            WorldLocation? curloc = (WorldLocation?)Host.GetComponent(typeof(WorldLocation));
-            
             Host.Position += new Vector3(0f,-0.5f,0f);
             Host.Rotation = Quaternion.CreateFromAxisAngle(Tools.Up, 15f);
             Host.Rotation = Quaternion.CreateFromAxisAngle(Tools.Forward, 75f);
@@ -35,7 +33,6 @@ namespace EntComponents
 
         protected override uint HandleUpdate()
         {
-            WorldLocation? curloc = (WorldLocation?)Host.GetComponent(typeof(WorldLocation));
             float speed = 0.01f;
             //curloc?.Position += new Vector3( Tools.RandRange(-speed,speed), Tools.RandRange(-speed,speed), Tools.RandRange(-speed,speed));
             Host.Rotation *= Quaternion.CreateFromAxisAngle(Tools.Up, spin_speed);
