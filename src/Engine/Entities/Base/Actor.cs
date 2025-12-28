@@ -4,7 +4,7 @@ namespace Engine
     {
         public Room? OwnerRoom {get; private set;} = null;
 
-        public Actor(Room? room_link) : base()
+        public Actor(Transform initial_location, Room? room_link) : base(initial_location)
         {
             if(room_link != null) LinkRoom(room_link);
         }

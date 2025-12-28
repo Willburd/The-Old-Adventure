@@ -92,15 +92,13 @@ namespace EntComponents
             Debug.Assert(model?.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
             
             // Get the transform if we have one, and apply it to the model's meshs.
-            WorldLocation? curloc = (WorldLocation?)Host.GetComponent(typeof(WorldLocation));
-
-            Matrix4x4 model_matrix = Matrix4x4.Identity;
-            if(curloc != null) model_matrix = curloc.GetInterpolatedViewMatrix(tick_delta);
+            Matrix4x4 model_matrix = Host.GetInterpolatedViewMatrix(tick_delta);
 
             // Render each mesh!
             int mesh_index = 0;
             foreach (var mesh in model.Meshes)
             {
+                // Bind the VBOs
                 mesh.Bind();
 
                 // Each mesh can use a different material, and that also means shader!

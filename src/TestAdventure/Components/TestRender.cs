@@ -1,6 +1,5 @@
 using System.Numerics;
 using Engine;
-using Rendering;
 
 namespace EntComponents
 {
@@ -10,6 +9,8 @@ namespace EntComponents
         {
             return [Core.Signals.create, Core.Signals.cache_components, Core.Signals.update, Core.Signals.render_priority, Core.Signals.render];
         }
+
+        float spin_speed = 0;
 
         protected override uint HandleCreate()
         {
@@ -21,11 +22,13 @@ namespace EntComponents
             // Set location
             WorldLocation? curloc = (WorldLocation?)Host.GetComponent(typeof(WorldLocation));
             
-            curloc?.Position += new Vector3(0f,-0.5f,0f);
-            curloc?.Rotation = Quaternion.CreateFromAxisAngle(Tools.Up, 15f);
-            curloc?.Rotation = Quaternion.CreateFromAxisAngle(Tools.Forward, 75f);
-            curloc?.Scale *= 1f;
-            curloc?.SnapTransform();
+            Host.Position += new Vector3(0f,-0.5f,0f);
+            Host.Rotation = Quaternion.CreateFromAxisAngle(Tools.Up, 15f);
+            Host.Rotation = Quaternion.CreateFromAxisAngle(Tools.Forward, 75f);
+            Host.Scale *= 1f;
+            Host.SnapTransform();
+
+            spin_speed = Tools.RandRange(0.01f,0.03f);
 
             return 1;
         }
@@ -33,9 +36,11 @@ namespace EntComponents
         protected override uint HandleUpdate()
         {
             WorldLocation? curloc = (WorldLocation?)Host.GetComponent(typeof(WorldLocation));
-            curloc?.Rotation *= Quaternion.CreateFromAxisAngle(Tools.Up, 0.02f);
-            curloc?.SnapTransform();
-
+            float speed = 0.01f;
+            //curloc?.Position += new Vector3( Tools.RandRange(-speed,speed), Tools.RandRange(-speed,speed), Tools.RandRange(-speed,speed));
+            Host.Rotation *= Quaternion.CreateFromAxisAngle(Tools.Up, spin_speed);
+            Host.SnapTransform();
+            
             return 1;
         }
     }

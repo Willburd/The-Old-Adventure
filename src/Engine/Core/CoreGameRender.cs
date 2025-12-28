@@ -82,34 +82,47 @@ namespace Engine
             OpenGLContext?.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Assemble a list in order of priority.
-            SortedList<uint,Entity> render_queue = [];
+            SortedList<uint,List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
             foreach(Entity check in Entity.EntityList)
             {
+                // Check the entity for a render priority. We only draw if we have one, as that means we have a component that wants to draw!
                 uint priority = check.SendSignal(Signals.render_priority, tick_delta);
                 if(priority == 0) continue; // Not visible if no component responds.
-                render_queue.Add(priority, check);
                 check.SendSignal(Signals.pre_render, tick_delta); // perform prerender while we're here.
+                
+                // Add to queue for all of the following render loops, instead of checking every entity for each one! We only store the ones that replied with a draw priority!
+                if(!render_queue.ContainsKey(priority)) render_queue.Add(priority, []);
+                render_queue[priority].Add(check);
             }
             OnPreRenderTick();
 
             // Primary rendering
-            foreach((uint key, Entity check) in render_queue)
+            foreach((uint key, List<Entity> draw_list) in render_queue)
             {
-                check.SendSignal(Signals.render, tick_delta);
+                foreach(Entity draw in draw_list)
+                {
+                    draw.SendSignal(Signals.render, tick_delta);
+                }
             }
             OnRenderTick();
             
             // Late rendering
-            foreach((uint key, Entity check) in render_queue)
+            foreach((uint key, List<Entity> draw_list) in render_queue)
             {
-                check.SendSignal(Signals.post_render, tick_delta);
+                foreach(Entity draw in draw_list)
+                {
+                    draw.SendSignal(Signals.post_render, tick_delta);
+                }
             }
             OnPostRenderTick();
 
             // Hud rendering
-            foreach((uint key, Entity check) in render_queue)
+            foreach((uint key, List<Entity> draw_list) in render_queue)
             {
-                check.SendSignal(Signals.hud_render, tick_delta);
+                foreach(Entity draw in draw_list)
+                {
+                    draw.SendSignal(Signals.hud_render, tick_delta);
+                }
             }
             OnRenderHudTick();
         }

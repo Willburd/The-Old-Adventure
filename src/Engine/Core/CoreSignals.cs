@@ -24,6 +24,10 @@ namespace Engine
             post_render,            // (double tick_delta) : Custom entity early render
             hud_render,             // (double tick_delta) : Custom hud render
 
+            // Movement
+            move_absolute,          // (Transform new_location) : Sets the transform component's position
+            move_relative,          // (Transform changing_by) : Adds the provided transform to the current transform components's position
+
             // Collision and triggers
             collision,              // (List<Collider>) : Called from Collider component, returns all collisions during the game tick.
             trigger                 // (List<Collider>) : Called from Collider component, returns all collisions during the game tick.

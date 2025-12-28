@@ -10,7 +10,7 @@ namespace Engine
 
         public List<Actor> ActorList {get; private set;} = [];
 
-        public Room() : base()
+        public Room(Transform initial_location) : base(initial_location)
         {
             Console.WriteLine("=====================================================");
             Console.WriteLine("=======> Room Loading : " + GetType());
