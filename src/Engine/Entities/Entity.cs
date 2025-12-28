@@ -153,6 +153,9 @@ namespace Engine
             linked_signals[signal].Remove(target);
         }
 
+        /// <summary>
+        /// Sends signal to all components attached to the entity. Responds with a uint bitflag of information related to the signal. How that is used is entirely dependant on the signal.
+        /// </summary>
         public uint SendSignal(Core.Signals signal, params object[] args)
         {
             if(!IsInitilized) return 0; // Nope, we don't do anything with this until we are initilized!
@@ -163,6 +166,14 @@ namespace Engine
                 return_flags |= comp.ReceiveSignal(signal, args);
             }
             return return_flags;
+        }
+
+        public static void SendGlobalSignal(Core.Signals signal, params object[] args)
+        {
+            foreach(Entity ent in entity_list)
+            {
+                ent.SendSignal(signal,args);
+            }
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

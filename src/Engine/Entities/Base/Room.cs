@@ -43,6 +43,8 @@ namespace Engine
         {
             Console.WriteLine("-----------------------------------------------------");
             Console.WriteLine("=-------> Room unloading : " + GetType());
+            // Lets handle special logic
+            SendGlobalSignal(Core.Signals.global_room_unloaded);
             // Lets clean up our scene, and anything tied to us.
             if(UnloadOnEnd || RemoveActorsOnEnd)
             {

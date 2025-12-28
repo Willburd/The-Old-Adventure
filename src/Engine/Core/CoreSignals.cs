@@ -29,7 +29,15 @@ namespace Engine
 
             // Collision and triggers
             collision,              // (List<Collider>) : Called from Collider component, returns all collisions during the game tick.
-            trigger                 // (List<Collider>) : Called from Collider component, returns all collisions during the game tick.
+            trigger,                // (List<Collider>) : Called from Collider component, returns all collisions during the game tick.
+
+            // Global signals
+            global_fadeout_begin,     // () : Called when a fadeout begins.
+            global_room_unloaded,     // (Room unloading) : Called when a room unloads. Used for special cases where we only want to do an action on room unload and not just Destroy()
+            global_fadein_end,        // () : Called when a fadein ends.
+            global_room_loaded,       // (Room loaded) : Called when a room loads. Handles room start events.
+            global_cutscene_begin,    // (Cutscene begin) : Called when a cutscene begins.
+            global_cutscene_end,      // (Cutscene begin) : Called when a cutscene ends
         }
     }
 }

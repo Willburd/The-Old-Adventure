@@ -44,12 +44,19 @@ namespace Engine
         /// </summary>
         private void GameTick()
         {
+            /////////////////////////////////////////////////
             // Preprocessing and room ticks
+            /////////////////////////////////////////////////
             OnPreGameTick();
             List<Entity> active_entities = [];
+            List<Room> initing_rooms = [];
             foreach(Entity ent in Entity.EntityList)
             {
-                if(!ent.IsInitilized) ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
+                if(!ent.IsInitilized) 
+                {
+                    ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
+                    if(ent.GetType() == typeof(Room)) initing_rooms.Add((Room)ent);
+                }
                 ent.SendSignal(Signals.pre_update, ent.Enabled);
                 if(ent.Enabled) 
                 {
@@ -58,6 +65,14 @@ namespace Engine
                 }
             }
 
+            /////////////////////////////////////////////////
+            // Handle room processing
+            /////////////////////////////////////////////////
+            // We do room loaded signal AFTER everything else is init, or we'll miss some!
+            foreach(Room room in initing_rooms)
+            {
+                Entity.SendGlobalSignal(Signals.global_room_loaded, room);
+            }
             // Handle room ticks in a special way to keep sane order
             List<Room> processing_rooms = [.. Room.loaded_rooms];
             foreach(Room room in processing_rooms)
@@ -72,7 +87,9 @@ namespace Engine
                 }
             }
             
-            // Collision
+            /////////////////////////////////////////////////
+            // Collisions
+            /////////////////////////////////////////////////
             List<EntComponent> all_colliders = EntComponent.GetAllOfType(typeof(Collider));
             foreach(Collider collider in all_colliders.Cast<Collider>())
             {
@@ -80,7 +97,9 @@ namespace Engine
                 collider.CheckCollisions(all_colliders);
             }
 
+            /////////////////////////////////////////////////
             // Processing
+            /////////////////////////////////////////////////
             OnGameTick();
             foreach(Entity ent in active_entities)
             {

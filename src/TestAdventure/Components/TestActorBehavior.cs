@@ -20,10 +20,7 @@ namespace EntComponents
             materials.Add(AssetLoader.MaterialAssetGet( "sign_face")); // face
             
             // Set location
-            Host.Position += new Vector3(0f,-0.5f,0f);
-            Host.Rotation = Quaternion.CreateFromAxisAngle(Tools.Up, 15f);
-            Host.Rotation = Quaternion.CreateFromAxisAngle(Tools.Forward, 75f);
-            Host.Scale *= 1f;
+            Host.Scale *= Tools.RandRange(0.5f,1.5f);
             Host.SnapTransform();
 
             spin_speed = Tools.RandRange(0.1f,0.6f);
