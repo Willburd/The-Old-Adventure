@@ -68,7 +68,7 @@ namespace Engine
                 ElapsedGameFrames++;
                 // We're effectively lerping between the previous draw and the new draw based on how far the gametick has progressed
                 singleton?.RenderTick(GameTickDelta); 
-                game_fps_accumulator -= FpsTickInterval;
+                game_fps_accumulator %= FpsTickInterval;
                 RequestRender = false;
             }
         }

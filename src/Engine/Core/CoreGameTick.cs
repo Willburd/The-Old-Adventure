@@ -35,7 +35,7 @@ namespace Engine
             {
                 ElapsedGameTicks++;
                 singleton?.GameTick();
-                game_tick_accumulator -= GameTickInterval;
+                game_tick_accumulator %= GameTickInterval;
             }
         }
 
