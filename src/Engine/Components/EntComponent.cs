@@ -106,7 +106,7 @@ namespace EntComponents
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
-        /// Loads all related assets. Called before Init()
+        /// Loads all component related assets. Called before Init()
         /// </summary>
         protected virtual uint HandleAssetLoad()
         {

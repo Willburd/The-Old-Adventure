@@ -2,7 +2,6 @@ using Engine;
 using Rendering;
 using System.Diagnostics;
 using System.Numerics;
-using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 
 namespace EntComponents
@@ -14,8 +13,8 @@ namespace EntComponents
     {
         public bool Visible { get; set; } = true;
         private uint Priority { get; set; } = 1;
-        protected Rendering.ModelData? model;
-        protected List<Rendering.MaterialData> materials = [];
+        protected ModelData? model;
+        protected List<MaterialData> materials = [];
 
         public void ApplyMaterial(MaterialData apply_mat, int mesh_count = 1)
         {
