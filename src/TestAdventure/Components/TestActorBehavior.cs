@@ -4,8 +4,20 @@ using Rendering;
 
 namespace EntComponents
 {
-    public class TestActorBehavior(Entity host_entity) : Renders(host_entity)
+    public class TestActorBehavior(Entity host_entity) : EntComponent(host_entity)
     {
+        float spin_speed = 0;
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Signal handling
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        public override List<Core.Signals> DefaultSignals()
+        {
+            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.cache_components, Core.Signals.update];
+        }
+
         protected override uint HandleAssetLoad()
         {
             // Shaders
@@ -25,21 +37,23 @@ namespace EntComponents
             return 1;
         }
 
-        float spin_speed = 0;
-
         protected override uint HandleCreate()
         {
-            // Apply assets
-            model = AssetLoader.ModelAssetGet("sign");
-            materials.Add(AssetLoader.MaterialAssetGet( "sign_wood")); // sign
-            materials.Add(AssetLoader.MaterialAssetGet( "sign_face")); // face
+            // Set the render's model and materials
+            WorldRender? renderer = (WorldRender?)Host.GetComponent(typeof(WorldRender));
+            renderer?.SetModel( AssetLoader.ModelAssetGet("sign"), AssetLoader.MaterialAssetGet("sign_wood"));
+            renderer?.SetMaterial( AssetLoader.MaterialAssetGet("sign_face"), 1);
             
             // Set location
             Host.Scale *= Tools.RandRange(0.5f,1.5f);
             Host.SnapTransform();
-
             spin_speed = Tools.RandRange(0.1f,0.6f);
 
+            return 1;
+        }
+
+        protected override uint HandleCacheComponents()
+        {
             return 1;
         }
 

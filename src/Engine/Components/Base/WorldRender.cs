@@ -7,16 +7,27 @@ using Silk.NET.OpenGL;
 namespace EntComponents
 {
     /// <summary>
-    /// Entity Component that handles the basics of rendering a 3D model's meshes, using materials assigned to each mesh. Intended to be overriden.
+    /// Entity Component that handles the basics of rendering a 3D model's meshes, using materials assigned to each mesh.
     /// </summary>
-    public class Renders(Entity host_entity) : EntComponent(host_entity)
+    public class WorldRender(Entity host_entity) : EntComponent(host_entity)
     {
         public bool Visible { get; set; } = true;
         private uint Priority { get; set; } = 1;
         protected ModelData? model;
         protected List<MaterialData> materials = [];
 
-        public void ApplyMaterial(MaterialData apply_mat, int mesh_count = 1)
+        public void SetModel(ModelData new_model, MaterialData default_material)
+        {
+            model = new_model;
+            ApplyMaterial(default_material, model.Meshes.Count);
+        }
+
+        public void SetMaterial(MaterialData apply_mat, int mesh_index)
+        {
+            materials[mesh_index] = apply_mat;
+        }
+
+        private void ApplyMaterial(MaterialData apply_mat, int mesh_count = 1)
         {
             for(int i = 0; i < mesh_count; i++)
             {
@@ -24,17 +35,14 @@ namespace EntComponents
             }
         }
 
-        public void ChangeMaterial(MaterialData apply_mat, int mesh_index)
-        {
-            materials[mesh_index] = apply_mat;
-        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
         public override List<Core.Signals> DefaultSignals()
         {
-            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.cache_components, Core.Signals.render_priority, Core.Signals.render, Core.Signals.hud_render];
+            return [Core.Signals.render_priority, Core.Signals.render];
         }
 
         public override uint ReceiveSignal(Core.Signals signal, object[] args)
@@ -45,42 +53,15 @@ namespace EntComponents
                     if(!Visible) return 0; // Do not add us to render queue
                     return Priority;
 
-                case Core.Signals.pre_render:
-                    if(Host.Enabled)
-                    {
-                        return HandlePreRender((double)args[0]);
-                    }
-                    return 0;
-
                 case Core.Signals.render:
                     if(Host.Enabled)
                     {
                         return HandleRender((double)args[0]);
                     }
                     return HandleRenderDisabled((double)args[0]);
-                    
-                case Core.Signals.hud_render:
-                    if(Host.Enabled)
-                    {
-                        return HandleHudRender((double)args[0]);
-                    }
-                    return 0;
 
             }
             return base.ReceiveSignal(signal,args);
-        }
-
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Virtual functions
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        /// <summary>
-        /// Render function run if the component is Visible.
-        /// </summary>
-        public virtual uint HandlePreRender(double delta_time)
-        {
-            return 1;
         }
 
         /// <summary>
@@ -132,14 +113,6 @@ namespace EntComponents
         /// Render function run if the component is NOT Visible. Mostly used for long distance LoDs.
         /// </summary>
         public virtual uint HandleRenderDisabled(double delta_time)
-        {
-            return 1;
-        }
-        
-        /// <summary>
-        /// Render function run after all others, meant for drawing the hud over the the render canvas.
-        /// </summary>
-        public virtual uint HandleHudRender(double delta_time)
         {
             return 1;
         }

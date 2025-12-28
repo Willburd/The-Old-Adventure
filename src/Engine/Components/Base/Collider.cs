@@ -11,34 +11,6 @@ namespace EntComponents
         private readonly bool debug_vis = false; // Debugging only
         public bool IsTrigger { get; set; } = false;
 
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Signal handling
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        public override List<Core.Signals> DefaultSignals()
-        {
-            if(!debug_vis) return [];
-            return [Core.Signals.render_priority,Core.Signals.render];
-        }
-
-        public override uint ReceiveSignal(Core.Signals signal, object[] args)
-        {
-            switch(signal)
-            {
-                case Core.Signals.render_priority:
-                    return 256;
-
-                case Core.Signals.render:
-                    // Render our collider shape
-                    return 1;
-            }
-            return base.ReceiveSignal(signal,args);
-        }
-
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Virtual functions
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         /// <summary>
         /// Checks against all colliders in a list and handle collisions for each.
@@ -84,6 +56,31 @@ namespace EntComponents
         public virtual bool IsColliding(Collider other_col)
         {
             return false;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Signal handling
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         
+        public override List<Core.Signals> DefaultSignals()
+        {
+            if(!debug_vis) return [];
+            return [Core.Signals.render_priority,Core.Signals.render];
+        }
+
+        public override uint ReceiveSignal(Core.Signals signal, object[] args)
+        {
+            switch(signal)
+            {
+                case Core.Signals.render_priority:
+                    // If we're not subbed, this never gets called.
+                    return 256;
+
+                case Core.Signals.render:
+                    // Render our collider shape
+                    return 1;
+            }
+            return base.ReceiveSignal(signal,args);
         }
     }
 }

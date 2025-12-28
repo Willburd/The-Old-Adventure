@@ -47,7 +47,7 @@ namespace EntComponents
         /// </summary>
         public virtual List<Core.Signals> DefaultSignals()
         {
-            return [Core.Signals.create, Core.Signals.update];
+            return [];
         }
 
         /// <summary>
