@@ -73,17 +73,10 @@ namespace Engine
         /// <summary>
         /// Add asset to the asset library, weirdly named to avoid accidental use. Use the proper load asset functions.
         /// </summary>
-        private static Object InvokeAsset(string asset_key, Asset new_asset, bool reload = false)
+        private static Object InvokeAsset(string asset_key, Asset new_asset)
         {
-            if(asset_library.ContainsKey(asset_key)) 
-            {
-                if(!reload) return asset_library[asset_key].Data;
-                RemoveAsset(asset_key); // Clear it and recall it!
-            }
-            if(!new_asset.CheckIntegrity())
-            {
-                Console.WriteLine("ASSET LOAD FAILURE - " + asset_key + " : " + new_asset.FilePath);
-            }
+            if(asset_library.ContainsKey(asset_key))  return asset_library[asset_key].Data;
+            if(!new_asset.CheckIntegrity()) Console.WriteLine("ASSET LOAD FAILURE - " + asset_key + " : " + new_asset.FilePath);
             asset_library.Add(asset_key, new_asset);
             return new_asset.Data;
         }
