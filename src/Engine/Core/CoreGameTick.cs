@@ -53,7 +53,7 @@ namespace Engine
                 ent.SendSignal(Signals.pre_update, ent.Enabled);
                 if(ent.Enabled) 
                 {
-                    ent.SendSignal(Signals.prepare_transform);
+                    ent.SnapTransform();
                     active_entities.Add(ent);
                 }
             }

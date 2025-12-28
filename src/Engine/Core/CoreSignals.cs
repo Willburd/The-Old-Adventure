@@ -11,7 +11,6 @@ namespace Engine
             destroy,                // () : Called when an entity is destroyed.
 
             // Update
-            prepare_transform,      // () : Update last entity position for draw code
             pre_update,             // () : Custom entity early update
             apply_physics,          // () : Apply physics from components to transforms
             update,                 // () : Custom entity update

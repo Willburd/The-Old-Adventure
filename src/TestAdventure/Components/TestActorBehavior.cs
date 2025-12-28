@@ -26,7 +26,7 @@ namespace EntComponents
             Host.Scale *= 1f;
             Host.SnapTransform();
 
-            spin_speed = Tools.RandRange(0.01f,0.03f);
+            spin_speed = Tools.RandRange(0.1f,0.6f);
 
             return 1;
         }
@@ -34,10 +34,8 @@ namespace EntComponents
         protected override uint HandleUpdate()
         {
             float speed = 0.01f;
-            //curloc?.Position += new Vector3( Tools.RandRange(-speed,speed), Tools.RandRange(-speed,speed), Tools.RandRange(-speed,speed));
+            //Host.Position += new Vector3( Tools.RandRange(-speed,speed), Tools.RandRange(-speed,speed), Tools.RandRange(-speed,speed));
             Host.Rotation *= Quaternion.CreateFromAxisAngle(Tools.Up, spin_speed);
-            Host.SnapTransform();
-            
             return 1;
         }
     }
