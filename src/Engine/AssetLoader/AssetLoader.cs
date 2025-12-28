@@ -56,9 +56,12 @@ namespace Engine
             adventure
         }
 
-        public static string AssetKey(Asset.AssetType type, string asset_name, AssetSource asset_source = AssetSource.engine)
+        /// <summary>
+        /// Creates asset keys based on the type of asset and if it is an engine or adventure resource.
+        /// </summary>
+        public static string AssetKey(Asset.AssetType type, string asset_name, AssetSource asset_source = AssetSource.adventure)
         {
-            string src_str = "Engine";
+            string src_str = "Engine"; // We default to the engine if no arguments are provided, as this will usually be called by the adventure for non-engine assets anyway.
             if(Core.AdventureID != null && asset_source == AssetSource.adventure) src_str = Core.AdventureID;
             return src_str + "::" + type + "::" + asset_name;
         }
@@ -168,11 +171,16 @@ namespace Engine
         /// <summary>
         /// Gets a shader from the asset library
         /// </summary>
+        /// 
         public static Rendering.ShaderData ShaderAssetGet(string asset_key)
         {
             Asset ast = LocateAsset(asset_key);
             Debug.Assert(ast.CheckType(Asset.AssetType.shader));
             return (Rendering.ShaderData)ast.Data;
+        }
+        public static Rendering.ShaderData ShaderAssetGet(string asset_name, AssetSource source = AssetSource.adventure)
+        {
+            return ShaderAssetGet(AssetLoader.AssetKey(Asset.AssetType.shader, asset_name, source));
         }
         
         /// <summary>
@@ -184,6 +192,10 @@ namespace Engine
             Debug.Assert(ast.CheckType(Asset.AssetType.model));
             return (Rendering.ModelData)ast.Data;
         }
+        public static Rendering.ModelData ModelAssetGet(string asset_name, AssetSource source = AssetSource.adventure)
+        {
+            return ModelAssetGet(AssetLoader.AssetKey(Asset.AssetType.model, asset_name, source));
+        }
 
         /// <summary>
         /// Gets a texture from the asset library
@@ -194,6 +206,10 @@ namespace Engine
             Debug.Assert(ast.CheckType(Asset.AssetType.textures));
             return (Rendering.TextureData)ast.Data;
         }
+        public static Rendering.TextureData TextureAssetGet(string asset_name, AssetSource source = AssetSource.adventure)
+        {
+            return TextureAssetGet(AssetLoader.AssetKey(Asset.AssetType.textures, asset_name, source));
+        }
 
         /// <summary>
         /// Gets a material from the asset library
@@ -203,6 +219,10 @@ namespace Engine
             Asset ast = LocateAsset(asset_key);
             Debug.Assert(ast.CheckType(Asset.AssetType.material));
             return (Rendering.MaterialData)ast.Data;
+        }
+        public static Rendering.MaterialData MaterialAssetGet(string asset_name, AssetSource source = AssetSource.adventure)
+        {
+            return MaterialAssetGet(AssetLoader.AssetKey(Asset.AssetType.material, asset_name, source));
         }
     }
 }
