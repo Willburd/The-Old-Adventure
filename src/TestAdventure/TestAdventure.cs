@@ -19,13 +19,14 @@ namespace TestAdventure
             // Load assets with the assetloader
             base.OnLoadAssets();
 
+            // Loud our assets
+            // TODO
         }
 
         public override void OnInit()
         {
-            // Start up initial scene
-            base.OnInit();
-            new TestActor();
+            // Start up initial room
+            new TestRoom();
         }
 
         public override void OnGameTick()

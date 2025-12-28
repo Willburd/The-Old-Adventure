@@ -18,7 +18,7 @@ namespace Engine
         /// <summary>
         /// Number of game ticks since launch.
         /// </summary>
-        public static long ElapsedGameTicks {get; set;}
+        public static long ElapsedGameTicks {get; private set;}
 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ namespace Engine
         /// </summary>
         private void GameTick()
         {
-            // Preprocessing
+            // Preprocessing and room ticks
             OnPreGameTick();
             List<Entity> active_entities = [];
             foreach(Entity ent in Entity.EntityList)
@@ -58,6 +58,20 @@ namespace Engine
                 }
             }
 
+            // Handle room ticks in a special way to keep sane order
+            List<Room> processing_rooms = [.. Room.loaded_rooms];
+            foreach(Room room in processing_rooms)
+            {
+                if(room.Enabled) 
+                {
+                    room.OnRoomUpdate();
+                }
+                else
+                {
+                    room.OnRoomDisabledUpdate();
+                }
+            }
+            
             // Collision
             List<EntComponent> all_colliders = EntComponent.GetAllOfType(typeof(Collider));
             foreach(Collider collider in all_colliders.Cast<Collider>())

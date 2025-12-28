@@ -57,8 +57,16 @@ namespace Engine
                 RemoveComponent(component);
             }
             attached_components.Clear();
+            OnCleanup();
         }
 
+        /// <summary>
+        /// Called at the end of Destroy, handles any special cleanup an entity type does.
+        /// </summary>
+        protected virtual void OnCleanup()
+        {
+            
+        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Component helpers

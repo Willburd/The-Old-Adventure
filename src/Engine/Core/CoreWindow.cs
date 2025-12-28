@@ -8,7 +8,7 @@ namespace Engine
 {
     public partial class Core 
     {
-        public static IWindow WindowContext {get; set;}
+        public static IWindow WindowContext {get; private set;}
         
         /// <summary>
         /// Called when the window is created.

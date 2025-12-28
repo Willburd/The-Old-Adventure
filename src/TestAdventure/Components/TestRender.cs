@@ -14,9 +14,9 @@ namespace EntComponents
         protected override uint HandleCreate()
         {
             // Apply assets
-            model                           = AssetLoader.ModelAssetGet(    AssetLoader.AssetKey(Asset.AssetType.model,    "cube",    AssetLoader.AssetSource.engine));
-            MaterialData default_material   = AssetLoader.MaterialAssetGet( AssetLoader.AssetKey(Asset.AssetType.material, "example", AssetLoader.AssetSource.engine));
-            ApplyMaterial( default_material, model.Meshes.Count);
+            model = AssetLoader.ModelAssetGet("sign");
+            materials.Add(AssetLoader.MaterialAssetGet( "sign_wood")); // sign
+            materials.Add(AssetLoader.MaterialAssetGet( "sign_face")); // face
             
             // Set location
             WorldLocation? curloc = (WorldLocation?)Host.GetComponent(typeof(WorldLocation));

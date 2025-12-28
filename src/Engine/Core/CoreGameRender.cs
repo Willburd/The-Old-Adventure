@@ -5,7 +5,7 @@ namespace Engine
 {
     public partial class Core
     {
-        public static GL OpenGLContext {get; set;}
+        public static GL OpenGLContext {get; private set;}
 
         /// <summary>
         /// Number of frames per second for rendering.
@@ -26,7 +26,7 @@ namespace Engine
         /// <summary>
         /// Number of renderer frames since launch.
         /// </summary>
-        public static long ElapsedGameFrames {get; set;}
+        public static long ElapsedGameFrames {get; private set;}
         
         /// <summary>
         /// Percent difference from the previous game tick, to the next gametick. Used to do "inbetween" frames during rendering. 
