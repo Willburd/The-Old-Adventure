@@ -47,7 +47,7 @@ namespace EntComponents
             // Set location
             Host.Scale *= Tools.RandRange(0.5f,1.5f);
             Host.SnapTransform();
-            spin_speed = Tools.RandRange(0.1f,0.6f);
+            spin_speed = Tools.RandRange(0.01f,0.06f);
 
             return 1;
         }
