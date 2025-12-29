@@ -4,7 +4,12 @@ namespace Engine
     {
         public static float DegreesToRadians(float degrees)
         {
-            return MathF.PI / 180f * degrees;
+            return degrees * (MathF.PI / 180f);
+        }
+
+        public static float RadiansToDegrees(float radians)
+        {
+            return radians * (180f / MathF.PI);
         }
 
         public static Random Rand {get; private set;} = new Random();

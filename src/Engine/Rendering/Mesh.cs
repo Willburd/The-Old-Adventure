@@ -56,6 +56,9 @@ namespace Rendering
                 current_offset += vbo_dat.size;
                 current_index++;
             }
+
+            // We don't want other meshes to cross contaminate
+            GL.BindVertexArray(0);
         }
 
         public void Bind()

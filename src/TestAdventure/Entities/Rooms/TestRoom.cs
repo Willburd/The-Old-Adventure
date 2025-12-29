@@ -7,7 +7,8 @@ namespace TestAdventure
     {
         public override void LoadActors()
         {
-            new TestActor( new Transform( new Vector3(0f,-0.5f,0f)), this);
+            new TestActor( new Transform( new Vector3(0f,-0.5f,0f), Tools.Euler(0f,90f,0f)), this);
+            new CubeActor( new Transform( new Vector3(0.1f,-0.5f,0f)), this);
         }
 
         public override void OnRoomUpdate()
