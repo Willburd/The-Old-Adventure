@@ -182,7 +182,13 @@ namespace Engine
          
         protected readonly Transform transform = new();     
         protected readonly Transform last_transform = new();  
-        
+
+        public Transform Location
+        {
+            get {return GetTransform();}
+            set {SetTransform(Location);}
+        }
+
         public Vector3 Position
         {
             get {return transform.Position;}
@@ -222,6 +228,11 @@ namespace Engine
             if(SendSignal(Core.Signals.move_absolute, assignment) > 0) return;
             transform.Set(assignment);
             SnapTransform();
+        }
+
+        public Transform GetTransform()
+        {
+            return transform;
         }
 
         public Vector3 GetInterpolatedPosition(double tick_delta)

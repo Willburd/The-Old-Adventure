@@ -3,6 +3,7 @@ using Silk.NET.Maths;
 using Silk.NET.Windowing;
 using System.Diagnostics;
 using Silk.NET.OpenGL;
+using System.Numerics;
 
 namespace Engine
 {
@@ -45,6 +46,26 @@ namespace Engine
             if (key == Key.Escape)
             {
                 WindowContext.Close();
+            }
+            
+            if (key == Key.Left)
+            {
+                Camera.WorldCamera?.MoveTransform(new Transform(0f, 1f, 0f));
+            }
+            
+            if (key == Key.Right)
+            {
+                Camera.WorldCamera?.MoveTransform(new Transform(0f, -1f, 0f));
+            }
+            
+            if (key == Key.Up)
+            {
+                Camera.WorldCamera?.MoveTransform(new Transform( Vector3.Transform(Tools.Forward * 2f, Camera.WorldCamera.Location.Rotation)));
+            }
+            
+            if (key == Key.Down)
+            {
+                Camera.WorldCamera?.MoveTransform(new Transform( Vector3.Transform(Tools.Backward * 2f, Camera.WorldCamera.Location.Rotation)));
             }
         }
 

@@ -39,6 +39,8 @@ namespace Engine
             global_room_loaded,       // (Room loaded) : Called when a room loads. Handles room start events.
             global_cutscene_begin,    // (Cutscene begin) : Called when a cutscene begins.
             global_cutscene_end,      // (Cutscene begin) : Called when a cutscene ends
+            camera_activated,         // (Camera active_camera) : When a camera becomes the active camera
+            camera_deactivated        // (Camera deactivated_camera) : When a camera is disabled
         }
     }
 }

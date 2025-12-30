@@ -41,6 +41,27 @@ namespace Engine
             Rotation = Quaternion.Identity;
             Scale = Vector3.One;
         }
+        
+        public Transform(Vector3 position, Vector3 scale)
+        {
+            Position = position;
+            Rotation = Quaternion.Identity;
+            Scale = scale;
+        }
+
+        public Transform(Quaternion rotation)
+        {
+            Position = Vector3.Zero;
+            Rotation = rotation;
+            Scale = Vector3.One;
+        }
+        
+        public Transform(float anglex, float angley, float anglez)
+        {
+            Position = Vector3.Zero;
+            Rotation = Tools.Euler(anglex,angley,anglez);
+            Scale = Vector3.One;
+        }
 
         public Transform(Vector3 position, Quaternion rotation)
         {

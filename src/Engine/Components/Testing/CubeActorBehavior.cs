@@ -37,7 +37,6 @@ namespace EntComponents
             // Set the render's model and materials
             WorldRender? renderer = (WorldRender?)Host.GetComponent(typeof(WorldRender));
             renderer?.SetModel( AssetLoader.ModelAssetGet("test_cube", AssetLoader.AssetSource.engine), AssetLoader.MaterialAssetGet("example", AssetLoader.AssetSource.engine));
-            Host.MoveTransform(new Transform(new Vector3(0.4f,0f,0f), Tools.Euler(-45f,0f,0f), new Vector3(-0.5f,-0.5f,-0.5f)));
 
             return 1;
         }
@@ -49,7 +48,6 @@ namespace EntComponents
 
         protected override uint HandleUpdate()
         {
-            Host.Rotation *= Tools.Euler(0f,1f,0f);
             return 1;
         }
     }

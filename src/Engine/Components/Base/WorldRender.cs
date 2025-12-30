@@ -74,6 +74,10 @@ namespace EntComponents
             // Get the transform if we have one, and apply it to the model's meshs.
             Matrix4x4 model_matrix = Host.GetInterpolatedViewMatrix(tick_delta);
 
+            // Get the current camera
+            Matrix4x4 camera_matrix = Camera.GetCurrentViewMatrix();
+            Matrix4x4 projection_matrix = Camera.GetCurrentProjectionMatrix();
+                
             // Render each mesh!
             int mesh_index = 0;
             foreach (var mesh in model.Meshes)
@@ -86,6 +90,8 @@ namespace EntComponents
                 ShaderData shader = mat_data.Shader;
                 shader.Use(); 
                 shader.SetUniform("uTransform", model_matrix);
+                shader.SetUniform("uView", camera_matrix);
+                shader.SetUniform("uProjection", projection_matrix);
 
                 // Bind textures to texunits
                 int tex_unit_id = 0;
