@@ -220,7 +220,8 @@ namespace Engine
         public void MoveTransform(Transform addition)
         {
             if(SendSignal(Core.Signals.move_relative, addition) > 0) return;
-            transform.Add(addition);
+            transform.Translate(addition.Position);
+            transform.Rotate(addition.Rotation);
         }
         
         public void SetTransform(Transform assignment)

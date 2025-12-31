@@ -1,11 +1,12 @@
 using System.Numerics;
+using Silk.NET.Maths;
 
 namespace Engine
 {
     public class Camera : Entity
     {
         public float Zoom = 1f;
-        public float AspectRatio { get; set; } = 1.66666f;
+        public float AspectRatio { get; set; } = 1.33333333333f;
 
 
         private static readonly List<Camera> all_cameras = [];
@@ -79,18 +80,18 @@ namespace Engine
 
         public static Matrix4x4 GetCurrentProjectionMatrix()
         {
-            if(world_active_cam == null) return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(1f), 1.66666f, 0.1f, 180.0f);
+            if(world_active_cam == null) return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(1f), 1.33333333333f, 0.001f, 400.0f);
             return world_active_cam.GetProjectionMatrix();
         }
         
         public new Matrix4x4 GetViewMatrix()
         {
-            return Matrix4x4.CreateLookAt(Position, Position + Vector3.Normalize(Vector3.Transform(Tools.Forward, Rotation)), Tools.Up);
+            return Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(transform.Rotation)) * Matrix4x4.CreateTranslation(-transform.Position); 
         }
 
         public Matrix4x4 GetProjectionMatrix()
         {
-            return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(Zoom), AspectRatio, 0.1f, 180.0f);
+            return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(Zoom), AspectRatio, 0.001f, 400.0f);
         }
     }
 }

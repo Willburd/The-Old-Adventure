@@ -51,6 +51,8 @@ namespace EntComponents
         protected override uint HandleUpdate()
         {
             Host.Rotation *= Tools.Euler(0f,0.1f,0f);
+
+            // Camera.WorldCamera?.MoveTransform(new Transform(0f, 1f, 0f));
             return 1;
         }
     }

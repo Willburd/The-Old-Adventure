@@ -77,7 +77,9 @@ namespace EntComponents
             // Get the current camera
             Matrix4x4 camera_matrix = Camera.GetCurrentViewMatrix();
             Matrix4x4 projection_matrix = Camera.GetCurrentProjectionMatrix();
-                
+
+            Console.WriteLine( camera_matrix );
+
             // Render each mesh!
             int mesh_index = 0;
             foreach (var mesh in model.Meshes)

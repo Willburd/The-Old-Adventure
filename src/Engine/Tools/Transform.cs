@@ -91,6 +91,20 @@ namespace Engine
             }
         } 
         
+        public void Translate(Vector3 translation)
+        {
+            Position += translation;
+        }
+
+        public void Rotate(Quaternion rotation)
+        {
+            Rotation *= rotation;
+        }
+        public void Scaler(Vector3 scaler)
+        {
+            Scale += scaler;
+        }
+
         public void Add(Transform addition)
         {
             Position += addition.Position;
