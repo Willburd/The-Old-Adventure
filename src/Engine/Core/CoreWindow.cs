@@ -67,7 +67,7 @@ namespace Engine
             
             if (key == Key.Down)
             {
-                Camera.WorldCamera?.Position -= Vector3.Transform(Tools.Forward * camera_speed, Camera.WorldCamera.Location.Rotation);
+                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Backward * camera_speed, Camera.WorldCamera.Location.Rotation);
             }
         }
 

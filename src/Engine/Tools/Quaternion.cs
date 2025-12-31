@@ -82,9 +82,15 @@ namespace Engine
 
         public static Quaternion LookAt(Vector3 current, Vector3 target, Vector3 up)
         {
-            Vector3 dirvec = current - target;
-            dirvec = Vector3.Normalize(dirvec);
-            return Quaternion.CreateFromRotationMatrix(Matrix4x4.CreateLookToLeftHanded(Vector3.Zero,dirvec,Tools.Up));
+            Vector3 dirvec = target - current;
+            return Quaternion.CreateFromRotationMatrix(Matrix4x4.CreateLookToLeftHanded(Vector3.Zero,Vector3.Normalize(dirvec),Tools.Up));
+        }
+
+        public static Quaternion LookAtLockedZ(Vector3 current, Vector3 target, Vector3 up)
+        {
+            current *= new Vector3(1f,0f,1f);
+            target *= new Vector3(1f,0f,1f);
+            return LookAt(current, target, up);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace EntComponents
         protected override uint HandleUpdate()
         {
             
-            Host.Rotation = Tools.LookAt( Host.Position, Camera.WorldCamera.Position, Tools.Up);
+            Host.Rotation = Tools.LookAtLockedZ( Host.Position, Camera.WorldCamera.Position, Tools.Up);
             return 1;
         }
     }
