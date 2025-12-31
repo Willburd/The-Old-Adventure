@@ -50,12 +50,12 @@ namespace Engine
             
             if (key == Key.Left)
             {
-                Camera.WorldCamera?.MoveTransform(new Transform(0f, -5f, 0f));
+                Camera.WorldCamera?.MoveTransform(new Transform(0f, 15f, 0f));
             }
             
             if (key == Key.Right)
             {
-                Camera.WorldCamera?.MoveTransform(new Transform(0f, 5f, 0f));
+                Camera.WorldCamera?.MoveTransform(new Transform(0f, -15f, 0f));
             }
             
             if (key == Key.Up)

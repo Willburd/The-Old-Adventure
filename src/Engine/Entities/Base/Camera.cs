@@ -5,7 +5,7 @@ namespace Engine
 {
     public class Camera : Entity
     {
-        public float Zoom = 1f;
+        public float Zoom = 45f;
         public float AspectRatio { get; set; } = 1.33333333333f;
 
 
@@ -86,7 +86,13 @@ namespace Engine
         
         public new Matrix4x4 GetViewMatrix()
         {
-            return Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(transform.Rotation)) * Matrix4x4.CreateTranslation(-transform.Position); 
+            Matrix4x4 mat = Matrix4x4.CreateTranslation(-transform.Position) * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(transform.Rotation)); 
+            // Depth fix
+            mat.M31 = -mat.M31;
+            mat.M32 = -mat.M32;
+            mat.M33 = -mat.M33;
+            mat.M34 = -mat.M34;
+            return mat;
         }
 
         public Matrix4x4 GetProjectionMatrix()
