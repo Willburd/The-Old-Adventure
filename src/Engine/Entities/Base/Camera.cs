@@ -72,6 +72,12 @@ namespace Engine
 
 
 
+        public static Matrix4x4 GetCurrentInterpolatedViewMatrix(double tick_delta)
+        {
+            if(world_active_cam == null) return Transform.Identity.ViewMatrix;
+            return world_active_cam.GetInterpolatedViewMatrix(tick_delta);
+        }
+
         public static Matrix4x4 GetCurrentViewMatrix()
         {
             if(world_active_cam == null) return Transform.Identity.ViewMatrix;
@@ -84,6 +90,17 @@ namespace Engine
             return world_active_cam.GetProjectionMatrix();
         }
         
+        public new Matrix4x4 GetInterpolatedViewMatrix(double tick_delta)
+        {
+            Matrix4x4 mat = Matrix4x4.CreateTranslation(-GetInterpolatedPosition(tick_delta)) * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(GetInterpolatedRotation(tick_delta))); 
+            // Depth fix
+            mat.M31 = -mat.M31;
+            mat.M32 = -mat.M32;
+            mat.M33 = -mat.M33;
+            mat.M34 = -mat.M34;
+            return mat;
+        }
+
         public new Matrix4x4 GetViewMatrix()
         {
             Matrix4x4 mat = Matrix4x4.CreateTranslation(-transform.Position) * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(transform.Rotation)); 

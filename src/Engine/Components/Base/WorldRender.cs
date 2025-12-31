@@ -75,10 +75,8 @@ namespace EntComponents
             Matrix4x4 model_matrix = Host.GetInterpolatedViewMatrix(tick_delta);
 
             // Get the current camera
-            Matrix4x4 camera_matrix = Camera.GetCurrentViewMatrix();
+            Matrix4x4 camera_matrix = Camera.GetCurrentInterpolatedViewMatrix(tick_delta);
             Matrix4x4 projection_matrix = Camera.GetCurrentProjectionMatrix();
-
-            Console.WriteLine( camera_matrix );
 
             // Render each mesh!
             int mesh_index = 0;
