@@ -4,7 +4,7 @@ using Rendering;
 
 namespace EntComponents
 {
-    public class TestActorBehavior(Entity host_entity) : EntComponent(host_entity)
+    public class PointerActorBehavior(Entity host_entity) : EntComponent(host_entity)
     {
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
@@ -21,15 +21,13 @@ namespace EntComponents
             ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
             
             // Textures
-            TextureData sign_wood = AssetLoader.TextureAssetLoad( "sign_wood", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_wood.png");
-            TextureData sign_face = AssetLoader.TextureAssetLoad( "sign_face", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_face.png");
+            TextureData example_tex = AssetLoader.TextureAssetLoad( "example", AssetLoader.AssetDirectoryEngine + "/Textures/example.png", AssetLoader.AssetSource.engine);
             
             // Materials
-            AssetLoader.MaterialAssetLoad( "sign_wood", new( [sign_wood], [new MaterialUniformData("uTexture0", 0)], standard_shader));
-            AssetLoader.MaterialAssetLoad( "sign_face", new( [sign_face], [new MaterialUniformData("uTexture0", 0)], standard_shader));
+            AssetLoader.MaterialAssetLoad( "example", new( [example_tex], [new MaterialUniformData("uTexture0", 0)], standard_shader), AssetLoader.AssetSource.engine);
             
             // Model
-            AssetLoader.ModelAssetLoad( "sign", AssetLoader.AssetDirectoryAdventure + "/Models/sign.fbx");
+            AssetLoader.ModelAssetLoad( "test_pointer", AssetLoader.AssetDirectoryEngine + "/Models/pointer.fbx", AssetLoader.AssetSource.engine);
 
             return 1;
         }
@@ -38,9 +36,8 @@ namespace EntComponents
         {
             // Set the render's model and materials
             WorldRender? renderer = (WorldRender?)Host.GetComponent(typeof(WorldRender));
-            renderer?.SetModel( AssetLoader.ModelAssetGet("sign"), AssetLoader.MaterialAssetGet("sign_wood"));
-            renderer?.SetMaterial( AssetLoader.MaterialAssetGet("sign_face"), 1);
-            
+            renderer?.SetModel( AssetLoader.ModelAssetGet("test_pointer", AssetLoader.AssetSource.engine), AssetLoader.MaterialAssetGet("example", AssetLoader.AssetSource.engine));
+
             return 1;
         }
 
@@ -51,6 +48,7 @@ namespace EntComponents
 
         protected override uint HandleUpdate()
         {
+            Host.Rotation = Tools.LookAt( Host.Position, Camera.WorldCamera.Position, Tools.Up);
             return 1;
         }
     }

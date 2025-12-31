@@ -11,7 +11,7 @@ namespace TestAdventure
 
             float radius = 6f;
 
-            new TestActor( new Transform( new Vector3(0f,-0.5f,radius), Tools.Euler(0f,90f,0f)), this);
+            new PointerActor( new Transform( new Vector3(0f,-0.5f,radius), Tools.Euler(0f,90f,0f)), this);
             new CubeActor( new Transform( new Vector3(0f,-1f,radius), Quaternion.Identity, Vector3.One), this);
             
             new CubeActor( new Transform( new Vector3(-radius,-1f,0f), Quaternion.Identity, Vector3.One), this);
