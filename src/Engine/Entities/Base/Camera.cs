@@ -5,8 +5,13 @@ namespace Engine
 {
     public class Camera : Entity
     {
-        public float Zoom = 45f;
-        public float AspectRatio { get; set; } = 1.33333333333f;
+        public static float default_fov = 45f;
+        public static float default_aspect = 1.66666667f;
+        public static float near_clip = 0.01f;
+        public static float far_clip = 1000f;
+
+        public float FieldOfView { get; set; } = default_fov;
+        public float AspectRatio { get; set; } = default_aspect;
 
 
         private static readonly List<Camera> all_cameras = [];
@@ -86,7 +91,7 @@ namespace Engine
 
         public static Matrix4x4 GetCurrentProjectionMatrix()
         {
-            if(world_active_cam == null) return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(1f), 1.33333333333f, 0.001f, 400.0f);
+            if(world_active_cam == null) return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(1f), default_aspect, near_clip, far_clip);
             return world_active_cam.GetProjectionMatrix();
         }
         
@@ -104,6 +109,7 @@ namespace Engine
         public new Matrix4x4 GetViewMatrix()
         {
             Matrix4x4 mat = Matrix4x4.CreateTranslation(-transform.Position) * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(transform.Rotation)); 
+
             // Depth fix
             mat.M31 = -mat.M31;
             mat.M32 = -mat.M32;
@@ -114,7 +120,7 @@ namespace Engine
 
         public Matrix4x4 GetProjectionMatrix()
         {
-            return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(Zoom), AspectRatio, 0.001f, 400.0f);
+            return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(FieldOfView), AspectRatio, near_clip, far_clip);
         }
     }
 }

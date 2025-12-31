@@ -1,3 +1,4 @@
+using System.Numerics;
 using Engine;
 using Rendering;
 
@@ -50,9 +51,8 @@ namespace EntComponents
 
         protected override uint HandleUpdate()
         {
-            Host.Rotation *= Tools.Euler(0f,0.1f,0f);
-
-            // Camera.WorldCamera?.MoveTransform(new Transform(0f, 1f, 0f));
+            
+            Host.Rotation = Tools.LookAt( Host.Position, Camera.WorldCamera.Position, Tools.Up);
             return 1;
         }
     }

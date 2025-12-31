@@ -50,22 +50,24 @@ namespace Engine
             
             if (key == Key.Left)
             {
-                Camera.WorldCamera?.MoveTransform(new Transform(0f, 15f, 0f));
+                Camera.WorldCamera?.Rotation *= Tools.Euler(0f,15f,0f);
             }
             
             if (key == Key.Right)
             {
-                Camera.WorldCamera?.MoveTransform(new Transform(0f, -15f, 0f));
+                Camera.WorldCamera?.Rotation *= Tools.Euler(0f,-15f,0f);
             }
             
+            float camera_speed = 0.6f;
+
             if (key == Key.Up)
             {
-                Camera.WorldCamera?.MoveTransform(new Transform( Vector3.Transform(Tools.Forward * 0.1f, Camera.WorldCamera.Location.Rotation)));
+                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Forward * camera_speed, Camera.WorldCamera.Location.Rotation);
             }
             
             if (key == Key.Down)
             {
-                Camera.WorldCamera?.MoveTransform(new Transform( Vector3.Transform(Tools.Backward * 0.1f, Camera.WorldCamera.Location.Rotation)));
+                Camera.WorldCamera?.Position -= Vector3.Transform(Tools.Forward * camera_speed, Camera.WorldCamera.Location.Rotation);
             }
         }
 

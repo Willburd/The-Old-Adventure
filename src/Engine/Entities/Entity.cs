@@ -217,14 +217,7 @@ namespace Engine
             last_transform.Scale = transform.Scale;
         }
 
-        public void MoveTransform(Transform addition)
-        {
-            if(SendSignal(Core.Signals.move_relative, addition) > 0) return;
-            transform.Translate(addition.Position);
-            transform.Rotate(addition.Rotation);
-        }
-        
-        public void SetTransform(Transform assignment)
+        private void SetTransform(Transform assignment)
         {
             if(SendSignal(Core.Signals.move_absolute, assignment) > 0) return;
             transform.Set(assignment);

@@ -79,5 +79,12 @@ namespace Engine
             angles.Z = RadiansToDegrees(angles.Z);
             return angles;
         }
+
+        public static Quaternion LookAt(Vector3 current, Vector3 target, Vector3 up)
+        {
+            Vector3 dirvec = current - target;
+            dirvec = Vector3.Normalize(dirvec);
+            return Quaternion.CreateFromRotationMatrix(Matrix4x4.CreateLookToLeftHanded(Vector3.Zero,dirvec,Tools.Up));
+        }
     }
 }
