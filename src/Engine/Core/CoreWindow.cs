@@ -31,6 +31,7 @@ namespace Engine
             singleton?.OnLoadAssets();
 
             // Request the first frame right away!
+            RequestUpdate = true;
             RequestRender = true;
 
             // Finalize setup with gamespecific postinit.

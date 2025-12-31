@@ -16,6 +16,11 @@ namespace Engine
         private static double game_tick_accumulator = 0;
 
         /// <summary>
+        /// Skips delta_time check for updating.
+        /// </summary>
+        private static bool RequestUpdate {get; set;}
+
+        /// <summary>
         /// Number of game ticks since launch.
         /// </summary>
         public static long ElapsedGameTicks {get; private set;}
@@ -31,11 +36,12 @@ namespace Engine
         private static void HandleWindowUpdate(double deltaTime)
         {
             game_tick_accumulator += deltaTime;
-            if(game_tick_accumulator >= GameTickInterval)
+            if(game_tick_accumulator >= GameTickInterval || RequestUpdate)
             {
                 ElapsedGameTicks++;
                 singleton?.GameTick();
                 game_tick_accumulator %= GameTickInterval;
+                RequestUpdate = false;
             }
         }
 
