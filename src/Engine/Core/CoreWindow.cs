@@ -48,26 +48,36 @@ namespace Engine
                 WindowContext.Close();
             }
             
-            if (key == Key.Left)
+            // Rotate
+            if (key == Key.Q)
             {
                 Camera.WorldCamera?.Rotation *= Tools.Euler(0f,15f,0f);
             }
             
-            if (key == Key.Right)
+            if (key == Key.E)
             {
                 Camera.WorldCamera?.Rotation *= Tools.Euler(0f,-15f,0f);
             }
             
+            // Move
             float camera_speed = 0.6f;
-
-            if (key == Key.Up)
+            if (key == Key.W)
             {
                 Camera.WorldCamera?.Position += Vector3.Transform(Tools.Forward * camera_speed, Camera.WorldCamera.Location.Rotation);
             }
             
-            if (key == Key.Down)
+            if (key == Key.S)
             {
                 Camera.WorldCamera?.Position += Vector3.Transform(Tools.Backward * camera_speed, Camera.WorldCamera.Location.Rotation);
+            }
+            if (key == Key.A)
+            {
+                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Left * camera_speed, Camera.WorldCamera.Location.Rotation);
+            }
+            
+            if (key == Key.D)
+            {
+                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Right * camera_speed, Camera.WorldCamera.Location.Rotation);
             }
         }
 
