@@ -29,7 +29,7 @@ namespace TestAdventure
         public override void OnInit()
         {
             // Start up initial room
-            new TestRoom( Transform.Identity);
+            new TestRoom();
         }
 
         public override void OnGameTick()

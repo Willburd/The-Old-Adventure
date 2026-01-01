@@ -1,4 +1,6 @@
 
+using EntComponents;
+
 namespace Engine
 {
     public class Room : Entity
@@ -10,34 +12,46 @@ namespace Engine
 
         public List<Actor> ActorList {get; private set;} = [];
 
-        public Room(Transform initial_location) : base(initial_location, "Engine::Room")
+        public Room() : base(Transform.Identity, "Engine::Room")
         {
             Console.WriteLine("=====================================================");
             Console.WriteLine("=======> Room Loading : " + GetType());
             loaded_rooms.Add(this);
+            new WorldRender(this); // All scenes implicitly have this.
             LoadAssets();
             LoadActors();
+            LoadExits();
             Console.WriteLine("-------> Room Loaded : " + GetType());
             Console.WriteLine("-----------------------------------------------------");
         }
 
-        public virtual void LoadAssets()
-        {
-            
-        }
+        public readonly List<Type> exit_list = [];
 
-        public virtual void LoadActors()
-        {
-            
-        }
+        /// <summary>
+        /// Loads assets for the room itself, such as textures, materials, and even setting the room's render model.
+        /// </summary>
+        public virtual void LoadAssets() { }
         
-        public virtual void OnRoomUpdate()
-        {
-        }
-
-        public virtual void OnRoomDisabledUpdate()
-        {
-        }
+        /// <summary>
+        /// Called setup, used to spawn actors based on the current game's story information, time of day, or other logic.
+        /// </summary>
+        public virtual void LoadActors() { }
+        
+        /// <summary>
+        /// Called setup, used to assign exit_list types to spawn when that particular exit is used. Can also be used to spawn exit actors.
+        /// </summary>
+        public virtual void LoadExits() { }
+        
+        /// <summary>
+        /// Called during the update loop, when the room is Enabled
+        /// </summary>
+        public virtual void OnRoomUpdate() { }
+        
+        /// <summary>
+        /// Called during the update loop, but only when the room is not Enabled
+        /// </summary>
+        public virtual void OnRoomDisabledUpdate() { }
+        
 
         protected override void OnCleanup()
         {

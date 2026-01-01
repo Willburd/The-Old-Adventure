@@ -48,7 +48,7 @@ namespace EntComponents
 
         protected override uint HandleUpdate()
         {
-            Host.Rotation = Tools.LookAt( Host.Position, Camera.WorldCamera.Position);
+            Host.Rotation = Tools.LookAtLockedZ( Host.Position, Camera.WorldCamera.Position);
             return 1;
         }
     }
