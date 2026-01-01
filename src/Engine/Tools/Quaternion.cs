@@ -89,7 +89,7 @@ namespace Engine
         /// <returns></returns>
         public static Quaternion LookAt(Vector3 sourcePoint, Vector3 destPoint)
         {
-            Vector3 forwardVector = Vector3.Normalize(sourcePoint - destPoint);
+            Vector3 forwardVector = Vector3.Normalize(destPoint - sourcePoint);
 
             float dot = Vector3.Dot(Tools.Forward, forwardVector);
 
