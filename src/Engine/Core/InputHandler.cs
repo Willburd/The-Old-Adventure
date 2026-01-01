@@ -16,7 +16,7 @@ namespace Engine
         public static Key input_key_Right = Key.D;
         public static Key input_key_editor_up = Key.R;
         public static Key input_key_editor_down = Key.F;
-        public static Key input_key_exit = Key.W;
+        public static Key input_key_exit = Key.Escape;
 
         // Public interface
 

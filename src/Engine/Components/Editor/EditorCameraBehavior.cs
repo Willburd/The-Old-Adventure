@@ -18,7 +18,6 @@ namespace EntComponents
         {
             if(InputHandler.KeyPressed( InputHandler.input_key_exit ))
             {
-                Core.WindowContext.Close();
                 return 1;
             }
             
