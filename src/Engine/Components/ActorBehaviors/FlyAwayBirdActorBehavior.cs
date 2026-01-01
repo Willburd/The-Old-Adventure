@@ -36,6 +36,7 @@ namespace EntComponents.ActorBehavior
         protected override uint HandleCacheComponents()
         {
             TriggerVolume? trigger = (TriggerVolume?)Host.GetComponent(typeof(TriggerVolume));
+            
             // TODO - Set trigger volume size
 
             return 1;
