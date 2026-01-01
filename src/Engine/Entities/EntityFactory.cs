@@ -95,7 +95,6 @@ namespace Engine
                 case "EditorCameraBehavior":
                     return new EntComponents.EditorCameraBehavior(ent);
 
-
                 ///////////////////////////////////////////////////
                 // Behaviors
                 ///////////////////////////////////////////////////
@@ -108,7 +107,6 @@ namespace Engine
                 case "FlyAwayBirdActorBehavior":
                     return new EntComponents.ActorBehavior.FlyAwayBirdActorBehavior(ent);
             }
-        
         }
     }
 }
