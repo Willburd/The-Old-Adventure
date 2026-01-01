@@ -35,14 +35,14 @@ namespace Engine
         public static Vector3 Right {
             get
             {
-                return new Vector3(1f,0f,0f);
+                return new Vector3(-1f,0f,0f);
             }
         }
         
         public static Vector3 Left {
             get
             {
-                return new Vector3(-1f,0f,0f);
+                return new Vector3(1f,0f,0f);
             }
         }
     }
