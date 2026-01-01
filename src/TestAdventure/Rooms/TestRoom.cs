@@ -13,7 +13,7 @@ namespace TestAdventure
             
             float radius = 6f;
             
-            EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(0f,-1f,radius), Quaternion.Identity, Vector3.One * 1.5f), this, AssetLoader.AssetSource.engine);
+            EntityFactory.CreateActor( "actor_test", new Transform( new Vector3(0f,-1f,radius), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.adventure);
             
             EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(radius,-1f,0f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
 
