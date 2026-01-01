@@ -97,14 +97,15 @@ namespace Engine
         
         public new Matrix4x4 GetInterpolatedViewMatrix(double tick_delta)
         {
-            // Not sure why this is flipped yet...
-            Matrix4x4 mat = Matrix4x4.CreateTranslation( -GetInterpolatedPosition(tick_delta)) * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(GetInterpolatedRotation(tick_delta))); 
+            Matrix4x4.Invert(Matrix4x4.CreateTranslation(-GetInterpolatedPosition(tick_delta)), out Matrix4x4 pos);
+            Matrix4x4 mat = pos * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(GetInterpolatedRotation(tick_delta))); 
             return mat;
         }
 
         public new Matrix4x4 GetViewMatrix()
         {
-            Matrix4x4 mat = Matrix4x4.CreateTranslation( -transform.Position) * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(transform.Rotation)); 
+            Matrix4x4.Invert(Matrix4x4.CreateTranslation(-transform.Position), out Matrix4x4 pos);
+            Matrix4x4 mat = pos * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(transform.Rotation)); 
             return mat;
         }
 
