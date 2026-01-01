@@ -9,16 +9,18 @@ namespace TestAdventure
         {
             new Camera( new Transform( new Vector3(0f,0f,0f)), true);
 
+            new PointerActor( new Transform( new Vector3(0f,0f,0f)), this);
+            
+            
             float radius = 6f;
 
-            new PointerActor( new Transform( new Vector3(0f,1f,radius)), this);
             new CubeActor( new Transform( new Vector3(0f,-1f,radius), Quaternion.Identity, Vector3.One), this);
             
-            new CubeActor( new Transform( new Vector3(-radius,-1f,0f), Quaternion.Identity, Vector3.One), this);
+            new CubeActor( new Transform( new Vector3(-radius,-1f,0f), Quaternion.CreateFromAxisAngle(Tools.Up, 45f), Vector3.One), this);
             
             new CubeActor( new Transform( new Vector3(radius,-1f,0f), Quaternion.Identity, Vector3.One), this);
             
-            new CubeActor( new Transform( new Vector3(0f,-1f,-radius), Quaternion.Identity, Vector3.One), this);
+            new CubeActor( new Transform( new Vector3(0f,-1f,-radius), Quaternion.CreateFromAxisAngle(Tools.Up, 45f) * Quaternion.CreateFromAxisAngle(Tools.Right, 45f), Vector3.One), this);
         }
 
         public override void OnRoomUpdate()

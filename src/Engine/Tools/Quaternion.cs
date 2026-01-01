@@ -89,23 +89,23 @@ namespace Engine
         /// <returns></returns>
         public static Quaternion LookAt(Vector3 sourcePoint, Vector3 destPoint)
         {
-            Vector3 forwardVector = Vector3.Normalize(destPoint - sourcePoint);
+            Vector3 forwardVector = Vector3.Normalize(sourcePoint - destPoint);
 
             float dot = Vector3.Dot(Tools.Forward, forwardVector);
 
             if (Math.Abs(dot - (-1.0f)) < 0.000001f)
             {
-                return new Quaternion(Up.X, Up.Y, Up.Z, 3.1415926535897932f);
+                return new Quaternion(Up.X, Up.Y, Up.Z, MathF.PI);
             }
             if (Math.Abs(dot - (1.0f)) < 0.000001f)
             {
-                return Quaternion.Identity;
+                return new Quaternion(-Up.X, -Up.Y, -Up.Z, MathF.PI);
             }
 
             float rotAngle = (float)Math.Acos(dot);
             Vector3 rotAxis = Vector3.Cross(Tools.Forward, forwardVector);
             rotAxis = Vector3.Normalize(rotAxis);
-            return CreateFromAxisAngle(rotAxis, rotAngle);
+            return Quaternion.Normalize(CreateFromAxisAngle(rotAxis, rotAngle));
         }
 
         // just in case you need that function also
