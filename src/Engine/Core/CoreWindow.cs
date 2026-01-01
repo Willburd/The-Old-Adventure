@@ -1,7 +1,5 @@
 using Silk.NET.Input;
-using Silk.NET.Maths;
 using Silk.NET.Windowing;
-using System.Diagnostics;
 using Silk.NET.OpenGL;
 using System.Numerics;
 
@@ -19,7 +17,14 @@ namespace Engine
             IInputContext input = WindowContext.CreateInput();
             for (int i = 0; i < input.Keyboards.Count; i++)
             {
-                input.Keyboards[i].KeyDown += KeyDown;
+                input.Keyboards[i].KeyDown += HandleKeyDown;
+            }
+            
+            for (int i = 0; i < input.Mice.Count; i++)
+            {
+                input.Mice[i].Cursor.CursorMode = CursorMode.Raw;
+                input.Mice[i].MouseMove += HandleMouseRawUpdate;
+                input.Mice[i].Scroll += HandleMouseWheel;
             }
 
             // Get the openGL context from the window
@@ -41,7 +46,7 @@ namespace Engine
         /// <summary>
         /// Handles keyboard inputs from the window.
         /// </summary>
-        private static void KeyDown(IKeyboard keyboard, Key key, int keyCode)
+        private static void HandleKeyDown(IKeyboard keyboard, Key key, int keyCode)
         {
             // TEMP, we need an input handler here...
             if (key == Key.Escape)
@@ -91,6 +96,11 @@ namespace Engine
             {
                 Camera.WorldCamera?.Position += Tools.Down * camera_speed;
             }
+        }
+
+        private static void HandleMouseWheel(IMouse mouse, ScrollWheel scrollWheel)
+        {
+            
         }
 
         /// <summary>

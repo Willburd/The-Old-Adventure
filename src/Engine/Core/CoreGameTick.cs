@@ -1,3 +1,4 @@
+using System.Numerics;
 using EntComponents;
 
 namespace Engine
@@ -53,6 +54,7 @@ namespace Engine
             /////////////////////////////////////////////////
             // Preprocessing and room ticks
             /////////////////////////////////////////////////
+            MouseUpdate();
             OnPreGameTick();
             List<Entity> active_entities = [];
             List<Room> initing_rooms = [];
