@@ -7,7 +7,7 @@ namespace TestAdventure
     {
         public override void LoadActors()
         {
-            new Camera( new Transform( new Vector3(0f,0f,0f)), true);
+            new EditorCamera( new Transform( new Vector3(0f,0f,0f)), true);
 
             new PointerActor( new Transform( new Vector3(0f,0f,0f)), this);
             

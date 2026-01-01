@@ -18,8 +18,8 @@ namespace Engine
             for (int i = 0; i < input.Keyboards.Count; i++)
             {
                 input.Keyboards[i].KeyDown += HandleKeyDown;
+                input.Keyboards[i].KeyUp += HandleKeyUp;
             }
-            
             for (int i = 0; i < input.Mice.Count; i++)
             {
                 input.Mice[i].Cursor.CursorMode = CursorMode.Raw;
@@ -41,66 +41,6 @@ namespace Engine
 
             // Finalize setup with gamespecific postinit.
             singleton?.OnInit();
-        }
-
-        /// <summary>
-        /// Handles keyboard inputs from the window.
-        /// </summary>
-        private static void HandleKeyDown(IKeyboard keyboard, Key key, int keyCode)
-        {
-            // TEMP, we need an input handler here...
-            if (key == Key.Escape)
-            {
-                WindowContext.Close();
-            }
-            
-            // Rotate
-            if (key == Key.Q)
-            {
-                Camera.WorldCamera?.Rotation *= Tools.Euler(0f,15f,0f);
-            }
-            
-            if (key == Key.E)
-            {
-                Camera.WorldCamera?.Rotation *= Tools.Euler(0f,-15f,0f);
-            }
-            
-            // Move
-            float camera_speed = 0.6f;
-            if (key == Key.W)
-            {
-                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Forward * camera_speed, Camera.WorldCamera.Location.Rotation);
-            }
-            
-            if (key == Key.S)
-            {
-                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Backward * camera_speed, Camera.WorldCamera.Location.Rotation);
-            }
-            if (key == Key.A)
-            {
-                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Left * camera_speed, Camera.WorldCamera.Location.Rotation);
-            }
-            
-            if (key == Key.D)
-            {
-                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Right * camera_speed, Camera.WorldCamera.Location.Rotation);
-            }
-
-            
-            if (key == Key.R)
-            {
-                Camera.WorldCamera?.Position += Tools.Up * camera_speed;
-            }
-            
-            if (key == Key.F)
-            {
-                Camera.WorldCamera?.Position += Tools.Down * camera_speed;
-            }
-        }
-
-        private static void HandleMouseWheel(IMouse mouse, ScrollWheel scrollWheel)
-        {
-            
         }
 
         /// <summary>

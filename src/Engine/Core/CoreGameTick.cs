@@ -119,6 +119,9 @@ namespace Engine
             {
                 ent.SendSignal(Signals.post_update);
             }
+
+            // Finish up by telling the next frame if we held the key or not
+            input_handler.HeldKeyUpdate();
         }
     }
 }

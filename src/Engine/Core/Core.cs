@@ -52,6 +52,7 @@ namespace Engine
 
             // Start the window. Everything from here is handled by HandleWindowUpdate() and HandleWindowRender()
             WindowContext.Run();
+            // HandleWindowLoad() called from Run()
 
             // Finished game, end it off.
             WindowContext.Dispose();
