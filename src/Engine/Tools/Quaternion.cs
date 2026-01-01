@@ -80,17 +80,52 @@ namespace Engine
             return angles;
         }
 
-        public static Quaternion LookAt(Vector3 current, Vector3 target, Vector3 up)
+        // Yet another yoink from stackoverflow https://stackoverflow.com/questions/12435671/quaternion-lookat-function
+        /// <summary>
+        /// Evaluates a rotation needed to be applied to an object positioned at sourcePoint to face destPoint
+        /// </summary>
+        /// <param name="sourcePoint">Coordinates of source point</param>
+        /// <param name="destPoint">Coordinates of destionation point</param>
+        /// <returns></returns>
+        public static Quaternion LookAt(Vector3 sourcePoint, Vector3 destPoint)
         {
-            Vector3 dirvec = target - current;
-            return Quaternion.CreateFromRotationMatrix(Matrix4x4.CreateLookToLeftHanded(Vector3.Zero,Vector3.Normalize(dirvec),Tools.Up));
+            Vector3 forwardVector = Vector3.Normalize(destPoint - sourcePoint);
+
+            float dot = Vector3.Dot(Tools.Forward, forwardVector);
+
+            if (Math.Abs(dot - (-1.0f)) < 0.000001f)
+            {
+                return new Quaternion(Up.X, Up.Y, Up.Z, 3.1415926535897932f);
+            }
+            if (Math.Abs(dot - (1.0f)) < 0.000001f)
+            {
+                return Quaternion.Identity;
+            }
+
+            float rotAngle = (float)Math.Acos(dot);
+            Vector3 rotAxis = Vector3.Cross(Tools.Forward, forwardVector);
+            rotAxis = Vector3.Normalize(rotAxis);
+            return CreateFromAxisAngle(rotAxis, rotAngle);
         }
 
-        public static Quaternion LookAtLockedZ(Vector3 current, Vector3 target, Vector3 up)
+        // just in case you need that function also
+        public static Quaternion CreateFromAxisAngle(Vector3 axis, float angle)
+        {
+            float halfAngle = angle * .5f;
+            float s = (float)System.Math.Sin(halfAngle);
+            Quaternion q;
+            q.X = axis.X * s;
+            q.Y = axis.Y * s;
+            q.Z = axis.Z * s;
+            q.W = (float)System.Math.Cos(halfAngle);
+            return q;
+        }
+
+        public static Quaternion LookAtLockedZ(Vector3 current, Vector3 target)
         {
             current *= new Vector3(1f,0f,1f);
             target *= new Vector3(1f,0f,1f);
-            return LookAt(current, target, up);
+            return LookAt(current, target);
         }
     }
 }
