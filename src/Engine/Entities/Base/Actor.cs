@@ -4,7 +4,7 @@ namespace Engine
     {
         public Room? OwnerRoom {get; private set;} = null;
 
-        public Actor(Transform initial_location, Room? room_link) : base(initial_location)
+        public Actor(Transform initial_location, string entity_identity_key, Room? room_link) : base(initial_location, entity_identity_key)
         {
             if(room_link != null) LinkRoom(room_link);
         }

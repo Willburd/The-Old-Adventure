@@ -6,18 +6,18 @@ namespace Engine
     public partial class Core
     {
         /// <summary>
-        /// Override during OnInit() if your adventure requires an extended InputHandler()
+        /// Override during OnInit() with your own subtype if your adventure requires an extended InputHandler()
         /// </summary>
-        protected InputHandler input_handler = new InputHandler();
+        protected static InputHandler input_handler = new InputHandler();
 
         private static void HandleKeyDown(IKeyboard keyboard, Key key, int keyCode)
         {
-            singleton?.input_handler.InvokeKeyPressed(keyboard, key, keyCode);
+            input_handler.InvokeKeyPressed(keyboard, key, keyCode);
         }
 
         private static void HandleKeyUp(IKeyboard keyboard, Key key, int keyCode)
         {
-            singleton?.input_handler.InvokeKeyReleased(keyboard, key, keyCode);
+            input_handler.InvokeKeyReleased(keyboard, key, keyCode);
         }
 
         private static void HandleMouseWheel(IMouse mouse, ScrollWheel scrollWheel)

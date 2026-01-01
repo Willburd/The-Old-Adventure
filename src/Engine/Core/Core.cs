@@ -50,6 +50,9 @@ namespace Engine
             // Start setup with gamespecific preinit.
             OnPreInit();
 
+            // Load actory factory, override in OnPreInit() for your own adventure!
+            EntityFactory.InitLibrary();
+            
             // Start the window. Everything from here is handled by HandleWindowUpdate() and HandleWindowRender()
             WindowContext.Run();
             // HandleWindowLoad() called from Run()

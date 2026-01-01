@@ -8,12 +8,22 @@ namespace Engine
     /// </summary>
     public class Entity
     {
+
         private static readonly List<Entity> entity_list = [];
         public static List<Entity> EntityList { get {return entity_list;} }
 
+        public string EntityKey { get; private set;}
+
         public static void DestroyAllEntities()
         {
+            // Do rooms first
             List<Entity> removal_list = [.. EntityList]; 
+            foreach(Entity ent in removal_list)
+            {
+                if(ent is Room) ent.Destroy();
+            }
+            // Now unload the rest!
+            removal_list = [.. EntityList]; 
             foreach(Entity ent in removal_list)
             {
                 ent.Destroy();
@@ -40,9 +50,10 @@ namespace Engine
         /// </summary>
         public bool Enabled { get; set; } = true;
 
-        public Entity(Transform initial_location)
+        public Entity(Transform initial_location,string entity_identity_key)
         {
             entity_list.Add(this);
+            EntityKey = entity_identity_key;
             SetTransform(initial_location);
         }
 
@@ -60,6 +71,7 @@ namespace Engine
             }
             attached_components.Clear();
             OnCleanup();
+            Console.WriteLine("EntityDestroy-X " + EntityKey);
         }
 
         /// <summary>

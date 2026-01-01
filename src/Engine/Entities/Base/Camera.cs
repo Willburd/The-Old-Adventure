@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Engine
 {
-    public class Camera : Entity
+    public class Camera : Actor
     {
         public static float default_fov = 45f;
         public static float default_aspect = 1.66666667f;
@@ -14,7 +14,7 @@ namespace Engine
 
 
         private static readonly List<Camera> all_cameras = [];
-        public Camera(Transform initial_location, bool is_active) : base(initial_location)
+        public Camera(Transform initial_location, bool is_active, Room? room_link) : base(initial_location, "Engine::Camera", room_link)
         {
             all_cameras.Add(this);
             IsActive = is_active;

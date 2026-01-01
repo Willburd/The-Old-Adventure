@@ -1,0 +1,10 @@
+{
+    "actor_cube": [
+        "WorldRender",
+        "CubeActorBehavior"
+    ],
+    "actor_pointer": [
+        "WorldRender",
+        "PointerActorBehavior"
+    ]
+}
