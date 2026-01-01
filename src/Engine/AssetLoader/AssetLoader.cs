@@ -75,7 +75,6 @@ namespace Engine
         /// </summary>
         private static Object InvokeAsset(string asset_key, Asset new_asset)
         {
-            if(asset_library.ContainsKey(asset_key))  return asset_library[asset_key].Data;
             if(!new_asset.CheckIntegrity()) Console.WriteLine("ASSET LOAD FAILURE - " + asset_key + " : " + new_asset.FilePath);
             asset_library.Add(asset_key, new_asset);
             return new_asset.Data;
@@ -94,7 +93,9 @@ namespace Engine
         /// </summary>
         public static Rendering.ShaderData ShaderAssetLoad(string asset_key, string vertext_path, string frag_path, AssetSource source = AssetSource.adventure)
         {
-            return (ShaderData)InvokeAsset( AssetLoader.AssetKey(Asset.AssetType.shader, asset_key, source), new AssetShader(asset_key, vertext_path, frag_path));
+            string get_key = AssetLoader.AssetKey(Asset.AssetType.shader, asset_key, source);
+            if(asset_library.ContainsKey( get_key)) return (ShaderData)asset_library[get_key].Data;
+            return (ShaderData)InvokeAsset( get_key, new AssetShader(get_key, vertext_path, frag_path));
         }
 
         /// <summary>
@@ -102,7 +103,9 @@ namespace Engine
         /// </summary>
         public static ModelData ModelAssetLoad(string asset_key, string file_path, AssetSource source = AssetSource.adventure)
         {
-            return (ModelData)InvokeAsset( AssetLoader.AssetKey(Asset.AssetType.model, asset_key, source), new AssetModel(asset_key, file_path));
+            string get_key = AssetLoader.AssetKey(Asset.AssetType.model, asset_key, source);
+            if(asset_library.ContainsKey(get_key)) return (ModelData)asset_library[get_key].Data;
+            return (ModelData)InvokeAsset( get_key, new AssetModel(get_key, file_path));
         }
         
         /// <summary>
@@ -110,7 +113,9 @@ namespace Engine
         /// </summary>
         public static TextureData TextureAssetLoad(string asset_key, string file_path, AssetSource source = AssetSource.adventure)
         {
-            return (TextureData)InvokeAsset( AssetLoader.AssetKey(Asset.AssetType.textures, asset_key, source), new AssetTexture(asset_key, file_path));
+            string get_key = AssetLoader.AssetKey(Asset.AssetType.textures, asset_key, source);
+            if(asset_library.ContainsKey( get_key)) return (TextureData)asset_library[get_key].Data;
+            return (TextureData)InvokeAsset( get_key, new AssetTexture(get_key, file_path));
         }
 
         /// <summary>
@@ -118,7 +123,9 @@ namespace Engine
         /// </summary>
         public static MaterialData MaterialAssetLoad(string asset_key, MaterialData new_material, AssetSource source = AssetSource.adventure)
         {
-            return (MaterialData)InvokeAsset( AssetLoader.AssetKey(Asset.AssetType.material, asset_key, source), new AssetMaterial(asset_key, new_material));
+            string get_key = AssetLoader.AssetKey(Asset.AssetType.material, asset_key, source);
+            if(asset_library.ContainsKey( get_key)) return (MaterialData)asset_library[get_key].Data;
+            return (MaterialData)InvokeAsset( get_key, new AssetMaterial(get_key, new_material));
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
