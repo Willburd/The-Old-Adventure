@@ -16,11 +16,14 @@ namespace TestAdventure
     {
         public override void OnLoadAssets()
         {
-            // Load assets with the assetloader
-            base.OnLoadAssets();
+            // Load our global assets
 
-            // Loud our assets
-            // TODO
+        }
+
+        public override void OnPreInit()
+        {
+            // Sets engine to use our entity factory and all the entities we've made unique to our adventure.
+            EntityFactory.entity_Factory = new TestAdventureEntityFactory();
         }
 
         public override void OnInit()
@@ -32,14 +35,13 @@ namespace TestAdventure
         public override void OnGameTick()
         {
             // Handle global tick events
-            base.OnGameTick();
 
         }
 
         public override void OnEnd()
         {
             // Cleanup during shutdown
-            base.OnEnd();
+
         }
     }
 }
