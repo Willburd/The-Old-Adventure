@@ -80,6 +80,17 @@ namespace Engine
             {
                 Camera.WorldCamera?.Position += Vector3.Transform(Tools.Right * camera_speed, Camera.WorldCamera.Location.Rotation);
             }
+
+            
+            if (key == Key.R)
+            {
+                Camera.WorldCamera?.Position += Tools.Up * camera_speed;
+            }
+            
+            if (key == Key.F)
+            {
+                Camera.WorldCamera?.Position += Tools.Down * camera_speed;
+            }
         }
 
         /// <summary>
