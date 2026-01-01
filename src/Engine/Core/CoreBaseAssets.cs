@@ -24,7 +24,7 @@ namespace Engine
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Models: FBX, 0.01 scale, -Z forward, Y Upward
+            // Models: FBX, 0.01 scale, Z forward, Y Up
             AssetLoader.ModelAssetLoad( "cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.obj", AssetLoader.AssetSource.engine); 
 
 
