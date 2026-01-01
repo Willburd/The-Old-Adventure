@@ -68,7 +68,7 @@ namespace Engine
                 ent.SendSignal(Signals.pre_update, ent.Enabled);
                 if(ent.Enabled) 
                 {
-                    ent.SnapTransform();
+                    ent.SnapTransform(); // Update the previous location transform
                     active_entities.Add(ent);
                 }
             }
@@ -96,8 +96,13 @@ namespace Engine
             }
             
             /////////////////////////////////////////////////
-            // Collisions
+            // Physics and Collisions
             /////////////////////////////////////////////////
+            OnPhysicsTick();
+            foreach(Entity ent in active_entities)
+            {
+                ent.SendSignal(Signals.apply_physics);
+            }
             List<EntComponent> all_colliders = EntComponent.GetAllOfType(typeof(Collider));
             foreach(Collider collider in all_colliders.Cast<Collider>())
             {
@@ -111,7 +116,6 @@ namespace Engine
             OnGameTick();
             foreach(Entity ent in active_entities)
             {
-                ent.SendSignal(Signals.apply_physics);
                 ent.SendSignal(Signals.update);
             }
             OnPostGameTick();

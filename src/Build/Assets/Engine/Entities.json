@@ -10,6 +10,7 @@
     "actor_bird": [
         "WorldRender",
         "TriggerVolume",
+        "PhysicsBody",
         "FlyAwayBirdActorBehavior"
     ]
 }

@@ -34,6 +34,11 @@ namespace Engine
         public virtual void OnGameTick() {}
         
         /// <summary>
+        /// Virtual function that called before the game tick processes all active physics components.
+        /// </summary>
+        public virtual void OnPhysicsTick() {}
+
+        /// <summary>
         /// Virtual function for game specific behaviors. Called after the game tick processes all active entities.
         /// </summary>
         public virtual void OnPostGameTick() {}

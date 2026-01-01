@@ -86,6 +86,8 @@ namespace Engine
                 case "WorldRender":
                     return new EntComponents.WorldRender(ent);
 
+                case "PhysicsBody":
+                    return new EntComponents.PhysicsBody(ent);
 
                 ///////////////////////////////////////////////////
                 // Editor
