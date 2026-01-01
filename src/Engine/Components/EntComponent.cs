@@ -1,4 +1,5 @@
 using Engine;
+using Silk.NET.Input;
 
 namespace EntComponents
 {
@@ -10,6 +11,8 @@ namespace EntComponents
         private static readonly Dictionary<Type,List<EntComponent>> all_components = [];
 
         public Entity Host { get; }
+
+        public bool ActiveUpdate { get; set; }
 
         public EntComponent(Entity host_entity)
         {
@@ -89,13 +92,22 @@ namespace EntComponents
                     return HandleCacheComponents();
 
                 case Core.Signals.pre_update:
+                    if(!ActiveUpdate) return 0;
                     return HandlePreUpdate();
 
                 case Core.Signals.update:
+                    if(!ActiveUpdate) return 0;
                     return HandleUpdate();
 
                 case Core.Signals.post_update:
+                    if(!ActiveUpdate) return 0;
                     return HandlePostUpdate();
+
+                case Core.Signals.collision:
+                    return HandleCollision((List<Collider.Collision>)args[0]);
+
+                case Core.Signals.trigger:
+                    return HandleTrigger((List<Collider.Collision>)args[0]);
             }
             return 0;
         }
@@ -154,6 +166,22 @@ namespace EntComponents
         protected virtual uint HandlePostUpdate()
         {
             return 1;
+        }
+
+        /// <summary>
+        /// Used to respond to collisions.
+        /// </summary>
+        protected virtual uint HandleCollision(List<Collider.Collision> collisions)
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// Used to respond to trigger entry.
+        /// </summary>
+        protected virtual uint HandleTrigger(List<Collider.Collision> collisions)
+        {
+            return 0;
         }
 
         /// <summary>

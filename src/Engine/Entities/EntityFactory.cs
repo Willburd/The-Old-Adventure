@@ -66,48 +66,45 @@ namespace Engine
         /// <summary>
         /// Attaches components to entities.
         /// </summary>
-        protected virtual void ProduceComponents(Entity ent, string entity_key, string component_key)
+        protected virtual EntComponents.EntComponent ProduceComponents(Entity ent, string entity_key, string component_key)
         {
             switch(component_key)
             {
                 default:
                     Debug.Assert(false,"A non existant component typekey was added to a " + entity_key + " during json decode: " + component_key);
-                    return;
+                    return null;
 
                 ///////////////////////////////////////////////////
                 // Base
                 ///////////////////////////////////////////////////
                 case "Collider":
-                    new EntComponents.Collider(ent);
-                    return;
+                    return new EntComponents.Collider(ent);
 
                 case "TriggerVolume":
-                    new EntComponents.TriggerVolume(ent);
-                    return;
+                    return new EntComponents.TriggerVolume(ent);
 
                 case "WorldRender":
-                    new EntComponents.WorldRender(ent);
-                    return;
+                    return new EntComponents.WorldRender(ent);
 
 
                 ///////////////////////////////////////////////////
                 // Editor
                 ///////////////////////////////////////////////////
                 case "EditorCameraBehavior":
-                    new EntComponents.EditorCameraBehavior(ent);
-                    return;
+                    return new EntComponents.EditorCameraBehavior(ent);
 
 
                 ///////////////////////////////////////////////////
-                // Testing
+                // Behaviors
                 ///////////////////////////////////////////////////
                 case "CubeActorBehavior":
-                    new EntComponents.CubeActorBehavior(ent);
-                    return;
+                    return new EntComponents.ActorBehavior.CubeActorBehavior(ent);
 
                 case "PointerActorBehavior":
-                    new EntComponents.PointerActorBehavior(ent);
-                    return;
+                    return new EntComponents.ActorBehavior.PointerActorBehavior(ent);
+
+                case "FlyAwayBirdActorBehavior":
+                    return new EntComponents.ActorBehavior.FlyAwayBirdActorBehavior(ent);
             }
         
         }

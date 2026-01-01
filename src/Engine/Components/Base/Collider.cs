@@ -11,15 +11,21 @@ namespace EntComponents
         private readonly bool debug_vis = false; // Debugging only
         public bool IsTrigger { get; set; } = false;
 
-        
+        public struct Collision(Collider source, Collider crosser)
+        {
+            public Collider source_collider = source;
+            public Collider triggering_collider = crosser;
+        }
+
+
         /// <summary>
         /// Checks against all colliders in a list and handle collisions for each.
         /// </summary>
         public void CheckCollisions(List<EntComponent> all_colliders)
         {
             // TODO - Update these from a list of colliders, to be structs of collision information, with the nearest position on the collider, the colliders involve, the origin position, distance to, etc.
-            List<EntComponent> all_collisions = [];
-            List<EntComponent> all_triggers = [];
+            List<Collision> all_collisions = [];
+            List<Collision> all_triggers = [];
 
             foreach(Collider col in all_colliders.Cast<Collider>())
             {
@@ -36,12 +42,12 @@ namespace EntComponents
                     {
                         if(!col.IsTrigger)
                         {
-                            all_triggers.Add(col);
+                            all_triggers.Add(new Collision(this, col));
                         }
                         continue;
                     }
                     // The other colliders cannot be a trigger, so we've found an actual collision!
-                    all_collisions.Add(col);
+                    all_collisions.Add(new Collision(this, col));
                 }
             }
 
@@ -61,7 +67,7 @@ namespace EntComponents
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-         
+        
         public override List<Core.Signals> DefaultSignals()
         {
             if(!debug_vis) return [];

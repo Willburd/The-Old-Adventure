@@ -6,20 +6,23 @@ namespace Engine
         {
             switch(component_key)
             {
-
-                // Actor behaviors
-                case "TestActorBehavior":
-                    new EntComponents.TestActorBehavior(ent);
-                    return;
-
-
-                // Scene behaviors
-
-
-
                 default:
                     base.ProduceComponents(ent, entity_key, component_key);
                     return;
+
+                ///////////////////////////////////////////////////
+                // Actor behaviors
+                ///////////////////////////////////////////////////
+                
+                case "TestActorBehavior":
+                    new EntComponents.ActorBehavior.TestActorBehavior(ent);
+                    return;
+
+
+                ///////////////////////////////////////////////////
+                // Scene behaviors
+                ///////////////////////////////////////////////////
+
             }            
         }
     }

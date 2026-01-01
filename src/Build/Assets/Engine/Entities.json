@@ -6,5 +6,10 @@
     "actor_pointer": [
         "WorldRender",
         "PointerActorBehavior"
+    ],
+    "actor_bird": [
+        "WorldRender",
+        "TriggerVolume",
+        "FlyAwayBirdActorBehavior"
     ]
 }
