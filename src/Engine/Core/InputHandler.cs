@@ -25,7 +25,12 @@ namespace Engine
         /// </summary>
         public static bool KeyPressed(Key key)
         {
-            if(!input_state.ContainsKey(key)) return false;
+            if(!input_state.ContainsKey(key)) 
+            {
+                input_state.Add(key,false);
+                previous_input_state.Add(key,false);
+                return false;
+            }
             return input_state[key] && !previous_input_state[key];
         }
         
@@ -34,7 +39,12 @@ namespace Engine
         /// </summary>
         public static bool KeyReleased(Key key)
         {
-            if(!input_state.ContainsKey(key)) return false;
+            if(!input_state.ContainsKey(key)) 
+            {
+                input_state.Add(key,false);
+                previous_input_state.Add(key,false);
+                return false;
+            }
             return !input_state[key] && previous_input_state[key];
         }
         
