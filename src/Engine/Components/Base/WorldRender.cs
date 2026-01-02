@@ -40,7 +40,7 @@ namespace EntComponents
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
-        public override List<Core.Signals> DefaultSignals()
+        public override List<Core.Signals> PrepareSignals()
         {
             return [Core.Signals.render_priority, Core.Signals.render];
         }

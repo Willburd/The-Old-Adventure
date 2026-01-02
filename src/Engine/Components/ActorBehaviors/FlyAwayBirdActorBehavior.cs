@@ -13,7 +13,7 @@ namespace EntComponents.ActorBehavior
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
-        public override List<Core.Signals> DefaultSignals()
+        public override List<Core.Signals> PrepareSignals()
         {
             return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.cache_components, Core.Signals.update, Core.Signals.trigger];
         }
@@ -36,7 +36,7 @@ namespace EntComponents.ActorBehavior
         protected override uint HandleCacheComponents()
         {
             TriggerVolume? trigger = (TriggerVolume?)Host.GetComponent(typeof(TriggerVolume));
-            
+
             // TODO - Set trigger volume size
 
             return 1;

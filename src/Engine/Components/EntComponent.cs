@@ -48,7 +48,7 @@ namespace EntComponents
         /// <summary>
         /// Returns a list of signals that this component subscribes to by default, for both register and unregister. Making it easy to sub to multiple signals with minimal conditions. Otherwise override RegisterSignals() and UnregisterSignals().
         /// </summary>
-        public virtual List<Core.Signals> DefaultSignals()
+        public virtual List<Core.Signals> PrepareSignals()
         {
             return [];
         }
@@ -58,7 +58,7 @@ namespace EntComponents
         /// </summary>
         public virtual void RegisterSignals()
         {
-            foreach(Core.Signals sig in DefaultSignals())
+            foreach(Core.Signals sig in PrepareSignals())
             {
                 Host.RegisterSignal(sig, this);
             }
@@ -69,7 +69,7 @@ namespace EntComponents
         /// </summary>
         public virtual void UnregisterSignals()
         {
-            foreach(Core.Signals sig in DefaultSignals())
+            foreach(Core.Signals sig in PrepareSignals())
             {
                 Host.UnregisterSignal(sig, this);
             }

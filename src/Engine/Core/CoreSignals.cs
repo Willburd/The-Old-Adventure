@@ -29,8 +29,13 @@ namespace Engine
             move_relative,          // (Transform changing_by) : Adds the provided transform to the current transform components's position
 
             // Collision and triggers
-            collision,              // (List<Collider>) : Called from Collider component, returns all collisions during the game tick.
-            trigger,                // (List<Collider>) : Called from Collider component, returns all collisions during the game tick.
+            collision,              // (List<Collider.Collision>) : Called from Collider component, returns all collisions during the game tick.
+            trigger,                // (List<Collider.Collision>) : Called from Collider component, returns all collisions during the game tick.
+
+            // Raycasting
+            raycast_collisions,     // (List<Collider.RaycastHit>) : 
+            raycast_triggers,       // (List<Collider.RaycastHit>) : 
+            raycast_worldgeometry,  // (List<Collider.RaycastHit>) : 
 
             // Global signals
             global_fadeout_begin,     // () : Called when a fadeout begins.

@@ -68,10 +68,26 @@ namespace EntComponents
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
-        public override List<Core.Signals> DefaultSignals()
+        public override List<Core.Signals> PrepareSignals()
         {
-            if(!debug_vis) return [];
-            return [Core.Signals.render_priority,Core.Signals.render];
+            List<Core.Signals> sig_list = [];
+
+            if(debug_vis) 
+            {
+                sig_list.Add(Core.Signals.render_priority);
+                sig_list.Add(Core.Signals.render);
+            }
+
+            if(IsTrigger)
+            {
+                sig_list.Add(Core.Signals.raycast_triggers);
+            }
+            else
+            {
+                sig_list.Add(Core.Signals.raycast_collisions);
+            }
+
+            return sig_list;
         }
 
         public override uint ReceiveSignal(Core.Signals signal, object[] args)
