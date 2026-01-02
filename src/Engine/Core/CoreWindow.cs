@@ -30,6 +30,9 @@ namespace Engine
             // Get the openGL context from the window
             OpenGLContext = WindowContext.CreateOpenGL();
             singleton?.ConfigureGL();
+            
+            // Set buffering mode
+            WindowContext.ShouldSwapAutomatically = false;
 
             // Load adventure specific assets
             singleton?.LoadBaseAssets();

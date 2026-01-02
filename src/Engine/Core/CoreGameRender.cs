@@ -1,4 +1,5 @@
 using Silk.NET.OpenGL;
+using Silk.NET.Windowing;
 using System.Drawing;
 using System.Numerics;
 
@@ -43,7 +44,7 @@ namespace Engine
         /// </summary>
         public virtual void ConfigureGL()
         {
-            // Default draw color
+            // Default draw control
             OpenGLContext?.ClearColor(Color.CornflowerBlue);
             
             // Depth control
@@ -71,6 +72,7 @@ namespace Engine
                 singleton?.RenderTick(GameTickDelta); 
                 game_fps_accumulator %= FpsTickInterval;
                 RequestRender = false;
+                WindowContext.SwapBuffers();
             }
         }
 
