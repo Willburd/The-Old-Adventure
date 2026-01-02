@@ -1,6 +1,6 @@
 {
-    "actor_test": [
-        "WorldRender",
-        "TestActorBehavior"
-    ]
+    "actor_test": {
+        "WorldRender": {},
+        "TestActorBehavior": {}
+    }
 }

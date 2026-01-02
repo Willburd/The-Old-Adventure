@@ -30,18 +30,19 @@ namespace Engine
             foreach(KeyValuePair<string,JToken?> entry in json_decode)
             {
                 string actor_key = GetEntityPrefix(source) + entry.Key;
-                List<string>? component_keys = entry.Value?.ToObject<List<string>>(); 
-                if(component_keys != null && component_keys.Count > 0)
-                {
-                    entity_library.Add(actor_key, component_keys);
-                }
-                else
-                {
+                if(entry.Value == null || !entry.Value.HasValues)
+                {   
                     Debug.Assert(false, "entities.json had invalid key " + actor_key + ". No component list?");
+                    continue;
                 }
+                List<string> components = [];
+                foreach(JProperty component_entry in entry.Value.Children().Cast<JProperty>())
+                {
+                    components.Add(component_entry.Name);
+                }
+                entity_library.Add(actor_key, components);
             }
         }
-
 
         /// <summary>
         /// Library of entity keys to components they contain.
