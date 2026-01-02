@@ -19,7 +19,7 @@ namespace TestAdventure
             AssetLoader.MaterialAssetLoad( "testroom_terrain", new( [terrain_tex], [new MaterialUniformData("uTexture0", 0)], standard_shader));
             
             // Model
-            AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryEngine + "/Models/cube.obj");
+            AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx");
         }
 
         public override void LoadActors()

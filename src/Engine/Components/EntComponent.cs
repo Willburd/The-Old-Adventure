@@ -12,7 +12,7 @@ namespace EntComponents
 
         public Entity Host { get; }
 
-        public bool ActiveUpdate { get; set; }
+        public bool ActiveUpdate { get; set; } = true;
 
         public EntComponent(Entity host_entity)
         {

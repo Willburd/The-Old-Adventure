@@ -27,7 +27,7 @@ namespace EntComponents.ActorBehavior
             AssetLoader.MaterialAssetLoad( "example", new( [example_tex], [new MaterialUniformData("uTexture0", 0)], standard_shader), AssetLoader.AssetSource.engine);
             
             // Model
-            AssetLoader.ModelAssetLoad( "test_cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.obj", AssetLoader.AssetSource.engine);
+            AssetLoader.ModelAssetLoad( "test_cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
 
             return 1;
         }
