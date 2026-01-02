@@ -38,7 +38,7 @@ namespace Engine
 #pragma warning restore CS8618
 
         // Entry point
-        public Core(string id = "Engine")
+        public Core(string id = "UnitTest")
         {
             
             adventure_id = id;
