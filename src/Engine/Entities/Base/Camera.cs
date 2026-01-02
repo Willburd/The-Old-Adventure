@@ -54,13 +54,13 @@ namespace Engine
                     if(world_active_cam != null && world_active_cam != this)
                     {
                         world_active_cam.camera_active = false;
-                        SendGlobalSignal(Core.Signals.camera_deactivated, world_active_cam);
+                        SendGlobalSignal(Core.Signals.global_camera_deactivated, world_active_cam);
                     }
 
                     // Enable just us
                     camera_active = value;
                     world_active_cam = this;
-                    SendGlobalSignal(Core.Signals.camera_activated, this);
+                    SendGlobalSignal(Core.Signals.global_camera_activated, this);
                     return;
                 }
                 
@@ -68,7 +68,7 @@ namespace Engine
                 if(camera_active) 
                 {
                     camera_active = false;
-                    SendGlobalSignal(Core.Signals.camera_deactivated, this);
+                    SendGlobalSignal(Core.Signals.global_camera_deactivated, this);
                     world_active_cam = null;
                 }
             } 

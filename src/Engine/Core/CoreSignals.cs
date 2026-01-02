@@ -33,9 +33,7 @@ namespace Engine
             trigger,                // (List<Collider.Collision>) : Called from Collider component, returns all collisions during the game tick.
 
             // Raycasting
-            raycast_collisions,     // (List<Collider.RaycastHit>) : 
-            raycast_triggers,       // (List<Collider.RaycastHit>) : 
-            raycast_worldgeometry,  // (List<Collider.RaycastHit>) : 
+            global_raycast,         // (Collider.Raycast, List<Collider.RaycastHit>) : 
 
             // Global signals
             global_fadeout_begin,     // () : Called when a fadeout begins.
@@ -44,8 +42,8 @@ namespace Engine
             global_room_loaded,       // (Room loaded) : Called when a room loads. Handles room start events.
             global_cutscene_begin,    // (Cutscene begin) : Called when a cutscene begins.
             global_cutscene_end,      // (Cutscene begin) : Called when a cutscene ends
-            camera_activated,         // (Camera active_camera) : When a camera becomes the active camera
-            camera_deactivated        // (Camera deactivated_camera) : When a camera is disabled
+            global_camera_activated,  // (Camera active_camera) : When a camera becomes the active camera
+            global_camera_deactivated  // (Camera deactivated_camera) : When a camera is disabled
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Numerics;
 using Engine;
 
 namespace EntComponents
@@ -8,8 +9,9 @@ namespace EntComponents
     public class Collider(Entity host_entity) : EntComponent(host_entity)
     {
         public bool Active { get; set; }
-        private readonly bool debug_vis = false; // Debugging only
         public bool IsTrigger { get; set; } = false;
+        
+        private readonly bool debug_vis = false; // Debugging only
 
         public struct Collision(Collider source, Collider crosser)
         {
@@ -17,6 +19,43 @@ namespace EntComponents
             public Collider triggering_collider = crosser;
         }
 
+        public struct Raycast(Vector3 startpos, Vector3 endpos, ColliderType checking_for)
+        {
+            public Vector3 start_vector = startpos;
+            public Vector3 end_vector = endpos;
+            public ColliderType check_type = checking_for;
+        }
+
+        public struct RaycastHit(Vector3 startpos, Vector3 endpos, Collider hit_col, Vector3 hit_pos)
+        {
+            public Vector3 start_vector = startpos;
+            public Vector3 end_vector  = endpos;
+            public Collider hit_collider = hit_col;
+            public Vector3 hit_position = hit_pos;
+        }
+
+        public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 end, ColliderType filter)
+        {
+            List<RaycastHit> hit_rays = [];
+            Raycast ray = new(start, end, filter);
+            Entity.SendGlobalSignal(Core.Signals.global_raycast, ray, hit_rays);
+
+            return hit_rays;
+        }
+
+        /// <summary>
+        /// Each collider has a shape that is used to check against other colliders and raycasts.
+        /// </summary>
+        protected ColliderType CollisionShape { get; set; } = ColliderType.None;
+        public enum ColliderType
+        {
+            None,
+            Plane,
+            AxisBox,
+            VertRadius,
+            Sphere,
+            Mesh
+        }
 
         /// <summary>
         /// Checks against all colliders in a list and handle collisions for each.
@@ -34,20 +73,21 @@ namespace EntComponents
                 // Forbid trigger reverse detection
                 if(col.IsTrigger) continue;
 
-                // Check for overlap, we must BOTH collide!
-                if(IsColliding(col) && col.IsColliding(this)) 
+                // Check for overlap
+                Collision? check_collision = CheckIsColliding(col);
+                if(check_collision != null) 
                 {
                     // Triggers only detect collisions with physics colliders, and not with other triggers
                     if(IsTrigger)
                     {
                         if(!col.IsTrigger)
                         {
-                            all_triggers.Add(new Collision(this, col));
+                            all_triggers.Add((Collision)check_collision);
                         }
                         continue;
                     }
                     // The other colliders cannot be a trigger, so we've found an actual collision!
-                    all_collisions.Add(new Collision(this, col));
+                    all_collisions.Add((Collision)check_collision);
                 }
             }
 
@@ -57,11 +97,19 @@ namespace EntComponents
         }
 
         /// <summary>
-        /// Checks if this colliders is overlapping with another collider. Returns true if so.
+        /// Checks if this collider is overlapping with another collider.
         /// </summary>
-        public virtual bool IsColliding(Collider other_col)
+        public Collision? CheckIsColliding(Collider other_col)
         {
-            return false;
+            return null;
+        }
+
+        /// <summary>
+        /// Checks if a raycast collides with a collider.
+        /// </summary>
+        public uint CheckIsRayHit(Raycast ray, List<RaycastHit> hits)
+        {
+            return 0;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,16 +125,7 @@ namespace EntComponents
                 sig_list.Add(Core.Signals.render_priority);
                 sig_list.Add(Core.Signals.render);
             }
-
-            if(IsTrigger)
-            {
-                sig_list.Add(Core.Signals.raycast_triggers);
-            }
-            else
-            {
-                sig_list.Add(Core.Signals.raycast_collisions);
-            }
-
+            sig_list.Add(Core.Signals.global_raycast);
             return sig_list;
         }
 
@@ -101,6 +140,10 @@ namespace EntComponents
                 case Core.Signals.render:
                     // Render our collider shape
                     return 1;
+
+                case Core.Signals.global_raycast:
+                    // Check our collision vs the incoming ray
+                    return CheckIsRayHit((Raycast)args[0], (List<RaycastHit>)args[1]);
             }
             return base.ReceiveSignal(signal,args);
         }
