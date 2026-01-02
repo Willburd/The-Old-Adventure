@@ -24,6 +24,7 @@ namespace EntComponents
 
         public void SetMaterial(MaterialData apply_mat, int mesh_index)
         {
+            if(mesh_index < 0 || mesh_index >= materials.Count) return;
             materials[mesh_index] = apply_mat;
         }
 

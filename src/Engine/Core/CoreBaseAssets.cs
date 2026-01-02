@@ -14,17 +14,21 @@ namespace Engine
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Textures
-            TextureData example_texture     = AssetLoader.TextureAssetLoad( "example", AssetLoader.AssetDirectoryEngine + "/Textures/example.png", AssetLoader.AssetSource.engine);
+                                            AssetLoader.TextureAssetLoad( "no_tex", AssetLoader.AssetDirectoryEngine + "/Textures/no_texture.png", AssetLoader.AssetSource.engine);
+            TextureData nomat_texture     = AssetLoader.TextureAssetLoad( "no_mat", AssetLoader.AssetDirectoryEngine + "/Textures/no_material.png", AssetLoader.AssetSource.engine);
+            TextureData example_texture   = AssetLoader.TextureAssetLoad( "example", AssetLoader.AssetDirectoryEngine + "/Textures/example.png", AssetLoader.AssetSource.engine);
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Materials
             AssetLoader.MaterialAssetLoad( "debug_normals", new( [], [], shader_debugnormals), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad( "no_mat", new( [nomat_texture], [new MaterialUniformData("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
             AssetLoader.MaterialAssetLoad( "example", new( [example_texture], [new MaterialUniformData("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Models: FBX, 0.01 scale, Z forward, Y Up
+            AssetLoader.ModelAssetLoad( "no_model", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine); 
             AssetLoader.ModelAssetLoad( "cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine); 
 
 

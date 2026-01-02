@@ -105,6 +105,11 @@ namespace Engine
         {
             string get_key = AssetLoader.AssetKey(Asset.AssetType.model, asset_key, source);
             if(asset_library.ContainsKey(get_key)) return (ModelData)asset_library[get_key].Data;
+            // Check if exists
+            if(!File.Exists(file_path)) 
+            {
+                return (ModelData)LocateAsset(AssetLoader.AssetKey(Asset.AssetType.model, "no_model", AssetSource.engine)).Data;
+            }
             return (ModelData)InvokeAsset( get_key, new AssetModel(get_key, file_path));
         }
         
@@ -115,6 +120,11 @@ namespace Engine
         {
             string get_key = AssetLoader.AssetKey(Asset.AssetType.textures, asset_key, source);
             if(asset_library.ContainsKey( get_key)) return (TextureData)asset_library[get_key].Data;
+            // Check if exists
+            if(!File.Exists(file_path)) 
+            {
+                return (TextureData)LocateAsset(AssetLoader.AssetKey(Asset.AssetType.textures, "no_tex", AssetSource.engine)).Data;
+            }
             return (TextureData)InvokeAsset( get_key, new AssetTexture(get_key, file_path));
         }
 
@@ -163,7 +173,6 @@ namespace Engine
         public static Asset LocateAsset(string asset_key)
         {
             asset_library.TryGetValue(asset_key, out Asset? found_asset);
-            Debug.Assert(found_asset != null);
             return found_asset;
         }
         
@@ -184,6 +193,7 @@ namespace Engine
         public static Rendering.ModelData ModelAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
             Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.model, asset_key, source));
+            ast ??= LocateAsset(AssetLoader.AssetKey(Asset.AssetType.model, "no_model", AssetSource.engine));
             Debug.Assert(ast.CheckType(Asset.AssetType.model));
             return (Rendering.ModelData)ast.Data;
         }
@@ -194,6 +204,7 @@ namespace Engine
         public static Rendering.TextureData TextureAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
             Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.textures, asset_key, source));
+            ast ??= LocateAsset(AssetLoader.AssetKey(Asset.AssetType.textures, "no_tex", AssetSource.engine));
             Debug.Assert(ast.CheckType(Asset.AssetType.textures));
             return (Rendering.TextureData)ast.Data;
         }
@@ -204,6 +215,7 @@ namespace Engine
         public static Rendering.MaterialData MaterialAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
             Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.material, asset_key, source));
+            ast ??= LocateAsset(AssetLoader.AssetKey(Asset.AssetType.material, "no_mat", AssetSource.engine));
             Debug.Assert(ast.CheckType(Asset.AssetType.material));
             return (Rendering.MaterialData)ast.Data;
         }
