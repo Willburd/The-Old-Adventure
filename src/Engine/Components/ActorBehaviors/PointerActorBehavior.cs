@@ -12,7 +12,7 @@ namespace EntComponents.ActorBehavior
         
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.cache_components, Core.Signals.update];
+            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.link_components, Core.Signals.update];
         }
 
         protected override uint HandleAssetLoad()

@@ -88,7 +88,7 @@ namespace EntComponents
                 case Core.Signals.create:
                     return HandleCreate();
                     
-                case Core.Signals.cache_components:
+                case Core.Signals.link_components:
                     return HandleLinkingComponents();
 
                 case Core.Signals.pre_update:
