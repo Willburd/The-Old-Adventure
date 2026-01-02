@@ -10,6 +10,7 @@ namespace Engine
             create,                 // () : Called after asset load during OnInit()
             cache_components,       // () : Called after create during OnInit(). Allows for components to cache each other for quicker use. Done as it's own step to ensure all components have finished being added.
             destroy,                // () : Called when an entity is destroyed.
+            unittest,               // () : Unit testing hook
 
             // Update
             pre_update,             // () : Custom entity early update
@@ -44,7 +45,8 @@ namespace Engine
             global_cutscene_begin,    // (Cutscene begin) : Called when a cutscene begins.
             global_cutscene_end,      // (Cutscene begin) : Called when a cutscene ends
             global_camera_activated,  // (Camera active_camera) : When a camera becomes the active camera
-            global_camera_deactivated  // (Camera deactivated_camera) : When a camera is disabled
+            global_camera_deactivated, // (Camera deactivated_camera) : When a camera is disabled
+            global_unittest            // () : Unit testing hook
         }
     }
 }
