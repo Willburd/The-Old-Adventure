@@ -33,7 +33,8 @@ namespace Engine
             trigger,                // (List<Collider.Collision>) : Called from Collider component, returns all collisions during the game tick.
 
             // Raycasting
-            global_raycast,         // (Collider.Raycast, List<Collider.RaycastHit>) : 
+            raycast,                // (Collider.Raycast, List<ref Collider.RaycastHit>) : Check for raycast line intersection with colliders
+            global_raycast,         // (Collider.Raycast, List<ref Collider.RaycastHit>) : Check for raycast line intersection with ALL colliders
 
             // Global signals
             global_fadeout_begin,     // () : Called when a fadeout begins.

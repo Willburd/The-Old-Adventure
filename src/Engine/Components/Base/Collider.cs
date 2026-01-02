@@ -125,6 +125,7 @@ namespace EntComponents
                 sig_list.Add(Core.Signals.render_priority);
                 sig_list.Add(Core.Signals.render);
             }
+            sig_list.Add(Core.Signals.raycast);
             sig_list.Add(Core.Signals.global_raycast);
             return sig_list;
         }
@@ -135,12 +136,13 @@ namespace EntComponents
             {
                 case Core.Signals.render_priority:
                     // If we're not subbed, this never gets called.
-                    return 256;
+                    return 255;
 
                 case Core.Signals.render:
-                    // Render our collider shape
+                    // Render our collider shape if debugging, same as above
                     return 1;
 
+                case Core.Signals.raycast:
                 case Core.Signals.global_raycast:
                     // Check our collision vs the incoming ray
                     return CheckIsRayHit((Raycast)args[0], (List<RaycastHit>)args[1]);
