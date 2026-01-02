@@ -19,11 +19,11 @@ namespace EntComponents
             public Collider triggering_collider = crosser;
         }
 
-        public struct Raycast(Vector3 startpos, Vector3 endpos, ColliderType checking_for)
+        public struct Raycast(Vector3 startpos, Vector3 endpos, ColShape checking_for)
         {
             public Vector3 start_vector = startpos;
             public Vector3 end_vector = endpos;
-            public ColliderType check_type = checking_for;
+            public ColShape check_type = checking_for;
         }
 
         public struct RaycastHit(Vector3 startpos, Vector3 endpos, Collider hit_col, Vector3 hit_pos)
@@ -34,7 +34,7 @@ namespace EntComponents
             public Vector3 hit_position = hit_pos;
         }
 
-        public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 end, ColliderType filter)
+        public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 end, ColShape filter)
         {
             List<RaycastHit> hit_rays = [];
             Raycast ray = new(start, end, filter);
@@ -46,16 +46,7 @@ namespace EntComponents
         /// <summary>
         /// Each collider has a shape that is used to check against other colliders and raycasts.
         /// </summary>
-        protected ColliderType CollisionShape { get; set; } = ColliderType.None;
-        public enum ColliderType
-        {
-            None,
-            Plane,
-            AxisBox,
-            VertRadius,
-            Sphere,
-            Mesh
-        }
+        protected ColShape CollisionShape { get; set; } = new ColShape();
 
         /// <summary>
         /// Checks against all colliders in a list and handle collisions for each.
@@ -101,7 +92,7 @@ namespace EntComponents
         /// </summary>
         public Collision? CheckIsColliding(Collider other_col)
         {
-            return null;
+            return CollisionShape.Overlap(other_col.CollisionShape);
         }
 
         /// <summary>
@@ -109,7 +100,14 @@ namespace EntComponents
         /// </summary>
         public uint CheckIsRayHit(Raycast ray, List<RaycastHit> hits)
         {
-            return 0;
+            uint hit_count = 0;
+            RaycastHit? hit = CollisionShape.RayIntersect(ray);
+            if(hit != null)
+            {
+                hits.Add((RaycastHit)hit);
+                hit_count++;
+            }
+            return hit_count;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
