@@ -13,7 +13,7 @@ namespace Engine
         {
             get
             {
-                if(singleton == null) return "Engine";
+                if(singleton == null) return "UnitTest";
                 return singleton?.adventure_id;
             }
         }
