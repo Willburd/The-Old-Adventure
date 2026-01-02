@@ -95,11 +95,11 @@ namespace Engine
 
             if (Math.Abs(dot - (-1.0f)) < 0.000001f)
             {
-                return new Quaternion(Up.X, Up.Y, Up.Z, MathF.PI);
+                return new Quaternion(0f,-1f,0f,0f);
             }
             if (Math.Abs(dot - (1.0f)) < 0.000001f)
             {
-                return new Quaternion(-Up.X, -Up.Y, -Up.Z, MathF.PI);
+                return Quaternion.Identity;
             }
 
             float rotAngle = (float)Math.Acos(dot);
