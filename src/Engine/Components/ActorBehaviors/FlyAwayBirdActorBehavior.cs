@@ -33,7 +33,7 @@ namespace EntComponents.ActorBehavior
             return 1;
         }
 
-        protected override uint HandleCacheComponents()
+        protected override uint HandleLinkingComponents()
         {
             TriggerVolume? trigger = (TriggerVolume?)Host.GetComponent(typeof(TriggerVolume));
 
