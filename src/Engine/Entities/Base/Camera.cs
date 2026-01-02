@@ -38,6 +38,11 @@ namespace Engine
 
         private bool camera_active = false;
 
+        protected virtual bool CanBeActivated()
+        {
+            return !Core.EditorMode;
+        }
+
         public bool IsActive
         {
             get
@@ -50,6 +55,9 @@ namespace Engine
                 // Enable
                 if(value)
                 {
+                    // If something blocks us from taking vision
+                    if(!CanBeActivated()) return;
+
                     // Disable previous camera if
                     if(world_active_cam != null && world_active_cam != this)
                     {

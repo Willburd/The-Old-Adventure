@@ -1,4 +1,4 @@
-
+using System.Numerics;
 using EntComponents;
 
 namespace Engine
@@ -21,6 +21,7 @@ namespace Engine
             LoadAssets();
             LoadActors();
             LoadExits();
+            if(Core.EditorMode) new EditorCamera(new Transform( new Vector3(0f,0f,0f)), true, this);
             Console.WriteLine("-------> Room Loaded : " + GetType());
             Console.WriteLine("-----------------------------------------------------");
         }

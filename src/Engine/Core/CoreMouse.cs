@@ -18,20 +18,5 @@ namespace Engine
             RawMouseDelta = RawMousePos - raw_old_mouse_pos;
             raw_old_mouse_pos = RawMousePos;
         }
-        
-
-        public static Vector2 MousePos {get; private set;}
-        public static Vector2 MouseDelta {get; private set;}
-        private static Vector2 old_mouse_pos = Vector2.Zero;
-        
-        /// <summary>
-        /// Updates the mouse position each frame based on the current raw mouse, but has it's own delta and old position vars to compensate.
-        /// </summary>
-        private void MouseUpdate()
-        {
-            MousePos = RawMousePos;
-            MouseDelta = MousePos - old_mouse_pos;
-            old_mouse_pos = MousePos;
-        }
     }
 }

@@ -14,6 +14,7 @@ namespace Engine
 
             // Update
             pre_update,             // () : Custom entity early update
+            editor_update,          // () : EditorMode only update
             apply_physics,          // () : Apply physics from components to transforms
             update,                 // () : Custom entity update
             post_update,            // () : ustom entity late update

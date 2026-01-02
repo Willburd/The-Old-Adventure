@@ -33,8 +33,6 @@ namespace TestAdventure
 
 
             // Default actors
-            new EditorCamera(new Transform( new Vector3(0f,0f,0f)), true, this);
-
             EntityFactory.CreateActor( "actor_pointer", new Transform( new Vector3(0f,0f,0f)), this, AssetLoader.AssetSource.engine);
             
             float radius = 6f;

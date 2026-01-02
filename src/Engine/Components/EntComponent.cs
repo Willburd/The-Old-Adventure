@@ -95,6 +95,9 @@ namespace EntComponents
                     if(!ActiveUpdate) return 0;
                     return HandlePreUpdate();
 
+                case Core.Signals.editor_update:
+                    return HandleEditorUpdate();
+
                 case Core.Signals.update:
                     if(!ActiveUpdate) return 0;
                     return HandleUpdate();
@@ -148,6 +151,14 @@ namespace EntComponents
         /// Used to respond to preupdate game ticks.
         /// </summary>
         protected virtual uint HandlePreUpdate()
+        {
+            return 1;
+        }
+
+        /// <summary>
+        /// Editor only update tick. If these are happening, then the main update loop is disabled.
+        /// </summary>
+        protected virtual uint HandleEditorUpdate()
         {
             return 1;
         }

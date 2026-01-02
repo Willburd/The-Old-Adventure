@@ -7,5 +7,10 @@ namespace Engine
         {
             new EntComponents.EditorCameraBehavior(this);
         }
+
+        protected override bool CanBeActivated()
+        {
+            return Core.EditorMode;
+        }
     }
 }

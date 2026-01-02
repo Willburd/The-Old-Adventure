@@ -11,10 +11,10 @@ namespace EntComponents
         
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.update];
+            return [Core.Signals.editor_update];
         }
 
-        protected override uint HandleUpdate()
+        protected override uint HandleEditorUpdate()
         {
             if(InputHandler.KeyPressed( InputHandler.input_key_exit ))
             {
@@ -39,7 +39,6 @@ namespace EntComponents
             {
                 Camera.WorldCamera?.Position += Vector3.Transform(Tools.Right * camera_speed, Camera.WorldCamera.Location.Rotation);
             }
-
             if(InputHandler.KeyHeld( InputHandler.input_key_editor_up ))
             {
                 Camera.WorldCamera?.Position += Tools.Up * camera_speed;
@@ -48,6 +47,22 @@ namespace EntComponents
             {
                 Camera.WorldCamera?.Position += Tools.Down * camera_speed;
             }
+            
+            float rotate_speed = 0.02f;
+            if(InputHandler.KeyHeld( InputHandler.input_key_editor_rotate_cw ))
+            {
+                Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Forward, rotate_speed);
+            }
+            if(InputHandler.KeyHeld( InputHandler.input_key_editor_rotate_ccw ))
+            {
+                Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Forward, -rotate_speed);
+            }
+
+            // Mouse movement
+            float mouse_multiplier = 0.001f;
+            Vector2 mouse_delta = InputHandler.MouseDelta * mouse_multiplier;
+            Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Up, -mouse_delta.X);
+            Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, -mouse_delta.Y);
 
             return 1;
         }

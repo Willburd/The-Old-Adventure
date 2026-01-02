@@ -54,7 +54,6 @@ namespace Engine
             /////////////////////////////////////////////////
             // Preprocessing and room ticks
             /////////////////////////////////////////////////
-            MouseUpdate();
             OnPreGameTick();
             List<Entity> active_entities = [];
             List<Room> initing_rooms = [];
@@ -65,7 +64,12 @@ namespace Engine
                     ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
                     if(ent.GetType() == typeof(Room)) initing_rooms.Add((Room)ent);
                 }
-                ent.SendSignal(Signals.pre_update, ent.Enabled);
+                // Preupdate
+                if(!EditorMode || EditorAllowsUpdates) 
+                {
+                    ent.SendSignal(Signals.pre_update, ent.Enabled);
+                }
+                // Handle movement interpolation
                 if(ent.Enabled) 
                 {
                     ent.SnapTransform(); // Update the previous location transform
@@ -73,59 +77,72 @@ namespace Engine
                 }
             }
 
-            /////////////////////////////////////////////////
-            // Handle room processing
-            /////////////////////////////////////////////////
-            // We do room loaded signal AFTER everything else is init, or we'll miss some!
-            foreach(Room room in initing_rooms)
+            // Editor update
+            if(EditorMode) 
             {
-                Entity.SendGlobalSignal(Signals.global_room_loaded, room);
-            }
-            // Handle room ticks in a special way to keep sane order
-            List<Room> processing_rooms = [.. Room.loaded_rooms];
-            foreach(Room room in processing_rooms)
-            {
-                if(room.Enabled) 
+                foreach(Entity ent in active_entities)
                 {
-                    room.OnRoomUpdate();
+                    ent.SendSignal(Signals.editor_update);
                 }
-                else
-                {
-                    room.OnRoomDisabledUpdate();
-                }
-            }
-            
-            /////////////////////////////////////////////////
-            // Physics and Collisions
-            /////////////////////////////////////////////////
-            OnPhysicsTick();
-            foreach(Entity ent in active_entities)
-            {
-                ent.SendSignal(Signals.apply_physics);
-            }
-            List<EntComponent> all_colliders = EntComponent.GetAllOfType(typeof(Collider));
-            foreach(Collider collider in all_colliders.Cast<Collider>())
-            {
-                if(!collider.Host.IsInitilized || !collider.Host.Enabled || !collider.Active) continue;
-                collider.CheckCollisions(all_colliders);
             }
 
-            /////////////////////////////////////////////////
-            // Processing
-            /////////////////////////////////////////////////
-            OnGameTick();
-            foreach(Entity ent in active_entities)
+            // There are no gameticks during editor mode unless we unpause it
+            if(!EditorMode || EditorAllowsUpdates) 
             {
-                ent.SendSignal(Signals.update);
-            }
-            OnPostGameTick();
-            foreach(Entity ent in active_entities)
-            {
-                ent.SendSignal(Signals.post_update);
+                /////////////////////////////////////////////////
+                // Handle room processing
+                /////////////////////////////////////////////////
+                // We do room loaded signal AFTER everything else is init, or we'll miss some!
+                foreach(Room room in initing_rooms)
+                {
+                    Entity.SendGlobalSignal(Signals.global_room_loaded, room);
+                }
+                // Handle room ticks in a special way to keep sane order
+                List<Room> processing_rooms = [.. Room.loaded_rooms];
+                foreach(Room room in processing_rooms)
+                {
+                    if(room.Enabled) 
+                    {
+                        room.OnRoomUpdate();
+                    }
+                    else
+                    {
+                        room.OnRoomDisabledUpdate();
+                    }
+                }
+                
+                /////////////////////////////////////////////////
+                // Physics and Collisions
+                /////////////////////////////////////////////////
+                OnPhysicsTick();
+                foreach(Entity ent in active_entities)
+                {
+                    ent.SendSignal(Signals.apply_physics);
+                }
+                List<EntComponent> all_colliders = EntComponent.GetAllOfType(typeof(Collider));
+                foreach(Collider collider in all_colliders.Cast<Collider>())
+                {
+                    if(!collider.Host.IsInitilized || !collider.Host.Enabled || !collider.Active) continue;
+                    collider.CheckCollisions(all_colliders);
+                }
+
+                /////////////////////////////////////////////////
+                // Processing
+                /////////////////////////////////////////////////
+                OnGameTick();
+                foreach(Entity ent in active_entities)
+                {
+                    ent.SendSignal(Signals.update);
+                }
+                OnPostGameTick();
+                foreach(Entity ent in active_entities)
+                {
+                    ent.SendSignal(Signals.post_update);
+                }
             }
 
             // Finish up by telling the next frame if we held the key or not
-            input_handler.HeldKeyUpdate();
+            input_handler.InputStateUpdate();
         }
     }
 }

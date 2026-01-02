@@ -6,7 +6,7 @@ namespace Engine
 {
     public partial class Core 
     {
-        private static Core? singleton;
+        public static Core? singleton;
         protected const string AdventureTitle = "The Old Adventure";
         protected readonly string adventure_id;
         public static string? AdventureID
