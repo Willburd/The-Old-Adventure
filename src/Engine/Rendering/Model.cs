@@ -41,8 +41,7 @@ namespace Rendering
             for (var i = 0; i < node->MNumMeshes; i++)
             {
                 var mesh = scene->MMeshes[node->MMeshes[i]];
-                Meshes.Add(ProcessMesh(mesh, scene));
-
+                Meshes.Add(ProcessMesh(mesh, scene, mesh->MName, Meshes.Count));
             }
 
             for (var i = 0; i < node->MNumChildren; i++)
@@ -51,7 +50,7 @@ namespace Rendering
             }
         }
 
-        private unsafe MeshData ProcessMesh(AssimpMesh* mesh, Scene* scene)
+        private unsafe MeshData ProcessMesh(AssimpMesh* mesh, Scene* scene, string name, int index)
         {
             // data to fill
             List<Vertex> vertices = new List<Vertex>();
@@ -98,7 +97,7 @@ namespace Rendering
             }
 
             // return a mesh object created from the extracted mesh data
-            var result = new MeshData(_gl, BuildVertices(vertices), BuildIndices(indices));
+            var result = new MeshData(_gl, BuildVertices(vertices), BuildIndices(indices), name, index, this);
             return result;
         }
 
@@ -135,6 +134,40 @@ namespace Rendering
         public bool IsValid()
         {
             return Meshes.Count > 0;
+        }
+
+        public List<string> GetMeshNames()
+        {
+            List<string> names = [];
+            foreach(MeshData mesh in Meshes)
+            {
+                names.Add(mesh.MeshName);
+            }
+            return names;
+        }
+
+        public int GetMeshIndex(string mesh_name)
+        {
+            int index = 0;
+            foreach(MeshData mesh in Meshes)
+            {
+                if(mesh_name == mesh.MeshName)
+                {
+                    return index;
+                }
+                index++;
+            }
+            return -1;
+        }
+
+        public void DebugMeshNames()
+        {
+            int index = 0;
+            foreach(string name in GetMeshNames())
+            {
+                Console.WriteLine("mesh index [" + index + "] -> " + name);
+                index++;
+            }
         }
     }
 }

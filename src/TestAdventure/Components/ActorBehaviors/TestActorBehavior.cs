@@ -37,8 +37,10 @@ namespace EntComponents.ActorBehavior
         {
             // Set the render's model and materials
             WorldRender? renderer = (WorldRender?)Host.GetComponent(typeof(WorldRender));
-            renderer?.SetModel( AssetLoader.ModelAssetGet("sign"), AssetLoader.MaterialAssetGet("sign_wood"));
-            renderer?.SetMaterial( AssetLoader.MaterialAssetGet("sign_face"), 1);
+
+            var sign_model = AssetLoader.ModelAssetGet("sign");
+            renderer?.SetModel( sign_model, AssetLoader.MaterialAssetGet("sign_wood"));
+            renderer?.SetMaterial( AssetLoader.MaterialAssetGet("sign_face"), sign_model.GetMeshIndex("Sign_1"));
             
             return 1;
         }

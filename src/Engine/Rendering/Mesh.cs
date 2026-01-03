@@ -7,13 +7,26 @@ namespace Rendering
 {
     public class MeshData : IDisposable
     {
-        public MeshData(GL gl, float[] vertices, uint[] indices)
+        public MeshData(GL gl, float[] vertices, uint[] indices, string name, int mesh_index, ModelData owner)
         {
             GL = gl;
             Vertices = vertices;
             Indices = indices;
             SetupMesh();
+
+            // Metadata
+            MeshIndex = mesh_index;
+            RawName = name;
+            foreach(MeshData data in owner.Meshes)
+            {
+                if(data.RawName == RawName) mesh_name_offset++;
+            }
         }
+
+        private int mesh_name_offset = 0;
+        public string RawName { get; private set; }
+        public string MeshName { get { return RawName + (mesh_name_offset > 0 ? "_"+mesh_name_offset : ""); } }
+        public int MeshIndex { get; private set; }
 
         public float[] Vertices { get; private set; }
         public uint[] Indices { get; private set; }
