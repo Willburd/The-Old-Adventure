@@ -6,47 +6,93 @@ namespace EntComponents
     /// <summary>
     /// Entity Component that detects collisions with other colliders. Intended for handling physics.
     /// </summary>
-    public class Collider(Entity host_entity) : EntComponent(host_entity)
+    public class Collider : EntComponent
     {
+        public Collider(Entity host_entity) : base(host_entity)
+        {
+            CollisionShape = new ColShape(this);
+        }
+
         public bool Active { get; set; }
         public bool IsTrigger { get; set; } = false;
         
+        private Vector3 col_offset;
+        /// <summary>
+        /// If true, the Offset getter will return a relative transformation of this vector, including rotation, from the host entity when getting the collider's Position. If false it will be the world position.
+        /// </summary>
+        public bool SyncRelativePosition = true;
+        /// <summary>
+        /// Gets the origin position of the collider. If SyncRelativePosition is true it will be tied to the host's position and rotation in world space, if false it will be a untransformed world position.
+        /// </summary>
+        public Vector3 Position 
+        { 
+            get
+            {
+                if(!SyncRelativePosition) return col_offset; // Use world position
+                return Host.Position + Vector3.Transform(col_offset, Host.Rotation); // Use relative position, including rotation from host.
+            }
+            
+            set
+            {
+                col_offset = value;
+            }
+        }
+
         private readonly bool debug_vis = false; // Debugging only
 
-        public struct Collision(Collider source, Collider crosser)
+        public struct Collision(Collider source, Collider crosser, Vector3 point)
         {
             public Collider source_collider = source;
             public Collider triggering_collider = crosser;
-        }
+            public Vector3 point = point;
+        } 
 
-        public struct Raycast(Vector3 startpos, Vector3 endpos, ColShape checking_for)
+        public struct Raycast(Vector3 startpos, Vector3 endpos)
         {
             public Vector3 start_vector = startpos;
             public Vector3 end_vector = endpos;
-            public ColShape check_type = checking_for;
         }
 
-        public struct RaycastHit(Vector3 startpos, Vector3 endpos, Collider hit_col, Vector3 hit_pos)
+        public struct RaycastHit(Vector3 startpos, Vector3 endpos, Collider hit_col, float dist)
         {
             public Vector3 start_vector = startpos;
             public Vector3 end_vector  = endpos;
             public Collider hit_collider = hit_col;
-            public Vector3 hit_position = hit_pos;
+            public float distance = dist;
+            public Vector3 HitPosition
+            {
+                get
+                {
+                    float perc = distance / Vector3.Distance(start_vector,end_vector);
+                    return Vector3.Lerp(start_vector,end_vector,perc);
+                }
+            }
         }
 
-        public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 end, ColShape filter)
+        /// <summary>
+        /// Performs a raycast against all existing colliders in the scene, unless otherwise specified. Returns a list of all collisions that occured, specific collision information is in each collider.
+        /// </summary>
+        public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 end, Entity? specific_entity = null)
         {
             List<RaycastHit> hit_rays = [];
-            Raycast ray = new(start, end, filter);
-            Entity.SendGlobalSignal(Core.Signals.global_raycast, ray, hit_rays);
-
+            Raycast ray = new(start, end);
+            if(specific_entity != null)
+            {
+                // Specific entity check
+                specific_entity.SendSignal(Core.Signals.raycast, ray, hit_rays);
+            }
+            else
+            {
+                // Global entity check
+                Entity.SendGlobalSignal(Core.Signals.raycast, ray, hit_rays);
+            }
             return hit_rays;
         }
 
         /// <summary>
         /// Each collider has a shape that is used to check against other colliders and raycasts.
         /// </summary>
-        protected ColShape CollisionShape { get; set; } = new ColShape();
+        public ColShape CollisionShape { get; protected set; }
 
         /// <summary>
         /// Checks against all colliders in a list and handle collisions for each.
@@ -92,7 +138,7 @@ namespace EntComponents
         /// </summary>
         public Collision? CheckIsColliding(Collider other_col)
         {
-            return CollisionShape.Overlap(other_col.CollisionShape);
+            return CollisionShape.InOurShape( other_col);
         }
 
         /// <summary>
@@ -101,7 +147,7 @@ namespace EntComponents
         public uint CheckIsRayHit(Raycast ray, List<RaycastHit> hits)
         {
             uint hit_count = 0;
-            RaycastHit? hit = CollisionShape.RayIntersect(ray);
+            RaycastHit? hit = CollisionShape.InRay(ray);
             if(hit != null)
             {
                 hits.Add((RaycastHit)hit);
@@ -124,7 +170,6 @@ namespace EntComponents
                 sig_list.Add(Core.Signals.render);
             }
             sig_list.Add(Core.Signals.raycast);
-            sig_list.Add(Core.Signals.global_raycast);
             return sig_list;
         }
 
@@ -141,7 +186,6 @@ namespace EntComponents
                     return 1;
 
                 case Core.Signals.raycast:
-                case Core.Signals.global_raycast:
                     // Check our collision vs the incoming ray
                     return CheckIsRayHit((Raycast)args[0], (List<RaycastHit>)args[1]);
             }

@@ -45,5 +45,17 @@ namespace Engine
                 return new Vector3(-1f,0f,0f);
             }
         }
+
+        public static Vector3 DirVector(Vector3 start, Vector3 end)
+        {
+            return Vector3.Normalize(start - end);
+        }
+
+        public static float FlattenedDistance(Vector3 start, Vector3 end)
+        {
+            start.Y = 0;
+            end.Y = 0;
+            return Vector3.Distance(start,end);
+        }
     }
 }

@@ -36,7 +36,6 @@ namespace Engine
 
             // Raycasting
             raycast,                // (Collider.Raycast, List<ref Collider.RaycastHit>) : Check for raycast line intersection with colliders
-            global_raycast,         // (Collider.Raycast, List<ref Collider.RaycastHit>) : Check for raycast line intersection with ALL colliders
 
             // Global signals
             global_fadeout_begin,     // () : Called when a fadeout begins.
