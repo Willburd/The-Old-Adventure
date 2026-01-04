@@ -16,9 +16,6 @@ namespace Engine
             if(collision_type == typeof(SphereCol))         return InOurShape( (SphereCol)other_collider.CollisionShape);
             if(collision_type == typeof(AxisCubeCol))       return InOurShape( (AxisCubeCol)other_collider.CollisionShape);
             if(collision_type == typeof(CylinderCol))       return InOurShape( (CylinderCol)other_collider.CollisionShape);
-            if(collision_type == typeof(PlaneCol))          return InOurShape( (PlaneCol)other_collider.CollisionShape);
-            if(collision_type == typeof(TriCol))            return InOurShape( (TriCol)other_collider.CollisionShape);
-            if(collision_type == typeof(WorldGeometryCol))  return InOurShape( (WorldGeometryCol)other_collider.CollisionShape);
 
             return null;
         }
@@ -39,21 +36,6 @@ namespace Engine
         }
 
         public virtual Collider.Collision? InOurShape(CylinderCol cylinder_col)
-        {
-            return null;
-        }
-
-        public virtual Collider.Collision? InOurShape(PlaneCol plane_col)
-        {
-            return null;
-        }
-
-        public virtual Collider.Collision? InOurShape(TriCol triangle_col)
-        {
-            return null;
-        }
-
-        public virtual Collider.Collision? InOurShape(WorldGeometryCol geometry_col)
         {
             return null;
         }

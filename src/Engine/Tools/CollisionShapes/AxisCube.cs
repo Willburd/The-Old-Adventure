@@ -49,28 +49,13 @@ namespace Engine
             
             if(our_box.Intersects(other_box))
             {
-                // TODO - Get collision point between cube and sphere
+                // TODO - Get collision point between cube and cube
                 //return new(ColHost,sphere_col.ColHost, );
             }
             return null;
         }
 
         public override Collider.Collision? InOurShape(CylinderCol cylinder_col)
-        {
-            return null;
-        }
-
-        public override Collider.Collision? InOurShape(PlaneCol plane_col)
-        {
-            return null;
-        }
-
-        public override Collider.Collision? InOurShape(TriCol triangle_col)
-        {
-            return null;
-        }
-
-        public override Collider.Collision? InOurShape(WorldGeometryCol geometry_col)
         {
             return null;
         }

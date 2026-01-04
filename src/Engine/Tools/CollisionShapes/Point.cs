@@ -5,24 +5,24 @@ namespace Engine
 {
     public class PointCol(Collider host, Vector3 offset) : ColShape(host)
     {
-        public Vim.Math3d.Vector3 our_point = new(offset.X,offset.Y,offset.Z);
+        public Vector3 our_point = new(offset.X,offset.Y,offset.Z);
 
         
         public override Collider.Collision? InOurShape(PointCol point_col)
         {
-            Vim.Math3d.Vector3 rounded_point = our_point;
-            rounded_point.SetX(MathF.Round(rounded_point.X));
-            rounded_point.SetY(MathF.Round(rounded_point.Y));
-            rounded_point.SetZ(MathF.Round(rounded_point.Z));
+            Vector3 host_pos = ColHost.Position + Vector3.Transform(our_point,ColHost.Host.Rotation);
+            host_pos.X = MathF.Round(host_pos.X);
+            host_pos.Y = MathF.Round(host_pos.Y);
+            host_pos.Z = MathF.Round(host_pos.Z);
 
-            Vim.Math3d.Vector3 other_rounded_point = point_col.our_point;
-            other_rounded_point.SetX(MathF.Round(other_rounded_point.X));
-            other_rounded_point.SetY(MathF.Round(other_rounded_point.Y));
-            other_rounded_point.SetZ(MathF.Round(other_rounded_point.Z));
+            Vector3 other_point = point_col.ColHost.Position + Vector3.Transform(point_col.our_point,point_col.ColHost.Host.Rotation);
+            other_point.X = MathF.Round(other_point.X);
+            other_point.Y = MathF.Round(other_point.Y);
+            other_point.Z = MathF.Round(other_point.Z);
 
-            if(rounded_point == other_rounded_point)
+            if(host_pos == other_point)
             {
-                return new(ColHost,point_col.ColHost, new Vector3(rounded_point.X,rounded_point.Y,rounded_point.Z));
+                return new(ColHost,point_col.ColHost, host_pos);
             }
             return null;
         }
@@ -63,29 +63,11 @@ namespace Engine
             return col_hit;
         }
 
-        public override Collider.Collision? InOurShape(PlaneCol plane_col)
-        {
-            // Cannot collide with
-            return null;
-        }
-
-        public override Collider.Collision? InOurShape(TriCol triangle_col)
-        {
-            // Cannot collide with
-            return null;
-        }
-
-        public override Collider.Collision? InOurShape(WorldGeometryCol geometry_col)
-        {
-            // Cannot collide with
-            return null;
-        }
-
 
         public override Collider.RaycastHit? InRay(Collider.Raycast ray)
         {
-            float our_dist = Vector3.Distance(ray.start_vector, new Vector3(our_point.X,our_point.Y,our_point.Z));
-            float dot_product = Vector3.Dot( Tools.DirVector(ray.start_vector,ray.end_vector), Tools.DirVector(ray.start_vector,new Vector3(our_point.X,our_point.Y,our_point.Z)));
+            float our_dist = Vector3.Distance(ray.start_vector, our_point);
+            float dot_product = Vector3.Dot( Tools.DirVector(ray.start_vector,ray.end_vector), Tools.DirVector(ray.start_vector,our_point));
 
             if(dot_product == 1f && our_dist <= Vector3.Distance(ray.start_vector,ray.end_vector))
             {

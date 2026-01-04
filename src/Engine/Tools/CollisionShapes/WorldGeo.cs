@@ -7,36 +7,25 @@ namespace Engine
     {
         public override Collider.Collision? InOurShape(PointCol point_col)
         {
+            // No implimentation
             return null;
         }
 
         public override Collider.Collision? InOurShape(SphereCol sphere_col)
         {
+            // No implimentation
             return null;
         }
 
         public override Collider.Collision? InOurShape(AxisCubeCol box_col)
         {
+            // No implimentation
             return null;
         }
 
         public override Collider.Collision? InOurShape(CylinderCol cylinder_col)
         {
-            return null;
-        }
-
-        public override Collider.Collision? InOurShape(PlaneCol plane_col)
-        {
-            return null;
-        }
-
-        public override Collider.Collision? InOurShape(TriCol triangle_col)
-        {
-            return null;
-        }
-
-        public override Collider.Collision? InOurShape(WorldGeometryCol geometry_col)
-        {
+            // No implimentation
             return null;
         }
 
