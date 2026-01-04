@@ -1,6 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Diagnostics;
+using System.Numerics;
 using Silk.NET.OpenGL;
 
 namespace Rendering
@@ -12,11 +14,14 @@ namespace Rendering
             GL = gl;
             Vertices = vertices;
             Indices = indices;
-            SetupMesh();
-
+            
             // Metadata
             MeshIndex = mesh_index;
             RawName = name;
+
+            SetupMesh();
+
+            // materials index as seperate mesh
             foreach(MeshData data in owner.Meshes)
             {
                 if(data.RawName == RawName) mesh_name_offset++;
@@ -35,15 +40,18 @@ namespace Rendering
         public BufferObject<uint>? EBO { get; set; }
         public GL GL { get; }
 
-        private struct VBOInit(int element_count, VertexAttribPointerType type, bool normalized, uint size)
+        public List<Vim.Math3d.Triangle> CollisionTriangles { get; private set; } = [];
+
+        private struct VBOInit(int element_count, VertexAttribPointerType type, bool normalized, uint size, bool is_collision)
         {   
             public int element_count = element_count;
             public VertexAttribPointerType type = type;
             public bool normalized = normalized;
             public uint size = size;
+            public bool is_collision = is_collision;
         };
 
-        public unsafe void SetupMesh()
+        public void SetupMesh()
         {
             EBO = new BufferObject<uint>(GL, Indices, BufferTargetARB.ElementArrayBuffer);
             VBO = new BufferObject<float>(GL, Vertices, BufferTargetARB.ArrayBuffer);
@@ -52,15 +60,45 @@ namespace Rendering
             // Attribute format
             uint total_vertex_size = 0;
             List<VBOInit> buffersizes = [
-                new VBOInit(3, VertexAttribPointerType.Float, false, 3), // Position
-                new VBOInit(2, VertexAttribPointerType.Float, true,  2)  // UV
+                new VBOInit(3, VertexAttribPointerType.Float, false, 3, true), // Position
+                new VBOInit(2, VertexAttribPointerType.Float, true,  2, false)  // UV
             ];
-
-            // Self assemble it...
             foreach(VBOInit vbo_dat in buffersizes)
             {
                 total_vertex_size += vbo_dat.size;
             }
+
+            // Collision creation
+            if(RawName == "col")
+            {
+                // collect position data in the verts
+                List<float> vert_collection = [];
+                int index = 0;
+                while(index < Vertices.Length)
+                {
+                    foreach(VBOInit vbo_dat in buffersizes)
+                    {
+                        if(vbo_dat.is_collision)
+                        {
+                            Debug.Assert(vbo_dat.element_count == 3, "VBO for collision data expects to be 3 elements long");
+                            vert_collection.Add(Vertices[index++]);
+                        }
+                    }
+                }
+                // Assemble position floats into tris
+                if(vert_collection.Count > 0 && vert_collection.Count % 3 == 0)
+                {
+                    index = 0;
+                    while(index < vert_collection.Count) // 3 position elements per three verts of a triangle
+                    {
+                        Vim.Math3d.Vector3 vertA = new(Vertices[index++],Vertices[index++],Vertices[index++]);
+                        Vim.Math3d.Vector3 vertB = new(Vertices[index++],Vertices[index++],Vertices[index++]);
+                        Vim.Math3d.Vector3 vertC = new(Vertices[index++],Vertices[index++],Vertices[index++]);
+                        CollisionTriangles.Add( new Vim.Math3d.Triangle(vertA,vertB,vertC) );
+                    }
+                }
+            }
+            // Self assemble it...
             uint current_offset = 0;
             uint current_index = 0;
             foreach(VBOInit vbo_dat in buffersizes)
