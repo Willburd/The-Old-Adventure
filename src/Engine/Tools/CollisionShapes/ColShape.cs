@@ -20,6 +20,21 @@ namespace Engine
             return null;
         }
 
+        protected Collider.Collision? SwapSourceAndHit(Collider.Collision? col_hit)
+        {
+            if(col_hit.HasValue) // Swap source and trigger
+            {
+                Collider.Collision acol = col_hit.Value;
+
+                Collider temp = acol.source_collider;
+                acol.source_collider = ColHost;
+                acol.triggering_collider = temp;
+                
+                return acol;
+            }
+            return col_hit;
+        }
+
         public virtual Collider.Collision? InOurShape(PointCol point_col)
         {
             return null;

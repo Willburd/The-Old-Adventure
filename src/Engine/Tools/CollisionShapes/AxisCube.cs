@@ -5,7 +5,7 @@ namespace Engine
 {
     public class AxisCubeCol(Collider host, Vector3 min, Vector3 max) : ColShape(host)
     {
-        public Vim.Math3d.AABox our_box = new Vim.Math3d.AABox( new Vim.Math3d.Vector3(min.X,min.Y,min.Z), new Vim.Math3d.Vector3(max.X,max.Y,max.Z));
+        public Vim.Math3d.AABox our_box = new( new Vim.Math3d.Vector3(min.X,min.Y,min.Z), new Vim.Math3d.Vector3(max.X,max.Y,max.Z));
         
         public override Collider.Collision? InOurShape(PointCol point_col)
         {
@@ -57,12 +57,28 @@ namespace Engine
 
         public override Collider.Collision? InOurShape(CylinderCol cylinder_col)
         {
+            // TODO - Cube colliding with a cylinder
+
             return null;
         }
 
 
         public override Collider.RaycastHit? InRay(Collider.Raycast ray)
         {
+            Vector3 host_pos = ColHost.Position;
+            our_box.SetCenter( new Vim.Math3d.Vector3(host_pos.X,host_pos.Y,host_pos.Z));
+            
+            // TODO - Raycast an axis aligned cube
+
+            /*
+            Vim.Math3d.Ray check_ray = new(new Vim.Math3d.Vector3(ray.start_vector.X,ray.start_vector.Y,ray.start_vector.Z),new Vim.Math3d.Vector3(ray.end_vector.X,ray.end_vector.Y,ray.end_vector.Z));
+            our_box.Intersection(check_ray);
+
+            if(distance != null) 
+            {
+                return new Collider.RaycastHit(ray.start_vector,ray.end_vector,ColHost,(float)distance);
+            }
+            */
             return null;
         }
     }
