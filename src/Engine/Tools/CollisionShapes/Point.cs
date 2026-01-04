@@ -39,7 +39,14 @@ namespace Engine
 
         public override Collider.Collision? InOurShape(AxisCubeCol box_col)
         {
-            return SwapSourceAndHit( box_col.InOurShape(this));
+            Vector3 other_point = box_col.ColHost.Position;
+            box_col.our_box.SetCenter( new Vim.Math3d.Vector3(other_point.X,other_point.Y,other_point.Z));
+            
+            if(box_col.our_box.Contains( new Vim.Math3d.Vector3(ColHost.Position.X,ColHost.Position.Y,ColHost.Position.Z)))
+            {
+                return new Collider.Collision(ColHost,box_col.ColHost,ColHost.Position);
+            }
+            return null;
         }
 
         public override Collider.Collision? InOurShape(CylinderCol cylinder_col)

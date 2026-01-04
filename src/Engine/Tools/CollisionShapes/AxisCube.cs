@@ -9,16 +9,7 @@ namespace Engine
         
         public override Collider.Collision? InOurShape(PointCol point_col)
         {
-            Vector3 host_pos = ColHost.Position;
-            our_box.SetCenter( new Vim.Math3d.Vector3(host_pos.X,host_pos.Y,host_pos.Z));
-            
-            Vector3 other_point = point_col.ColHost.Position;
-            
-            if(our_box.Contains( new Vim.Math3d.Vector3(other_point.X,other_point.Y,other_point.Z)))
-            {
-                return new Collider.Collision(ColHost,point_col.ColHost,other_point);
-            }
-            return null;
+            return SwapSourceAndHit( point_col.InOurShape(this));
         }
 
         public override Collider.Collision? InOurShape(SphereCol sphere_col)
