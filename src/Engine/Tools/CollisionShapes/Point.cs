@@ -54,9 +54,9 @@ namespace Engine
             Vector3 other_point = cylinder_col.ColHost.Position;
 
             float radius_distance = Tools.FlattenedDistance(ColHost.Position,other_point);
-            float height_distance = MathF.Abs(ColHost.Position.Y - other_point.Y);
+            float height_distance = MathF.Abs(other_point.Y - (ColHost.Position.Y + (cylinder_col.height/2f)));
             
-            if(radius_distance <= cylinder_col.radius && height_distance <= cylinder_col.height)
+            if(radius_distance <= cylinder_col.radius && height_distance <= (cylinder_col.height / 2f))
             {
                 return new Collider.Collision(ColHost,cylinder_col.ColHost,ColHost.Position);
             }

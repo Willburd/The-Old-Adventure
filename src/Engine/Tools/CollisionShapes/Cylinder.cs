@@ -14,7 +14,7 @@ namespace Engine
         }
         
         /// <summary>
-        /// Check if in range of a cylinder with a set height and radius. Origin at center.
+        /// Check if in range of a cylinder with a set height and radius. Origin at bottom center.
         /// </summary>
         public override Collider.Collision? InOurShape(PointCol point_col)
         {
@@ -39,7 +39,7 @@ namespace Engine
                     Vector3 rad_vector = ColHost.Position + (Tools.DirVector(ColHost.Position, corner) * radius); // from us to the point by our radius
                     Vector3 dist_vector = ColHost.Position + (Tools.DirVector(ColHost.Position, corner) * Vector3.Distance(ColHost.Position, corner));
                     Vector3 mid_pos = Vector3.Lerp(rad_vector,dist_vector,0.5f); // Get a point between!
-                    
+
                     return new(ColHost, box_col.ColHost, mid_pos);
                 }
             }
@@ -51,13 +51,13 @@ namespace Engine
             
             Vector3 host_pos = ColHost.Position;
             float our_rad = radius;
-            float our_top = host_pos.Y + (height*0.5f);
-            float our_bottom = host_pos.Y - (height*0.5f);
+            float our_top = host_pos.Y + height;
+            float our_bottom = host_pos.Y;
 
             Vector3 other_pos = cylinder_col.ColHost.Position;
             float other_rad = cylinder_col.radius;
-            float other_top = other_pos.Y + (cylinder_col.height*0.5f);
-            float other_bottom = other_pos.Y - (cylinder_col.height*0.5f);
+            float other_top = other_pos.Y + cylinder_col.height;
+            float other_bottom = other_pos.Y;
 
             if(other_top >= our_bottom || other_bottom <= our_top)
             {
