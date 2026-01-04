@@ -7,23 +7,18 @@ namespace Engine
     {
         public float height = height;
         public float radius = radius;
+
+        private bool InRadius(Vector3 center, Vector3 check_point, float check_radius)
+        {
+            return Tools.FlattenedDistance(center, check_point) <= check_radius;
+        }
         
         /// <summary>
         /// Check if in range of a cylinder with a set height and radius. Origin at center.
         /// </summary>
         public override Collider.Collision? InOurShape(PointCol point_col)
         {
-            Vector3 host_pos = ColHost.Position;
-            Vector3 other_point = point_col.ColHost.Position;
-
-            float radius_distance = Tools.FlattenedDistance(host_pos,other_point);
-            float height_distance = MathF.Abs(host_pos.Y - other_point.Y);
-            
-            if(radius_distance <= radius && height_distance <= height)
-            {
-                return new Collider.Collision(ColHost,point_col.ColHost,other_point);
-            }
-            return null;
+            return SwapSourceAndHit( point_col.InOurShape(this));
         }
 
         public override Collider.Collision? InOurShape(SphereCol sphere_col)
@@ -33,6 +28,21 @@ namespace Engine
 
         public override Collider.Collision? InOurShape(AxisCubeCol box_col)
         {
+            Vector3 other_pos = box_col.ColHost.Position;
+            box_col.our_box.SetCenter( new Vim.Math3d.Vector3(other_pos.X,other_pos.Y,other_pos.Z));
+
+            foreach(Vim.Math3d.Vector3 vec in box_col.our_box.Corners)
+            {
+                Vector3 corner = new Vector3(vec.X,vec.Y,vec.Z);
+                if(InRadius(ColHost.Position,corner,radius))
+                {
+                    Vector3 rad_vector = ColHost.Position + (Tools.DirVector(ColHost.Position, corner) * radius); // from us to the point by our radius
+                    Vector3 dist_vector = ColHost.Position + (Tools.DirVector(ColHost.Position, corner) * Vector3.Distance(ColHost.Position, corner));
+                    Vector3 mid_pos = Vector3.Lerp(rad_vector,dist_vector,0.5f); // Get a point between!
+                    
+                    return new(ColHost, box_col.ColHost, mid_pos);
+                }
+            }
             return null;
         }
 
@@ -51,7 +61,7 @@ namespace Engine
 
             if(other_top >= our_bottom || other_bottom <= our_top)
             {
-                if(Tools.FlattenedDistance(host_pos, other_pos) <= our_rad + other_rad)
+                if(InRadius(host_pos, other_pos, our_rad + other_rad))
                 {
                     // Horizontal midpoint
                     Vector3 col_vector = ColHost.Position + (Tools.DirVector(ColHost.Position, cylinder_col.ColHost.Position) * radius); // from us to them

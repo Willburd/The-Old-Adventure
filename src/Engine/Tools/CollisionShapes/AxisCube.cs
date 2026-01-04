@@ -48,9 +48,7 @@ namespace Engine
 
         public override Collider.Collision? InOurShape(CylinderCol cylinder_col)
         {
-            // TODO - Cube colliding with a cylinder
-
-            return null;
+            return SwapSourceAndHit( cylinder_col.InOurShape(this));
         }
 
 

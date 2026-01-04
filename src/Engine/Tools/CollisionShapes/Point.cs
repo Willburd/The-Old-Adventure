@@ -3,7 +3,7 @@ using EntComponents;
 
 namespace Engine
 {
-    public class PointCol(Collider host, Vector3 offset) : ColShape(host)
+    public class PointCol(Collider host) : ColShape(host)
     {
         public override Collider.Collision? InOurShape(PointCol point_col)
         {
@@ -51,7 +51,17 @@ namespace Engine
 
         public override Collider.Collision? InOurShape(CylinderCol cylinder_col)
         {
-            return SwapSourceAndHit( cylinder_col.InOurShape(this));
+            Vector3 other_point = cylinder_col.ColHost.Position;
+
+            float radius_distance = Tools.FlattenedDistance(ColHost.Position,other_point);
+            float height_distance = MathF.Abs(ColHost.Position.Y - other_point.Y);
+            
+            if(radius_distance <= cylinder_col.radius && height_distance <= cylinder_col.height)
+            {
+                return new Collider.Collision(ColHost,cylinder_col.ColHost,ColHost.Position);
+            }
+            return null;
+            
         }
 
 
