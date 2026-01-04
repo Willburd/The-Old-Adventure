@@ -5,17 +5,14 @@ namespace Engine
 {
     public class PointCol(Collider host, Vector3 offset) : ColShape(host)
     {
-        public Vector3 our_point = new(offset.X,offset.Y,offset.Z);
-
-        
         public override Collider.Collision? InOurShape(PointCol point_col)
         {
-            Vector3 host_pos = ColHost.Position + Vector3.Transform(our_point,ColHost.Host.Rotation);
+            Vector3 host_pos = ColHost.Position;
             host_pos.X = MathF.Round(host_pos.X);
             host_pos.Y = MathF.Round(host_pos.Y);
             host_pos.Z = MathF.Round(host_pos.Z);
 
-            Vector3 other_point = point_col.ColHost.Position + Vector3.Transform(point_col.our_point,point_col.ColHost.Host.Rotation);
+            Vector3 other_point = point_col.ColHost.Position + Vector3.Transform(point_col.ColHost.Position,point_col.ColHost.Host.Rotation);
             other_point.X = MathF.Round(other_point.X);
             other_point.Y = MathF.Round(other_point.Y);
             other_point.Z = MathF.Round(other_point.Z);
@@ -29,7 +26,15 @@ namespace Engine
 
         public override Collider.Collision? InOurShape(SphereCol sphere_col)
         {
-            return SwapSourceAndHit( sphere_col.InOurShape(this));
+            Vector3 other_point = sphere_col.ColHost.Position;
+            sphere_col.our_sphere.SetCenter( new Vim.Math3d.Vector3(other_point.X,other_point.Y,other_point.Z));
+            
+            Vim.Math3d.ContainmentType contype = sphere_col.our_sphere.Contains( new Vim.Math3d.Vector3(ColHost.Position.X,ColHost.Position.Y,ColHost.Position.Z));
+            if(contype == Vim.Math3d.ContainmentType.Contains || contype == Vim.Math3d.ContainmentType.Intersects)
+            {
+                return new Collider.Collision(ColHost,sphere_col.ColHost,ColHost.Position);
+            }
+            return null;
         }
 
         public override Collider.Collision? InOurShape(AxisCubeCol box_col)
@@ -45,8 +50,8 @@ namespace Engine
 
         public override Collider.RaycastHit? InRay(Collider.Raycast ray)
         {
-            float our_dist = Vector3.Distance(ray.start_vector, our_point);
-            float dot_product = Vector3.Dot( Tools.DirVector(ray.start_vector,ray.end_vector), Tools.DirVector(ray.start_vector,our_point));
+            float our_dist = Vector3.Distance(ray.start_vector, ColHost.Position);
+            float dot_product = Vector3.Dot( Tools.DirVector(ray.start_vector,ray.end_vector), Tools.DirVector(ray.start_vector,ColHost.Position));
 
             if(dot_product == 1f && our_dist <= Vector3.Distance(ray.start_vector,ray.end_vector))
             {
