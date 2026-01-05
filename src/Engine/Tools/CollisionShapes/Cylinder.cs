@@ -20,7 +20,20 @@ namespace Engine
 
         public override Collider.Collision? InOurShape(SphereCol sphere_col)
         {
-            Console.WriteLine("=========================== TODO - cylinder collider to sphere collision");
+            Vector3 other_pos = sphere_col.ColHost.Position;
+            sphere_col.our_sphere.SetCenter( new Vim.Math3d.Vector3(other_pos.X,other_pos.Y,other_pos.Z));
+
+            if(InRadius(ColHost.Position, sphere_col.ColHost.Position, radius + sphere_col.our_sphere.Radius))
+            {
+                if(sphere_col.ColHost.Position.Y + sphere_col.our_sphere.Radius >= ColHost.Position.Y && sphere_col.ColHost.Position.Y - sphere_col.our_sphere.Radius <= ColHost.Position.Y + height)
+                {
+                    Vector3 our_rad_vector = ColHost.Position + (Tools.DirVector(ColHost.Position, sphere_col.ColHost.Position) * radius); // from us to the other by our radius
+                    Vector3 other_rad_vector = sphere_col.ColHost.Position + (Tools.DirVector(sphere_col.ColHost.Position, ColHost.Position) * sphere_col.our_sphere.Radius); // from other to us by the others radius
+                    Vector3 mid_pos = Vector3.Lerp(our_rad_vector,other_rad_vector,0.5f); // Get a point between!
+
+                    return new(ColHost, sphere_col.ColHost, mid_pos);
+                }
+            }
             return null;
         }
 
