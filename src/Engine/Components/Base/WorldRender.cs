@@ -24,15 +24,17 @@ namespace EntComponents
 
         public void SetMaterial(MaterialData apply_mat, int mesh_index)
         {
+            if(model == null) return;
             if(mesh_index < 0 || mesh_index >= materials.Count) return;
-            materials[mesh_index] = apply_mat;
+            if(model.Meshes[mesh_index].CollisionTriangles.Count == 0) materials[mesh_index] = apply_mat;
         }
 
         private void ApplyMaterial(MaterialData apply_mat, int mesh_count = 1)
         {
+            if(model == null) return;
             for(int i = 0; i < mesh_count; i++)
             {
-                materials.Add(apply_mat);
+                if(model.Meshes[i].CollisionTriangles.Count == 0) materials.Add(apply_mat);
             }
         }
 
