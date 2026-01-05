@@ -11,6 +11,8 @@ namespace EntComponents
     /// </summary>
     public class WorldRender(Entity host_entity) : EntComponent(host_entity)
     {
+        private static bool draw_collision = false;
+
         public bool Visible { get; set; } = true;
         private uint Priority { get; set; } = 1;
         protected ModelData? model;
@@ -83,6 +85,9 @@ namespace EntComponents
             int mesh_index = 0;
             foreach (var mesh in model.Meshes)
             {
+                // Lets skip this
+                if(draw_collision == (mesh.RawName == "col")) continue;
+
                 // Bind the VBOs
                 mesh.Bind();
 
