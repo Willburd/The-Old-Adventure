@@ -6,10 +6,10 @@ uniform mat4 uTransform;
 uniform mat4 uView;
 uniform mat4 uProjection;
 
-out vec2 fUv;
+out vec2 TexCoords;
 
 void main()
 {
     gl_Position = uProjection * uView * uTransform * vec4(vPos, 1.0);
-    fUv = vUv;
+    TexCoords = vUv;
 }

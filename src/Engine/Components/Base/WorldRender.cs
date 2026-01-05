@@ -85,14 +85,18 @@ namespace EntComponents
             int mesh_index = 0;
             foreach (var mesh in model.Meshes)
             {
-                // Lets skip this
-                if(draw_collision == (mesh.RawName == "col")) continue;
+                // Check for collision drawing
+                MaterialData mat_data = materials[mesh_index];
+                if(mesh.RawName == "col")
+                {
+                    if(!draw_collision) continue;
+                    mat_data = Core.collision_draw_material; // Use our collision shader
+                }
 
                 // Bind the VBOs
                 mesh.Bind();
 
                 // Each mesh can use a different material, and that also means shader!
-                MaterialData mat_data = materials[mesh_index];
                 ShaderData shader = mat_data.Shader;
                 shader.Use(); 
                 shader.SetUniform("uTransform", model_matrix);

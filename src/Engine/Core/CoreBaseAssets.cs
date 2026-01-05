@@ -10,6 +10,7 @@ namespace Engine
             // Shaders
             ShaderData shader_standard      = AssetLoader.ShaderAssetLoad( "standard", AssetLoader.AssetDirectoryEngine + "/Shaders/standard.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/standard.frag", AssetLoader.AssetSource.engine);
             ShaderData shader_debugnormals  = AssetLoader.ShaderAssetLoad( "debug_normals", AssetLoader.AssetDirectoryEngine + "/Shaders/standard.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/debug_normal.frag", AssetLoader.AssetSource.engine);
+            ShaderData shader_debugcol      = AssetLoader.ShaderAssetLoad( "debug_col", AssetLoader.AssetDirectoryEngine + "/Shaders/standard.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/debug_col.frag", AssetLoader.AssetSource.engine);
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -24,6 +25,7 @@ namespace Engine
             AssetLoader.MaterialAssetLoad( "debug_normals", new( [], [], shader_debugnormals), AssetLoader.AssetSource.engine);
             AssetLoader.MaterialAssetLoad( "no_mat", new( [nomat_texture], [new MaterialUniformData("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
             AssetLoader.MaterialAssetLoad( "example", new( [example_texture], [new MaterialUniformData("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
+            collision_draw_material = AssetLoader.MaterialAssetLoad( "debug_col", new( [], [], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

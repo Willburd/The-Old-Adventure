@@ -1,13 +1,18 @@
+using Rendering;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
 using System.Drawing;
-using System.Numerics;
 
 namespace Engine
 {
     public partial class Core
     {
         public static GL OpenGLContext {get; private set;}
+
+        /// <summary>
+        /// material used while rendering collision debug surfaces
+        /// </summary>
+        public static MaterialData collision_draw_material;
 
         /// <summary>
         /// Number of frames per second for rendering.
@@ -50,6 +55,10 @@ namespace Engine
             // Depth control
             OpenGLContext?.Enable(EnableCap.DepthTest);
             OpenGLContext?.DepthFunc(DepthFunction.Less);
+
+            // Blending
+            OpenGLContext?.Enable(EnableCap.Blend);
+            OpenGLContext?.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             // Backface culling
             OpenGLContext?.Enable(EnableCap.CullFace);
