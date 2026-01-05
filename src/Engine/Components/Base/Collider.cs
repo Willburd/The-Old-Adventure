@@ -37,8 +37,7 @@ namespace EntComponents
                 col_offset = value;
             }
         }
-
-        private readonly bool debug_vis = false; // Debugging only
+        
 
         public struct Collision(Collider source, Collider crosser, Vector3 point)
         {
@@ -164,7 +163,7 @@ namespace EntComponents
         {
             List<Core.Signals> sig_list = [];
 
-            if(debug_vis) 
+            if(Core.draw_collisions) 
             {
                 sig_list.Add(Core.Signals.render_priority);
                 sig_list.Add(Core.Signals.render);

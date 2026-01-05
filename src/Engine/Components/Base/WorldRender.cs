@@ -11,8 +11,6 @@ namespace EntComponents
     /// </summary>
     public class WorldRender(Entity host_entity) : EntComponent(host_entity)
     {
-        private static bool draw_collision = false;
-
         public bool Visible { get; set; } = true;
         private uint Priority { get; set; } = 1;
         protected ModelData? model;
@@ -89,7 +87,7 @@ namespace EntComponents
                 MaterialData mat_data = materials[mesh_index];
                 if(mesh.RawName == "col")
                 {
-                    if(!draw_collision) continue;
+                    if(!Core.draw_collisions) continue;
                     mat_data = Core.collision_draw_material; // Use our collision shader
                 }
 

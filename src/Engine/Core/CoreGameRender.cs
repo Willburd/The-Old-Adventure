@@ -14,6 +14,8 @@ namespace Engine
         /// </summary>
         public static MaterialData collision_draw_material;
 
+        public static bool draw_collisions;
+
         /// <summary>
         /// Number of frames per second for rendering.
         /// </summary>
