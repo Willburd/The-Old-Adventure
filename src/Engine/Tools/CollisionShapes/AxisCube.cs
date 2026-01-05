@@ -69,7 +69,7 @@ namespace Engine
             Vector3 host_pos = ColHost.Position;
             our_box.SetCenter( new Vim.Math3d.Vector3(host_pos.X,host_pos.Y,host_pos.Z));
             
-            // TODO - Raycast an axis aligned cube
+            Console.WriteLine("=========================== TODO - Raycast an axis aligned cube");
 
             /*
             Vim.Math3d.Ray check_ray = new(new Vim.Math3d.Vector3(ray.start_vector.X,ray.start_vector.Y,ray.start_vector.Z),new Vim.Math3d.Vector3(ray.end_vector.X,ray.end_vector.Y,ray.end_vector.Z));

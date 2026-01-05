@@ -32,26 +32,12 @@ namespace Engine
 
         public override Collider.Collision? InOurShape(AxisCubeCol box_col)
         {
-            Collider.Collision? col_hit = box_col.InOurShape(this);
-            if(col_hit.HasValue) // Swap source and trigger
-            {
-                Collider.Collision acol = col_hit.Value;
-                acol.source_collider = ColHost;
-                acol.triggering_collider = box_col.ColHost;
-            }
-            return col_hit;
+            return SwapSourceAndHit( box_col.InOurShape(this));
         }
 
         public override Collider.Collision? InOurShape(CylinderCol cylinder_col)
         {
-            Collider.Collision? col_hit = cylinder_col.InOurShape(this);
-            if(col_hit.HasValue) // Swap source and trigger
-            {
-                Collider.Collision acol = col_hit.Value;
-                acol.source_collider = ColHost;
-                acol.triggering_collider = cylinder_col.ColHost;
-            }
-            return null;
+            return SwapSourceAndHit( cylinder_col.InOurShape(this));
         }
 
 

@@ -13,9 +13,6 @@ namespace Engine
             return Tools.FlattenedDistance(center, check_point) <= check_radius;
         }
         
-        /// <summary>
-        /// Check if in range of a cylinder with a set height and radius. Origin at bottom center.
-        /// </summary>
         public override Collider.Collision? InOurShape(PointCol point_col)
         {
             return SwapSourceAndHit( point_col.InOurShape(this));
@@ -23,6 +20,7 @@ namespace Engine
 
         public override Collider.Collision? InOurShape(SphereCol sphere_col)
         {
+            Console.WriteLine("=========================== TODO - cylinder collider to sphere collision");
             return null;
         }
 
