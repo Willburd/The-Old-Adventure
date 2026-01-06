@@ -56,7 +56,6 @@ namespace Engine
 
             // Blending
             OpenGLContext?.Enable(EnableCap.Blend);
-            OpenGLContext?.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             // Backface culling
             OpenGLContext?.Enable(EnableCap.CullFace);
@@ -153,6 +152,9 @@ namespace Engine
 
                 // Bind the VBOs
                 mesh.Bind();
+
+                // Set the blending mode
+                mat_data.UseBlendMode();
 
                 // Each mesh can use a different material, and that also means shader!
                 ShaderData shader = mat_data.Shader;

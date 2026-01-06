@@ -1,19 +1,25 @@
-using Silk.NET.Assimp;
+using Engine;
+using Silk.NET.OpenGL;
 
 namespace Rendering
 {
     public class MaterialData : IDisposable
     {
-        public MaterialData(List<TextureData> textures_data,  List<KeyValuePair<string,object>> mat_unitform_data, ShaderData shader)
+        public MaterialData(List<TextureData> textures_data,  List<KeyValuePair<string,object>> mat_unitform_data, ShaderData shader, BlendingFactor blend_src = BlendingFactor.SrcAlpha, BlendingFactor blend_dest = BlendingFactor.OneMinusSrcAlpha)
         {
             render_shader = shader;
             uniforms = mat_unitform_data;
             textures = textures_data;
+            BlendingSource = blend_src;
+            BlendingDestination = blend_dest;
         }
 
         private readonly ShaderData render_shader;
         private List<KeyValuePair<string,object>> uniforms;
         private List<TextureData> textures;
+        
+        public BlendingFactor BlendingSource {get; private set;}
+        public BlendingFactor BlendingDestination {get; private set;}
         
         public ShaderData Shader
         {
@@ -44,6 +50,11 @@ namespace Rendering
             }
         }
         
+        public void UseBlendMode()
+        {
+            Core.OpenGLContext?.BlendFunc(BlendingSource, BlendingDestination);
+        }
+
         public void Dispose()
         {
             
