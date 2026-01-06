@@ -11,7 +11,7 @@ namespace EntComponents.ActorBehavior
         
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.link_components, Core.Signals.update];
+            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.update];
         }
 
         protected override uint HandleAssetLoad()
@@ -30,10 +30,6 @@ namespace EntComponents.ActorBehavior
             // Model
             AssetLoader.ModelAssetLoad( "sign", AssetLoader.AssetDirectoryAdventure + "/Models/sign.fbx");
 
-            // Collision
-            Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
-            collision?.SetShape( new ColliderShapes.CylinderCol(0.6f,0.25f));
-
             return 1;
         }
 
@@ -46,11 +42,10 @@ namespace EntComponents.ActorBehavior
             renderer?.SetModel( sign_model, AssetLoader.MaterialAssetGet("sign_wood"));
             renderer?.SetMaterial( AssetLoader.MaterialAssetGet("sign_face"), sign_model.GetMeshIndex("Sign_1"));
             
-            return 1;
-        }
+            // Collision
+            Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
+            collision?.SetShape( new ColliderShapes.CylinderCol(0.6f,0.25f));
 
-        protected override uint HandleLinkingComponents()
-        {
             return 1;
         }
 

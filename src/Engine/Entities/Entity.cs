@@ -42,7 +42,6 @@ namespace Engine
             initilized = true;
             SendSignal(Core.Signals.load_assets);
             SendSignal(Core.Signals.create);
-            SendSignal(Core.Signals.link_components);
         }
 
         /// <summary>

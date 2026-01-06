@@ -87,9 +87,6 @@ namespace EntComponents
 
                 case Core.Signals.create:
                     return HandleCreate();
-                    
-                case Core.Signals.link_components:
-                    return HandleLinkingComponents();
 
                 case Core.Signals.pre_update:
                     if(!ActiveUpdate) return 0;
@@ -135,14 +132,6 @@ namespace EntComponents
         /// Used to set data after resources are loaded by HandleAssetLoad()
         /// </summary>
         protected virtual uint HandleCreate()
-        {
-            return 1;
-        }
-
-        /// <summary>
-        /// Used to cache components for faster lookup on complex components that interact with multiple other components at once. Done after create to ensure all components have finished being added.
-        /// </summary>
-        protected virtual uint HandleLinkingComponents()
         {
             return 1;
         }

@@ -12,7 +12,7 @@ namespace EntComponents.ActorBehavior
         
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.link_components, Core.Signals.update];
+            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.update];
         }
 
         protected override uint HandleAssetLoad()
@@ -38,11 +38,6 @@ namespace EntComponents.ActorBehavior
             WorldRender? renderer = (WorldRender?)Host.GetComponent(typeof(WorldRender));
             renderer?.SetModel( AssetLoader.ModelAssetGet("test_cube", AssetLoader.AssetSource.engine), AssetLoader.MaterialAssetGet("example", AssetLoader.AssetSource.engine));
 
-            return 1;
-        }
-
-        protected override uint HandleLinkingComponents()
-        {
             return 1;
         }
 
