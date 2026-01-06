@@ -44,11 +44,11 @@ namespace EntComponents.ActorBehavior
             
             // Collision
             Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
-            collision?.SetShape( new ColliderShapes.CylinderCol(0.6f,0.25f));
+            collision?.SetShape( new Engine.ColliderShapes.CylinderCol(0.6f,0.25f));
 
             // Trigger
             TriggerVolume? trigger = (TriggerVolume?)Host.GetComponent(typeof(TriggerVolume));
-            trigger?.SetShape( new ColliderShapes.CylinderCol(0.3f,0.5f));
+            trigger?.SetShape( new Engine.ColliderShapes.CylinderCol(0.3f,0.5f));
 
             return 1;
         }

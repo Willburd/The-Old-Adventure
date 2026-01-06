@@ -1,9 +1,8 @@
 using System.Numerics;
 using EntComponents;
 using Rendering;
-using Engine;
 
-namespace ColliderShapes
+namespace Engine.ColliderShapes
 {
     public class TriCol(Vector3 a, Vector3 b, Vector3 c) : ColShape
     {

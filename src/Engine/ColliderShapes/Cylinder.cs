@@ -1,9 +1,8 @@
 using System.Numerics;
 using EntComponents;
 using Rendering;
-using Engine;
 
-namespace ColliderShapes
+namespace Engine.ColliderShapes
 {
     public class CylinderCol(float height, float radius) : ColShape
     {

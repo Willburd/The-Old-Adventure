@@ -2,7 +2,7 @@ using System.Numerics;
 using EntComponents;
 using Rendering;
 
-namespace ColliderShapes
+namespace Engine.ColliderShapes
 {
     public class ColShape()
     {
@@ -16,7 +16,6 @@ namespace ColliderShapes
             if(collision_type == typeof(PointCol))          return InOurShape( (PointCol)other_collider.CollisionShape);
             if(collision_type == typeof(SphereCol))         return InOurShape( (SphereCol)other_collider.CollisionShape);
             if(collision_type == typeof(CylinderCol))       return InOurShape( (CylinderCol)other_collider.CollisionShape);
-
             return null;
         }
 

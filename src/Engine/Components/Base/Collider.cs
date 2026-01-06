@@ -86,8 +86,8 @@ namespace EntComponents
         /// <summary>
         /// Each collider has a shape that is used to check against other colliders and raycasts.
         /// </summary>
-        public ColliderShapes.ColShape? CollisionShape { get; private set; }
-        public void SetShape( ColliderShapes.ColShape new_shape)
+        public Engine.ColliderShapes.ColShape? CollisionShape { get; private set; }
+        public void SetShape( Engine.ColliderShapes.ColShape new_shape)
         {
             new_shape.ColHost = this;
             CollisionShape = new_shape;
