@@ -160,8 +160,6 @@ namespace EntComponents
             {
                 // No self detection
                 if(col == this) continue;
-                // Forbid trigger reverse detection
-                if(col.IsTrigger()) continue;
 
                 // Check for overlap
                 Collision? check_collision = CheckIsColliding(col);

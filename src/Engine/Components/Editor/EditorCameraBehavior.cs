@@ -11,7 +11,7 @@ namespace EntComponents
         
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.create, Core.Signals.editor_update, Core.Signals.collision, Core.Signals.collision_start, Core.Signals.collision_end,  Core.Signals.trigger_start, Core.Signals.trigger_end];
+            return [Core.Signals.create, Core.Signals.editor_update, Core.Signals.collision, Core.Signals.collision_start, Core.Signals.collision_end, Core.Signals.trigger_start, Core.Signals.trigger_end];
         }
 
         protected override uint HandleCreate()

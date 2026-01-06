@@ -126,7 +126,6 @@ namespace Engine
                 List<EntComponent> all_colliders = [];
                 all_colliders.AddRange(EntComponent.GetAllOfType(typeof(Collider)));
                 all_colliders.AddRange(EntComponent.GetAllOfType(typeof(TriggerVolume)));
-
                 foreach(Collider collider in all_colliders.Cast<Collider>())
                 {
                     if(!collider.Host.IsInitilized || !collider.Host.Enabled || !collider.Active) continue;
