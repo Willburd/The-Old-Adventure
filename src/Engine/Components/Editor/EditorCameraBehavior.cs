@@ -82,7 +82,7 @@ namespace EntComponents
             return 1;
         }
 
-        protected override uint HandleCollisionStart(Collider.Collision new_collision)
+        protected override uint HandleCollisionStart(Collider new_collision)
         {
             Console.WriteLine("started collision" + new_collision);
             

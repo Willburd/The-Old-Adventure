@@ -51,7 +51,7 @@ namespace EntComponents.ActorBehavior
             return 1;
         }
 
-        protected override uint HandleTriggerStart(Collider.Collision new_collision)
+        protected override uint HandleTriggerStart(Collider new_collision)
         {
             // Activated by anything
             flying_away = true;

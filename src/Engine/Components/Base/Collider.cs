@@ -26,6 +26,15 @@ namespace EntComponents
                 if(!in_collision_with.Contains(ind)) not_colliding_with_anymore.Add(ind);
             }
             return not_colliding_with_anymore;
+        } 
+        public List<int> GetStartedCollidingWith()
+        {
+            List<int> started_colliding_with = [];
+            foreach(int ind in in_collision_with)
+            {
+                if(!previously_colliding_with.Contains(ind)) started_colliding_with.Add(ind);
+            }
+            return started_colliding_with;
         }
 
         /// <summary>
@@ -165,22 +174,32 @@ namespace EntComponents
                         {
                             all_triggers.Add((Collision)check_collision);
                             in_collision_with.Add(col.our_collider_index);
-                            if(!previously_colliding_with.Contains(col.our_collider_index)) Host.SendSignal(Core.Signals.collision_start, (Collision)check_collision);
                         }
                         continue;
                     }
                     // The other colliders cannot be a trigger, so we've found an actual collision!
                     all_collisions.Add((Collision)check_collision);
                     in_collision_with.Add(col.our_collider_index);
-                    if(!previously_colliding_with.Contains(col.our_collider_index)) Host.SendSignal(Core.Signals.trigger_start, (Collision)check_collision);
                 }
             }
 
             // Fire a signal for all colliders we've left
+            List<int> colliders_started = GetStartedCollidingWith();
             List<int> colliders_ended = GetNoLongerCollidingWith();
             foreach(Collider col in all_colliders.Cast<Collider>())
             {
-                if(colliders_ended.Contains(col.our_collider_index))
+                if(colliders_started.Contains(col.our_collider_index))
+                {
+                    if(!col.IsTrigger())
+                    {
+                        Host.SendSignal(Core.Signals.collision_start, col);
+                    }
+                    else
+                    {
+                        Host.SendSignal(Core.Signals.trigger_start, col);
+                    }
+                }
+                else if(colliders_ended.Contains(col.our_collider_index))
                 {
                     if(!col.IsTrigger())
                     {
