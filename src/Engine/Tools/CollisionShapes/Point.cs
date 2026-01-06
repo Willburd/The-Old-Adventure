@@ -82,7 +82,7 @@ namespace ColliderShapes
 
         public override ModelData? DrawModel()
         {
-            return Core.collision_model_sphere;
+            return Core.collision_model_point;
         }
 
         public override Matrix4x4 ModelTransform()

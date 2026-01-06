@@ -108,6 +108,9 @@ namespace Engine
             // Check if exists
             if(!File.Exists(file_path)) 
             {
+                Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
+                Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X BAD MODEL, FILE DOES NOT EXIST : " + file_path);
+                Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
                 return (ModelData)LocateAsset(AssetLoader.AssetKey(Asset.AssetType.model, "no_model", AssetSource.engine)).Data;
             }
             return (ModelData)InvokeAsset( get_key, new AssetModel(get_key, file_path));
@@ -123,6 +126,9 @@ namespace Engine
             // Check if exists
             if(!File.Exists(file_path)) 
             {
+                Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
+                Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X BAD TEXTURE, FILE DOES NOT EXIST : " + file_path);
+                Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
                 return (TextureData)LocateAsset(AssetLoader.AssetKey(Asset.AssetType.textures, "no_tex", AssetSource.engine)).Data;
             }
             return (TextureData)InvokeAsset( get_key, new AssetTexture(get_key, file_path));

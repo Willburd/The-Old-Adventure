@@ -7,6 +7,7 @@ namespace Engine
         public static MaterialData collision_draw_material;
         public static MaterialData actor_collision_draw_material;
 
+        public static ModelData collision_model_point;
         public static ModelData collision_model_sphere;
         public static ModelData collision_model_cylinder;
         public static ModelData collision_model_cube;
@@ -41,9 +42,9 @@ namespace Engine
             // Models: FBX, 0.01 scale, Z forward, Y Up
             // Debug models
             AssetLoader.ModelAssetLoad( "no_model", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine); 
-            AssetLoader.ModelAssetLoad( "cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine); 
             // Collider visualization
-            collision_model_sphere = AssetLoader.ModelAssetLoad( "col_sphere", AssetLoader.AssetDirectoryEngine + "/Models/col_shere.fbx", AssetLoader.AssetSource.engine); 
+            collision_model_point = AssetLoader.ModelAssetLoad( "cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine); 
+            collision_model_sphere = AssetLoader.ModelAssetLoad( "col_sphere", AssetLoader.AssetDirectoryEngine + "/Models/col_sphere.fbx", AssetLoader.AssetSource.engine); 
             collision_model_cylinder = AssetLoader.ModelAssetLoad( "col_cylinder", AssetLoader.AssetDirectoryEngine + "/Models/col_cylinder.fbx", AssetLoader.AssetSource.engine); 
 
 

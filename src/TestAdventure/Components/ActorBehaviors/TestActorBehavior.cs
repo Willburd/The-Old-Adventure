@@ -32,7 +32,7 @@ namespace EntComponents.ActorBehavior
 
             // Collision
             Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
-            collision?.SetShape( new ColliderShapes.SphereCol(2f));
+            collision?.SetShape( new ColliderShapes.CylinderCol(0.6f,0.25f));
 
             return 1;
         }
