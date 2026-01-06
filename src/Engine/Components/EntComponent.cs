@@ -110,16 +110,16 @@ namespace EntComponents
                 // Collision handling
                 /////////////////////////////////////////////////////////
                 case Core.Signals.collision:
-                    return HandleCollision((List<Collider.Collision>)args[0]);
+                    return HandleCollisions((List<Collider.Collision>)args[0]);
                 case Core.Signals.collision_start:
-                    return HandleCollisionStart((List<Collider.Collision>)args[0]);
+                    return HandleCollisionStart((Collider.Collision)args[0]);
                 case Core.Signals.collision_end:
                     return HandleCollisionEnd((Collider)args[0]);
 
                 case Core.Signals.trigger:
-                    return HandleTrigger((List<Collider.Collision>)args[0]);
+                    return HandleTriggers((List<Collider.Collision>)args[0]);
                 case Core.Signals.trigger_start:
-                    return HandleTriggerStart((List<Collider.Collision>)args[0]);
+                    return HandleTriggerStart((Collider.Collision)args[0]);
                 case Core.Signals.trigger_end:
                     return HandleTriggerEnd((Collider)args[0]);
             }
@@ -185,7 +185,7 @@ namespace EntComponents
         /// <summary>
         /// Used to respond to collisions.
         /// </summary>
-        protected virtual uint HandleCollision(List<Collider.Collision> collisions)
+        protected virtual uint HandleCollisions(List<Collider.Collision> collisions)
         {
             return 0;
         }
@@ -193,7 +193,7 @@ namespace EntComponents
         /// <summary>
         /// Used to respond to collisions.
         /// </summary>
-        protected virtual uint HandleCollisionStart(List<Collider.Collision> new_collisions)
+        protected virtual uint HandleCollisionStart(Collider.Collision new_collision)
         {
             return 0;
         }
@@ -209,7 +209,7 @@ namespace EntComponents
         /// <summary>
         /// Used to respond to trigger entry.
         /// </summary>
-        protected virtual uint HandleTrigger(List<Collider.Collision> collisions)
+        protected virtual uint HandleTriggers(List<Collider.Collision> collisions)
         {
             return 0;
         }
@@ -217,7 +217,7 @@ namespace EntComponents
         /// <summary>
         /// Used to respond to trigger entry.
         /// </summary>
-        protected virtual uint HandleTriggerStart(List<Collider.Collision> new_triggerers)
+        protected virtual uint HandleTriggerStart(Collider.Collision new_trigger)
         {
             return 0;
         }

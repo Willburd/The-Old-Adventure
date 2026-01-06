@@ -9,7 +9,7 @@ namespace EntComponents
     /// </summary>
     public class Collider(Entity host_entity) : EntComponent(host_entity)
     {
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
 
         /// <summary>
         /// Increased with every collider spawned and periodically reset by room unloading. Used to keep track of which colliders we've been in contact with for collision start and end signals

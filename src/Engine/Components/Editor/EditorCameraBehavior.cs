@@ -11,7 +11,15 @@ namespace EntComponents
         
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.editor_update, Core.Signals.collision_start, Core.Signals.collision_end];
+            return [Core.Signals.create, Core.Signals.editor_update, Core.Signals.collision,  Core.Signals.collision_start, Core.Signals.collision_end];
+        }
+
+        protected override uint HandleCreate()
+        {
+            Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
+            collision?.SetShape( new Engine.ColliderShapes.PointCol());
+
+            return 1;
         }
 
         protected override uint HandleEditorUpdate()
@@ -63,6 +71,27 @@ namespace EntComponents
             Vector2 mouse_delta = InputHandler.MouseDelta * mouse_multiplier;
             Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Up, -mouse_delta.X);
             Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, -mouse_delta.Y);
+
+            return 1;
+        }
+
+        protected override uint HandleCollisions(List<Collider.Collision> collisions)
+        {
+            Console.WriteLine(collisions.Count);
+            
+            return 1;
+        }
+
+        protected override uint HandleCollisionStart(Collider.Collision new_collision)
+        {
+            Console.WriteLine("started collision" + new_collision);
+            
+            return 1;
+        }
+
+        protected override uint HandleCollisionEnd(Collider was_colliding_with)
+        {
+            Console.WriteLine("end collision " + was_colliding_with);
 
             return 1;
         }
