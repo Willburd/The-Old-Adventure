@@ -11,7 +11,7 @@ namespace EntComponents
         
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.create, Core.Signals.editor_update, Core.Signals.collision,  Core.Signals.collision_start, Core.Signals.collision_end];
+            return [Core.Signals.create, Core.Signals.editor_update, Core.Signals.collision, Core.Signals.collision_start, Core.Signals.collision_end,  Core.Signals.trigger_start, Core.Signals.trigger_end];
         }
 
         protected override uint HandleCreate()
@@ -77,21 +77,35 @@ namespace EntComponents
 
         protected override uint HandleCollisions(List<Collider.Collision> collisions)
         {
-            Console.WriteLine(collisions.Count);
+            //Console.WriteLine(collisions.Count);
             
             return 1;
         }
 
         protected override uint HandleCollisionStart(Collider new_collision)
         {
-            Console.WriteLine("started collision" + new_collision);
+            Console.WriteLine("started collision" + new_collision.Host);
             
             return 1;
         }
 
         protected override uint HandleCollisionEnd(Collider was_colliding_with)
         {
-            Console.WriteLine("end collision " + was_colliding_with);
+            Console.WriteLine("end collision " + was_colliding_with.Host);
+
+            return 1;
+        }
+        
+        protected override uint HandleTriggerStart(Collider new_collision)
+        {
+            Console.WriteLine("started trigger" + new_collision.Host);
+            
+            return 1;
+        }
+
+        protected override uint HandleTriggerEnd(Collider was_colliding_with)
+        {
+            Console.WriteLine("end trigger " + was_colliding_with.Host);
 
             return 1;
         }
