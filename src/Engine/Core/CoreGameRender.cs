@@ -173,9 +173,9 @@ namespace Engine
                 }
                 
                 // Apply shader uniforms
-                foreach(MaterialUniformData matuni in mat_data.Uniforms)
+                foreach(KeyValuePair<string,object> matuni in mat_data.Uniforms)
                 {
-                    shader.SetUniform(matuni.set_uniform, matuni.shader_uni_value);
+                    shader.SetUniform(matuni.Key, matuni.Value);
                 }
 
                 // Draw mesh

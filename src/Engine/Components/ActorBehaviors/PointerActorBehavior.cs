@@ -24,7 +24,7 @@ namespace EntComponents.ActorBehavior
             TextureData example_tex = AssetLoader.TextureAssetLoad( "example", AssetLoader.AssetDirectoryEngine + "/Textures/example.png", AssetLoader.AssetSource.engine);
             
             // Materials
-            AssetLoader.MaterialAssetLoad( "example", new( [example_tex], [new MaterialUniformData("uTexture0", 0)], standard_shader), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad( "example", new( [example_tex], [new("uTexture0", 0)], standard_shader), AssetLoader.AssetSource.engine);
             
             // Model
             AssetLoader.ModelAssetLoad( "test_pointer", AssetLoader.AssetDirectoryEngine + "/Models/pointer.fbx", AssetLoader.AssetSource.engine);

@@ -24,8 +24,8 @@ namespace EntComponents.ActorBehavior
             TextureData sign_face = AssetLoader.TextureAssetLoad( "sign_face", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_face.png");
             
             // Materials
-            AssetLoader.MaterialAssetLoad( "sign_wood", new( [sign_wood], [new MaterialUniformData("uTexture0", 0)], standard_shader));
-            AssetLoader.MaterialAssetLoad( "sign_face", new( [sign_face], [new MaterialUniformData("uTexture0", 0)], standard_shader));
+            AssetLoader.MaterialAssetLoad( "sign_wood", new( [sign_wood], [new("uTexture0", 0)], standard_shader));
+            AssetLoader.MaterialAssetLoad( "sign_face", new( [sign_face], [new("uTexture0", 0)], standard_shader));
             
             // Model
             AssetLoader.ModelAssetLoad( "sign", AssetLoader.AssetDirectoryAdventure + "/Models/sign.fbx");

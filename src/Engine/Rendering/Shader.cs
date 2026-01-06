@@ -42,35 +42,50 @@ namespace Rendering
             return _gl.IsProgram(_handle);
         }
 
-        public void SetUniform(string name, int value)
+        public unsafe void SetUniform(string name, object value)
         {
             int location = _gl.GetUniformLocation(_handle, name);
             if (location == -1)
             {
                 throw new Exception($"{name} uniform not found on shader.");
             }
-            _gl.Uniform1(location, value);
-        }
 
-        public unsafe void SetUniform(string name, Matrix4x4 value)
-        {
-            //A new overload has been created for setting a uniform so we can use the transform in our shader.
-            int location = _gl.GetUniformLocation(_handle, name);
-            if (location == -1)
+            if(value.GetType() == typeof(int))
             {
-                throw new Exception($"{name} uniform not found on shader.");
+                _gl.Uniform1(location, (int)value);
+                return;
             }
-            _gl.UniformMatrix4(location, 1, false, (float*) &value);
-        }
-
-        public void SetUniform(string name, float value)
-        {
-            int location = _gl.GetUniformLocation(_handle, name);
-            if (location == -1)
+            if(value.GetType() == typeof(float)) 
             {
-                throw new Exception($"{name} uniform not found on shader.");
+                _gl.Uniform1(location, (float)value);
+                return;
             }
-            _gl.Uniform1(location, value);
+            if(value.GetType() == typeof(double)) 
+            {
+                _gl.Uniform1(location, (double)value);
+                return;
+            }
+            if(value.GetType() == typeof(Vector2)) 
+            {
+                _gl.Uniform2(location, (Vector2)value);
+                return;
+            }
+            if(value.GetType() == typeof(Vector3)) 
+            {
+                _gl.Uniform3(location, (Vector3)value);
+                return;
+            }
+            if(value.GetType() == typeof(Vector4)) 
+            {
+                _gl.Uniform4(location, (Vector4)value);
+                return;
+            }
+            if(value.GetType() == typeof(Matrix4x4)) 
+            {
+                Matrix4x4 mat_data = (Matrix4x4)value;
+                _gl.UniformMatrix4(location, 1, false, (float*) &mat_data);
+                return;
+            }
         }
 
         public void Dispose()
