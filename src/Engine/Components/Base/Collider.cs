@@ -1,18 +1,14 @@
 using System.Numerics;
 using Engine;
+using Rendering;
 
 namespace EntComponents
 {
     /// <summary>
     /// Entity Component that detects collisions with other colliders. Intended for handling physics.
     /// </summary>
-    public class Collider : EntComponent
+    public class Collider(Entity host_entity) : EntComponent(host_entity)
     {
-        public Collider(Entity host_entity) : base(host_entity)
-        {
-            CollisionShape = new ColShape(this);
-        }
-
         public bool Active { get; set; }
         public bool IsTrigger { get; set; } = false;
         
@@ -91,7 +87,12 @@ namespace EntComponents
         /// <summary>
         /// Each collider has a shape that is used to check against other colliders and raycasts.
         /// </summary>
-        public ColShape CollisionShape { get; protected set; }
+        public ColliderShapes.ColShape? CollisionShape { get; private set; }
+        public void SetShape( ColliderShapes.ColShape new_shape)
+        {
+            new_shape.ColHost = this;
+            CollisionShape = new_shape;
+        }
 
         /// <summary>
         /// Checks against all colliders in a list and handle collisions for each.
@@ -137,7 +138,7 @@ namespace EntComponents
         /// </summary>
         public Collision? CheckIsColliding(Collider other_col)
         {
-            return CollisionShape.InOurShape( other_col);
+            return CollisionShape?.InOurShape( other_col);
         }
 
         /// <summary>
@@ -145,6 +146,7 @@ namespace EntComponents
         /// </summary>
         public uint CheckIsRayHit(Raycast ray, List<RaycastHit> hits)
         {
+            if(CollisionShape == null) return 0;
             uint hit_count = 0;
             RaycastHit? hit = CollisionShape.InRay(ray);
             if(hit != null)
@@ -182,13 +184,31 @@ namespace EntComponents
 
                 case Core.Signals.render:
                     // Render our collider shape if debugging, same as above
-                    return 1;
+                    return DebugRender((double)args[0]);
 
                 case Core.Signals.raycast:
                     // Check our collision vs the incoming ray
                     return CheckIsRayHit((Raycast)args[0], (List<RaycastHit>)args[1]);
             }
             return base.ReceiveSignal(signal,args);
+        }
+
+        
+        /// <summary>
+        /// Render function run if the component is Visible.
+        /// </summary>
+        public uint DebugRender(double tick_delta)
+        {
+            ModelData? model = CollisionShape?.DrawModel();
+            if(model == null || CollisionShape == null) return 0;
+
+            List<KeyValuePair<string,object>> vertex_uniforms = [];
+            vertex_uniforms.Add(new("uTransform", CollisionShape.ModelTransform()));
+            vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
+            vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
+            
+            Core.RenderModel( model, [Core.actor_collision_draw_material], vertex_uniforms);
+            return 1;
         }
     }
 }

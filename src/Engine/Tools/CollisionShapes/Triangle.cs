@@ -1,9 +1,11 @@
 using System.Numerics;
 using EntComponents;
+using Rendering;
+using Engine;
 
-namespace Engine
+namespace ColliderShapes
 {
-    public class TriCol(Collider host, Vector3 a, Vector3 b, Vector3 c) : ColShape(host)
+    public class TriCol(Vector3 a, Vector3 b, Vector3 c) : ColShape
     {
         public Vim.Math3d.Triangle our_triangle = new(new Vim.Math3d.Vector3(a.X,a.Y,a.Z),new Vim.Math3d.Vector3(b.X,b.Y,b.Z),new Vim.Math3d.Vector3(c.X,c.Y,c.Z));
 
@@ -17,6 +19,12 @@ namespace Engine
             {
                 return new Collider.RaycastHit(ray.start_vector,ray.end_vector,ColHost,(float)distance);
             }
+            return null;
+        }
+        
+
+        public override ModelData? DrawModel()
+        {
             return null;
         }
     }

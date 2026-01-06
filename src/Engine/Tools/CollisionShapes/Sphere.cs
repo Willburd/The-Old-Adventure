@@ -1,9 +1,11 @@
 using System.Numerics;
 using EntComponents;
+using Rendering;
+using Engine;
 
-namespace Engine
+namespace ColliderShapes
 {
-    public class SphereCol(Collider host, float radius) : ColShape(host)
+    public class SphereCol(float radius) : ColShape
     {
         public Vim.Math3d.Sphere our_sphere = new(Vim.Math3d.Vector3.Zero, radius);
 
@@ -54,6 +56,17 @@ namespace Engine
                 return new Collider.RaycastHit(ray.start_vector,ray.end_vector,ColHost,(float)distance);
             }
             return null;
+        }
+        
+
+        public override ModelData? DrawModel()
+        {
+            return Core.collision_model_sphere;
+        }
+
+        public override Matrix4x4 ModelTransform()
+        {
+            return Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(our_sphere.Radius, our_sphere.Radius, our_sphere.Radius)) * Matrix4x4.CreateTranslation(ColHost.Position);
         }
     }
 }

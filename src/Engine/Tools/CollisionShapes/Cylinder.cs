@@ -1,9 +1,11 @@
 using System.Numerics;
 using EntComponents;
+using Rendering;
+using Engine;
 
-namespace Engine
+namespace ColliderShapes
 {
-    public class CylinderCol(Collider host, float height, float radius) : ColShape(host)
+    public class CylinderCol(float height, float radius) : ColShape
     {
         public float height = height;
         public float radius = radius;
@@ -97,6 +99,17 @@ namespace Engine
         public override Collider.RaycastHit? InRay(Collider.Raycast ray)
         {
             return null;
+        }
+        
+
+        public override ModelData? DrawModel()
+        {
+            return Core.collision_model_cylinder;
+        }
+
+        public override Matrix4x4 ModelTransform()
+        {
+            return Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(radius, height, radius)) * Matrix4x4.CreateTranslation(ColHost.Position);
         }
     }
 }

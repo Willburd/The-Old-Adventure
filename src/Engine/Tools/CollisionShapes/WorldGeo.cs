@@ -1,10 +1,11 @@
 using System.Numerics;
 using EntComponents;
 using Rendering;
+using Engine;
 
-namespace Engine
+namespace ColliderShapes
 {
-    public class WorldGeometryCol(Collider host, MeshData mesh) : ColShape(host)
+    public class WorldGeometryCol(MeshData mesh) : ColShape
     {
         MeshData our_mesh = mesh;
 
@@ -21,6 +22,12 @@ namespace Engine
                     return new Collider.RaycastHit(ray.start_vector,ray.end_vector,ColHost,(float)distance);
                 }
             }
+            return null;
+        }
+        
+
+        public override ModelData? DrawModel()
+        {
             return null;
         }
     }

@@ -1,9 +1,11 @@
 using System.Numerics;
 using EntComponents;
+using Rendering;
+using Engine;
 
-namespace Engine
+namespace ColliderShapes
 {
-    public class AxisCubeCol(Collider host, Vector3 min, Vector3 max) : ColShape(host)
+    public class AxisCubeCol(Vector3 min, Vector3 max) : ColShape
     {
         public Vim.Math3d.AABox our_box = new( new Vim.Math3d.Vector3(min.X,min.Y,min.Z), new Vim.Math3d.Vector3(max.X,max.Y,max.Z));
         
@@ -80,6 +82,12 @@ namespace Engine
                 return new Collider.RaycastHit(ray.start_vector,ray.end_vector,ColHost,(float)distance);
             }
             */
+            return null;
+        }
+        
+
+        public override ModelData? DrawModel()
+        {
             return null;
         }
     }

@@ -1,11 +1,12 @@
 using System.Numerics;
 using EntComponents;
+using Rendering;
 
-namespace Engine
+namespace ColliderShapes
 {
-    public class ColShape(Collider host)
+    public class ColShape()
     {
-        public Collider ColHost { get; private set;} = host;
+        public Collider ColHost { get; set;}
 
         public Collider.Collision? InOurShape(Collider other_collider)
         {
@@ -61,6 +62,23 @@ namespace Engine
         public virtual Collider.RaycastHit? InRay(Collider.Raycast ray)
         {
             return null;
+        }
+        
+
+        /// <summary>
+        /// Model used for visualization during debugging
+        /// </summary>
+        public virtual ModelData? DrawModel()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Model transform used during debugging
+        /// </summary>
+        public virtual Matrix4x4 ModelTransform()
+        {
+            return Matrix4x4.Identity * Matrix4x4.CreateScale(Vector3.One) * Matrix4x4.CreateTranslation(ColHost.Position);
         }
     }
 }

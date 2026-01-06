@@ -30,6 +30,10 @@ namespace EntComponents.ActorBehavior
             // Model
             AssetLoader.ModelAssetLoad( "sign", AssetLoader.AssetDirectoryAdventure + "/Models/sign.fbx");
 
+            // Collision
+            Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
+            collision?.SetShape( new ColliderShapes.SphereCol(2f));
+
             return 1;
         }
 

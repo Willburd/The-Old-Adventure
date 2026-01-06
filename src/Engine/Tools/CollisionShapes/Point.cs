@@ -1,9 +1,11 @@
 using System.Numerics;
 using EntComponents;
+using Rendering;
+using Engine;
 
-namespace Engine
+namespace ColliderShapes
 {
-    public class PointCol(Collider host) : ColShape(host)
+    public class PointCol : ColShape
     {
         public override Collider.Collision? InOurShape(PointCol point_col)
         {
@@ -75,6 +77,17 @@ namespace Engine
                 return new Collider.RaycastHit(ray.start_vector,ray.end_vector,ColHost,our_dist);
             }
             return null;
+        }
+        
+
+        public override ModelData? DrawModel()
+        {
+            return Core.collision_model_sphere;
+        }
+
+        public override Matrix4x4 ModelTransform()
+        {
+            return Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(0.1f,0.1f,0.1f)) * Matrix4x4.CreateTranslation(ColHost.Position);
         }
     }
 }

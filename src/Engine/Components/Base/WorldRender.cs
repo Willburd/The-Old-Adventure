@@ -1,8 +1,6 @@
 using Engine;
 using Rendering;
 using System.Diagnostics;
-using System.Numerics;
-using Silk.NET.OpenGL;
 
 namespace EntComponents
 {
@@ -74,54 +72,12 @@ namespace EntComponents
         {
             Debug.Assert(model?.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
             
-            // Get the transform if we have one, and apply it to the model's meshs.
-            Matrix4x4 model_matrix = Host.GetInterpolatedViewMatrix(tick_delta);
-
-            // Get the current camera
-            Matrix4x4 camera_matrix = Camera.GetCurrentInterpolatedViewMatrix(tick_delta);
-            Matrix4x4 projection_matrix = Camera.GetCurrentProjectionMatrix();
-
-            // Render each mesh!
-            int mesh_index = 0;
-            foreach (var mesh in model.Meshes)
-            {
-                // Check for collision drawing
-                MaterialData mat_data = materials[mesh_index];
-                if(mesh.RawName == "col")
-                {
-                    if(!Core.draw_collisions) continue;
-                    mat_data = Core.collision_draw_material; // Use our collision shader
-                }
-
-                // Bind the VBOs
-                mesh.Bind();
-
-                // Each mesh can use a different material, and that also means shader!
-                ShaderData shader = mat_data.Shader;
-                shader.Use(); 
-                shader.SetUniform("uTransform", model_matrix);
-                shader.SetUniform("uView", camera_matrix);
-                shader.SetUniform("uProjection", projection_matrix);
-
-                // Bind textures to texunits
-                int tex_unit_id = 0;
-                foreach(TextureData tex in materials[mesh_index].Textures)
-                {
-                    tex.Bind((TextureUnit)tex_unit_id);
-                    tex_unit_id++;
-                }
-                
-                // Apply shader uniforms
-                foreach(MaterialUniformData matuni in mat_data.Uniforms)
-                {
-                    shader.SetUniform(matuni.set_uniform, matuni.shader_uni_value);
-                }
-
-                // Draw mesh
-                Core.OpenGLContext.DrawArrays( PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
-                mesh_index++;
-            }
-
+            List<KeyValuePair<string,object>> vertex_uniforms = [];
+            vertex_uniforms.Add(new("uTransform", Host.GetInterpolatedViewMatrix(tick_delta)));
+            vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
+            vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
+            
+            Core.RenderModel( model, materials, vertex_uniforms);
             return 1;
         }
 

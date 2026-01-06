@@ -2,6 +2,7 @@ using Rendering;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
 using System.Drawing;
+using System.Numerics;
 
 namespace Engine
 {
@@ -9,12 +10,7 @@ namespace Engine
     {
         public static GL OpenGLContext {get; private set;}
 
-        /// <summary>
-        /// material used while rendering collision debug surfaces
-        /// </summary>
-        public static MaterialData collision_draw_material;
-
-        public static bool draw_collisions;
+        public static bool draw_collisions = true;
 
         /// <summary>
         /// Number of frames per second for rendering.
@@ -139,6 +135,53 @@ namespace Engine
                 }
             }
             OnRenderHudTick();
+        }
+
+        public static void RenderModel(ModelData model, List<MaterialData> materials, List<KeyValuePair<string,object>> vertex_uniforms)
+        {
+            // Render each mesh!
+            int mesh_index = 0;
+            foreach (var mesh in model.Meshes)
+            {
+                // Check for collision drawing
+                MaterialData mat_data = materials[mesh_index];
+                if(mesh.RawName == "col")
+                {
+                    if(!Core.draw_collisions) continue;
+                    mat_data = Core.collision_draw_material; // Use our collision shader
+                }
+
+                // Bind the VBOs
+                mesh.Bind();
+
+                // Each mesh can use a different material, and that also means shader!
+                ShaderData shader = mat_data.Shader;
+                shader.Use(); 
+                foreach(KeyValuePair<string,object> pair in vertex_uniforms)
+                {
+                    if(pair.Value.GetType() == typeof(int)) shader.SetUniform(pair.Key, (int)pair.Value);
+                    if(pair.Value.GetType() == typeof(float)) shader.SetUniform(pair.Key, (float)pair.Value);
+                    if(pair.Value.GetType() == typeof(Matrix4x4)) shader.SetUniform(pair.Key, (Matrix4x4)pair.Value);
+                }
+
+                // Bind textures to texunits
+                int tex_unit_id = 0;
+                foreach(TextureData tex in materials[mesh_index].Textures)
+                {
+                    tex.Bind((TextureUnit)tex_unit_id);
+                    tex_unit_id++;
+                }
+                
+                // Apply shader uniforms
+                foreach(MaterialUniformData matuni in mat_data.Uniforms)
+                {
+                    shader.SetUniform(matuni.set_uniform, matuni.shader_uni_value);
+                }
+
+                // Draw mesh
+                Core.OpenGLContext.DrawArrays( PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+                mesh_index++;
+            }
         }
     }
 }

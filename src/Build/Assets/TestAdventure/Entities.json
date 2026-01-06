@@ -1,6 +1,7 @@
 {
     "actor_test": {
         "WorldRender": {},
+        "Collider": {},
         "TestActorBehavior": {}
     }
 }
