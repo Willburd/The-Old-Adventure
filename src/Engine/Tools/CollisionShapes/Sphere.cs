@@ -31,12 +31,7 @@ namespace ColliderShapes
             }
             return null;
         }
-
-        public override Collider.Collision? InOurShape(AxisCubeCol box_col)
-        {
-            return SwapSourceAndHit( box_col.InOurShape(this));
-        }
-
+        
         public override Collider.Collision? InOurShape(CylinderCol cylinder_col)
         {
             return SwapSourceAndHit( cylinder_col.InOurShape(this));

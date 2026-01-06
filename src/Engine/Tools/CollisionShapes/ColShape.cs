@@ -15,7 +15,6 @@ namespace ColliderShapes
             Type collision_type = other_collider.CollisionShape.GetType();
             if(collision_type == typeof(PointCol))          return InOurShape( (PointCol)other_collider.CollisionShape);
             if(collision_type == typeof(SphereCol))         return InOurShape( (SphereCol)other_collider.CollisionShape);
-            if(collision_type == typeof(AxisCubeCol))       return InOurShape( (AxisCubeCol)other_collider.CollisionShape);
             if(collision_type == typeof(CylinderCol))       return InOurShape( (CylinderCol)other_collider.CollisionShape);
 
             return null;
@@ -42,11 +41,6 @@ namespace ColliderShapes
         }
 
         public virtual Collider.Collision? InOurShape(SphereCol sphere_col)
-        {
-            return null;
-        }
-
-        public virtual Collider.Collision? InOurShape(AxisCubeCol box_col)
         {
             return null;
         }

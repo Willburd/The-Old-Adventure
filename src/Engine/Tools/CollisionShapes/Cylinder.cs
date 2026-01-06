@@ -39,26 +39,6 @@ namespace ColliderShapes
             return null;
         }
 
-        public override Collider.Collision? InOurShape(AxisCubeCol box_col)
-        {
-            Vector3 other_pos = box_col.ColHost.Position;
-            box_col.our_box.SetCenter( new Vim.Math3d.Vector3(other_pos.X,other_pos.Y,other_pos.Z));
-
-            foreach(Vim.Math3d.Vector3 vec in box_col.our_box.Corners)
-            {
-                Vector3 corner = new Vector3(vec.X,vec.Y,vec.Z);
-                if(InRadius(ColHost.Position,corner,radius))
-                {
-                    Vector3 rad_vector = ColHost.Position + (Tools.DirVector(ColHost.Position, corner) * radius); // from us to the point by our radius
-                    Vector3 dist_vector = ColHost.Position + (Tools.DirVector(ColHost.Position, corner) * Vector3.Distance(ColHost.Position, corner));
-                    Vector3 mid_pos = Vector3.Lerp(rad_vector,dist_vector,0.5f); // Get a point between!
-
-                    return new(ColHost, box_col.ColHost, mid_pos);
-                }
-            }
-            return null;
-        }
-
         public override Collider.Collision? InOurShape(CylinderCol cylinder_col)
         {
             
