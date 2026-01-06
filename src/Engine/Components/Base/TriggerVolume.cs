@@ -7,6 +7,9 @@ namespace EntComponents
     /// </summary>
     public class TriggerVolume(Entity host_entity) : Collider(host_entity)
     {
-        public new bool IsTrigger { get; set; } = true;
+        public override bool IsTrigger()
+        {
+            return true;
+        }
     }
 }

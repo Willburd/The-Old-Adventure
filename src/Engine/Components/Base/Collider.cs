@@ -10,7 +10,6 @@ namespace EntComponents
     public class Collider(Entity host_entity) : EntComponent(host_entity)
     {
         public bool Active { get; set; }
-        public bool IsTrigger { get; set; } = false;
         
         private Vector3 col_offset;
         /// <summary>
@@ -108,16 +107,16 @@ namespace EntComponents
                 // No self detection
                 if(col == this) continue;
                 // Forbid trigger reverse detection
-                if(col.IsTrigger) continue;
+                if(col.IsTrigger()) continue;
 
                 // Check for overlap
                 Collision? check_collision = CheckIsColliding(col);
                 if(check_collision != null) 
                 {
                     // Triggers only detect collisions with physics colliders, and not with other triggers
-                    if(IsTrigger)
+                    if(IsTrigger())
                     {
-                        if(!col.IsTrigger)
+                        if(!col.IsTrigger())
                         {
                             all_triggers.Add((Collision)check_collision);
                         }
@@ -155,6 +154,11 @@ namespace EntComponents
                 hit_count++;
             }
             return hit_count;
+        }
+        
+        public virtual bool IsTrigger()
+        {
+            return false;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +211,7 @@ namespace EntComponents
             vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
             vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
             
-            Core.RenderModel( model, [Core.actor_collision_draw_material], vertex_uniforms);
+            Core.RenderModel( model, [IsTrigger() ? Core.trigger_draw_material : Core.actor_collision_draw_material], vertex_uniforms);
             return 1;
         }
     }

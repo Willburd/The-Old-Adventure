@@ -2,6 +2,7 @@
     "actor_test": {
         "WorldRender": {},
         "Collider": {},
+        "TriggerVolume": {},
         "TestActorBehavior": {}
     }
 }
