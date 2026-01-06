@@ -119,12 +119,19 @@ namespace Engine
                 {
                     ent.SendSignal(Signals.apply_physics);
                 }
+                // Reset collisions and triggers list for global signal
+                Collider.Collision.all_collisions.Clear();
+                Collider.Collision.all_triggered.Clear(); 
+                // Time to resolve all collisions! Check every collider with every OTHER collider... This is pretty expensive!
                 List<EntComponent> all_colliders = EntComponent.GetAllOfType(typeof(Collider));
                 foreach(Collider collider in all_colliders.Cast<Collider>())
                 {
                     if(!collider.Host.IsInitilized || !collider.Host.Enabled || !collider.Active) continue;
                     collider.CheckCollisions(all_colliders);
                 }
+                // Global signals for collisions and triggers
+                if(Collider.Collision.all_collisions.Count > 0) Entity.SendGlobalSignal(Signals.global_all_collisions, Collider.Collision.all_collisions);
+                if(Collider.Collision.all_triggered.Count > 0) Entity.SendGlobalSignal(Signals.global_all_triggers, Collider.Collision.all_triggered);
 
                 /////////////////////////////////////////////////
                 // Processing

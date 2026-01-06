@@ -31,7 +31,11 @@ namespace Engine
 
             // Collision and triggers
             collision,              // (List<Collider.Collision>) : Called from Collider component, returns all collisions during the game tick.
-            trigger,                // (List<Collider.Collision>) : Called from Collider component, returns all collisions during the game tick.
+            trigger,                // (List<Collider.Collision>) : Called from Collider component, returns all trigger during the game tick.
+            collision_start,        // (Collider.Collision) : Called from Collider component, for EACH collision started
+            trigger_start,          // (Collider.Collision) : Called from Collider component, for EACH trigger entered
+            collision_end,          // (Collider) : Called from Collider component, for EACH collision exited
+            trigger_end,            // (Collider) : Called from Collider component, for EACH trigger exited
 
             // Raycasting
             raycast,                // (Collider.Raycast, List<ref Collider.RaycastHit>) : Check for raycast line intersection with colliders
@@ -43,6 +47,8 @@ namespace Engine
             global_room_loaded,       // (Room loaded) : Called when a room loads. Handles room start events.
             global_cutscene_begin,    // (Cutscene begin) : Called when a cutscene begins.
             global_cutscene_end,      // (Cutscene begin) : Called when a cutscene ends
+            global_all_collisions,    // (List<Collider.Collision>) : Called at the end of collision resolution. Sends a list of all collisions that frame for all colliders
+            global_all_triggers,      // (List<Collider.Collision>) : Called at the end of collision resolution. Sends a list of all triggers that frame for all trigger volumes
             global_camera_activated,  // (Camera active_camera) : When a camera becomes the active camera
             global_camera_deactivated, // (Camera deactivated_camera) : When a camera is disabled
             global_unittest            // () : Unit testing hook

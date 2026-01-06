@@ -10,7 +10,27 @@ namespace EntComponents
     public class Collider(Entity host_entity) : EntComponent(host_entity)
     {
         public bool Active { get; set; }
-        
+
+        /// <summary>
+        /// Increased with every collider spawned and periodically reset by room unloading. Used to keep track of which colliders we've been in contact with for collision start and end signals
+        /// </summary>
+        private static int collider_spawn_index = 0;
+        private int our_collider_index = collider_spawn_index++;
+        private List<int> previously_colliding_with = [];
+        private List<int> in_collision_with = [];
+        public List<int> GetNoLongerCollidingWith()
+        {
+            List<int> not_colliding_with_anymore = [];
+            foreach(int ind in previously_colliding_with)
+            {
+                if(!in_collision_with.Contains(ind)) not_colliding_with_anymore.Add(ind);
+            }
+            return not_colliding_with_anymore;
+        }
+
+        /// <summary>
+        /// Offset vector for the following collision transform vars
+        /// </summary>
         private Vector3 col_offset;
         /// <summary>
         /// If true, the Offset getter will return a relative transformation of this vector, including rotation, from the host entity when getting the collider's Position. If false it will be the world position.
@@ -34,11 +54,27 @@ namespace EntComponents
         }
         
 
-        public struct Collision(Collider source, Collider crosser, Vector3 point)
+        public struct Collision
         {
-            public Collider source_collider = source;
-            public Collider triggering_collider = crosser;
-            public Vector3 point = point;
+            public Collision(Collider source, Collider crosser, Vector3 at_point)
+            {
+                source_collider = source;
+                triggering_collider = crosser;
+                point = at_point;
+                if(!source.IsTrigger())
+                {
+                    all_collisions.Add(this);
+                }
+                else
+                {
+                    all_triggered.Add(this);
+                }
+            }
+            public static List<Collision> all_collisions = [];
+            public static List<Collision> all_triggered = [];
+            public Collider source_collider;
+            public Collider triggering_collider;
+            public Vector3 point;
         } 
 
         public struct Raycast(Vector3 startpos, Vector3 endpos)
@@ -62,6 +98,11 @@ namespace EntComponents
                 }
             }
         }
+
+        /// <summary>
+        /// List of collisions previously active with US in the prior frame. Use for sending collision start and end signals.
+        /// </summary>
+        private List<Collider> previous_collisions = [];
 
         /// <summary>
         /// Performs a raycast against all existing colliders in the scene, unless otherwise specified. Returns a list of all collisions that occured, specific collision information is in each collider.
@@ -98,7 +139,11 @@ namespace EntComponents
         /// </summary>
         public void CheckCollisions(List<EntComponent> all_colliders)
         {
-            // TODO - Update these from a list of colliders, to be structs of collision information, with the nearest position on the collider, the colliders involve, the origin position, distance to, etc.
+            // Update previous collisions
+            previously_colliding_with = in_collision_with;
+            in_collision_with = [];
+
+            // Keep track of current collisions
             List<Collision> all_collisions = [];
             List<Collision> all_triggers = [];
 
@@ -119,11 +164,32 @@ namespace EntComponents
                         if(!col.IsTrigger())
                         {
                             all_triggers.Add((Collision)check_collision);
+                            in_collision_with.Add(col.our_collider_index);
+                            if(!previously_colliding_with.Contains(col.our_collider_index)) Host.SendSignal(Core.Signals.collision_start, (Collision)check_collision);
                         }
                         continue;
                     }
                     // The other colliders cannot be a trigger, so we've found an actual collision!
                     all_collisions.Add((Collision)check_collision);
+                    in_collision_with.Add(col.our_collider_index);
+                    if(!previously_colliding_with.Contains(col.our_collider_index)) Host.SendSignal(Core.Signals.trigger_start, (Collision)check_collision);
+                }
+            }
+
+            // Fire a signal for all colliders we've left
+            List<int> colliders_ended = GetNoLongerCollidingWith();
+            foreach(Collider col in all_colliders.Cast<Collider>())
+            {
+                if(colliders_ended.Contains(col.our_collider_index))
+                {
+                    if(!col.IsTrigger())
+                    {
+                        Host.SendSignal(Core.Signals.collision_end, col);
+                    }
+                    else
+                    {
+                        Host.SendSignal(Core.Signals.trigger_end, col);
+                    }
                 }
             }
 
