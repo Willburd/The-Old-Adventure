@@ -82,32 +82,46 @@ namespace EntComponents
         {
             switch(signal)            
             {
+                /////////////////////////////////////////////////////////
+                // Creation and setup
+                /////////////////////////////////////////////////////////
                 case Core.Signals.load_assets:
                     return HandleAssetLoad();
-
                 case Core.Signals.create:
                     return HandleCreate();
 
+                /////////////////////////////////////////////////////////
+                // Update handlers
+                // /////////////////////////////////////////////////////////
                 case Core.Signals.pre_update:
                     if(!ActiveUpdate) return 0;
                     return HandlePreUpdate();
-
                 case Core.Signals.editor_update:
                     return HandleEditorUpdate();
 
                 case Core.Signals.update:
                     if(!ActiveUpdate) return 0;
                     return HandleUpdate();
-
                 case Core.Signals.post_update:
                     if(!ActiveUpdate) return 0;
                     return HandlePostUpdate();
 
+                /////////////////////////////////////////////////////////
+                // Collision handling
+                /////////////////////////////////////////////////////////
                 case Core.Signals.collision:
                     return HandleCollision((List<Collider.Collision>)args[0]);
+                case Core.Signals.collision_start:
+                    return HandleCollisionStart((List<Collider.Collision>)args[0]);
+                case Core.Signals.collision_end:
+                    return HandleCollisionEnd((Collider)args[0]);
 
                 case Core.Signals.trigger:
                     return HandleTrigger((List<Collider.Collision>)args[0]);
+                case Core.Signals.trigger_start:
+                    return HandleTriggerStart((List<Collider.Collision>)args[0]);
+                case Core.Signals.trigger_end:
+                    return HandleTriggerEnd((Collider)args[0]);
             }
             return 0;
         }
@@ -177,9 +191,41 @@ namespace EntComponents
         }
 
         /// <summary>
+        /// Used to respond to collisions.
+        /// </summary>
+        protected virtual uint HandleCollisionStart(List<Collider.Collision> new_collisions)
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// Used to respond to collisions.
+        /// </summary>
+        protected virtual uint HandleCollisionEnd(Collider was_colliding_with)
+        {
+            return 0;
+        }
+
+        /// <summary>
         /// Used to respond to trigger entry.
         /// </summary>
         protected virtual uint HandleTrigger(List<Collider.Collision> collisions)
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// Used to respond to trigger entry.
+        /// </summary>
+        protected virtual uint HandleTriggerStart(List<Collider.Collision> new_triggerers)
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// Used to respond to trigger entry.
+        /// </summary>
+        protected virtual uint HandleTriggerEnd(Collider was_triggered_by)
         {
             return 0;
         }

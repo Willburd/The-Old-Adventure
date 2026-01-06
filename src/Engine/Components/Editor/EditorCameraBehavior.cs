@@ -11,7 +11,7 @@ namespace EntComponents
         
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.editor_update];
+            return [Core.Signals.editor_update, Core.Signals.collision_start, Core.Signals.collision_end];
         }
 
         protected override uint HandleEditorUpdate()
