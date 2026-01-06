@@ -21,7 +21,7 @@ namespace EntComponents.ActorBehavior
             ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
             
             // Textures
-            TextureData example_tex = AssetLoader.TextureAssetLoad( "example", AssetLoader.AssetDirectoryEngine + "/Textures/example.png", AssetLoader.AssetSource.engine);
+            TextureData example_tex = AssetLoader.TextureAssetLoad( "example", AssetLoader.AssetDirectoryEngine + "/Textures/example.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             
             // Materials
             AssetLoader.MaterialAssetLoad( "example", new( [example_tex], [new("uTexture0", 0)], standard_shader), AssetLoader.AssetSource.engine);

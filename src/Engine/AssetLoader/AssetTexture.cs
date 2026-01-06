@@ -1,4 +1,5 @@
 using Silk.NET.Assimp;
+using Silk.NET.OpenGL;
 
 namespace Engine
 {
@@ -7,10 +8,10 @@ namespace Engine
     /// </summary>
     public class AssetTexture : Asset
     {
-        public AssetTexture(string asset_key, string file_path) : base(asset_key, file_path)
+        public AssetTexture(string asset_key, string file_path, TextureTarget tex_target) : base(asset_key, file_path)
         {
             // Compile source strings
-            Rendering.TextureData new_tex = new(file_path);
+            Rendering.TextureData new_tex = new(file_path, tex_target);
             data = new_tex;
             asset_type = AssetType.textures;
         }

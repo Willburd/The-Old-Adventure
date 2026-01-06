@@ -119,7 +119,7 @@ namespace Engine
         /// <summary>
         /// Loads a texture asset from disk into the asset library
         /// </summary>
-        public static TextureData TextureAssetLoad(string asset_key, string file_path, AssetSource source = AssetSource.adventure)
+        public static TextureData TextureAssetLoad(string asset_key, string file_path, Silk.NET.OpenGL.TextureTarget tex_target, AssetSource source = AssetSource.adventure)
         {
             string get_key = AssetLoader.AssetKey(Asset.AssetType.textures, asset_key, source);
             if(asset_library.ContainsKey( get_key)) return (TextureData)asset_library[get_key].Data;
@@ -131,7 +131,7 @@ namespace Engine
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
                 return (TextureData)LocateAsset(AssetLoader.AssetKey(Asset.AssetType.textures, "no_tex", AssetSource.engine)).Data;
             }
-            return (TextureData)InvokeAsset( get_key, new AssetTexture(get_key, file_path));
+            return (TextureData)InvokeAsset( get_key, new AssetTexture(get_key, file_path, tex_target));
         }
 
         /// <summary>
