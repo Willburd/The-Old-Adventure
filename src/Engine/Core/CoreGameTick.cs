@@ -123,8 +123,10 @@ namespace Engine
                 Collider.Collision.all_collisions.Clear();
                 Collider.Collision.all_triggered.Clear(); 
                 // Time to resolve all collisions! Check every collider with every OTHER collider... This is pretty expensive!
-                List<EntComponent> all_colliders = EntComponent.GetAllOfType(typeof(Collider));
-                all_colliders.AddRange(EntComponent.GetAllOfType(typeof(TriggerVolume))); // triggers too
+                List<EntComponent> all_colliders = [];
+                all_colliders.AddRange(EntComponent.GetAllOfType(typeof(Collider)));
+                all_colliders.AddRange(EntComponent.GetAllOfType(typeof(TriggerVolume)));
+
                 foreach(Collider collider in all_colliders.Cast<Collider>())
                 {
                     if(!collider.Host.IsInitilized || !collider.Host.Enabled || !collider.Active) continue;
