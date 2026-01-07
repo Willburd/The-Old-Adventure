@@ -71,7 +71,7 @@ namespace Engine.ColliderShapes
         /// </summary>
         public virtual Matrix4x4 ModelTransform()
         {
-            return Matrix4x4.Identity * Matrix4x4.CreateScale(Vector3.One) * Matrix4x4.CreateTranslation(ColHost.Position);
+            return Matrix4x4.Identity * Matrix4x4.CreateScale(Vector3.One) * Matrix4x4.CreateTranslation(ColHost.OffsetPos);
         }
     }
 }

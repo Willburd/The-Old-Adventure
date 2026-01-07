@@ -17,8 +17,8 @@ namespace EntComponents
         protected override uint HandleCreate()
         {
             Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
-            collision?.SetShape( new Engine.ColliderShapes.PointCol());
-            collision?.Position = new Vector3(0f,0f,-2f);
+            collision?.SetShape( new Engine.ColliderShapes.SphereCol(0.2f));
+            collision?.OffsetPos = new Vector3(0f,0f,-2f);
 
             return 1;
         }

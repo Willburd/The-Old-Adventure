@@ -48,7 +48,7 @@ namespace EntComponents
         /// <summary>
         /// Gets the origin position of the collider. If SyncRelativePosition is true it will be tied to the host's position and rotation in world space, if false it will be a untransformed world position.
         /// </summary>
-        public Vector3 Position 
+        public Vector3 OffsetPos 
         { 
             get
             {

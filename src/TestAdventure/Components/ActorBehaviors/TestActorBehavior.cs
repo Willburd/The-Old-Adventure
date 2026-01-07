@@ -1,3 +1,4 @@
+using System.Numerics;
 using Engine;
 using Rendering;
 
@@ -48,13 +49,16 @@ namespace EntComponents.ActorBehavior
 
             // Trigger
             TriggerVolume? trigger = (TriggerVolume?)Host.GetComponent(typeof(TriggerVolume));
-            trigger?.SetShape( new Engine.ColliderShapes.CylinderCol(0.3f,0.5f));
+            trigger?.SetShape( new Engine.ColliderShapes.SphereCol(0.5f));
+            trigger?.OffsetPos = new(0f,0f,1f);
 
             return 1;
         }
 
         protected override uint HandleUpdate()
         {
+            Host.Rotation *= Quaternion.CreateFromAxisAngle(Tools.Up, 0.01f);
+
             return 1;
         }
     }

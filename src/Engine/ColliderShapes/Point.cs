@@ -8,12 +8,12 @@ namespace Engine.ColliderShapes
     {
         public override Collider.Collision? InOurShape(PointCol point_col)
         {
-            Vector3 host_pos = ColHost.Position;
+            Vector3 host_pos = ColHost.OffsetPos;
             host_pos.X = MathF.Round(host_pos.X);
             host_pos.Y = MathF.Round(host_pos.Y);
             host_pos.Z = MathF.Round(host_pos.Z);
 
-            Vector3 other_point = point_col.ColHost.Position + Vector3.Transform(point_col.ColHost.Position,point_col.ColHost.Host.Rotation);
+            Vector3 other_point = point_col.ColHost.OffsetPos + Vector3.Transform(point_col.ColHost.OffsetPos,point_col.ColHost.Host.Rotation);
             other_point.X = MathF.Round(other_point.X);
             other_point.Y = MathF.Round(other_point.Y);
             other_point.Z = MathF.Round(other_point.Z);
@@ -27,27 +27,27 @@ namespace Engine.ColliderShapes
 
         public override Collider.Collision? InOurShape(SphereCol sphere_col)
         {
-            Vector3 other_point = sphere_col.ColHost.Position;
+            Vector3 other_point = sphere_col.ColHost.OffsetPos;
             sphere_col.our_sphere.SetCenter( new Vim.Math3d.Vector3(other_point.X,other_point.Y,other_point.Z));
             
-            Vim.Math3d.ContainmentType contype = sphere_col.our_sphere.Contains( new Vim.Math3d.Vector3(ColHost.Position.X,ColHost.Position.Y,ColHost.Position.Z));
+            Vim.Math3d.ContainmentType contype = sphere_col.our_sphere.Contains( new Vim.Math3d.Vector3(ColHost.OffsetPos.X,ColHost.OffsetPos.Y,ColHost.OffsetPos.Z));
             if(contype == Vim.Math3d.ContainmentType.Contains || contype == Vim.Math3d.ContainmentType.Intersects)
             {
-                return new Collider.Collision(ColHost,sphere_col.ColHost,ColHost.Position);
+                return new Collider.Collision(ColHost,sphere_col.ColHost,ColHost.OffsetPos);
             }
             return null;
         }
 
         public override Collider.Collision? InOurShape(CylinderCol cylinder_col)
         {
-            Vector3 other_point = cylinder_col.ColHost.Position;
+            Vector3 other_point = cylinder_col.ColHost.OffsetPos;
 
-            float radius_distance = Tools.FlattenedDistance(ColHost.Position,other_point);
-            float height_distance = MathF.Abs(ColHost.Position.Y - (other_point.Y + (cylinder_col.height/2f)));
+            float radius_distance = Tools.FlattenedDistance(ColHost.OffsetPos,other_point);
+            float height_distance = MathF.Abs(ColHost.OffsetPos.Y - (other_point.Y + (cylinder_col.height/2f)));
             
             if(radius_distance <= cylinder_col.radius && height_distance <= (cylinder_col.height / 2f))
             {
-                return new Collider.Collision(ColHost,cylinder_col.ColHost,ColHost.Position);
+                return new Collider.Collision(ColHost,cylinder_col.ColHost,ColHost.OffsetPos);
             }
             return null;
         }
@@ -55,8 +55,8 @@ namespace Engine.ColliderShapes
 
         public override Collider.RaycastHit? InRay(Collider.Raycast ray)
         {
-            float our_dist = Vector3.Distance(ray.start_vector, ColHost.Position);
-            float dot_product = Vector3.Dot( Tools.DirVector(ray.start_vector,ray.end_vector), Tools.DirVector(ray.start_vector,ColHost.Position));
+            float our_dist = Vector3.Distance(ray.start_vector, ColHost.OffsetPos);
+            float dot_product = Vector3.Dot( Tools.DirVector(ray.start_vector,ray.end_vector), Tools.DirVector(ray.start_vector,ColHost.OffsetPos));
 
             if(dot_product == 1f && our_dist <= Vector3.Distance(ray.start_vector,ray.end_vector))
             {
@@ -73,7 +73,7 @@ namespace Engine.ColliderShapes
 
         public override Matrix4x4 ModelTransform()
         {
-            return Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(0.02f,0.02f,0.02f)) * Matrix4x4.CreateTranslation(ColHost.Position);
+            return Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(0.02f,0.02f,0.02f)) * Matrix4x4.CreateTranslation(ColHost.OffsetPos);
         }
     }
 }
