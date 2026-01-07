@@ -28,22 +28,23 @@ namespace TestAdventure
             WorldRender? renderer = (WorldRender?)GetComponent(typeof(WorldRender));
             renderer?.SetModel( AssetLoader.ModelAssetGet("testroom_terrain"), AssetLoader.MaterialAssetGet("testroom_terrain"));
 
-            Position += new Vector3(0f,-1.5f,0f);
+            Position += new Vector3(0f,-0.5f,0f);
             Scale *= new Vector3(125f,1f,125f);
 
 
             // Default actors
-            EntityFactory.CreateActor( "actor_pointer", new Transform( new Vector3(0f,0f,0f)), this, AssetLoader.AssetSource.engine);
+
+            EntityFactory.CreateActor( "actor_test", new Transform( new Vector3(0f,0f,0f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.adventure);
             
             float radius = 6f;
             
-            EntityFactory.CreateActor( "actor_test", new Transform( new Vector3(0f,-1f,radius), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.adventure);
+            EntityFactory.CreateActor( "actor_pointer", new Transform( new Vector3(0f,0f,radius)), this, AssetLoader.AssetSource.engine);
             
-            EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(radius,-1f,0f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
+            EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(radius,0f,0f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
 
-            EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(-radius,-1f,0f), Quaternion.CreateFromAxisAngle(Tools.Up, 45f) * Quaternion.CreateFromAxisAngle(Tools.Right, 45f)), this, AssetLoader.AssetSource.engine);
+            EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(-radius,0f,0f), Quaternion.CreateFromAxisAngle(Tools.Up, 45f) * Quaternion.CreateFromAxisAngle(Tools.Right, 45f)), this, AssetLoader.AssetSource.engine);
 
-            EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(0f,-1f,-radius), Quaternion.CreateFromAxisAngle(Tools.Up, 45f) * Quaternion.CreateFromAxisAngle(Tools.Right, 45f), Vector3.One * 0.15f), this, AssetLoader.AssetSource.engine);
+            EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(0f,0f,-radius), Quaternion.CreateFromAxisAngle(Tools.Up, 45f) * Quaternion.CreateFromAxisAngle(Tools.Right, 45f), Vector3.One * 0.15f), this, AssetLoader.AssetSource.engine);
         }
 
         public override void LoadExits()
