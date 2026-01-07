@@ -32,6 +32,10 @@ namespace TestAdventure
             Scale *= new Vector3(125f,1f,125f);
 
 
+            // Move camera
+            Camera.WorldCamera?.Position = new Vector3(0f,0.5f,1f);
+
+
             // Default actors
 
             EntityFactory.CreateActor( "actor_test", new Transform( new Vector3(0f,0f,0f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.adventure);

@@ -43,14 +43,13 @@ namespace Engine.ColliderShapes
             Vector3 other_point = cylinder_col.ColHost.Position;
 
             float radius_distance = Tools.FlattenedDistance(ColHost.Position,other_point);
-            float height_distance = MathF.Abs(other_point.Y - (ColHost.Position.Y + (cylinder_col.height/2f)));
+            float height_distance = MathF.Abs(ColHost.Position.Y - (other_point.Y + (cylinder_col.height/2f)));
             
             if(radius_distance <= cylinder_col.radius && height_distance <= (cylinder_col.height / 2f))
             {
                 return new Collider.Collision(ColHost,cylinder_col.ColHost,ColHost.Position);
             }
             return null;
-            
         }
 
 
@@ -74,7 +73,7 @@ namespace Engine.ColliderShapes
 
         public override Matrix4x4 ModelTransform()
         {
-            return Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(0.1f,0.1f,0.1f)) * Matrix4x4.CreateTranslation(ColHost.Position);
+            return Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(0.02f,0.02f,0.02f)) * Matrix4x4.CreateTranslation(ColHost.Position);
         }
     }
 }

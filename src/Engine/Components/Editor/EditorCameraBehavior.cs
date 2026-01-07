@@ -18,6 +18,7 @@ namespace EntComponents
         {
             Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
             collision?.SetShape( new Engine.ColliderShapes.PointCol());
+            collision?.Position = new Vector3(0f,0f,-2f);
 
             return 1;
         }

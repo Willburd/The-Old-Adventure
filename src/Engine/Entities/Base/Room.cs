@@ -16,12 +16,21 @@ namespace Engine
         {
             Console.WriteLine("=====================================================");
             Console.WriteLine("=======> Room Loading : " + GetType());
+            if(Core.EditorMode) 
+            {
+                // Meant for debugging scenes
+                new EditorCamera(new Transform( new Vector3(0f,0f,0f)), true, this);
+            }
+            else
+            {
+                // standard camera
+                new Camera(new Transform( new Vector3(0f,0f,0f)), true, this);
+            }
             loaded_rooms.Add(this);
             new WorldRender(this); // All scenes implicitly have this.
             LoadAssets();
             LoadActors();
             LoadExits();
-            if(Core.EditorMode) new EditorCamera(new Transform( new Vector3(0f,0f,0f)), true, this);
             Console.WriteLine("-------> Room Loaded : " + GetType());
             Console.WriteLine("-----------------------------------------------------");
         }
