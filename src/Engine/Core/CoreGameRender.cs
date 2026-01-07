@@ -142,48 +142,52 @@ namespace Engine
             int mesh_index = 0;
             foreach (var mesh in model.Meshes)
             {
-                // Check for collision drawing
-                MaterialData mat_data = materials[mesh_index];
-                if(mesh.RawName == "col")
-                {
-                    if(!Core.draw_collisions) continue;
-                    mat_data = Core.collision_draw_material; // Use our collision shader
-                }
-
-                // Bind the VBOs
-                mesh.Bind();
-
-                // Set the blending mode
-                mat_data.UseBlendMode();
-
-                // Each mesh can use a different material, and that also means shader!
-                ShaderData shader = mat_data.Shader;
-                shader.Use(); 
-                foreach(KeyValuePair<string,object> pair in vertex_uniforms)
-                {
-                    if(pair.Value.GetType() == typeof(int)) shader.SetUniform(pair.Key, (int)pair.Value);
-                    if(pair.Value.GetType() == typeof(float)) shader.SetUniform(pair.Key, (float)pair.Value);
-                    if(pair.Value.GetType() == typeof(Matrix4x4)) shader.SetUniform(pair.Key, (Matrix4x4)pair.Value);
-                }
-
-                // Bind textures to texunits
-                int tex_unit_id = 0;
-                foreach(TextureData tex in materials[mesh_index].Textures)
-                {
-                    tex.Bind((TextureUnit)tex_unit_id);
-                    tex_unit_id++;
-                }
-                
-                // Apply shader uniforms
-                foreach(KeyValuePair<string,object> matuni in mat_data.Uniforms)
-                {
-                    shader.SetUniform(matuni.Key, matuni.Value);
-                }
-
-                // Draw mesh
-                Core.OpenGLContext.DrawArrays( PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+                RenderMesh( mesh, materials[mesh_index], vertex_uniforms);
                 mesh_index++;
             }
+        }
+
+        public static void RenderMesh(MeshData mesh, MaterialData mat_data, List<KeyValuePair<string,object>> vertex_uniforms)
+        {
+            // Check for collision drawing
+            if(mesh.RawName == "col.001")
+            {
+                if(!Core.draw_collisions) return;
+                mat_data = Core.collision_draw_material; // Use our collision shader
+            }
+
+            // Bind the VBOs
+            mesh.Bind();
+
+            // Set the blending mode
+            mat_data.UseBlendMode();
+
+            // Each mesh can use a different material, and that also means shader!
+            ShaderData shader = mat_data.Shader;
+            shader.Use(); 
+            foreach(KeyValuePair<string,object> pair in vertex_uniforms)
+            {
+                if(pair.Value.GetType() == typeof(int)) shader.SetUniform(pair.Key, (int)pair.Value);
+                if(pair.Value.GetType() == typeof(float)) shader.SetUniform(pair.Key, (float)pair.Value);
+                if(pair.Value.GetType() == typeof(Matrix4x4)) shader.SetUniform(pair.Key, (Matrix4x4)pair.Value);
+            }
+
+            // Bind textures to texunits
+            int tex_unit_id = 0;
+            foreach(TextureData tex in mat_data.Textures)
+            {
+                tex.Bind((TextureUnit)tex_unit_id);
+                tex_unit_id++;
+            }
+            
+            // Apply shader uniforms
+            foreach(KeyValuePair<string,object> matuni in mat_data.Uniforms)
+            {
+                shader.SetUniform(matuni.Key, matuni.Value);
+            }
+
+            // Draw mesh
+            Core.OpenGLContext.DrawArrays( PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
         }
     }
 }

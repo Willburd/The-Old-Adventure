@@ -61,7 +61,7 @@ namespace Engine.ColliderShapes
         /// <summary>
         /// Model used for visualization during debugging
         /// </summary>
-        public virtual ModelData? DrawModel()
+        public virtual MeshData? DrawModel()
         {
             return null;
         }

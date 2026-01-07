@@ -28,6 +28,7 @@ namespace Engine
             }
             loaded_rooms.Add(this);
             new WorldRender(this); // All scenes implicitly have this.
+            new Collider(this); // All scenes implicitly have this.
             LoadAssets();
             LoadActors();
             LoadExits();

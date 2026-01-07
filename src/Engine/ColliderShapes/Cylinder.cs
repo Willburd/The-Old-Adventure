@@ -1,6 +1,7 @@
 using System.Numerics;
 using EntComponents;
 using Rendering;
+using Silk.NET.Assimp;
 
 namespace Engine.ColliderShapes
 {
@@ -83,9 +84,9 @@ namespace Engine.ColliderShapes
         }
         
 
-        public override ModelData? DrawModel()
+        public override MeshData? DrawModel()
         {
-            return Core.collision_model_cylinder;
+            return Core.collision_model_cylinder.Meshes[0];
         }
 
         public override Matrix4x4 ModelTransform()

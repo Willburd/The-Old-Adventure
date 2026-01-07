@@ -47,9 +47,9 @@ namespace Engine.ColliderShapes
         }
         
 
-        public override ModelData? DrawModel()
+        public override MeshData? DrawModel()
         {
-            return Core.collision_model_sphere;
+            return Core.collision_model_sphere.Meshes[0];
         }
 
         public override Matrix4x4 ModelTransform()

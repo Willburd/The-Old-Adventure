@@ -24,7 +24,28 @@ namespace EntComponents
         {
             if(model == null) return;
             if(mesh_index < 0 || mesh_index >= materials.Count) return;
-            if(model.Meshes[mesh_index].CollisionTriangles.Count == 0) materials[mesh_index] = apply_mat;
+            materials[mesh_index] = apply_mat;
+        }
+
+        
+        public MeshData? GetMeshByName(string meshname)
+        {
+            if(model == null) return null;
+            return model.Meshes[model.GetMeshIndex(meshname)];
+        }
+        
+        public MeshData? GetCollisionMesh(int index)
+        {
+            if(model == null) return null;
+            for(int i = 0; i < model.Meshes.Count; i++)
+            {
+                if(model.Meshes[i].CollisionTriangles.Count > 0)
+                {
+                    if(index == 0) return model.Meshes[i];
+                    index--;
+                }
+            }
+            return null;
         }
 
         private void ApplyMaterial(MaterialData apply_mat, int mesh_count = 1)
@@ -32,7 +53,7 @@ namespace EntComponents
             if(model == null) return;
             for(int i = 0; i < mesh_count; i++)
             {
-                if(model.Meshes[i].CollisionTriangles.Count == 0) materials.Add(apply_mat);
+                materials.Add(apply_mat);
             }
         }
 

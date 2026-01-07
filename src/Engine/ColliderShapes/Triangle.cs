@@ -21,7 +21,7 @@ namespace Engine.ColliderShapes
         }
         
 
-        public override ModelData? DrawModel()
+        public override MeshData? DrawModel()
         {
             return null;
         }

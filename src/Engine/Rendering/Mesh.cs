@@ -69,10 +69,10 @@ namespace Rendering
             }
 
             // Collision creation
-            if(RawName == "col")
+            if(RawName == "col.001")
             {
                 // collect position data in the verts
-                List<float> vert_collection = [];
+                List<Vim.Math3d.Vector3> vert_collection = [];
                 int index = 0;
                 while(index < Vertices.Length)
                 {
@@ -81,19 +81,20 @@ namespace Rendering
                         if(vbo_dat.is_collision)
                         {
                             Debug.Assert(vbo_dat.element_count == 3, "VBO for collision data expects to be 3 elements long");
-                            vert_collection.Add(Vertices[index++]);
+                            vert_collection.Add( new( Vertices[index++], Vertices[index++], Vertices[index++] ));
                         }
                     }
                 }
                 // Assemble position floats into tris
-                if(vert_collection.Count > 0 && vert_collection.Count % 3 == 0)
+                if(Indices.Length > 0)
                 {
                     index = 0;
-                    while(index < vert_collection.Count) // 3 position elements per three verts of a triangle
+                    while(index < Indices.Length)
                     {
-                        Vim.Math3d.Vector3 vertA = new(Vertices[index++],Vertices[index++],Vertices[index++]);
-                        Vim.Math3d.Vector3 vertB = new(Vertices[index++],Vertices[index++],Vertices[index++]);
-                        Vim.Math3d.Vector3 vertC = new(Vertices[index++],Vertices[index++],Vertices[index++]);
+                        float mult = 0.01f;
+                        Vim.Math3d.Vector3 vertA = vert_collection[ (int)Indices[index++]] * mult;
+                        Vim.Math3d.Vector3 vertB = vert_collection[ (int)Indices[index++]] * mult;
+                        Vim.Math3d.Vector3 vertC = vert_collection[ (int)Indices[index++]] * mult;
                         CollisionTriangles.Add( new Vim.Math3d.Triangle(vertA,vertB,vertC) );
                     }
                 }

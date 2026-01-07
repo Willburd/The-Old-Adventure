@@ -28,6 +28,10 @@ namespace TestAdventure
             WorldRender? renderer = (WorldRender?)GetComponent(typeof(WorldRender));
             renderer?.SetModel( AssetLoader.ModelAssetGet("testroom_terrain"), AssetLoader.MaterialAssetGet("testroom_terrain"));
 
+            // Set collider
+            Collider? terrain_collider = (Collider?)GetComponent(typeof(Collider));
+            terrain_collider?.SetShape( new Engine.ColliderShapes.WorldGeometryCol(renderer.GetMeshByName("col.001")));
+
 
             // Move camera
             Camera.WorldCamera?.Position = new Vector3(0f,0.5f,1f);

@@ -286,7 +286,7 @@ namespace EntComponents
         /// </summary>
         public uint DebugRender(double tick_delta)
         {
-            ModelData? model = CollisionShape?.DrawModel();
+            MeshData? model = CollisionShape?.DrawModel();
             if(model == null || CollisionShape == null) return 0;
 
             List<KeyValuePair<string,object>> vertex_uniforms = [];
@@ -294,7 +294,7 @@ namespace EntComponents
             vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
             vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
             
-            Core.RenderModel( model, [IsTrigger() ? Core.trigger_draw_material : Core.actor_collision_draw_material], vertex_uniforms);
+            Core.RenderMesh( model, IsTrigger() ? Core.trigger_draw_material : Core.actor_collision_draw_material, vertex_uniforms);
             return 1;
         }
     }
