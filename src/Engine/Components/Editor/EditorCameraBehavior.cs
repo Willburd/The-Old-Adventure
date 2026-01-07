@@ -11,15 +11,11 @@ namespace EntComponents
         
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.create, Core.Signals.editor_update, Core.Signals.collision, Core.Signals.collision_start, Core.Signals.collision_end, Core.Signals.trigger_start, Core.Signals.trigger_end];
+            return [Core.Signals.create, Core.Signals.editor_update];
         }
 
         protected override uint HandleCreate()
         {
-            Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
-            collision?.SetShape( new Engine.ColliderShapes.SphereCol(0.2f));
-            collision?.OffsetPos = new Vector3(0f,0f,-2f);
-
             return 1;
         }
 

@@ -28,10 +28,8 @@ namespace Engine.ColliderShapes
         public override Collider.Collision? InOurShape(SphereCol sphere_col)
         {
             Vector3 other_point = sphere_col.ColHost.OffsetPos;
-            sphere_col.our_sphere.SetCenter( new Vim.Math3d.Vector3(other_point.X,other_point.Y,other_point.Z));
-            
-            Vim.Math3d.ContainmentType contype = sphere_col.our_sphere.Contains( new Vim.Math3d.Vector3(ColHost.OffsetPos.X,ColHost.OffsetPos.Y,ColHost.OffsetPos.Z));
-            if(contype == Vim.Math3d.ContainmentType.Contains || contype == Vim.Math3d.ContainmentType.Intersects)
+
+            if(Vector3.Distance(ColHost.OffsetPos,other_point) <= sphere_col.our_sphere.Radius)
             {
                 return new Collider.Collision(ColHost,sphere_col.ColHost,ColHost.OffsetPos);
             }
