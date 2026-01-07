@@ -19,7 +19,7 @@ namespace TestAdventure
             AssetLoader.MaterialAssetLoad( "testroom_terrain", new( [terrain_tex], [new("uTexture0", 0)], standard_shader));
             
             // Model
-            AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx");
+            AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Models/test_room.fbx");
         }
 
         public override void LoadActors()
@@ -27,9 +27,6 @@ namespace TestAdventure
             // Create renderer model, move us into place.
             WorldRender? renderer = (WorldRender?)GetComponent(typeof(WorldRender));
             renderer?.SetModel( AssetLoader.ModelAssetGet("testroom_terrain"), AssetLoader.MaterialAssetGet("testroom_terrain"));
-
-            Position += new Vector3(0f,-0.5f,0f);
-            Scale *= new Vector3(125f,1f,125f);
 
 
             // Move camera
