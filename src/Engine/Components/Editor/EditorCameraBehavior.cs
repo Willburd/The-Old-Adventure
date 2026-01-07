@@ -16,6 +16,12 @@ namespace EntComponents
 
         protected override uint HandleCreate()
         {
+            
+            Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
+            col?.SetShape(new Engine.ColliderShapes.PointCol());
+            col?.SyncRelativePosition = false;
+            col?.CollisionMask = 0; // Nope, using this for debugging
+
             return 1;
         }
 
@@ -69,11 +75,13 @@ namespace EntComponents
             Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Up, -mouse_delta.X);
             Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, -mouse_delta.Y);
 
+            Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
+
             // Raycast testing
             List<Collider.RaycastHit> hits = Collider.DoRaycast( Host.Position, Tools.Forward);
             foreach(Collider.RaycastHit hit in hits)
             {
-                Console.WriteLine(hit.hit_collider + " : " + hit.distance);
+                col.OffsetPos = hit.HitPosition;
             }
 
             return 1;

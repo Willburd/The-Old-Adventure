@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 using Engine;
 using Rendering;
 
@@ -10,6 +11,12 @@ namespace EntComponents
     public class Collider(Entity host_entity) : EntComponent(host_entity)
     {
         public bool Active { get; set; } = true;
+
+        /// <summary>
+        /// Checked against a bitmask when doing collision detection. Allows for raycasts and other colliders to entirely ignore other colliders if masked correctly.
+        /// </summary>
+        public uint CollisionMask { get; set; } = mask_standard;
+        public const uint mask_standard = 1 << 0;
 
         /// <summary>
         /// Increased with every collider spawned and periodically reset by room unloading. Used to keep track of which colliders we've been in contact with for collision start and end signals
@@ -86,10 +93,11 @@ namespace EntComponents
             public Vector3 point;
         } 
 
-        public struct Raycast(Vector3 startpos, Vector3 direction)
+        public struct Raycast(Vector3 startpos, Vector3 direction, uint collision_mask)
         {
             public Vector3 start_vector = startpos;
             public Vector3 direction = direction;
+            public uint collision_mask = collision_mask;
         }
 
         public struct RaycastHit(Raycast ray, Collider hit_col, float dist)
@@ -109,17 +117,12 @@ namespace EntComponents
         }
 
         /// <summary>
-        /// List of collisions previously active with US in the prior frame. Use for sending collision start and end signals.
-        /// </summary>
-        private List<Collider> previous_collisions = [];
-
-        /// <summary>
         /// Performs a raycast against all existing colliders in the scene, unless otherwise specified. Returns a list of all collisions that occured, specific collision information is in each collider.
         /// </summary>
-        public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 direction, Entity? specific_entity = null)
+        public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 direction, uint collision_mask = mask_standard, Entity? specific_entity = null)
         {
             List<RaycastHit> hit_rays = [];
-            Raycast ray = new(start, direction);
+            Raycast ray = new(start, direction, collision_mask);
             if(specific_entity != null)
             {
                 // Specific entity check
@@ -160,6 +163,7 @@ namespace EntComponents
             {
                 // No self detection
                 if(col == this) continue;
+                if((col.CollisionMask & CollisionMask) == 0) continue; 
 
                 // Check for overlap
                 Collision? check_collision = CheckIsColliding(col);
@@ -229,14 +233,12 @@ namespace EntComponents
         public uint CheckIsRayHit(Raycast ray, List<RaycastHit> hits)
         {
             if(CollisionShape == null) return 0;
-            uint hit_count = 0;
+            if((ray.collision_mask & CollisionMask) == 0) return 0;
+
             RaycastHit? hit = CollisionShape.InRay(ray);
-            if(hit != null)
-            {
-                hits.Add((RaycastHit)hit);
-                hit_count++;
-            }
-            return hit_count;
+            if(hit == null) return 0;
+            hits.Add((RaycastHit)hit);
+            return 1;
         }
         
         public virtual bool IsTrigger()
