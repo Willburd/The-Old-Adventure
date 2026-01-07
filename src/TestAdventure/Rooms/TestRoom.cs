@@ -19,7 +19,7 @@ namespace TestAdventure
             AssetLoader.MaterialAssetLoad( "testroom_terrain", new( [terrain_tex], [new("uTexture0", 0)], standard_shader));
             
             // Model
-            AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Models/test_room.fbx");
+            AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Models/geo_test.fbx");
         }
 
         public override void LoadActors()
@@ -33,6 +33,7 @@ namespace TestAdventure
             terrain_collider?.SetShape( new Engine.ColliderShapes.WorldGeometryCol(renderer.GetMeshByName("col.001")));
 
 
+            /*
             // Move camera
             Camera.WorldCamera?.Position = new Vector3(0f,0.5f,1f);
 
@@ -50,6 +51,7 @@ namespace TestAdventure
             EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(-radius,0f,0f), Quaternion.CreateFromAxisAngle(Tools.Up, 45f) * Quaternion.CreateFromAxisAngle(Tools.Right, 45f)), this, AssetLoader.AssetSource.engine);
 
             EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(0f,0f,-radius), Quaternion.CreateFromAxisAngle(Tools.Up, 45f) * Quaternion.CreateFromAxisAngle(Tools.Right, 45f), Vector3.One * 0.15f), this, AssetLoader.AssetSource.engine);
+            */
         }
 
         public override void LoadExits()

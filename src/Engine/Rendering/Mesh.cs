@@ -91,10 +91,9 @@ namespace Rendering
                     index = 0;
                     while(index < Indices.Length)
                     {
-                        float mult = 0.01f;
-                        Vim.Math3d.Vector3 vertA = vert_collection[ (int)Indices[index++]] * mult;
-                        Vim.Math3d.Vector3 vertB = vert_collection[ (int)Indices[index++]] * mult;
-                        Vim.Math3d.Vector3 vertC = vert_collection[ (int)Indices[index++]] * mult;
+                        Vim.Math3d.Vector3 vertA = vert_collection[ (int)Indices[index++]];
+                        Vim.Math3d.Vector3 vertB = vert_collection[ (int)Indices[index++]];
+                        Vim.Math3d.Vector3 vertC = vert_collection[ (int)Indices[index++]];
                         CollisionTriangles.Add( new Vim.Math3d.Triangle(vertA,vertB,vertC) );
                     }
                 }
