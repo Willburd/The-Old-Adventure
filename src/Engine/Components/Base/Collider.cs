@@ -86,24 +86,24 @@ namespace EntComponents
             public Vector3 point;
         } 
 
-        public struct Raycast(Vector3 startpos, Vector3 endpos)
+        public struct Raycast(Vector3 startpos, Vector3 direction)
         {
             public Vector3 start_vector = startpos;
-            public Vector3 end_vector = endpos;
+            public Vector3 direction = direction;
         }
 
-        public struct RaycastHit(Vector3 startpos, Vector3 endpos, Collider hit_col, float dist)
+        public struct RaycastHit(Raycast ray, Collider hit_col, float dist)
         {
-            public Vector3 start_vector = startpos;
-            public Vector3 end_vector  = endpos;
+            public Vector3 start_vector = ray.start_vector;
+            public Vector3 direction  = ray.direction;
             public Collider hit_collider = hit_col;
             public float distance = dist;
             public Vector3 HitPosition
             {
                 get
                 {
-                    float perc = distance / Vector3.Distance(start_vector,end_vector);
-                    return Vector3.Lerp(start_vector,end_vector,perc);
+                    float perc = distance / direction.Length();
+                    return Vector3.Lerp(start_vector, start_vector + direction, perc);
                 }
             }
         }
@@ -116,10 +116,10 @@ namespace EntComponents
         /// <summary>
         /// Performs a raycast against all existing colliders in the scene, unless otherwise specified. Returns a list of all collisions that occured, specific collision information is in each collider.
         /// </summary>
-        public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 end, Entity? specific_entity = null)
+        public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 direction, Entity? specific_entity = null)
         {
             List<RaycastHit> hit_rays = [];
-            Raycast ray = new(start, end);
+            Raycast ray = new(start, direction);
             if(specific_entity != null)
             {
                 // Specific entity check
@@ -250,14 +250,12 @@ namespace EntComponents
         
         public override List<Core.Signals> PrepareSignals()
         {
-            List<Core.Signals> sig_list = [];
-
+            List<Core.Signals> sig_list = [Core.Signals.raycast];
             if(Core.draw_collisions) 
             {
                 sig_list.Add(Core.Signals.render_priority);
                 sig_list.Add(Core.Signals.render);
             }
-            sig_list.Add(Core.Signals.raycast);
             return sig_list;
         }
 

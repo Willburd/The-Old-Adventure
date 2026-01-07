@@ -54,11 +54,11 @@ namespace Engine.ColliderShapes
         public override Collider.RaycastHit? InRay(Collider.Raycast ray)
         {
             float our_dist = Vector3.Distance(ray.start_vector, ColHost.OffsetPos);
-            float dot_product = Vector3.Dot( Tools.DirVector(ray.start_vector,ray.end_vector), Tools.DirVector(ray.start_vector,ColHost.OffsetPos));
+            float dot_product = Vector3.Dot( Tools.DirVector(Vector3.Zero,ray.direction), Tools.DirVector(ray.start_vector,ColHost.OffsetPos));
 
-            if(dot_product == 1f && our_dist <= Vector3.Distance(ray.start_vector,ray.end_vector))
+            if(dot_product == 1f && our_dist <= ray.direction.Length())
             {
-                return new Collider.RaycastHit(ray.start_vector,ray.end_vector,ColHost,our_dist);
+                return new Collider.RaycastHit(ray, ColHost, our_dist);
             }
             return null;
         }

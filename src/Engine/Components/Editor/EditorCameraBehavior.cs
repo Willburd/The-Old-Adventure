@@ -69,6 +69,13 @@ namespace EntComponents
             Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Up, -mouse_delta.X);
             Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, -mouse_delta.Y);
 
+            // Raycast testing
+            List<Collider.RaycastHit> hits = Collider.DoRaycast( Host.Position, Tools.Forward);
+            foreach(Collider.RaycastHit hit in hits)
+            {
+                Console.WriteLine(hit.hit_collider + " : " + hit.distance);
+            }
+
             return 1;
         }
 
@@ -76,34 +83,6 @@ namespace EntComponents
         {
             //Console.WriteLine(collisions.Count);
             
-            return 1;
-        }
-
-        protected override uint HandleCollisionStart(Collider new_collision)
-        {
-            Console.WriteLine("started collision" + new_collision.Host);
-            
-            return 1;
-        }
-
-        protected override uint HandleCollisionEnd(Collider was_colliding_with)
-        {
-            Console.WriteLine("end collision " + was_colliding_with.Host);
-
-            return 1;
-        }
-        
-        protected override uint HandleTriggerStart(Collider new_collision)
-        {
-            Console.WriteLine("started trigger" + new_collision.Host);
-            
-            return 1;
-        }
-
-        protected override uint HandleTriggerEnd(Collider was_colliding_with)
-        {
-            Console.WriteLine("end trigger " + was_colliding_with.Host);
-
             return 1;
         }
     }
