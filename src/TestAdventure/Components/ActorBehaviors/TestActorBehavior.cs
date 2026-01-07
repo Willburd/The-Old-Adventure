@@ -45,7 +45,7 @@ namespace EntComponents.ActorBehavior
             
             // Collision
             Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
-            collision?.SetShape( new Engine.ColliderShapes.CylinderCol(0.6f,0.25f));
+            collision?.SetShape( new Engine.ColliderShapes.PointCol());
 
             // Trigger
             TriggerVolume? trigger = (TriggerVolume?)Host.GetComponent(typeof(TriggerVolume));

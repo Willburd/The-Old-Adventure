@@ -51,19 +51,6 @@ namespace Engine.ColliderShapes
         }
 
 
-        public override Collider.RaycastHit? InRay(Collider.Raycast ray)
-        {
-            float our_dist = Vector3.Distance(ray.start_vector, ColHost.OffsetPos);
-            float dot_product = Vector3.Dot( Tools.DirVector(Vector3.Zero,ray.direction), Tools.DirVector(ray.start_vector,ColHost.OffsetPos));
-
-            if(dot_product == 1f && our_dist <= ray.direction.Length())
-            {
-                return new Collider.RaycastHit(ray, ColHost, our_dist);
-            }
-            return null;
-        }
-        
-
         public override ModelData? DrawModel()
         {
             return Core.collision_model_point;
@@ -71,7 +58,7 @@ namespace Engine.ColliderShapes
 
         public override Matrix4x4 ModelTransform()
         {
-            return Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(0.02f,0.02f,0.02f)) * Matrix4x4.CreateTranslation(ColHost.OffsetPos);
+            return Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(0.08f,0.08f,0.08f)) * Matrix4x4.CreateTranslation(ColHost.OffsetPos);
         }
     }
 }

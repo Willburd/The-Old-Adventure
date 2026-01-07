@@ -78,10 +78,10 @@ namespace EntComponents
             Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
 
             // Raycast testing
-            List<Collider.RaycastHit> hits = Collider.DoRaycast( Host.Position, Tools.Forward);
+            List<Collider.RaycastHit> hits = Collider.DoRaycast( Host.Position, Vector3.Transform(Tools.Forward,Host.Rotation));
             foreach(Collider.RaycastHit hit in hits)
             {
-                col.OffsetPos = hit.HitPosition;
+                col?.OffsetPos = hit.HitPosition;
             }
 
             return 1;

@@ -68,7 +68,7 @@ namespace EntComponents
                 col_offset = value;
             }
         }
-        
+
 
         public struct Collision
         {
@@ -102,7 +102,7 @@ namespace EntComponents
 
         public struct RaycastHit(Raycast ray, Collider hit_col, float dist)
         {
-            public Vector3 start_vector = ray.start_vector;
+            public Vector3 StartPos { get; set; } = ray.start_vector;
             public Vector3 direction  = ray.direction;
             public Collider hit_collider = hit_col;
             public float distance = dist;
@@ -111,7 +111,7 @@ namespace EntComponents
                 get
                 {
                     float perc = distance / direction.Length();
-                    return Vector3.Lerp(start_vector, start_vector + direction, perc);
+                    return Vector3.Lerp(StartPos, StartPos + direction, perc);
                 }
             }
         }

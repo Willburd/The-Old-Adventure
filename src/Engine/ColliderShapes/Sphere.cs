@@ -35,11 +35,9 @@ namespace Engine.ColliderShapes
 
         public override Collider.RaycastHit? InRay(Collider.Raycast ray)
         {
-            Vim.Math3d.Ray check_ray = new(new Vim.Math3d.Vector3(ray.start_vector.X,ray.start_vector.Y,ray.start_vector.Z),new Vim.Math3d.Vector3(ray.direction.X,ray.direction.Y,ray.direction.Z));
+            // We check the ray offset, as moving the sphere's center did not work for raycasting
+            Vim.Math3d.Ray check_ray = new(new Vim.Math3d.Vector3(ray.start_vector.X - ColHost.OffsetPos.X, ray.start_vector.Y - ColHost.OffsetPos.Y, ray.start_vector.Z - ColHost.OffsetPos.Z),new Vim.Math3d.Vector3(ray.direction.X,ray.direction.Y,ray.direction.Z));
             float? distance = our_sphere.Intersects(check_ray);
-
-            Vector3 host_pos = ColHost.OffsetPos;
-            our_sphere.SetCenter( new Vim.Math3d.Vector3(host_pos.X,host_pos.Y,host_pos.Z));
             
             if(distance != null && distance <= ray.direction.Length())
             {
