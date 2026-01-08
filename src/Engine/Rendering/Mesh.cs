@@ -62,7 +62,8 @@ namespace Rendering
             List<VBOInit> buffersizes = [
                 new VBOInit(3, VertexAttribPointerType.Float, false, 3, true),      // Position
                 new VBOInit(2, VertexAttribPointerType.Float, true,  2, false),     // UV
-                new VBOInit(3, VertexAttribPointerType.Float, true, 3, false)       // Normal
+                new VBOInit(3, VertexAttribPointerType.Float, true, 3, false),      // Normal
+                new VBOInit(4, VertexAttribPointerType.Float, false, 4, false)       // Color
             ];
             foreach(VBOInit vbo_dat in buffersizes)
             {

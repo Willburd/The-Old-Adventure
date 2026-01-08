@@ -74,7 +74,17 @@ namespace Rendering
                 // bitangent
                 if (mesh->MBitangents != null)
                     vertex.Bitangent = mesh->MBitangents[i];
-
+                // colors
+                if (mesh->MColors[0] != null)
+                {
+                    Vector4 colorvert = mesh->MColors[0][i];
+                    vertex.Color = colorvert;
+                }
+                else
+                {
+                    // default vert color if none packed
+                    vertex.Color = new Vector4(1f,1f,1f,1f);
+                }
                 // texture coordinates
                 if (mesh->MTextureCoords[0] != null) // does the mesh contain texture coordinates?
                 {
@@ -107,14 +117,22 @@ namespace Rendering
 
             foreach (var vertex in vertexCollection)
             {
+                // Position
                 vertices.Add(vertex.Position.X);
                 vertices.Add(vertex.Position.Y);
                 vertices.Add(vertex.Position.Z);
+                // UV
                 vertices.Add(vertex.TexCoords.X);
                 vertices.Add(vertex.TexCoords.Y);
+                // Normals
                 vertices.Add(vertex.Normal.X);
                 vertices.Add(vertex.Normal.Y);
                 vertices.Add(vertex.Normal.Z);
+                // Colors
+                vertices.Add(vertex.Color.X);
+                vertices.Add(vertex.Color.Y);
+                vertices.Add(vertex.Color.Z);
+                vertices.Add(vertex.Color.W);
             }
 
             return vertices.ToArray();
