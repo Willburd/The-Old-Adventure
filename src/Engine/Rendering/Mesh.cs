@@ -60,8 +60,9 @@ namespace Rendering
             // Attribute format
             uint total_vertex_size = 0;
             List<VBOInit> buffersizes = [
-                new VBOInit(3, VertexAttribPointerType.Float, false, 3, true), // Position
-                new VBOInit(2, VertexAttribPointerType.Float, true,  2, false)  // UV
+                new VBOInit(3, VertexAttribPointerType.Float, false, 3, true),      // Position
+                new VBOInit(2, VertexAttribPointerType.Float, true,  2, false),     // UV
+                new VBOInit(3, VertexAttribPointerType.Float, true, 3, false)       // Normal
             ];
             foreach(VBOInit vbo_dat in buffersizes)
             {
