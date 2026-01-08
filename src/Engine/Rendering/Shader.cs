@@ -49,7 +49,7 @@ namespace Rendering
             {
                 throw new Exception($"{name} uniform not found on shader.");
             }
-
+            // Numeral
             if(value.GetType() == typeof(int))
             {
                 _gl.Uniform1(location, (int)value);
@@ -65,6 +65,7 @@ namespace Rendering
                 _gl.Uniform1(location, (double)value);
                 return;
             }
+            // Vectors
             if(value.GetType() == typeof(Vector2)) 
             {
                 _gl.Uniform2(location, (Vector2)value);
@@ -84,6 +85,25 @@ namespace Rendering
             {
                 Matrix4x4 mat_data = (Matrix4x4)value;
                 _gl.UniformMatrix4(location, 1, false, (float*) &mat_data);
+                return;
+            }
+            // Arrays
+            if(value.GetType() == typeof(Vector2[])) 
+            {
+                Vector2[] data = (Vector2[])value;
+                _gl.Uniform3(location, (uint)data.Length, (double*) &data);
+                return;
+            }
+            if(value.GetType() == typeof(Vector3[])) 
+            {
+                Vector3[] data = (Vector3[])value;
+                _gl.Uniform3(location, (uint)data.Length, (double*) &data);
+                return;
+            }
+            if(value.GetType() == typeof(Vector4[])) 
+            {
+                Vector4[] data = (Vector4[])value;
+                _gl.Uniform4(location, (uint)data.Length, (double*) &data);
                 return;
             }
         }

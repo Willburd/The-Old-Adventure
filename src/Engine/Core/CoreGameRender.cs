@@ -167,9 +167,7 @@ namespace Engine
             shader.Use(); 
             foreach(KeyValuePair<string,object> pair in vertex_uniforms)
             {
-                if(pair.Value.GetType() == typeof(int)) shader.SetUniform(pair.Key, (int)pair.Value);
-                if(pair.Value.GetType() == typeof(float)) shader.SetUniform(pair.Key, (float)pair.Value);
-                if(pair.Value.GetType() == typeof(Matrix4x4)) shader.SetUniform(pair.Key, (Matrix4x4)pair.Value);
+                shader.SetUniform(pair.Key, pair.Value);
             }
 
             // Bind textures to texunits

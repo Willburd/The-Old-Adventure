@@ -1,6 +1,7 @@
 using Engine;
 using Rendering;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace EntComponents
 {
@@ -86,6 +87,29 @@ namespace EntComponents
             return base.ReceiveSignal(signal,args);
         }
 
+
+        public const int max_lights = 16; // Must match in shader
+
+        /// <summary>
+        /// Construct vertex shader uniforms for light data.
+        /// </summary>
+        private void BuildLightData(List<KeyValuePair<string,object>> vertex_uniforms, double tick_delta)
+        {
+            // environment lights
+            Vector4 environ_pos = new Vector4(0f,0f,0f,32);
+            Vector4 environ_color = Vector4.One;
+
+            // Vertex lighting data
+            Vector4[] light_pos = new Vector4[WorldRender.max_lights]; // pos + radius
+            Vector4[] light_col = new Vector4[WorldRender.max_lights]; // color + alpha
+            light_pos[0] = environ_pos;
+            light_col[0] = environ_color;
+
+            vertex_uniforms.Add(new("uLightPositions", light_pos)); 
+            vertex_uniforms.Add(new("uLightColors", light_col)); 
+            vertex_uniforms.Add(new("uLightCount", 1 )); // Number of lights, not max lights
+        }
+
         /// <summary>
         /// Render function run if the component is Visible.
         /// </summary>
@@ -94,10 +118,11 @@ namespace EntComponents
             Debug.Assert(model?.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
             
             List<KeyValuePair<string,object>> vertex_uniforms = [];
+            // position uniforms
             vertex_uniforms.Add(new("uTransform", Host.GetInterpolatedViewMatrix(tick_delta)));
             vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
             vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
-            
+            BuildLightData(vertex_uniforms, tick_delta);
             Core.RenderModel( model, materials, vertex_uniforms);
             return 1;
         }
