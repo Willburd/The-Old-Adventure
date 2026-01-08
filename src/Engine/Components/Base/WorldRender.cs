@@ -93,21 +93,24 @@ namespace EntComponents
         /// <summary>
         /// Construct vertex shader uniforms for light data.
         /// </summary>
-        private void BuildLightData(List<KeyValuePair<string,object>> vertex_uniforms, double tick_delta)
+        private void BuildLightData(List<ShaderData.Uniform> vertex_uniforms, double tick_delta)
         {
-            // environment lights
-            Vector4 environ_pos = new Vector4(0f,0f,0f,32);
-            Vector4 environ_color = Vector4.One;
-
             // Vertex lighting data
-            Vector4[] light_pos = new Vector4[WorldRender.max_lights]; // pos + radius
-            Vector4[] light_col = new Vector4[WorldRender.max_lights]; // color + alpha
-            light_pos[0] = environ_pos;
-            light_col[0] = environ_color;
+            int light_count = 0;
+            Vector4[] light_pos = new Vector4[WorldRender.max_lights];
+            Vector4[] light_col = new Vector4[WorldRender.max_lights];
 
-            vertex_uniforms.Add(new("uLightPositions", light_pos)); 
-            vertex_uniforms.Add(new("uLightColors", light_col)); 
-            vertex_uniforms.Add(new("uLightCount", 1 )); // Number of lights, not max lights
+            light_pos[light_count] = new(0f,0f,0f,15f);
+            light_col[light_count] = new(0f,1f,1f,1f);
+            light_count++;
+
+            light_pos[light_count] = new(0f,20f,0f,22f);
+            light_col[light_count] = new(1f,0f,0f,1f);
+            light_count++;
+
+            vertex_uniforms.Add(new("uLightPositions", light_pos, WorldRender.max_lights)); 
+            vertex_uniforms.Add(new("uLightColors", light_col, WorldRender.max_lights)); 
+            vertex_uniforms.Add(new("uLightCount", light_count)); // Number of lights, not max lights
         }
 
         /// <summary>
@@ -117,7 +120,7 @@ namespace EntComponents
         {
             Debug.Assert(model?.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
             
-            List<KeyValuePair<string,object>> vertex_uniforms = [];
+            List<ShaderData.Uniform> vertex_uniforms = [];
             // position uniforms
             vertex_uniforms.Add(new("uTransform", Host.GetInterpolatedViewMatrix(tick_delta)));
             vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));

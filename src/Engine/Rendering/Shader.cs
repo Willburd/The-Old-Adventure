@@ -42,13 +42,21 @@ namespace Rendering
             return _gl.IsProgram(_handle);
         }
 
-        public unsafe void SetUniform(string name, object value)
+        public struct Uniform(string key, object value, uint count = 1)
+        {
+            public string key = key;
+            public object value = value;
+            public uint count = count;
+        }
+
+        public unsafe void SetUniform(string name, object value, uint count)
         {
             int location = _gl.GetUniformLocation(_handle, name);
             if (location == -1)
             {
                 throw new Exception($"{name} uniform not found on shader.");
             }
+
             // Numeral
             if(value.GetType() == typeof(int))
             {
@@ -65,6 +73,7 @@ namespace Rendering
                 _gl.Uniform1(location, (double)value);
                 return;
             }
+
             // Vectors
             if(value.GetType() == typeof(Vector2)) 
             {
@@ -84,28 +93,30 @@ namespace Rendering
             if(value.GetType() == typeof(Matrix4x4)) 
             {
                 Matrix4x4 mat_data = (Matrix4x4)value;
-                _gl.UniformMatrix4(location, 1, false, (float*) &mat_data);
+                _gl.UniformMatrix4(location, count, false, (float*) &mat_data);
                 return;
             }
+
             // Arrays
             if(value.GetType() == typeof(Vector2[])) 
             {
-                Vector2[] data = (Vector2[])value;
-                _gl.Uniform3(location, (uint)data.Length, (double*) &data);
+                Vector2[] arr = (Vector2[])value;
+                _gl.Uniform2(location, arr[0]);
                 return;
             }
             if(value.GetType() == typeof(Vector3[])) 
             {
-                Vector3[] data = (Vector3[])value;
-                _gl.Uniform3(location, (uint)data.Length, (double*) &data);
+                Vector3[] arr = (Vector3[])value;
+                _gl.Uniform3(location, arr[0]);
                 return;
             }
             if(value.GetType() == typeof(Vector4[])) 
             {
-                Vector4[] data = (Vector4[])value;
-                _gl.Uniform4(location, (uint)data.Length, (double*) &data);
+                Vector4[] arr = (Vector4[])value;
+                _gl.Uniform4(location, arr[0]);
                 return;
             }
+
         }
 
         public void Dispose()

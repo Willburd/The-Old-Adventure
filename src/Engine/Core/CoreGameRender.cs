@@ -136,7 +136,7 @@ namespace Engine
             OnRenderHudTick();
         }
 
-        public static void RenderModel(ModelData model, List<MaterialData> materials, List<KeyValuePair<string,object>> vertex_uniforms)
+        public static void RenderModel(ModelData model, List<MaterialData> materials, List<ShaderData.Uniform> vertex_uniforms)
         {
             // Render each mesh!
             int mesh_index = 0;
@@ -147,7 +147,7 @@ namespace Engine
             }
         }
 
-        public static void RenderMesh(MeshData mesh, MaterialData mat_data, List<KeyValuePair<string,object>> vertex_uniforms)
+        public static void RenderMesh(MeshData mesh, MaterialData mat_data, List<ShaderData.Uniform> vertex_uniforms)
         {
             // Check for collision drawing
             if(mesh.RawName == "col.001")
@@ -165,9 +165,9 @@ namespace Engine
             // Each mesh can use a different material, and that also means shader!
             ShaderData shader = mat_data.Shader;
             shader.Use(); 
-            foreach(KeyValuePair<string,object> pair in vertex_uniforms)
+            foreach(ShaderData.Uniform vertuni in vertex_uniforms)
             {
-                shader.SetUniform(pair.Key, pair.Value);
+                shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
             }
 
             // Bind textures to texunits
@@ -179,9 +179,9 @@ namespace Engine
             }
             
             // Apply shader uniforms
-            foreach(KeyValuePair<string,object> matuni in mat_data.Uniforms)
+            foreach(ShaderData.Uniform matuni in mat_data.Uniforms)
             {
-                shader.SetUniform(matuni.Key, matuni.Value);
+                shader.SetUniform(matuni.key, matuni.value, matuni.count);
             }
 
             // Draw mesh

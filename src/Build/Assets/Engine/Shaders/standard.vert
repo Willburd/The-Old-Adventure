@@ -20,17 +20,19 @@ out vec4 Light;
 
 vec4 solve_lights()
 {
-    vec4 total_light_blend = vec4(0.0,0.0,0.0,0.0);
+    vec4 total_light_blend = vec4(0.0, 0.0, 0.0, 1.0);
     for(int j = 0; j < uLightCount; j++)
     {
-        vec4 pos = uLightPositions[j];
-        vec4 col = uLightColors[j];
-        float radius = pos.a;
-        col.a = clamp(distance(pos, vec4(vPosition.x,vPosition.y,vPosition.z,0.0)) / radius, 0.0, 1.0);
+        vec4 light_pos = uLightPositions[j];
+        vec4 light_col = uLightColors[j];
+        float light_intensity = light_col.a;
+        float rad_influence = 1.0 - clamp(distance(light_pos.xyz, vPosition) / light_pos.w, 0.0, 1.0);
 
-        total_light_blend += col;
+        total_light_blend.r = max(total_light_blend.r, light_col.r * rad_influence * light_intensity);
+        total_light_blend.g = max(total_light_blend.g, light_col.g * rad_influence * light_intensity);
+        total_light_blend.b = max(total_light_blend.b, light_col.b * rad_influence * light_intensity);
     }
-    return total_light_blend / uLightCount;
+    return total_light_blend;
 }
 
 void main()
@@ -40,5 +42,5 @@ void main()
     Normal = vNormal;
     Color = vColor;
 
-    Light = vec4(0.5, 0.5, 0.5, 1.0); // solve_lights();
+    Light = solve_lights();
 }

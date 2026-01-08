@@ -5,7 +5,7 @@ namespace Rendering
 {
     public class MaterialData : IDisposable
     {
-        public MaterialData(List<TextureData> textures_data,  List<KeyValuePair<string,object>> mat_unitform_data, ShaderData shader, BlendingFactor blend_src = BlendingFactor.SrcAlpha, BlendingFactor blend_dest = BlendingFactor.OneMinusSrcAlpha)
+        public MaterialData(List<TextureData> textures_data,  List<ShaderData.Uniform> mat_unitform_data, ShaderData shader, BlendingFactor blend_src = BlendingFactor.SrcAlpha, BlendingFactor blend_dest = BlendingFactor.OneMinusSrcAlpha)
         {
             render_shader = shader;
             uniforms = mat_unitform_data;
@@ -15,7 +15,7 @@ namespace Rendering
         }
 
         private readonly ShaderData render_shader;
-        private List<KeyValuePair<string,object>> uniforms;
+        private List<ShaderData.Uniform> uniforms;
         private List<TextureData> textures;
         
         public BlendingFactor BlendingSource {get; private set;}
@@ -34,7 +34,7 @@ namespace Rendering
             return Shader.IsValid();
         }
 
-        public List<KeyValuePair<string,object>> Uniforms
+        public List<ShaderData.Uniform> Uniforms
         {
             get
             {

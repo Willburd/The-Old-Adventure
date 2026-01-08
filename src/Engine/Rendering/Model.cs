@@ -83,7 +83,7 @@ namespace Rendering
                 else
                 {
                     // default vert color if none packed
-                    vertex.Color = new Vector4(1f,1f,1f,1f);
+                    vertex.Color = new Vector4(1f,1f,1f,0f);
                 }
                 // texture coordinates
                 if (mesh->MTextureCoords[0] != null) // does the mesh contain texture coordinates?

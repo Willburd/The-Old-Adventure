@@ -308,14 +308,16 @@ namespace EntComponents
             MeshData? model = CollisionShape?.DrawModel();
             if(model == null || CollisionShape == null) return 0;
 
-            List<KeyValuePair<string,object>> vertex_uniforms = [];
+            List<ShaderData.Uniform> vertex_uniforms = [];
+
             // position uniforms
             vertex_uniforms.Add(new("uTransform", CollisionShape.ModelTransform()));
             vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
             vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
+            
             // light uniforms
-            vertex_uniforms.Add(new("uLightPositions", new Vector4[WorldRender.max_lights] )); // pos + radius
-            vertex_uniforms.Add(new("uLightColors", new Vector4[WorldRender.max_lights] )); // color + alpha
+            vertex_uniforms.Add(new("uLightPositions", new Vector4[WorldRender.max_lights], WorldRender.max_lights)); // pos + radius
+            vertex_uniforms.Add(new("uLightColors", new Vector4[WorldRender.max_lights], WorldRender.max_lights)); // color + alpha
             vertex_uniforms.Add(new("uLightCount", 0)); // Number of lights, not max lights
 
             Core.RenderMesh( model, IsTrigger() ? Core.trigger_draw_material : Core.actor_collision_draw_material, vertex_uniforms);
