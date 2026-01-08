@@ -75,15 +75,13 @@ namespace EntComponents
             Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Up, -mouse_delta.X);
             Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, -mouse_delta.Y);
 
-            Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
-
             // Raycast testing
-            List<Collider.RaycastHit> hits = Collider.DoRaycast( Host.Position, Vector3.Transform(Tools.Forward * 5f,Host.Rotation));
-            foreach(Collider.RaycastHit hit in hits)
+            Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
+            Collider.RaycastHit? hit = Collider.DoRaycastNearest( Host.Position, Vector3.Transform(Tools.Forward * 5f,Host.Rotation));
+            if(hit != null)
             {
-                col?.OffsetPos = hit.HitPosition;
+                col?.OffsetPos = hit.Value.HitPosition;
             }
-
             return 1;
         }
 

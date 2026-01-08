@@ -20,7 +20,7 @@ namespace Engine
             // Shaders
             ShaderData shader_standard      = AssetLoader.ShaderAssetLoad( "standard", AssetLoader.AssetDirectoryEngine + "/Shaders/standard.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/standard.frag", AssetLoader.AssetSource.engine);
             ShaderData shader_debugnormals  = AssetLoader.ShaderAssetLoad( "debug_normals", AssetLoader.AssetDirectoryEngine + "/Shaders/standard.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/debug_normal.frag", AssetLoader.AssetSource.engine);
-            ShaderData shader_debugcol      = AssetLoader.ShaderAssetLoad( "debug_col", AssetLoader.AssetDirectoryEngine + "/Shaders/standard.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/uniform_color.frag", AssetLoader.AssetSource.engine);
+            ShaderData shader_debugcol      = AssetLoader.ShaderAssetLoad( "debug_col", AssetLoader.AssetDirectoryEngine + "/Shaders/standard.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/nblend_color.frag", AssetLoader.AssetSource.engine);
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,9 +35,9 @@ namespace Engine
             AssetLoader.MaterialAssetLoad( "debug_normals", new( [], [], shader_debugnormals), AssetLoader.AssetSource.engine);
             AssetLoader.MaterialAssetLoad( "no_mat", new( [nomat_texture], [new("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
             AssetLoader.MaterialAssetLoad( "example", new( [example_texture], [new("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
-            collision_draw_material = AssetLoader.MaterialAssetLoad( "debug_col", new( [], [new("uColorSet", new Vector4(0.6f,0.8f,0f,0.5f)) ], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
-            trigger_draw_material = AssetLoader.MaterialAssetLoad( "debug_trigger", new( [], [new("uColorSet", new Vector4(0f,0.2f,0.9f,0.5f)) ], shader_debugcol), AssetLoader.AssetSource.engine);
-            actor_collision_draw_material = AssetLoader.MaterialAssetLoad( "debug_actor_col", new( [], [new("uColorSet", new Vector4(0.9f,0.6f,0f,0.5f)) ], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
+            collision_draw_material = AssetLoader.MaterialAssetLoad( "debug_col", new( [], [new("uColorSet", new Vector4(0.6f,0.8f,0f,1f)) ], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
+            trigger_draw_material = AssetLoader.MaterialAssetLoad( "debug_trigger", new( [], [new("uColorSet", new Vector4(0f,0.2f,0.9f,1f)) ], shader_debugcol), AssetLoader.AssetSource.engine);
+            actor_collision_draw_material = AssetLoader.MaterialAssetLoad( "debug_actor_col", new( [], [new("uColorSet", new Vector4(0.9f,0.6f,0f,1f)) ], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
