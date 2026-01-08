@@ -83,6 +83,10 @@ namespace Rendering
                             Debug.Assert(vbo_dat.element_count == 3, "VBO for collision data expects to be 3 elements long");
                             vert_collection.Add( new( Vertices[index++], Vertices[index++], Vertices[index++] ));
                         }
+                        else
+                        {
+                            index += vbo_dat.element_count;
+                        }
                     }
                 }
                 // Assemble position floats into tris
@@ -91,11 +95,10 @@ namespace Rendering
                     index = 0;
                     while(index < Indices.Length)
                     {
-                        float mult = 10f;
-                        Vim.Math3d.Vector3 vertA = vert_collection[ (int)Indices[index++]] * mult;
-                        Vim.Math3d.Vector3 vertB = vert_collection[ (int)Indices[index++]] * mult;
-                        Vim.Math3d.Vector3 vertC = vert_collection[ (int)Indices[index++]] * mult;
-                        CollisionTriangles.Add( new Vim.Math3d.Triangle(vertA,vertB,vertC) );
+                        Vim.Math3d.Vector3 triX = vert_collection[ (int)Indices[index++]];
+                        Vim.Math3d.Vector3 triY = vert_collection[ (int)Indices[index++]];
+                        Vim.Math3d.Vector3 triZ = vert_collection[ (int)Indices[index++]];
+                        CollisionTriangles.Add( new Vim.Math3d.Triangle(triX,triY,triZ) );
                     }
                 }
             }
