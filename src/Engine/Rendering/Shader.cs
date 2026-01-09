@@ -100,20 +100,50 @@ namespace Rendering
             // Arrays
             if(value.GetType() == typeof(Vector2[])) 
             {
-                Vector2[] arr = (Vector2[])value;
-                _gl.Uniform2(location, arr[0]);
+                int index = 0;
+                foreach(Vector2 vec in (Vector2[])value)
+                {
+                    int loc = _gl.GetUniformLocation(_handle, $"{name}[{index}]");
+                    if(loc == -1) continue;
+                    _gl.Uniform2(loc,
+                        vec.X,
+                        vec.Y
+                    );
+                    index++;
+                }
                 return;
             }
             if(value.GetType() == typeof(Vector3[])) 
             {
-                Vector3[] arr = (Vector3[])value;
-                _gl.Uniform3(location, arr[0]);
+                int index = 0;
+                foreach(Vector3 vec in (Vector3[])value)
+                {
+                    int loc = _gl.GetUniformLocation(_handle, $"{name}[{index}]");
+                    if(loc == -1) continue;
+                    _gl.Uniform3(loc,
+                        vec.X,
+                        vec.Y,
+                        vec.Z
+                    );
+                    index++;
+                }
                 return;
             }
             if(value.GetType() == typeof(Vector4[])) 
             {
-                Vector4[] arr = (Vector4[])value;
-                _gl.Uniform4(location, arr[0]);
+                int index = 0;
+                foreach(Vector4 vec in (Vector4[])value)
+                {
+                    int loc = _gl.GetUniformLocation(_handle, $"{name}[{index}]");
+                    if(loc == -1) continue;
+                    _gl.Uniform4(loc,
+                        vec.X,
+                        vec.Y,
+                        vec.Z,
+                        vec.W
+                    );
+                    index++;
+                }
                 return;
             }
 

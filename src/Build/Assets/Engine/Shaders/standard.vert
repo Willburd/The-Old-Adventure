@@ -26,7 +26,8 @@ vec4 solve_lights()
         vec4 light_pos = uLightPositions[j];
         vec4 light_col = uLightColors[j];
         float light_intensity = light_col.a;
-        float rad_influence = 1.0 - clamp(distance(light_pos.xyz, vPosition) / light_pos.w, 0.0, 1.0);
+        float rad_influence = 1.0;
+        if(light_pos.w < 9999999.0) rad_influence = 1.0 - clamp(distance(light_pos.xyz, vPosition) / light_pos.w, 0.0, 1.0);
 
         total_light_blend.r = max(total_light_blend.r, light_col.r * rad_influence * light_intensity);
         total_light_blend.g = max(total_light_blend.g, light_col.g * rad_influence * light_intensity);
