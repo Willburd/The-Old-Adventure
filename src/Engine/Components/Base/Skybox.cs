@@ -1,6 +1,7 @@
 using System.Numerics;
 using Engine;
 using Rendering;
+using Silk.NET.Maths;
 
 namespace EntComponents
 {
@@ -26,7 +27,6 @@ namespace EntComponents
         
         protected override uint HandleCreate()
         {
-            SetModel( AssetLoader.ModelAssetGet("test_pointer", AssetLoader.AssetSource.engine), AssetLoader.MaterialAssetGet("example", AssetLoader.AssetSource.engine));
             return 1;
         }
 
@@ -56,12 +56,15 @@ namespace EntComponents
 
         public override uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
+            if(model == null) return 0;
             if(Camera.WorldCamera == null) return 0;
             // and then call the normal rendering, always at camera pos
-            Matrix4x4 sky_matr = Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(GetInterpolatedSkyboxRotation(tick_delta)));
+            Matrix4x4 sky_matr = Matrix4x4.Identity;
+            sky_matr *= Matrix4x4.CreateScale(20f);
+            sky_matr *= Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(GetInterpolatedSkyboxRotation(tick_delta)));
             sky_matr *= Matrix4x4.CreateTranslation(Camera.WorldCamera.GetInterpolatedPosition(tick_delta)); 
-            vertex_uniforms.Add(new("uTransform", sky_matr));
 
+            vertex_uniforms.Add(new("uTransform", sky_matr));
             vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
             vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
             Core.RenderModel( model, materials, vertex_uniforms);

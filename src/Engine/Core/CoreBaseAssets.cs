@@ -49,7 +49,7 @@ namespace Engine
             collision_model_sphere = AssetLoader.ModelAssetLoad( "col_sphere", AssetLoader.AssetDirectoryEngine + "/Models/col_sphere.fbx", AssetLoader.AssetSource.engine); 
             collision_model_cylinder = AssetLoader.ModelAssetLoad( "col_cylinder", AssetLoader.AssetDirectoryEngine + "/Models/col_cylinder.fbx", AssetLoader.AssetSource.engine); 
             // Misc
-            AssetLoader.ModelAssetLoad( "skybox", AssetLoader.AssetDirectoryEngine + "/Models/skybox.fbx", AssetLoader.AssetSource.engine); 
+            AssetLoader.ModelAssetLoad( "cube_map", AssetLoader.AssetDirectoryEngine + "/Models/cube_map.fbx", AssetLoader.AssetSource.engine); 
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

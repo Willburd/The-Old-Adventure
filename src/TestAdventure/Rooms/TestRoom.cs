@@ -24,7 +24,7 @@ namespace TestAdventure
             // Environment
             Environment = new();
             Skybox skybox = new Skybox(this);
-            skybox.SetModel( AssetLoader.ModelAssetGet("skybox", AssetLoader.AssetSource.engine), test);
+            skybox.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), test);
         }
 
         public override void LoadActors()
