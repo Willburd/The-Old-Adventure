@@ -79,57 +79,24 @@ namespace EntComponents
                 case Core.Signals.render:
                     if(Host.Enabled)
                     {
-                        return HandleRender((double)args[0]);
+                        return HandleRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
                     }
-                    return HandleRenderDisabled((double)args[0]);
+                    return HandleRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
 
             }
             return base.ReceiveSignal(signal,args);
         }
 
-
-        public const int max_lights = 16; // Must match in shader
-
-        /// <summary>
-        /// Construct vertex shader uniforms for light data.
-        /// </summary>
-        private void BuildLightData(List<ShaderData.Uniform> vertex_uniforms, double tick_delta)
-        {
-            // Vertex lighting data
-            int light_count = 0;
-            Vector4[] light_pos = new Vector4[WorldRender.max_lights];
-            Vector4[] light_col = new Vector4[WorldRender.max_lights];
-
-            light_pos[light_count] = new(0f,0f,0f,float.PositiveInfinity);
-            light_col[light_count] = new(1f,1f,1f, 0.5f + (MathF.Sin((float)Core.ElapsedGameTicks / 30f) * 0.5f) );
-            light_count++;
-
-            light_pos[light_count] = new(0f,20f,0f, 20f);
-            light_col[light_count] = new(1f,0f,1f, 4f);
-            light_count++;
-
-            light_pos[light_count] = new(0f,0f,0f, 20f);
-            light_col[light_count] = new(0f,0f,1f, 8f);
-            light_count++;
-
-            vertex_uniforms.Add(new("uLightPositions", light_pos, WorldRender.max_lights)); 
-            vertex_uniforms.Add(new("uLightColors", light_col, WorldRender.max_lights)); 
-            vertex_uniforms.Add(new("uLightCount", light_count)); // Number of lights, not max lights
-        }
-
         /// <summary>
         /// Render function run if the component is Visible.
         /// </summary>
-        public virtual uint HandleRender(double tick_delta)
+        public virtual uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             Debug.Assert(model?.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
-            
-            List<ShaderData.Uniform> vertex_uniforms = [];
             // position uniforms
             vertex_uniforms.Add(new("uTransform", Host.GetInterpolatedViewMatrix(tick_delta)));
             vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
             vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
-            BuildLightData(vertex_uniforms, tick_delta);
             Core.RenderModel( model, materials, vertex_uniforms);
             return 1;
         }
@@ -137,7 +104,7 @@ namespace EntComponents
         /// <summary>
         /// Render function run if the component is NOT Visible. Mostly used for long distance LoDs.
         /// </summary>
-        public virtual uint HandleRenderDisabled(double delta_time)
+        public virtual uint HandleRenderDisabled(double delta_time, List<ShaderData.Uniform> vertex_uniforms)
         {
             return 1;
         }

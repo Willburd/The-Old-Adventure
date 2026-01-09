@@ -32,6 +32,8 @@ namespace TestAdventure
             Collider? terrain_collider = (Collider?)GetComponent(typeof(Collider));
             terrain_collider?.SetShape( new Engine.ColliderShapes.WorldGeometryCol(renderer.GetMeshByName("col.001")));
 
+            Light glow_test = new Light(this);
+            glow_test.SetData( new Vector4(1f,1f,1f,1f), 12f, new Vector3(4f,2f,8f));
 
             /*
             // Move camera

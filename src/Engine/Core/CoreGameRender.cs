@@ -3,6 +3,7 @@ using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
 using System.Drawing;
 using System.Numerics;
+using EntComponents;
 
 namespace Engine
 {
@@ -106,11 +107,13 @@ namespace Engine
             OnPreRenderTick();
 
             // Primary rendering
+            List<ShaderData.Uniform> vertex_uniforms = [];
+            BuildLightData(vertex_uniforms, tick_delta);
             foreach((uint key, List<Entity> draw_list) in render_queue)
             {
                 foreach(Entity draw in draw_list)
                 {
-                    draw.SendSignal(Signals.render, tick_delta);
+                    draw.SendSignal(Signals.render, tick_delta, vertex_uniforms);
                 }
             }
             OnRenderTick();
@@ -134,6 +137,37 @@ namespace Engine
                 }
             }
             OnRenderHudTick();
+        }
+        public const int max_lights = 16; // Must match in shader
+
+        /// <summary>
+        /// Construct vertex shader uniforms for light data.
+        /// </summary>
+        private static void BuildLightData(List<ShaderData.Uniform> vertex_uniforms, double tick_delta)
+        {
+            // Vertex lighting data
+            int light_count = 0;
+            Vector4[] light_pos = new Vector4[max_lights];
+            Vector4[] light_col = new Vector4[max_lights];
+
+            // Environment
+            light_pos[light_count] = new(0f,0f,0f,float.PositiveInfinity);
+            light_col[light_count] = new(1f,1f,1f, 0.5f + (MathF.Sin((float)Core.ElapsedGameTicks / 30f) * 0.5f) );
+            light_count++;
+
+            // Dynamic lights
+            foreach(Light light in EntComponent.GetAllOfType(typeof(Light)).Cast<Light>())
+            {
+                light_pos[light_count] = new(light.OffsetPos.X, light.OffsetPos.Y, light.OffsetPos.Z, light.Radius);
+                light_col[light_count] = light.Color;
+                light_count++;
+                if(light_count >= max_lights) break;
+            }
+
+            // Assemble uniforms
+            vertex_uniforms.Add(new("uLightPositions", light_pos, max_lights)); 
+            vertex_uniforms.Add(new("uLightColors", light_col, max_lights)); 
+            vertex_uniforms.Add(new("uLightCount", light_count)); // Number of lights, not max lights
         }
 
         public static void RenderModel(ModelData model, List<MaterialData> materials, List<ShaderData.Uniform> vertex_uniforms)

@@ -92,6 +92,9 @@ namespace Engine
                     
                 case "Animator":
                     return new EntComponents.Animator(ent);
+                    
+                case "Light":
+                    return new EntComponents.Light(ent);
 
                 ///////////////////////////////////////////////////
                 // Editor

@@ -291,7 +291,7 @@ namespace EntComponents
 
                 case Core.Signals.render:
                     // Render our collider shape if debugging, same as above
-                    return DebugRender((double)args[0]);
+                    return DebugRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
 
                 case Core.Signals.raycast:
                     // Check our collision vs the incoming ray
@@ -303,22 +303,15 @@ namespace EntComponents
         /// <summary>
         /// Render function run if the component is Visible.
         /// </summary>
-        public uint DebugRender(double tick_delta)
+        public uint DebugRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             MeshData? model = CollisionShape?.DrawModel();
             if(model == null || CollisionShape == null) return 0;
-
-            List<ShaderData.Uniform> vertex_uniforms = [];
 
             // position uniforms
             vertex_uniforms.Add(new("uTransform", CollisionShape.ModelTransform()));
             vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
             vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
-            
-            // light uniforms
-            vertex_uniforms.Add(new("uLightPositions", new Vector4[WorldRender.max_lights], WorldRender.max_lights)); // pos + radius
-            vertex_uniforms.Add(new("uLightColors", new Vector4[WorldRender.max_lights], WorldRender.max_lights)); // color + alpha
-            vertex_uniforms.Add(new("uLightCount", 0)); // Number of lights, not max lights
 
             Core.RenderMesh( model, IsTrigger() ? Core.trigger_draw_material : Core.actor_collision_draw_material, vertex_uniforms);
             return 1;
