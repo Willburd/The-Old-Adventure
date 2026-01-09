@@ -109,7 +109,7 @@ namespace Engine
             // Primary rendering
             List<ShaderData.Uniform> vertex_uniforms = [];
             List<ShaderData.Uniform> fragment_uniforms = [];
-            BuildLightData(vertex_uniforms, fragment_uniforms, tick_delta);
+            ApplyEnvironmentData(vertex_uniforms, fragment_uniforms, tick_delta);
             foreach((uint key, List<Entity> draw_list) in render_queue)
             {
                 foreach(Entity draw in draw_list)
@@ -144,7 +144,7 @@ namespace Engine
         /// <summary>
         /// Construct vertex shader uniforms for light data.
         /// </summary>
-        private static void BuildLightData(List<ShaderData.Uniform> vertex_uniforms, List<ShaderData.Uniform> fragment_uniforms, double tick_delta)
+        private static void ApplyEnvironmentData(List<ShaderData.Uniform> vertex_uniforms, List<ShaderData.Uniform> fragment_uniforms, double tick_delta)
         {
             // Vertex lighting data
             Vector4[] light_pos = new Vector4[max_lights];
