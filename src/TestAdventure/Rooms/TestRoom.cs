@@ -13,18 +13,20 @@ namespace TestAdventure
             ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
             
             // Textures
+            TextureData skybox_day_tex = AssetLoader.TextureAssetLoad( "skybox_day", AssetLoader.AssetDirectoryAdventure + "/Textures/skybox_day.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
             TextureData terrain_tex = AssetLoader.TextureAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_wood.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
             
             // Materials
-            MaterialData test = AssetLoader.MaterialAssetLoad( "testroom_terrain", new( [terrain_tex], [new("uTexture0", 0)], standard_shader));
+            MaterialData test_mat = AssetLoader.MaterialAssetLoad( "testroom_terrain", new( [terrain_tex], [new("uTexture0", 0)], standard_shader));
+            MaterialData skybox_mat = AssetLoader.MaterialAssetLoad( "testroom_skybox", new( [skybox_day_tex], [new("uTexture0", 0)], standard_shader));
             
             // Model
             AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Models/test_room.fbx");
 
             // Environment
             Environment = new();
-            Skybox skybox = new Skybox(this);
-            skybox.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), test);
+            Skybox skybox_model = new Skybox(this);
+            skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), skybox_mat);
         }
 
         public override void LoadActors()

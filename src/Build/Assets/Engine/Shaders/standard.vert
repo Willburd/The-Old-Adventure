@@ -54,7 +54,7 @@ void main()
 
     float dist = distance(vec4(0.0), gl_Position);
     float dist_perc = clamp(dist / uFogDistance, 0.0, 1.0);
-    dist_perc = pow(dist_perc,6);
+    dist_perc = pow(dist_perc,3);
 
     Color = mix(vColor, uFogColor, dist_perc);
     Light = vec4(solve_lights(), dist_perc);

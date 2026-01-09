@@ -6,7 +6,7 @@ namespace Environments
 {
     public class Environment
     {
-        public float FogDistance { get; set; } = 100f;
+        public float FogDistance { get; set; } = 200f;
 
         public Color FogColor { get; set; } = Color.CornflowerBlue;
 

@@ -60,7 +60,7 @@ namespace EntComponents
             if(Camera.WorldCamera == null) return 0;
             // and then call the normal rendering, always at camera pos
             Matrix4x4 sky_matr = Matrix4x4.Identity;
-            sky_matr *= Matrix4x4.CreateScale(20f);
+            sky_matr *= Matrix4x4.CreateScale(30f);
             sky_matr *= Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(GetInterpolatedSkyboxRotation(tick_delta)));
             sky_matr *= Matrix4x4.CreateTranslation(Camera.WorldCamera.GetInterpolatedPosition(tick_delta)); 
 
