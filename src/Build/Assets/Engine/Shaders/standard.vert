@@ -16,23 +16,30 @@ uniform int uLightCount;
 out vec2 TexCoords;
 out vec3 Normal;
 out vec4 Color;
-out vec4 Light;
+out vec3 Light;
 
-vec4 solve_lights()
+vec3 solve_lights()
 {
-    vec4 total_light_blend = vec4(0.0, 0.0, 0.0, 1.0);
+    vec3 total_light_blend = vec3(0.0);
+    float remaining = 1.0;
+
     for(int j = 0; j < uLightCount; j++)
     {
         vec4 light_pos = uLightPositions[j];
         vec4 light_col = uLightColors[j];
-        float light_intensity = light_col.a;
+
+        // Get the amount of influence our light has
         float rad_influence = 1.0;
         if(light_pos.w < 9999999.0) rad_influence = 1.0 - clamp(distance(light_pos.xyz, vPosition) / light_pos.w, 0.0, 1.0);
-
-        total_light_blend.r = max(total_light_blend.r, light_col.r * rad_influence * light_intensity);
-        total_light_blend.g = max(total_light_blend.g, light_col.g * rad_influence * light_intensity);
-        total_light_blend.b = max(total_light_blend.b, light_col.b * rad_influence * light_intensity);
+        rad_influence *= light_col.a;
+        if(rad_influence > 0.01)
+        {
+            // If we are worth considering, put us into the mix with the other lights
+            total_light_blend += clamp(light_col.rgb, 0.0, 1.1) * rad_influence * remaining;
+            remaining *= (1.0 - rad_influence);
+        }
     }
+
     return total_light_blend;
 }
 

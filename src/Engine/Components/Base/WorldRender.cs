@@ -101,11 +101,15 @@ namespace EntComponents
             Vector4[] light_col = new Vector4[WorldRender.max_lights];
 
             light_pos[light_count] = new(0f,0f,0f,float.PositiveInfinity);
-            light_col[light_count] = new(1f,1f,1f,0.6f);
+            light_col[light_count] = new(1f,1f,1f, 0.5f + (MathF.Sin((float)Core.ElapsedGameTicks / 30f) * 0.5f) );
             light_count++;
 
-            light_pos[light_count] = new(0f,20f,0f,32f);
-            light_col[light_count] = new(1f,0f,1f,1f);
+            light_pos[light_count] = new(0f,20f,0f, 20f);
+            light_col[light_count] = new(1f,0f,1f, 4f);
+            light_count++;
+
+            light_pos[light_count] = new(0f,0f,0f, 20f);
+            light_col[light_count] = new(0f,0f,1f, 8f);
             light_count++;
 
             vertex_uniforms.Add(new("uLightPositions", light_pos, WorldRender.max_lights)); 
