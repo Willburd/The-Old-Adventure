@@ -108,12 +108,13 @@ namespace Engine
 
             // Primary rendering
             List<ShaderData.Uniform> vertex_uniforms = [];
-            BuildLightData(vertex_uniforms, tick_delta);
+            List<ShaderData.Uniform> fragment_uniforms = [];
+            BuildLightData(vertex_uniforms, fragment_uniforms, tick_delta);
             foreach((uint key, List<Entity> draw_list) in render_queue)
             {
                 foreach(Entity draw in draw_list)
                 {
-                    draw.SendSignal(Signals.render, tick_delta, vertex_uniforms);
+                    draw.SendSignal(Signals.render, tick_delta, vertex_uniforms, fragment_uniforms);
                 }
             }
             OnRenderTick();
@@ -143,19 +144,60 @@ namespace Engine
         /// <summary>
         /// Construct vertex shader uniforms for light data.
         /// </summary>
-        private static void BuildLightData(List<ShaderData.Uniform> vertex_uniforms, double tick_delta)
+        private static void BuildLightData(List<ShaderData.Uniform> vertex_uniforms, List<ShaderData.Uniform> fragment_uniforms, double tick_delta)
         {
             // Vertex lighting data
-            int light_count = 0;
             Vector4[] light_pos = new Vector4[max_lights];
             Vector4[] light_col = new Vector4[max_lights];
 
             // Environment
-            light_pos[light_count] = new(0f,0f,0f,float.PositiveInfinity);
-            light_col[light_count] = new(1f,1f,1f, 0.5f + (MathF.Sin((float)Core.ElapsedGameTicks / 30f) * 0.5f) );
-            light_count++;
+            float fog_distance = 1000f;
+            Color fog_color = Color.CornflowerBlue;
+            light_pos[0] = new(0f,0f,0f,float.PositiveInfinity);
+            if(Room.loaded_rooms.Count == 0)
+            {
+                // Default lighting
+                light_col[0] = new(1f,1f,1f,1f);
+            }
+            else if(Room.loaded_rooms.Count == 1)
+            {
+                // Single environment, apply just it.
+                light_col[0] = Room.loaded_rooms[0].Environment.AmbientLight;
+                fog_color = Room.loaded_rooms[0].Environment.FogColor;
+                fog_distance = Room.loaded_rooms[0].Environment.FogDistance;
+            }
+            else
+            {
+                // Multiple environments are blended together
+                Vector3 camera_pos = (Camera.WorldCamera?.Position) ?? new Vector3();
+                Vector4 blended_environment_light = new();
+                Vector4 blended_environment_fog = new();
+                float blended_environment_fog_distance = 0f;
+                float total_distance = 0f;
+                foreach(Room room in Room.loaded_rooms)
+                {
+                    total_distance += Vector3.Distance(camera_pos, room.Position);
+                }
+                foreach(Room room in Room.loaded_rooms)
+                {
+                    float distance_merge = Vector3.Distance(camera_pos, room.Position) / total_distance;
+                    if(room.Environment != null)
+                    {
+                        blended_environment_light += room.Environment.AmbientLight * distance_merge;
+                        blended_environment_fog += new Vector4(room.Environment.FogColor.R,room.Environment.FogColor.G,room.Environment.FogColor.B,room.Environment.FogColor.A) * distance_merge;
+                        blended_environment_fog_distance += room.Environment.FogDistance * distance_merge;
+                    }
+                }
+                light_col[0] = blended_environment_light;
+                fog_color = Color.FromArgb((int)(255 * blended_environment_fog.W),(int)(255 * blended_environment_fog.X),(int)(255 * blended_environment_fog.Y),(int)(255 * blended_environment_fog.Z));
+                fog_distance = blended_environment_fog_distance;
+            }
+
+            // Apply fog color
+            OpenGLContext?.ClearColor(fog_color);
 
             // Dynamic lights
+            int light_count = 1;
             foreach(Light light in EntComponent.GetAllOfType(typeof(Light)).Cast<Light>())
             {
                 light_pos[light_count] = new(light.OffsetPos.X, light.OffsetPos.Y, light.OffsetPos.Z, light.Radius);
@@ -168,6 +210,8 @@ namespace Engine
             vertex_uniforms.Add(new("uLightPositions", light_pos, max_lights)); 
             vertex_uniforms.Add(new("uLightColors", light_col, max_lights)); 
             vertex_uniforms.Add(new("uLightCount", light_count)); // Number of lights, not max lights
+            vertex_uniforms.Add(new("uFogColor", new Vector4(fog_color.R / 255f,fog_color.G / 255f,fog_color.B / 255f,fog_color.A / 255f)));
+            vertex_uniforms.Add(new("uFogDistance", fog_distance));
         }
 
         public static void RenderModel(ModelData model, List<MaterialData> materials, List<ShaderData.Uniform> vertex_uniforms)

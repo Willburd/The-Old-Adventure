@@ -10,6 +10,8 @@ namespace Engine
         public bool UnloadOnEnd {get; private set;} = true;
         public bool RemoveActorsOnEnd {get; private set;} = true;
 
+        public Environments.Environment Environment { get; set; } = new();
+
         public List<Actor> ActorList {get; private set;} = [];
 
         public Room() : base(Transform.Identity, "Engine::Room")

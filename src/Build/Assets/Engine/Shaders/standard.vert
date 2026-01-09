@@ -13,10 +13,13 @@ uniform vec4 uLightPositions[MAX_LIGHTS]; // pos + radius
 uniform vec4 uLightColors[MAX_LIGHTS];
 uniform int uLightCount;
 
+uniform vec4 uFogColor;
+uniform float uFogDistance;
+
 out vec2 TexCoords;
 out vec3 Normal;
 out vec4 Color;
-out vec3 Light;
+out vec4 Light;
 
 vec3 solve_lights()
 {
@@ -48,7 +51,11 @@ void main()
     gl_Position = uProjection * uView * uTransform * vec4(vPosition, 1.0);
     TexCoords = vUv;
     Normal = vNormal;
-    Color = vColor;
 
-    Light = solve_lights();
+    float dist = distance(vec4(0.0), gl_Position);
+    float dist_perc = clamp(dist / uFogDistance, 0.0, 1.0);
+    dist_perc = pow(dist_perc,6);
+
+    Color = mix(vColor, uFogColor, dist_perc);
+    Light = vec4(solve_lights(), dist_perc);
 }

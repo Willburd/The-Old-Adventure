@@ -2,7 +2,7 @@
 in vec2 TexCoords;
 in vec3 Normal;
 in vec4 Color;
-in vec3 Light;
+in vec4 Light;
 
 uniform sampler2D uTexture0;
 
@@ -12,5 +12,7 @@ void main()
 {
     FragColor = texture(uTexture0, TexCoords);
     FragColor = vec4(mix(FragColor.rgb, Color.rgb, Color.a), FragColor.a);
-    FragColor *= vec4(Light.r, Light.g, Light.b, 1.0);
+    float olda = FragColor.a;
+    FragColor *= Light;
+    FragColor.a = olda;
 }
