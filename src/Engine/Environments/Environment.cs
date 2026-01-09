@@ -1,6 +1,6 @@
 using System.Drawing;
 using System.Numerics;
-using Silk.NET.OpenGL;
+using Rendering;
 
 namespace Environments
 {
@@ -10,7 +10,6 @@ namespace Environments
 
         public Color FogColor { get; set; } = Color.CornflowerBlue;
 
-        public Vector4 AmbientLight { get; set; } = new Vector4(1f,1f,1f,1f); 
-
+        public Vector4 AmbientLight { get; set; } = new Vector4(1f,1f,1f,1f);
     }
 }

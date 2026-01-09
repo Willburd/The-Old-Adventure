@@ -29,8 +29,10 @@ namespace Engine
                 new Camera(new Transform( new Vector3(0f,0f,0f)), true, this);
             }
             loaded_rooms.Add(this);
-            new WorldRender(this); // All scenes implicitly have this.
-            new Collider(this); // All scenes implicitly have this.
+            // All scenes implicitly have these
+            new WorldRender(this);
+            new Collider(this); 
+            // Setup room
             LoadAssets();
             LoadActors();
             LoadExits();

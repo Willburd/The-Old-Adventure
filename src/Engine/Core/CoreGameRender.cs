@@ -89,16 +89,18 @@ namespace Engine
         private void RenderTick(double tick_delta)
         {
             // Clear screen
+            List<ShaderData.Uniform> vertex_uniforms = [];
             OpenGLContext?.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Assemble a list in order of priority.
             SortedList<uint,List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
+            ApplyEnvironmentUniforms(vertex_uniforms, tick_delta);
             foreach(Entity check in Entity.EntityList)
             {
                 // Check the entity for a render priority. We only draw if we have one, as that means we have a component that wants to draw!
                 uint priority = check.SendSignal(Signals.render_priority, tick_delta);
                 if(priority == 0) continue; // Not visible if no component responds.
-                check.SendSignal(Signals.pre_render, tick_delta); // perform prerender while we're here.
+                check.SendSignal(Signals.pre_render, tick_delta, vertex_uniforms); // perform prerender while we're here.
                 
                 // Add to queue for all of the following render loops, instead of checking every entity for each one! We only store the ones that replied with a draw priority!
                 if(!render_queue.ContainsKey(priority)) render_queue.Add(priority, []);
@@ -107,19 +109,20 @@ namespace Engine
             OnPreRenderTick();
 
             // Primary rendering
-            List<ShaderData.Uniform> vertex_uniforms = [];
-            List<ShaderData.Uniform> fragment_uniforms = [];
-            ApplyEnvironmentData(vertex_uniforms, fragment_uniforms, tick_delta);
+            OpenGLContext?.Clear(ClearBufferMask.DepthBufferBit);
+            vertex_uniforms.Clear();
+            ApplyEnvironmentUniforms(vertex_uniforms, tick_delta);
             foreach((uint key, List<Entity> draw_list) in render_queue)
             {
                 foreach(Entity draw in draw_list)
                 {
-                    draw.SendSignal(Signals.render, tick_delta, vertex_uniforms, fragment_uniforms);
+                    draw.SendSignal(Signals.render, tick_delta, vertex_uniforms);
                 }
             }
             OnRenderTick();
             
             // Late rendering
+            OpenGLContext?.Clear(ClearBufferMask.DepthBufferBit);
             foreach((uint key, List<Entity> draw_list) in render_queue)
             {
                 foreach(Entity draw in draw_list)
@@ -129,7 +132,10 @@ namespace Engine
             }
             OnPostRenderTick();
 
+            // Reset depth for render
+            
             // Hud rendering
+            OpenGLContext?.Clear(ClearBufferMask.DepthBufferBit);
             foreach((uint key, List<Entity> draw_list) in render_queue)
             {
                 foreach(Entity draw in draw_list)
@@ -144,7 +150,15 @@ namespace Engine
         /// <summary>
         /// Construct vertex shader uniforms for light data.
         /// </summary>
-        private static void ApplyEnvironmentData(List<ShaderData.Uniform> vertex_uniforms, List<ShaderData.Uniform> fragment_uniforms, double tick_delta)
+        private static void ApplyPrerenderEnvironmentUniforms(List<ShaderData.Uniform> vertex_uniforms, double tick_delta)
+        {
+            ApplyVertexUniforms(vertex_uniforms, new Vector4[max_lights], new Vector4[max_lights], 0, new Vector4(1f, 1f, 1f, 0f), float.PositiveInfinity);
+        }
+
+        /// <summary>
+        /// Construct vertex shader uniforms for light data.
+        /// </summary>
+        private static void ApplyEnvironmentUniforms(List<ShaderData.Uniform> vertex_uniforms, double tick_delta)
         {
             // Vertex lighting data
             Vector4[] light_pos = new Vector4[max_lights];
@@ -207,10 +221,15 @@ namespace Engine
             }
 
             // Assemble uniforms
-            vertex_uniforms.Add(new("uLightPositions", light_pos, max_lights)); 
-            vertex_uniforms.Add(new("uLightColors", light_col, max_lights)); 
+            ApplyVertexUniforms(vertex_uniforms, light_pos, light_col, light_count, new Vector4(fog_color.R / 255f,fog_color.G / 255f,fog_color.B / 255f,fog_color.A / 255f), fog_distance);
+        }
+
+        private static void ApplyVertexUniforms(List<ShaderData.Uniform> vertex_uniforms, Vector4[] light_pos_array, Vector4[] light_color_array, int light_count, Vector4 fog_color, float fog_distance)
+        {
+            vertex_uniforms.Add(new("uLightPositions", light_pos_array)); 
+            vertex_uniforms.Add(new("uLightColors", light_color_array)); 
             vertex_uniforms.Add(new("uLightCount", light_count)); // Number of lights, not max lights
-            vertex_uniforms.Add(new("uFogColor", new Vector4(fog_color.R / 255f,fog_color.G / 255f,fog_color.B / 255f,fog_color.A / 255f)));
+            vertex_uniforms.Add(new("uFogColor", fog_color));
             vertex_uniforms.Add(new("uFogDistance", fog_distance));
         }
 

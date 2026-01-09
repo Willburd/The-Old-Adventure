@@ -16,10 +16,15 @@ namespace TestAdventure
             TextureData terrain_tex = AssetLoader.TextureAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_wood.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
             
             // Materials
-            AssetLoader.MaterialAssetLoad( "testroom_terrain", new( [terrain_tex], [new("uTexture0", 0)], standard_shader));
+            MaterialData test = AssetLoader.MaterialAssetLoad( "testroom_terrain", new( [terrain_tex], [new("uTexture0", 0)], standard_shader));
             
             // Model
             AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Models/test_room.fbx");
+
+            // Environment
+            Environment = new();
+            Skybox skybox = new Skybox(this);
+            skybox.SetModel( AssetLoader.ModelAssetGet("skybox", AssetLoader.AssetSource.engine), test);
         }
 
         public override void LoadActors()

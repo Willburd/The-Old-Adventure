@@ -11,7 +11,7 @@ namespace EntComponents
     public class WorldRender(Entity host_entity) : EntComponent(host_entity)
     {
         public bool Visible { get; set; } = true;
-        private uint Priority { get; set; } = 1;
+        protected uint Priority { get; set; } = 1;
         protected ModelData? model;
         protected List<MaterialData> materials = [];
 
@@ -82,7 +82,6 @@ namespace EntComponents
                         return HandleRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
                     }
                     return HandleRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
-
             }
             return base.ReceiveSignal(signal,args);
         }
