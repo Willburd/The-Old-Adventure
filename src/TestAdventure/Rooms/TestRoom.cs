@@ -2,6 +2,7 @@ using Engine;
 using EntComponents;
 using System.Numerics;
 using Rendering;
+using System.Drawing;
 
 namespace TestAdventure
 {
@@ -24,7 +25,7 @@ namespace TestAdventure
             AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Models/test_room.fbx");
 
             // Environment
-            Environment = new();
+            Environment = new( new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f));
             Skybox skybox_model = new Skybox(this);
             skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), skybox_mat);
         }

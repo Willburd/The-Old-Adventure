@@ -1,5 +1,6 @@
 using System.Numerics;
 using EntComponents;
+using System.Drawing;
 
 namespace Engine
 {
@@ -10,7 +11,7 @@ namespace Engine
         public bool UnloadOnEnd {get; private set;} = true;
         public bool RemoveActorsOnEnd {get; private set;} = true;
 
-        public Environments.Environment Environment { get; set; } = new();
+        public Environments.Environment Environment { get; set; } = new( Tools.ColorToVector(Color.CornflowerBlue), 250f, new Vector4(1f,1f,1f,1f));
 
         public List<Actor> ActorList {get; private set;} = [];
 

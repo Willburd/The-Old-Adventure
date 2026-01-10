@@ -166,7 +166,7 @@ namespace Engine
 
             // Environment
             float fog_distance = 1000f;
-            Color fog_color = Color.CornflowerBlue;
+            Vector4 fog_color = Tools.ColorToVector(Color.CornflowerBlue);
             light_pos[0] = new(0f,0f,0f,float.PositiveInfinity);
             if(Room.loaded_rooms.Count == 0)
             {
@@ -198,17 +198,14 @@ namespace Engine
                     if(room.Environment != null)
                     {
                         blended_environment_light += room.Environment.AmbientLight * distance_merge;
-                        blended_environment_fog += new Vector4(room.Environment.FogColor.R,room.Environment.FogColor.G,room.Environment.FogColor.B,room.Environment.FogColor.A) * distance_merge;
+                        blended_environment_fog += room.Environment.FogColor * distance_merge;
                         blended_environment_fog_distance += room.Environment.FogDistance * distance_merge;
                     }
                 }
                 light_col[0] = blended_environment_light;
-                fog_color = Color.FromArgb((int)(255 * blended_environment_fog.W),(int)(255 * blended_environment_fog.X),(int)(255 * blended_environment_fog.Y),(int)(255 * blended_environment_fog.Z));
+                fog_color = blended_environment_fog;
                 fog_distance = blended_environment_fog_distance;
             }
-
-            // Apply fog color
-            OpenGLContext?.ClearColor(fog_color);
 
             // Dynamic lights
             int light_count = 1;
@@ -221,7 +218,7 @@ namespace Engine
             }
 
             // Assemble uniforms
-            ApplyVertexUniforms(vertex_uniforms, light_pos, light_col, light_count, new Vector4(fog_color.R / 255f,fog_color.G / 255f,fog_color.B / 255f,fog_color.A / 255f), fog_distance);
+            ApplyVertexUniforms(vertex_uniforms, light_pos, light_col, light_count, fog_color, fog_distance);
         }
 
         private static void ApplyVertexUniforms(List<ShaderData.Uniform> vertex_uniforms, Vector4[] light_pos_array, Vector4[] light_color_array, int light_count, Vector4 fog_color, float fog_distance)

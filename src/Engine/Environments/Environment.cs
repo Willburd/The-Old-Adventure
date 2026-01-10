@@ -4,12 +4,12 @@ using Rendering;
 
 namespace Environments
 {
-    public class Environment
+    public class Environment(Vector4 fog_col, float fog_dist, Vector4 ambient_light)
     {
-        public float FogDistance { get; set; } = 200f;
+        public float FogDistance { get; set; } = fog_dist;
 
-        public Color FogColor { get; set; } = Color.CornflowerBlue;
+        public Vector4 FogColor { get; set; } = fog_col;
 
-        public Vector4 AmbientLight { get; set; } = new Vector4(1f,1f,1f,1f);
+        public Vector4 AmbientLight { get; set; } = ambient_light;
     }
 }

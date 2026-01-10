@@ -11,8 +11,13 @@ out vec4 FragColor;
 void main()
 {
     FragColor = texture(uTexture0, TexCoords);
+    if(Color.rgba == vec4(1.0,1.0,1.0,1.0) || Color.rgba == vec4(0.0,0.0,0.0,1.0)) 
+    {
+        // Don't bother with lights, these are either pits, caves, or cave exits
+        FragColor = Color.rgba;
+        return;
+    }
     FragColor = vec4(mix(FragColor.rgb, Color.rgb, Color.a), FragColor.a);
-    float olda = FragColor.a;
     FragColor *= Light;
-    FragColor.a = olda;
+    if(FragColor.a < 0.001) discard;
 }
