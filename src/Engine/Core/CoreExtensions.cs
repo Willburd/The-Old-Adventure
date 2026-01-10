@@ -49,7 +49,7 @@ namespace Engine
         public virtual void OnPreRenderTick() {}
         
         /// <summary>
-        /// Virtual function for game specific behaviors. Called at the end of a render tick, after everything is rendered, but before the hud.
+        /// Virtual function for game specific behaviors. Called at the start of a render tick, before everything is renderer
         /// </summary>
         public virtual void OnRenderTick() {}
         
@@ -59,7 +59,7 @@ namespace Engine
         public virtual void OnPostRenderTick() {}
         
         /// <summary>
-        /// Virtual function for game specific behaviors. Called at the end of a render tick, after the hud is rendered.
+        /// Virtual function for game specific behaviors. Called at the end of a render tick, before the hud is rendered.
         /// </summary>
         public virtual void OnRenderHudTick() {}
     }

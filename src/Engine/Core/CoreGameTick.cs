@@ -76,28 +76,23 @@ namespace Engine
             List<Room> initing_rooms = [];
             foreach(Entity ent in Entity.EntityList)
             {
-                thread_batch.Add(Task.Run(() =>
+                if(!ent.IsInitilized) 
                 {
-                    if(!ent.IsInitilized) 
-                    {
-                        ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
-                        if(ent.GetType() == typeof(Room)) initing_rooms.Add((Room)ent);
-                    }
-                    // Preupdate
-                    if(!EditorMode || EditorAllowsUpdates) 
-                    {
-                        ent.SendSignal(Signals.pre_update, ent.Enabled);
-                    }
-                    // Handle movement interpolation
-                    if(ent.Enabled) 
-                    {
-                        ent.SnapTransform(); // Update the previous location transform
-                        active_entities.Add(ent);
-                    }
-                }));
-                if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
+                    if(ent.GetType() == typeof(Room)) initing_rooms.Add((Room)ent);
+                }
+                // Preupdate
+                if(!EditorMode || EditorAllowsUpdates) 
+                {
+                    ent.SendSignal(Signals.pre_update, ent.Enabled);
+                }
+                // Handle movement interpolation
+                if(ent.Enabled) 
+                {
+                    ent.SnapTransform(); // Update the previous location transform
+                    active_entities.Add(ent);
+                }
             }
-            AwaitCurrentBatch(thread_batch);
 
             /////////////////////////////////////////////////
             // Editor update
@@ -106,13 +101,8 @@ namespace Engine
             {
                 foreach(Entity ent in active_entities)
                 {
-                    thread_batch.Add(Task.Run(() =>
-                    {
-                        ent.SendSignal(Signals.editor_update);
-                    }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    ent.SendSignal(Signals.editor_update);
                 }
-                AwaitCurrentBatch(thread_batch);
             }
 
             // There are no gameticks during editor mode unless we unpause it
@@ -124,30 +114,21 @@ namespace Engine
                 // We do room loaded signal AFTER everything else is init, or we'll miss some!
                 foreach(Room room in initing_rooms)
                 {
-                    thread_batch.Add(Task.Run(() =>
-                    {
-                        Entity.SendGlobalSignal(Signals.global_room_loaded, room);
-                    }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    Entity.SendGlobalSignal(Signals.global_room_loaded, room);
                 }
-                AwaitCurrentBatch(thread_batch);
 
                 // Handle room ticks in a special way to keep sane order
                 List<Room> processing_rooms = [.. Room.loaded_rooms];
                 foreach(Room room in processing_rooms)
                 {
-                    thread_batch.Add(Task.Run(() =>
+                    if(room.Enabled) 
                     {
-                        if(room.Enabled) 
-                        {
-                            room.OnRoomUpdate();
-                        }
-                        else
-                        {
-                            room.OnRoomDisabledUpdate();
-                        }
-                    }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                        room.OnRoomUpdate();
+                    }
+                    else
+                    {
+                        room.OnRoomDisabledUpdate();
+                    }
                 }
                 AwaitCurrentBatch(thread_batch);
                 
@@ -157,9 +138,10 @@ namespace Engine
                 OnPhysicsTick();
                 foreach(Entity ent in active_entities)
                 {
+                    Entity current_ent = ent;
                     thread_batch.Add(Task.Run(() =>
                     {
-                        ent.SendSignal(Signals.apply_physics);
+                        current_ent.SendSignal(Signals.apply_physics);
                     }));
                     if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
                 }
@@ -174,10 +156,11 @@ namespace Engine
                 all_colliders.AddRange(EntComponent.GetAllOfType(typeof(TriggerVolume)));
                 foreach(Collider collider in all_colliders.Cast<Collider>())
                 {
+                    Collider current_collider = collider;
                     thread_batch.Add(Task.Run(() =>
                     {
-                        if(!collider.Host.IsInitilized || !collider.Host.Enabled || !collider.Active) return;
-                        collider.CheckCollisions(all_colliders);
+                        if(!current_collider.Host.IsInitilized || !current_collider.Host.Enabled || !current_collider.Active) return;
+                        current_collider.CheckCollisions(all_colliders);
                     }));
                     if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
                 }
@@ -193,21 +176,13 @@ namespace Engine
                 OnGameTick();
                 foreach(Entity ent in active_entities)
                 {
-                    thread_batch.Add(Task.Run(() =>
-                    {
-                        ent.SendSignal(Signals.update);
-                    }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    ent.SendSignal(Signals.update);
                 }
                 AwaitCurrentBatch(thread_batch);
                 OnPostGameTick();
                 foreach(Entity ent in active_entities)
                 {
-                    thread_batch.Add(Task.Run(() =>
-                    {
-                        ent.SendSignal(Signals.post_update);
-                    }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    ent.SendSignal(Signals.post_update);
                 }
                 AwaitCurrentBatch(thread_batch);
             }

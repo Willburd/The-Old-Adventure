@@ -43,6 +43,14 @@ namespace TestAdventure
             Light glow_test = new Light(this);
             glow_test.SetData( new Vector4(1f,1f,1f,1f), 12f, new Vector3(4f,2f,8f));
 
+
+            // Performance test
+            for(int i = 0; i < 100; i++)
+            {
+                EntityFactory.CreateActor( "actor_pointer", new Transform( new Vector3(Tools.RandRange(-100,100),Tools.RandRange(-100,100),Tools.RandRange(-100,100))), this, AssetLoader.AssetSource.engine);
+            }
+            
+
             /*
             // Move camera
             Camera.WorldCamera?.Position = new Vector3(0f,0.5f,1f);
