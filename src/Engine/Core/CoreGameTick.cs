@@ -55,7 +55,7 @@ namespace Engine
             // Threading batch control
             /////////////////////////////////////////////////
             
-            int batch_size = 128;
+            int batch_size = 512;
             ThreadPool.GetMaxThreads(out int total_available_threads, out int max_asyncthread_count);
             batch_size = Math.Min(batch_size, max_asyncthread_count - 1); // incase we're running on something with more limited threads
             // We never want to overrun our task pool, otherwise we'll hit the dreaded 0.5 second reschedual in a gametick.
@@ -101,8 +101,14 @@ namespace Engine
             {
                 foreach(Entity ent in active_entities)
                 {
-                    ent.SendSignal(Signals.editor_update);
+                    Entity current_ent = ent;
+                    thread_batch.Add(Task.Run(() =>
+                    {
+                        ent.SendSignal(Signals.editor_update);
+                    }));
+                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
                 }
+                AwaitCurrentBatch(thread_batch);
             }
 
             // There are no gameticks during editor mode unless we unpause it
@@ -176,13 +182,22 @@ namespace Engine
                 OnGameTick();
                 foreach(Entity ent in active_entities)
                 {
-                    ent.SendSignal(Signals.update);
+                    thread_batch.Add(Task.Run(() =>
+                    {
+                        ent.SendSignal(Signals.update);
+                    }));
+                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
                 }
                 AwaitCurrentBatch(thread_batch);
+
                 OnPostGameTick();
                 foreach(Entity ent in active_entities)
                 {
-                    ent.SendSignal(Signals.post_update);
+                    thread_batch.Add(Task.Run(() =>
+                    {
+                        ent.SendSignal(Signals.post_update);
+                    }));
+                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
                 }
                 AwaitCurrentBatch(thread_batch);
             }
