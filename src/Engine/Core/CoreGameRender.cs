@@ -71,6 +71,8 @@ namespace Engine
         /// </summary>
         private static void HandleWindowRender(double deltaTime)
         {
+            if(shutting_down) return;
+
             game_fps_accumulator += deltaTime;
             if(game_fps_accumulator >= FpsTickInterval || RequestRender)
             {

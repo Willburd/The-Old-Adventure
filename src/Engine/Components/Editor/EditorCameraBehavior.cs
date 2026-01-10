@@ -29,7 +29,7 @@ namespace EntComponents
         {
             if(InputHandler.KeyPressed( InputHandler.input_key_exit ))
             {
-                Core.WindowContext.Close();
+                Core.RequestShutdown();
                 return 1;
             }
             

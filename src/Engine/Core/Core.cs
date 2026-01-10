@@ -60,5 +60,11 @@ namespace Engine
             // Finished game, end it off.
             WindowContext.Dispose();
         }
+
+        private static bool shutting_down = false;
+        public static void RequestShutdown()
+        {
+            shutting_down = true;
+        }
     }
 }
