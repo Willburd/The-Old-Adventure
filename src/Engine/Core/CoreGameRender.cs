@@ -97,6 +97,7 @@ namespace Engine
             // Assemble a list in order of priority.
             SortedList<uint,List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
             ApplyEnvironmentUniforms(vertex_uniforms, tick_delta);
+            OnPreRenderTick();
             foreach(Entity check in Entity.EntityList)
             {
                 // Check the entity for a render priority. We only draw if we have one, as that means we have a component that wants to draw!
@@ -108,12 +109,12 @@ namespace Engine
                 if(!render_queue.ContainsKey(priority)) render_queue.Add(priority, []);
                 render_queue[priority].Add(check);
             }
-            OnPreRenderTick();
 
             // Primary rendering
             OpenGLContext?.Clear(ClearBufferMask.DepthBufferBit);
             vertex_uniforms.Clear();
             ApplyEnvironmentUniforms(vertex_uniforms, tick_delta);
+            OnRenderTick();
             foreach((uint key, List<Entity> draw_list) in render_queue)
             {
                 foreach(Entity draw in draw_list)
@@ -121,10 +122,10 @@ namespace Engine
                     draw.SendSignal(Signals.render, tick_delta, vertex_uniforms);
                 }
             }
-            OnRenderTick();
             
             // Late rendering
             OpenGLContext?.Clear(ClearBufferMask.DepthBufferBit);
+            OnPostRenderTick();
             foreach((uint key, List<Entity> draw_list) in render_queue)
             {
                 foreach(Entity draw in draw_list)
@@ -132,12 +133,12 @@ namespace Engine
                     draw.SendSignal(Signals.post_render, tick_delta);
                 }
             }
-            OnPostRenderTick();
 
             // Reset depth for render
             
             // Hud rendering
             OpenGLContext?.Clear(ClearBufferMask.DepthBufferBit);
+            OnRenderHudTick();
             foreach((uint key, List<Entity> draw_list) in render_queue)
             {
                 foreach(Entity draw in draw_list)
@@ -145,7 +146,6 @@ namespace Engine
                     draw.SendSignal(Signals.hud_render, tick_delta);
                 }
             }
-            OnRenderHudTick();
         }
         public const int max_lights = 16; // Must match in shader
 
