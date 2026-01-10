@@ -134,8 +134,6 @@ namespace Engine
                 }
             }
 
-            // Reset depth for render
-            
             // Hud rendering
             OpenGLContext?.Clear(ClearBufferMask.DepthBufferBit);
             OnRenderHudTick();
