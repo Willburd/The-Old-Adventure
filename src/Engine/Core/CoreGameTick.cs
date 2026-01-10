@@ -69,39 +69,50 @@ namespace Engine
             };
 
             /////////////////////////////////////////////////
-            // Preprocessing and room ticks
+            // Entity creation
             /////////////////////////////////////////////////
             OnPreGameTick();
-            List<Entity> active_entities = [];
+            Entity.ActiveEntities.Clear();
             List<Room> initing_rooms = [];
+            // Cannot thread this due to asset loading file handle maximums
+            foreach(Entity ent in Entity.UninitEntityList)
+            {
+                ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
+                if(ent.GetType() == typeof(Room)) initing_rooms.Add((Room)ent);
+                Entity.EntityList.Add(ent);
+            }
+            Entity.UninitEntityList.Clear();
+
+            /////////////////////////////////////////////////
+            // Preprocessing
+            /////////////////////////////////////////////////
             foreach(Entity ent in Entity.EntityList)
             {
-                if(!ent.IsInitilized) 
+                thread_batch.Add(Task.Run(() =>
                 {
-                    ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
-                    if(ent.GetType() == typeof(Room)) initing_rooms.Add((Room)ent);
-                }
-                // Preupdate
-                if(!EditorMode || EditorAllowsUpdates) 
-                {
-                    ent.SendSignal(Signals.pre_update, ent.Enabled);
-                }
-                // Handle movement interpolation
-                if(ent.Enabled) 
-                {
-                    ent.SnapTransform(); // Update the previous location transform
-                    active_entities.Add(ent);
-                }
+                    // Preupdate
+                    if(!EditorMode || EditorAllowsUpdates) 
+                    {
+                        ent.SendSignal(Signals.pre_update, ent.Enabled);
+                    }
+                    // Handle movement interpolation
+                    if(ent.Enabled) 
+                    {
+                        ent.SnapTransform(); // Update the previous location transform
+                        Entity.ActiveEntities.Add(ent);
+                    }
+                }));
+                if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
             }
+            AwaitCurrentBatch(thread_batch);
 
             /////////////////////////////////////////////////
             // Editor update
             /////////////////////////////////////////////////
             if(EditorMode) 
             {
-                foreach(Entity ent in active_entities)
+                foreach(Entity ent in Entity.ActiveEntities)
                 {
-                    Entity current_ent = ent;
                     thread_batch.Add(Task.Run(() =>
                     {
                         ent.SendSignal(Signals.editor_update);
@@ -142,7 +153,7 @@ namespace Engine
                 // Physics and Collisions
                 /////////////////////////////////////////////////
                 OnPhysicsTick();
-                foreach(Entity ent in active_entities)
+                foreach(Entity ent in Entity.ActiveEntities)
                 {
                     Entity current_ent = ent;
                     thread_batch.Add(Task.Run(() =>
@@ -180,7 +191,7 @@ namespace Engine
                 // Processing
                 /////////////////////////////////////////////////
                 OnGameTick();
-                foreach(Entity ent in active_entities)
+                foreach(Entity ent in Entity.ActiveEntities)
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
@@ -191,7 +202,7 @@ namespace Engine
                 AwaitCurrentBatch(thread_batch);
 
                 OnPostGameTick();
-                foreach(Entity ent in active_entities)
+                foreach(Entity ent in Entity.ActiveEntities)
                 {
                     thread_batch.Add(Task.Run(() =>
                     {

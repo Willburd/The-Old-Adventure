@@ -9,8 +9,11 @@ namespace Engine
     public class Entity
     {
 
-        private static readonly List<Entity> entity_list = [];
-        public static List<Entity> EntityList { get {return entity_list;} }
+        public static List<Entity> UninitEntityList { get; set; }= [];
+
+        public static List<Entity> EntityList { get; set; } = [];
+
+        public static List<Entity> ActiveEntities { get; set; } = [];
 
         public string EntityKey { get; private set;}
 
@@ -51,7 +54,7 @@ namespace Engine
 
         public Entity(Transform initial_location,string entity_identity_key)
         {
-            entity_list.Add(this);
+            UninitEntityList.Add(this);
             EntityKey = entity_identity_key;
             SetTransform(initial_location);
         }
@@ -62,7 +65,14 @@ namespace Engine
         public void Destroy()
         {
             SendSignal(Core.Signals.destroy);
-            entity_list.Remove(this);
+            if(!IsInitilized)
+            {
+                UninitEntityList.Remove(this);
+            }
+            else
+            {
+                EntityList.Remove(this);
+            }
             Enabled = false;
             foreach(EntComponent component in GetAllComponents())
             {
@@ -181,7 +191,7 @@ namespace Engine
 
         public static void SendGlobalSignal(Core.Signals signal, params object[] args)
         {
-            foreach(Entity ent in entity_list)
+            foreach(Entity ent in EntityList)
             {
                 ent.SendSignal(signal,args);
             }
