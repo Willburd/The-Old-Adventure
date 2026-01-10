@@ -54,10 +54,8 @@ namespace Engine
             /////////////////////////////////////////////////
             // Threading batch control
             /////////////////////////////////////////////////
-            
-            int batch_size = 512;
             ThreadPool.GetMaxThreads(out int total_available_threads, out int max_asyncthread_count);
-            batch_size = Math.Min(batch_size, max_asyncthread_count - 1); // incase we're running on something with more limited threads
+            int batch_size =max_asyncthread_count - 1; // incase we're running on something with more limited threads
             // We never want to overrun our task pool, otherwise we'll hit the dreaded 0.5 second reschedual in a gametick.
 
             List<Task> thread_batch = new List<Task>();
