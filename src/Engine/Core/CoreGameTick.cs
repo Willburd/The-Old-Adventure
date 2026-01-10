@@ -138,14 +138,18 @@ namespace Engine
                 List<Room> processing_rooms = [.. Room.loaded_rooms];
                 foreach(Room room in processing_rooms)
                 {
-                    if(room.Enabled) 
+                    thread_batch.Add(Task.Run(() =>
                     {
-                        room.OnRoomUpdate();
-                    }
-                    else
-                    {
-                        room.OnRoomDisabledUpdate();
-                    }
+                        if(room.Enabled) 
+                        {
+                            room.OnRoomUpdate();
+                        }
+                        else
+                        {
+                            room.OnRoomDisabledUpdate();
+                        }
+                    }));
+                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
                 }
                 AwaitCurrentBatch(thread_batch);
                 
@@ -155,10 +159,9 @@ namespace Engine
                 OnPhysicsTick();
                 foreach(Entity ent in Entity.ActiveEntities)
                 {
-                    Entity current_ent = ent;
                     thread_batch.Add(Task.Run(() =>
                     {
-                        current_ent.SendSignal(Signals.apply_physics);
+                        ent.SendSignal(Signals.apply_physics);
                     }));
                     if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
                 }
@@ -173,11 +176,10 @@ namespace Engine
                 all_colliders.AddRange(EntComponent.GetAllOfType(typeof(TriggerVolume)));
                 foreach(Collider collider in all_colliders.Cast<Collider>())
                 {
-                    Collider current_collider = collider;
                     thread_batch.Add(Task.Run(() =>
                     {
-                        if(!current_collider.Host.IsInitilized || !current_collider.Host.Enabled || !current_collider.Active) return;
-                        current_collider.CheckCollisions(all_colliders);
+                        if(!collider.Host.IsInitilized || !collider.Host.Enabled || !collider.Active) return;
+                        collider.CheckCollisions(all_colliders);
                     }));
                     if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
                 }
@@ -212,8 +214,36 @@ namespace Engine
                 }
                 AwaitCurrentBatch(thread_batch);
             }
+            
 
+            /////////////////////////////////////////////////
+            // Entity destruction
+            /////////////////////////////////////////////////
+            while(Entity.DestructingEntities.Count > 0) // If an entity destroys other entities on its destruction then we must process those too.
+            {
+                List<Entity> current_destructing_batch = [.. Entity.DestructingEntities];
+                Entity.DestructingEntities.Clear(); // Clear out for the next batch if any subdestructions happen
+                foreach(Entity ent in current_destructing_batch) // can't edit the current batch so we must repeatedly copy our list each batch
+                {
+                    thread_batch.Add(Task.Run(() =>
+                    {
+                        if(!ent.IsInitilized)
+                        {
+                            Entity.UninitEntityList.Remove(ent);
+                        }
+                        else
+                        {
+                            Entity.EntityList.Remove(ent);
+                        }
+                    }));
+                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                }
+                AwaitCurrentBatch(thread_batch);
+            }
+            
+            /////////////////////////////////////////////////
             // shutdown
+            /////////////////////////////////////////////////
             if(shutting_down)
             {
                 WindowContext.Close();

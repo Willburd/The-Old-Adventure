@@ -15,6 +15,8 @@ namespace Engine
 
         public static List<Entity> ActiveEntities { get; set; } = [];
 
+        public static List<Entity> DestructingEntities { get; set; } = [];
+
         public string EntityKey { get; private set;}
 
         public static void DestroyAllEntities()
@@ -59,26 +61,19 @@ namespace Engine
             SetTransform(initial_location);
         }
 
+        
         /// <summary>
-        /// Destroys an entity. Removing it from the entity processing list, and removing all components attached to it.
+        /// Destroys an entity.
         /// </summary>
         public void Destroy()
         {
-            SendSignal(Core.Signals.destroy);
-            if(!IsInitilized)
-            {
-                UninitEntityList.Remove(this);
-            }
-            else
-            {
-                EntityList.Remove(this);
-            }
             Enabled = false;
+            SendSignal(Core.Signals.destroy);
+            DestructingEntities.Add(this);
             foreach(EntComponent component in GetAllComponents())
             {
                 RemoveComponent(component);
             }
-            attached_components.Clear();
             OnCleanup();
             Console.WriteLine("EntityDestroy-X " + EntityKey);
         }
