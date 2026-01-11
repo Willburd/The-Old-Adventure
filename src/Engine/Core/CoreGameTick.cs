@@ -95,6 +95,7 @@ namespace Engine
             {
                 thread_batch.Add(Task.Run(() =>
                 {
+                    if(ent == null) return; // TODO - Discover the desync
                     // Preupdate
                     if(!EditorMode || EditorAllowsUpdates) 
                     {
@@ -120,6 +121,7 @@ namespace Engine
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
+                        if(ent == null) return; // TODO - Discover the desync
                         ent.SendSignal(Signals.editor_update);
                     }));
                     if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
@@ -145,6 +147,7 @@ namespace Engine
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
+                        if(room == null) return; // TODO - Discover the desync
                         if(room.Enabled) 
                         {
                             room.Environment?.Update();
@@ -168,6 +171,7 @@ namespace Engine
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
+                        if(ent == null) return; // TODO - Discover the desync
                         ent.SendSignal(Signals.apply_physics);
                     }));
                     if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
@@ -185,6 +189,7 @@ namespace Engine
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
+                        if(collider == null) return; // TODO - Discover the desync
                         if(!collider.Host.IsInitilized || !collider.Host.Enabled || !collider.Active) return;
                         collider.CheckCollisions(all_colliders);
                     }));
@@ -204,6 +209,7 @@ namespace Engine
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
+                        if(ent == null) return; // TODO - Discover the desync
                         ent.SendSignal(Signals.update);
                     }));
                     if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
@@ -215,6 +221,7 @@ namespace Engine
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
+                        if(ent == null) return; // TODO - Discover the desync
                         ent.SendSignal(Signals.post_update);
                     }));
                     if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
@@ -235,6 +242,7 @@ namespace Engine
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
+                        if(ent == null) return; // TODO - Discover the desync
                         if(!ent.IsInitilized)
                         {
                             Entity.UninitEntityList.Remove(ent);
