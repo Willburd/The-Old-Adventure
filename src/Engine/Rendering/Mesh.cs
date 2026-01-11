@@ -83,7 +83,7 @@ namespace Rendering
                         if(vbo_dat.is_collision)
                         {
                             Debug.Assert(vbo_dat.element_count == 3, "VBO for collision data expects to be 3 elements long");
-                            vert_collection.Add( new( Vertices[index++], Vertices[index++], Vertices[index++] ));
+                            vert_collection.Add( new( (float)Math.Truncate(100 * (double)Vertices[index++]) / 100, (float)Math.Truncate(100 * (double)Vertices[index++]) / 100, (float)Math.Truncate(100 * (double)Vertices[index++]) / 100 ));
                         }
                         else
                         {
