@@ -9,7 +9,7 @@ namespace Environments
 {
     public class DayNightCycle : Environment
     {
-        public DayNightCycle(Room host, Environment env_day, Environment env_dusk, Environment env_night, Environment env_dawn) : base(host, Vector4.Zero, 0f, Vector4.Zero)
+        public DayNightCycle(Room host, Environment env_dawn, Environment env_day, Environment env_dusk, Environment env_night) : base(host, Vector4.Zero, 0f, Vector4.Zero)
         {
             dawn = env_dawn;
             day = env_day;
@@ -38,9 +38,10 @@ namespace Environments
         public override void Update()
         {
             cycle += 0.001f;
-            float dusk_intensity = Math.Clamp( MathF.Pow(MathF.Sin((cycle * MathF.PI) + (MathF.PI * 0.5f)), 20f) * 1.1f, 0f,1f);
-            float night_intensity = Math.Clamp(-MathF.Sin(cycle * (MathF.PI * 2)) * 1.2f, 0f,1f);
-            float dawn_intensity = Math.Clamp(MathF.Pow(MathF.Sin(cycle * MathF.PI), 10f) * 1.1f, 0f,1f);
+            float cycle_mod = cycle % 1;
+            float dusk_intensity = Math.Clamp(MathF.Pow(MathF.Sin(cycle_mod * MathF.PI), 15f) * 1.1f, 0f,1f);
+            float night_intensity = Math.Clamp(-MathF.Sin(cycle_mod * (MathF.PI * 2)) * 1.5f, 0f,1f);
+            float dawn_intensity = Math.Clamp( MathF.Pow(MathF.Sin((cycle_mod * MathF.PI) + (MathF.PI * 0.5f)), 20f) * 1.1f, 0f,1f);
 
             MaterialData? skymat = skybox_model?.GetMaterial(0);
             if(skymat == null) return;
@@ -61,14 +62,24 @@ namespace Environments
                         uniform.value = dawn_intensity;
                     break;
                 }
+                // reassign
+                skymat.Uniforms[i] = uniform;
             }
-            
 
             FogDistance = day.FogDistance;
+            FogDistance = float.Lerp(FogDistance, dusk.FogDistance, dusk_intensity);
+            FogDistance = float.Lerp(FogDistance, night.FogDistance, night_intensity);
+            FogDistance = float.Lerp(FogDistance, dawn.FogDistance, dawn_intensity);
 
             FogColor = day.FogColor;
+            FogColor = Vector4.Lerp(FogColor, dusk.FogColor, dusk_intensity);
+            FogColor = Vector4.Lerp(FogColor, night.FogColor, night_intensity);
+            FogColor = Vector4.Lerp(FogColor, dawn.FogColor, dawn_intensity);
 
             AmbientLight = day.AmbientLight;
+            AmbientLight = Vector4.Lerp(AmbientLight, dusk.AmbientLight, dusk_intensity);
+            AmbientLight = Vector4.Lerp(AmbientLight, night.AmbientLight, night_intensity);
+            AmbientLight = Vector4.Lerp(AmbientLight, dawn.AmbientLight, dawn_intensity);
         }
     }
 }

@@ -58,6 +58,11 @@ namespace Rendering
             if (location == -1) return;
 
             // Numeral
+            if(value.GetType() == typeof(uint))
+            {
+                _gl.Uniform1(location, (uint)value);
+                return;
+            }
             if(value.GetType() == typeof(int))
             {
                 _gl.Uniform1(location, (int)value);
@@ -147,6 +152,7 @@ namespace Rendering
                 return;
             }
 
+            throw new Exception($"{name} undefined uniform type ${value.GetType()}.");
         }
 
         public void Dispose()

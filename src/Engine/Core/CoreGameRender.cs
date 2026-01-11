@@ -290,7 +290,7 @@ namespace Engine
             int tex_unit_id = 0;
             foreach(TextureData tex in mat_data.Textures)
             {
-                tex.Bind((TextureUnit)tex_unit_id);
+                tex.Bind(tex_unit_id);
                 tex_unit_id++;
             }
             
