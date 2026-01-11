@@ -75,7 +75,7 @@ namespace Engine
             // Entity creation
             /////////////////////////////////////////////////
             OnPreGameTick();
-            Entity.ActiveEntities.Clear();
+            List<Entity> active_entities = [];
             List<Room> initing_rooms = [];
             // Cannot thread this due to asset loading file handle maximums
             foreach(Entity ent in Entity.UninitEntityList)
@@ -104,7 +104,7 @@ namespace Engine
                     if(ent.Enabled) 
                     {
                         ent.SnapTransform(); // Update the previous location transform
-                        if(Vector3.Distance(world_load_position,ent.Position) <= world_load_radius) Entity.ActiveEntities.Add(ent);
+                        if(Vector3.Distance(world_load_position,ent.Position) <= world_load_radius) active_entities.Add(ent);
                     }
                 }));
                 if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
@@ -116,7 +116,7 @@ namespace Engine
             /////////////////////////////////////////////////
             if(EditorMode) 
             {
-                foreach(Entity ent in Entity.ActiveEntities)
+                foreach(Entity ent in active_entities)
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
@@ -164,7 +164,7 @@ namespace Engine
                 // Physics and Collisions
                 /////////////////////////////////////////////////
                 OnPhysicsTick();
-                foreach(Entity ent in Entity.ActiveEntities)
+                foreach(Entity ent in active_entities)
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
@@ -200,7 +200,7 @@ namespace Engine
                 // Processing
                 /////////////////////////////////////////////////
                 OnGameTick();
-                foreach(Entity ent in Entity.ActiveEntities)
+                foreach(Entity ent in active_entities)
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
@@ -211,7 +211,7 @@ namespace Engine
                 AwaitCurrentBatch(thread_batch);
 
                 OnPostGameTick();
-                foreach(Entity ent in Entity.ActiveEntities)
+                foreach(Entity ent in active_entities)
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
@@ -228,6 +228,7 @@ namespace Engine
             /////////////////////////////////////////////////
             while(Entity.DestructingEntities.Count > 0) // If an entity destroys other entities on its destruction then we must process those too.
             {
+                AwaitCurrentBatch(thread_batch);
                 List<Entity> current_destructing_batch = [.. Entity.DestructingEntities];
                 Entity.DestructingEntities.Clear(); // Clear out for the next batch if any subdestructions happen
                 foreach(Entity ent in current_destructing_batch) // can't edit the current batch so we must repeatedly copy our list each batch
@@ -245,9 +246,8 @@ namespace Engine
                     }));
                     if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
                 }
-                AwaitCurrentBatch(thread_batch);
             }
-            
+
             /////////////////////////////////////////////////
             // shutdown
             /////////////////////////////////////////////////

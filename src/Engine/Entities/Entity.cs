@@ -13,8 +13,6 @@ namespace Engine
 
         public static List<Entity> EntityList { get; set; } = [];
 
-        public static List<Entity> ActiveEntities { get; set; } = [];
-
         public static List<Entity> DestructingEntities { get; set; } = [];
 
         public string EntityKey { get; private set;}
