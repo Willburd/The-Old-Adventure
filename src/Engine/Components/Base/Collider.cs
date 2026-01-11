@@ -117,7 +117,7 @@ namespace EntComponents
         }
 
         /// <summary>
-        /// Performs a raycast against all existing colliders in the scene, unless otherwise specified. Returns a list of all collisions that occured, specific collision information is in each collider.
+        /// Performs a raycast against all existing colliders in the room, unless otherwise specified. Returns a list of all collisions that occured, specific collision information is in each collider.
         /// </summary>
         public static RaycastHit? DoRaycastNearest(Vector3 start, Vector3 direction, uint collision_mask = mask_standard, Entity? specific_entity = null)
         {
@@ -137,7 +137,7 @@ namespace EntComponents
         }
 
         /// <summary>
-        /// Performs a raycast against all existing colliders in the scene, unless otherwise specified. Returns a list of all collisions that occured, specific collision information is in each collider.
+        /// Performs a raycast against all existing colliders in the room, unless otherwise specified. Returns a list of all collisions that occured, specific collision information is in each collider.
         /// </summary>
         public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 direction, uint collision_mask = mask_standard, Entity? specific_entity = null)
         {

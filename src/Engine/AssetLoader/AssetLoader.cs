@@ -152,6 +152,16 @@ namespace Engine
             if(asset_library.ContainsKey( get_key)) return (MaterialData)asset_library[get_key].Data;
             return (MaterialData)InvokeAsset( get_key, new AssetMaterial(get_key, new_material));
         }
+        
+        /// <summary>
+        /// Creates an environment asset and adds it to the asset library for reuse
+        /// </summary>
+        public static Environments.Environment EnvironmentAssetLoad(Environments.Environment new_environment, AssetSource source = AssetSource.adventure)
+        {
+            string get_key = AssetLoader.AssetKey(Asset.AssetType.environment, new_environment.AssetKey, source);
+            if(asset_library.ContainsKey( get_key)) return (Environments.Environment)asset_library[get_key].Data;
+            return (Environments.Environment)InvokeAsset( get_key, new AssetEnvironment(get_key, new_environment));
+        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Asset retrieval
@@ -233,6 +243,17 @@ namespace Engine
             ast ??= LocateAsset(AssetLoader.AssetKey(Asset.AssetType.material, "no_mat", AssetSource.engine));
             Debug.Assert(ast.CheckType(Asset.AssetType.material));
             return (Rendering.MaterialData)ast.Data;
+        }
+
+        /// <summary>
+        /// Gets an environment from the asset library
+        /// </summary>
+        public static Environments.Environment EnvironmentAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
+        {
+            Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.environment, asset_key, source));
+            ast ??= LocateAsset(AssetLoader.AssetKey(Asset.AssetType.environment, "standard_day", AssetSource.engine));
+            Debug.Assert(ast.CheckType(Asset.AssetType.environment));
+            return (Environments.Environment)ast.Data;
         }
     }
 }

@@ -1,7 +1,7 @@
 namespace Engine
 {
     /// <summary>
-    /// Base asset class, handles loading and unloading of data read from files. Can be marked persistent to prevent deletion during basic unloads like scene transitions.
+    /// Base asset class, handles loading and unloading of data read from files. Can be marked persistent to prevent deletion during basic unloads like room transitions.
     /// </summary>
     public class Asset
     {
@@ -27,7 +27,7 @@ namespace Engine
             textures,           // Loaded image files, and similar objects
             sound,              // Sounds for music and sfx 
             shader,             // Shaders for rendering meshes and textures
-            scene_environment   // Color, fog, effects and other settings for a scene's appearance
+            environment         // Color, fog, effects and other settings for a rooms's appearance
         }
 
         protected AssetType asset_type = AssetType.invalid;
@@ -38,7 +38,7 @@ namespace Engine
         protected string asset_key;
 
         /// <summary>
-        /// Controls if an asset is unloaded during scene transitions. Otherwise only the game shutting down, or otherwise force unloading will unload the asset.
+        /// Controls if an asset is unloaded during room transitions. Otherwise only the game shutting down, or otherwise force unloading will unload the asset.
         /// </summary>
         protected bool always_loaded = false;
 
@@ -48,7 +48,7 @@ namespace Engine
         protected string file_path = "NO FILE";
 
         /// <summary>
-        /// Flags an asset to no longer unload during basic cleanup, such as scene transitions.
+        /// Flags an asset to no longer unload during basic cleanup, such as room transitions.
         /// </summary>
         public void SetPersistent()
         {
@@ -67,7 +67,7 @@ namespace Engine
         }
 
         /// <summary>
-        /// Checks if an asset shouldn't be unloaded during basic asset cleaning, such as scene transitions.
+        /// Checks if an asset shouldn't be unloaded during basic asset cleaning, such as room transitions.
         /// </summary>
         public bool Persistent
         {

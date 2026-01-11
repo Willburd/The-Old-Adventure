@@ -4,7 +4,7 @@ using System.Numerics;
 namespace Engine
 {
     /// <summary>
-    /// Base level type for all objects in the game engine. Scene and Actor both inheret from this, as it handles the component and signal system, both of which use it.
+    /// Base level type for all objects in the game engine. Room and Actor both inheret from this, as it handles the component and signal system, both of which use it.
     /// </summary>
     public class Entity
     {

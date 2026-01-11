@@ -18,17 +18,11 @@ namespace TestAdventure
             // Materials
             AssetLoader.MaterialAssetLoad( "testroom_terrain", new( [terrain_tex], [new("uTexture0", 0)], standard_shader));
             
-            // Model
+            // Models
             AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Models/test_room.fbx");
 
-            // Environment
-            Environments.Environment dawn_env = new(new Vector4( 0.25f, 0.46f, 0.79f, 1f), 270f, new Vector4(0.9f,0.85f,0.85f,0.9f), AssetLoader.TextureAssetGet("overworld_skybox_dawn"));
-            Environments.Environment day_env = new(new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_day"));
-            Environments.Environment dusk_env = new(new Vector4( 0.40f, 0.45f, 0.28f, 1f), 220f, new Vector4(1f,1f,0.85f,0.9f), AssetLoader.TextureAssetGet("overworld_skybox_dusk"));
-            Environments.Environment night_env = new(new Vector4( 0.7f, 0.5f, 0.14f, 1f), 160f, new Vector4(0.5f,0.5f,0.5f,0.2f), AssetLoader.TextureAssetGet("overworld_skybox_night"));
-            Environment = new Environments.DayNightCycle(this, dawn_env, day_env, dusk_env, night_env);
-            
-            //Environment = new( this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_day"));
+            // Environments
+            Environment = AssetLoader.EnvironmentAssetGet("standard_daynight", AssetLoader.AssetSource.engine);
         }
 
         public override void LoadActors()

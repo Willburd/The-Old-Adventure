@@ -9,28 +9,32 @@ namespace Environments
 {
     public class DayNightCycle : Environment
     {
-        public DayNightCycle(Room host, Environment env_dawn, Environment env_day, Environment env_dusk, Environment env_night) : base(host, Vector4.Zero, 0f, Vector4.Zero)
+        public DayNightCycle(string asset_key, Environment env_dawn, Environment env_day, Environment env_dusk, Environment env_night) : base(asset_key, Vector4.Zero, 0f, Vector4.Zero)
         {
             dawn = env_dawn;
             day = env_day;
             dusk = env_dusk;
             night = env_night;
+
+            // Multiblend skybox behavior
+            multiblend_skybox_mat = AssetLoader.MaterialAssetLoad(asset_key
+                                                                , new( [dawn.SkyboxTexture , day.SkyboxTexture  , dusk.SkyboxTexture, night.SkyboxTexture]
+                                                                ,      [new("uTextureDawn", 0), new("uTextureDay", 1), new("uTextureDusk", 2), new("uTextureNight", 3), new("uDuskPerc", cycle), new("uNightPerc", cycle), new("uDawnPerc", cycle)]
+                                                                ,      AssetLoader.ShaderAssetGet("skybox_daynight_multiblend", AssetLoader.AssetSource.engine)));
         }
 
         private Environment dawn;
         private Environment day;
         private Environment night;
         private Environment dusk;
+        private MaterialData multiblend_skybox_mat;
 
         private float cycle = 0f;
 
-        public override void ApplyEnvironment()
+        public override void ApplyEnvironment(Room host_room)
         {
-            // Multiblend skybox behavior
-            MaterialData multiblend_skybox_mat = AssetLoader.MaterialAssetLoad( "skybox_daynight_multiblend"
-                                                                                , new( [dawn.SkyboxTexture , day.SkyboxTexture  , dusk.SkyboxTexture, night.SkyboxTexture]
-                                                                                ,      [new("uTextureDawn", 0), new("uTextureDay", 1), new("uTextureDusk", 2), new("uTextureNight", 3), new("uDuskPerc", cycle), new("uNightPerc", cycle), new("uDawnPerc", cycle)]
-                                                                                ,      AssetLoader.ShaderAssetGet("skybox_daynight_multiblend", AssetLoader.AssetSource.engine)));
+            // Set room
+            Host = host_room;
             skybox_model = new Skybox(Host);
             skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), multiblend_skybox_mat);
         }
@@ -80,6 +84,15 @@ namespace Environments
             AmbientLight = Vector4.Lerp(AmbientLight, dusk.AmbientLight, dusk_intensity);
             AmbientLight = Vector4.Lerp(AmbientLight, night.AmbientLight, night_intensity);
             AmbientLight = Vector4.Lerp(AmbientLight, dawn.AmbientLight, dawn_intensity);
+        }
+
+        public override bool IsValid()
+        {
+            if(!dawn.IsValid()) return false;
+            if(!day.IsValid()) return false;
+            if(!dusk.IsValid()) return false;
+            if(!night.IsValid()) return false;
+            return true;
         }
     }
 }

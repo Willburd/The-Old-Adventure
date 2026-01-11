@@ -137,7 +137,7 @@ namespace EntComponents
         protected virtual uint HandleAssetLoad()
         {
             // You would call AssetLoader.MaterialAssetLoad() and such here for the asset!
-            // Shaders should be loaded by the game itself, and assets used in nearly every scene should be treated the same way!
+            // Shaders should be loaded by the game itself, and assets used in nearly every room should be treated the same way!
 
             return 1;
         }

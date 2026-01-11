@@ -15,81 +15,67 @@ namespace Environments
         public MaterialData? SkyboxMaterial { get; protected set; }
         public TextureData? SkyboxTexture { get; protected set; }
 
+        public string AssetKey { get; private set; } 
+
         protected Skybox? skybox_model = null;
 
-        public Environment(Room? host, Vector4 fog_col, float fog_dist, Vector4 ambient_light, TextureData? skybox_tex)
+        public Environment(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light, TextureData? skybox_tex)
         {
-            Host = host;
-            FogDistance = fog_dist;
-            FogColor = fog_col;
-            AmbientLight = ambient_light;
-            SkyboxTexture = skybox_tex;
-        }
-
-        public Environment(Vector4 fog_col, float fog_dist, Vector4 ambient_light, TextureData? skybox_tex)
-        {
+            AssetKey = asset_key;
             Host = null;
+            
             FogDistance = fog_dist;
             FogColor = fog_col;
             AmbientLight = ambient_light;
+
             SkyboxTexture = skybox_tex;
+            SkyboxMaterial = AssetLoader.MaterialAssetLoad( "testroom_skybox", new( [SkyboxTexture], [new("uTexture0", 0)], AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine)));
         }
 
-        public Environment(Room? host, Vector4 fog_col, float fog_dist, Vector4 ambient_light, MaterialData? skybox_mat)
+        public Environment(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light, MaterialData? skybox_mat)
         {
-            Host = host;
+            AssetKey = asset_key;
+            Host = null;
+
             FogDistance = fog_dist;
             FogColor = fog_col;
             AmbientLight = ambient_light;
+
             SkyboxMaterial = skybox_mat;
+            SkyboxTexture = SkyboxMaterial.Textures[0];
         }
         
-        public Environment(Vector4 fog_col, float fog_dist, Vector4 ambient_light, MaterialData? skybox_mat)
+        public Environment(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light)
+        {
+            AssetKey = asset_key;
+            Host = null;
+
+            FogDistance = fog_dist;
+            FogColor = fog_col;
+            AmbientLight = ambient_light;
+        }
+
+
+        public virtual void ApplyEnvironment(Room host_room)
+        {
+            // Set room
+            Host = host_room;
+            skybox_model = new Skybox(Host);
+            skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), SkyboxMaterial);
+            return;
+        }
+
+        public void Unload()
         {
             Host = null;
-            FogDistance = fog_dist;
-            FogColor = fog_col;
-            AmbientLight = ambient_light;
-            SkyboxMaterial = skybox_mat;
-        }
-        
-        public Environment(Room? host, Vector4 fog_col, float fog_dist, Vector4 ambient_light)
-        {
-            Host = host;
-            FogDistance = fog_dist;
-            FogColor = fog_col;
-            AmbientLight = ambient_light;
-        }
-
-
-        public virtual void ApplyEnvironment()
-        {
-            // Default skybox behavior
-            if(SkyboxTexture != null)
-            {
-                // Assemble from texture
-                ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
-                SkyboxMaterial = AssetLoader.MaterialAssetLoad( "testroom_skybox", new( [SkyboxTexture], [new("uTexture0", 0)], standard_shader));
-                if(Host != null)
-                {
-                    skybox_model = new Skybox(Host);
-                    skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), SkyboxMaterial);
-                }
-                return;
-            }
-            if(SkyboxMaterial != null)
-            {
-                // Assemble from material
-                SkyboxTexture = SkyboxMaterial.Textures[0];
-                if(Host != null)
-                {
-                    skybox_model = new Skybox(Host);
-                    skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), SkyboxMaterial);
-                }
-                return;
-            }
         }
 
         public virtual void Update() { }
+
+        public virtual bool IsValid()
+        {
+            if(SkyboxMaterial == null) return false;
+            return SkyboxMaterial.IsValid();
+        }
     }
 }

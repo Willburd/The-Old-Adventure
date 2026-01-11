@@ -45,7 +45,7 @@ namespace Engine
             LoadAssets();
             LoadActors();
             LoadExits();
-            Environment?.ApplyEnvironment();
+            Environment?.ApplyEnvironment(this);
             MinimumRenderDistance = float.PositiveInfinity; // Do not hide room geometry
             Console.WriteLine("-------> Room Loaded : " + GetType());
             Console.WriteLine("-----------------------------------------------------");
@@ -85,7 +85,7 @@ namespace Engine
             Console.WriteLine("-------> Room unloading : " + GetType());
             // Lets handle special logic
             SendGlobalSignal(Core.Signals.global_room_unloaded);
-            // Lets clean up our scene, and anything tied to us.
+            // Lets clean up our room, and anything tied to us.
             if(UnloadOnEnd || RemoveActorsOnEnd)
             {
                 List<Actor> cleanup_list = [.. ActorList]; 
@@ -95,7 +95,11 @@ namespace Engine
                 }
                 ActorList.Clear();
             }
-            // If we unload our assets and not just actors, do that too 
+            // If we unload our assets and not just actors, do that too
+            TempEnvironmentOverride?.Unload();
+            TempEnvironmentOverride = null;
+            Environment?.Unload();
+            Environment = null;
             if(UnloadOnEnd) AssetLoader.UnloadAllAssets(false);
             loaded_rooms.Remove(this);
             Console.WriteLine("=======X Room Unloaded : " + GetType());

@@ -17,7 +17,7 @@ namespace Engine
                     return new EntComponents.ActorBehavior.TestActorBehavior(ent);
 
                 ///////////////////////////////////////////////////
-                // Scene behaviors
+                // Room behaviors
                 ///////////////////////////////////////////////////
 
             }            
