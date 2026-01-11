@@ -29,7 +29,7 @@ namespace Engine
         /// <summary>
         /// Distance from the camera that entities will be considered disabled, even if their enabled flag is true.
         /// </summary>
-        public const float world_load_radius = 80f;
+        public const float world_load_radius = 150f;
 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

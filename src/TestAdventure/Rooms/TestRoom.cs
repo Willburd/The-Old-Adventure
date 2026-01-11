@@ -44,7 +44,7 @@ namespace TestAdventure
 
 
             // Performance test
-            for(int i = 0; i < 1000; i++)
+            for(int i = 0; i < 200; i++)
             {
                 EntityFactory.CreateActor( "actor_pointer", new Transform( new Vector3(Tools.RandRange(-100,100),Tools.RandRange(-100,100),Tools.RandRange(-100,100))), this, AssetLoader.AssetSource.engine);
             }

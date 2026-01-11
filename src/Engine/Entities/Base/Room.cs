@@ -37,6 +37,7 @@ namespace Engine
             LoadAssets();
             LoadActors();
             LoadExits();
+            MinimumRenderDistance = float.PositiveInfinity; // Do not hide room geometry
             Console.WriteLine("-------> Room Loaded : " + GetType());
             Console.WriteLine("-----------------------------------------------------");
         }

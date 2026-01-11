@@ -98,6 +98,10 @@ namespace Engine
             Vector3 world_load_position = Vector3.Zero;
             if(Camera.WorldCamera != null) world_load_position = Camera.WorldCamera.Position;
 
+            float frustum_dot_product_limit = -0.35f; // Very generous
+            Vector3 camera_vector = Tools.Forward;
+            if(Camera.WorldCamera != null) camera_vector = Vector3.Transform(Tools.Forward,Camera.WorldCamera.Rotation);
+
             // Assemble a list in order of priority.
             SortedList<uint,List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
             ApplyPrerenderEnvironmentUniforms(vertex_uniforms, tick_delta);
@@ -107,7 +111,16 @@ namespace Engine
                 // Check the entity for a render priority. We only draw if we have one, as that means we have a component that wants to draw!
                 uint priority = check.SendSignal(Signals.render_priority, tick_delta);
                 if(priority == 0) continue; // Not visible if no component responds.
-                if(Vector3.Distance(world_load_position,check.Position) > world_load_radius) continue;
+
+                // Check vis culling
+                float dist = Vector3.Distance(world_load_position,check.Position);
+                if(dist > world_load_radius) continue;
+                if(dist > check.MinimumRenderDistance)
+                {
+                    float dot_prod = Vector3.Dot(Tools.DirVector(world_load_position, check.Position), camera_vector);
+                    if(dot_prod >= frustum_dot_product_limit) continue; // Nothing behind us
+                }
+                
 
                 // perform prerender while we're here.
                 check.SendSignal(Signals.pre_render, tick_delta, vertex_uniforms); 
