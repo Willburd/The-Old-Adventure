@@ -147,6 +147,8 @@ namespace Engine
                     {
                         if(room.Enabled) 
                         {
+                            room.Environment?.Update();
+                            room.TempEnvironmentOverride?.Update();
                             room.OnRoomUpdate();
                         }
                         else

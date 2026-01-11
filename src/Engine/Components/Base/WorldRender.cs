@@ -28,7 +28,13 @@ namespace EntComponents
             materials[mesh_index] = apply_mat;
         }
 
-        
+        public MaterialData? GetMaterial(int mesh_index)
+        {
+            if(model == null) return null;
+            if(mesh_index < 0 || mesh_index >= materials.Count) return null;
+            return materials[mesh_index];
+        }
+
         public MeshData? GetMeshByName(string meshname)
         {
             if(model == null) return null;

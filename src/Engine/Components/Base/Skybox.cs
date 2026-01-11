@@ -10,7 +10,7 @@ namespace EntComponents
     /// </summary>
     public class Skybox(Entity host_entity) : WorldRender(host_entity)
     {
-        public float sky_rotation_rate = 0.0004f;
+        public float sky_rotation_rate = 0.0002f;
         protected float sky_rotation = 0f;
         protected float previous_sky_rotation = 0f;
         protected Quaternion GetInterpolatedSkyboxRotation(double tick_delta)

@@ -120,7 +120,6 @@ namespace Engine
                     float dot_prod = Vector3.Dot(Tools.DirVector(world_load_position, check.Position), camera_vector);
                     if(dot_prod >= frustum_dot_product_limit) continue; // Nothing behind us
                 }
-                
 
                 // perform prerender while we're here.
                 check.SendSignal(Signals.pre_render, tick_delta, vertex_uniforms); 

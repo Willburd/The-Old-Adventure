@@ -13,20 +13,20 @@ namespace TestAdventure
             ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
             
             // Textures
-            TextureData skybox_day_tex = AssetLoader.TextureAssetLoad( "skybox_day", AssetLoader.AssetDirectoryAdventure + "/Textures/skybox_day.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
             TextureData terrain_tex = AssetLoader.TextureAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_wood.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
             
             // Materials
             MaterialData test_mat = AssetLoader.MaterialAssetLoad( "testroom_terrain", new( [terrain_tex], [new("uTexture0", 0)], standard_shader));
-            MaterialData skybox_mat = AssetLoader.MaterialAssetLoad( "testroom_skybox", new( [skybox_day_tex], [new("uTexture0", 0)], standard_shader));
             
             // Model
             AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Models/test_room.fbx");
 
             // Environment
-            Environment = new( new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f));
-            Skybox skybox_model = new Skybox(this);
-            skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), skybox_mat);
+            //Environments.Environment day_env = new(this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_dawn"));
+            //Environments.Environment dusk_env = new(this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_day"));
+            //Environments.Environment night_env = new(this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_dusk"));
+            //Environments.Environment dawn_env = new(this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_night"));
+            Environment = new( this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_day"));
         }
 
         public override void LoadActors()
@@ -44,7 +44,7 @@ namespace TestAdventure
 
 
             // Performance test
-            for(int i = 0; i < 200; i++)
+            for(int i = 0; i < 5; i++)
             {
                 EntityFactory.CreateActor( "actor_pointer", new Transform( new Vector3(Tools.RandRange(-100,100),Tools.RandRange(-100,100),Tools.RandRange(-100,100))), this, AssetLoader.AssetSource.engine);
             }
