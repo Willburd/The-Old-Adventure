@@ -63,9 +63,12 @@ namespace Environments
                 }
             }
             
-            //FogDistance 
-            //FogColor
-            //AmbientLight
+
+            FogDistance = day.FogDistance;
+
+            FogColor = day.FogColor;
+
+            AmbientLight = day.AmbientLight;
         }
     }
 }

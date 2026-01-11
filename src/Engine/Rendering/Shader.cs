@@ -55,10 +55,7 @@ namespace Rendering
         public unsafe void SetUniform(string name, object value, uint count)
         {
             int location = _gl.GetUniformLocation(_handle, name);
-            if (location == -1)
-            {
-                throw new Exception($"{name} uniform not found on shader.");
-            }
+            if (location == -1) return;
 
             // Numeral
             if(value.GetType() == typeof(int))

@@ -1,8 +1,6 @@
 #version 330 core
 in vec2 TexCoords;
 in vec3 Normal;
-in vec4 Color;
-in vec4 Light;
 
 uniform sampler2D uTextureDay;
 uniform sampler2D uTextureDusk;
@@ -21,4 +19,5 @@ void main()
     FragColor = mix(FragColor, texture(uTextureDusk, TexCoords), uDuskPerc);
     FragColor = mix(FragColor, texture(uTextureNight, TexCoords), uNightPerc);
     FragColor = mix(FragColor, texture(uTextureDawn, TexCoords), uDawnPerc);
+    FragColor.a = 1.0f;
 }
