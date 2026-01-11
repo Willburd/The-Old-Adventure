@@ -26,6 +26,11 @@ namespace Engine
         /// </summary>
         public static long ElapsedGameTicks {get; private set;}
 
+        /// <summary>
+        /// Distance from the camera that entities will be considered disabled, even if their enabled flag is true.
+        /// </summary>
+        public const float world_load_radius = 80f;
+
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Gameloop processing
@@ -84,6 +89,8 @@ namespace Engine
             /////////////////////////////////////////////////
             // Preprocessing
             /////////////////////////////////////////////////
+            Vector3 world_load_position = Vector3.Zero;
+            if(Camera.WorldCamera != null) world_load_position = Camera.WorldCamera.Position;
             foreach(Entity ent in Entity.EntityList)
             {
                 thread_batch.Add(Task.Run(() =>
@@ -97,7 +104,7 @@ namespace Engine
                     if(ent.Enabled) 
                     {
                         ent.SnapTransform(); // Update the previous location transform
-                        Entity.ActiveEntities.Add(ent);
+                        if(Vector3.Distance(world_load_position,ent.Position) <= world_load_radius) Entity.ActiveEntities.Add(ent);
                     }
                 }));
                 if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);

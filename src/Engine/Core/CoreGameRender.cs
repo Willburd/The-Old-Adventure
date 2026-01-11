@@ -94,6 +94,10 @@ namespace Engine
             List<ShaderData.Uniform> vertex_uniforms = [];
             OpenGLContext?.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            // Draw radius
+            Vector3 world_load_position = Vector3.Zero;
+            if(Camera.WorldCamera != null) world_load_position = Camera.WorldCamera.Position;
+
             // Assemble a list in order of priority.
             SortedList<uint,List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
             ApplyPrerenderEnvironmentUniforms(vertex_uniforms, tick_delta);
@@ -103,8 +107,10 @@ namespace Engine
                 // Check the entity for a render priority. We only draw if we have one, as that means we have a component that wants to draw!
                 uint priority = check.SendSignal(Signals.render_priority, tick_delta);
                 if(priority == 0) continue; // Not visible if no component responds.
-                check.SendSignal(Signals.pre_render, tick_delta, vertex_uniforms); // perform prerender while we're here.
-                
+                if(Vector3.Distance(world_load_position,check.Position) > world_load_radius) continue;
+
+                // perform prerender while we're here.
+                check.SendSignal(Signals.pre_render, tick_delta, vertex_uniforms); 
                 // Add to queue for all of the following render loops, instead of checking every entity for each one! We only store the ones that replied with a draw priority!
                 if(!render_queue.ContainsKey(priority)) render_queue.Add(priority, []);
                 render_queue[priority].Add(check);

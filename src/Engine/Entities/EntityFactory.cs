@@ -62,8 +62,8 @@ namespace Engine
                 entity_Factory.ProduceComponents(actor, actual_key, component_key);
             }
 
-            if(pre_count < 100 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 100) Console.WriteLine("WARNING: Excessive entity count, 100 ents.");  
-            if(pre_count < 200 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 200) Console.WriteLine("WARNING: Extreme entity count, 200 ents.");
+            if(pre_count < 200 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 200) Console.WriteLine("WARNING: Excessive entity count, 200 ents.");  
+            if(pre_count < 300 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 300) Console.WriteLine("WARNING: Extreme entity count, 300 ents.");
             return actor;
         }
 
