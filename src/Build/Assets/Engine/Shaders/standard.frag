@@ -11,6 +11,7 @@ out vec4 FragColor;
 void main()
 {
     FragColor = texture(uTexture0, TexCoords);
+    if(FragColor.a < 1.0) discard; // Alpha clip on texture
     if(Color.rgba == vec4(1.0,1.0,1.0,1.0) || Color.rgba == vec4(0.0,0.0,0.0,1.0)) 
     {
         // Don't bother with lights, these are either pits, caves, or cave exits
