@@ -116,8 +116,7 @@ namespace Engine
             /////////////////////////////////////////////////
             if(EditorMode) 
             {
-                List<Entity> editor_entities = [.. Entity.ActiveEntities];
-                foreach(Entity ent in editor_entities)
+                foreach(Entity ent in Entity.ActiveEntities)
                 {
                     thread_batch.Add(Task.Run(() =>
                     {
