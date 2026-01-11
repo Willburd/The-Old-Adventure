@@ -52,6 +52,14 @@ namespace Engine
         /// </summary>
         public bool Enabled { get; set; } = true;
 
+        /// <summary>
+        /// If an entity is currently processed, checks if the room the entity is in is active as well. At least for actors...
+        /// </summary>
+        public virtual bool RoomEnabled()
+        {
+            return Enabled;
+        }
+
         public Entity(Transform initial_location,string entity_identity_key)
         {
             UninitEntityList.Add(this);

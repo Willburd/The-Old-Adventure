@@ -9,6 +9,11 @@ namespace Engine
             if(room_link != null) LinkRoom(room_link);
         }
 
+        public override bool RoomEnabled()
+        {
+            return Enabled && (OwnerRoom == null || OwnerRoom.Enabled);
+        }
+
         private void LinkRoom(Room room)
         {
             OwnerRoom = room;

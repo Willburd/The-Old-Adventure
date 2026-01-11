@@ -83,7 +83,7 @@ namespace EntComponents
                     return Priority;
 
                 case Core.Signals.render:
-                    if(Host.Enabled)
+                    if(Host.RoomEnabled())
                     {
                         return HandleRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
                     }

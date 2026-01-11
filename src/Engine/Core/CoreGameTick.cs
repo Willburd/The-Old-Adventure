@@ -99,10 +99,10 @@ namespace Engine
                     // Preupdate
                     if(!EditorMode || EditorAllowsUpdates) 
                     {
-                        ent.SendSignal(Signals.pre_update, ent.Enabled);
+                        ent.SendSignal(Signals.pre_update, ent.RoomEnabled());
                     }
                     // Handle movement interpolation
-                    if(ent.Enabled) 
+                    if(ent.RoomEnabled()) 
                     {
                         ent.SnapTransform(); // Update the previous location transform
                         if(Vector3.Distance(world_load_position,ent.Position) <= world_load_radius) active_entities.Add(ent);
@@ -148,7 +148,7 @@ namespace Engine
                     thread_batch.Add(Task.Run(() =>
                     {
                         if(room == null) return; // TODO - Discover the desync
-                        if(room.Enabled) 
+                        if(room.RoomEnabled()) 
                         {
                             room.Environment?.Update();
                             room.TempEnvironmentOverride?.Update();
@@ -190,7 +190,7 @@ namespace Engine
                     thread_batch.Add(Task.Run(() =>
                     {
                         if(collider == null) return; // TODO - Discover the desync
-                        if(!collider.Host.IsInitilized || !collider.Host.Enabled || !collider.Active) return;
+                        if(!collider.Host.IsInitilized || !collider.Host.RoomEnabled() || !collider.Active) return;
                         collider.CheckCollisions(all_colliders);
                     }));
                     if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
