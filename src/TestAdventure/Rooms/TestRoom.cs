@@ -38,33 +38,17 @@ namespace TestAdventure
             Light glow_test = new Light(this);
             glow_test.SetData( new Vector4(1f,1f,1f,1f), 12f, new Vector3(4f,2f,8f));
 
-
             // Performance test
-            for(int i = 0; i < 1000; i++)
+            for(int i = 0; i < 100; i++)
             {
                 EntityFactory.CreateActor( "actor_pointer", new Transform( new Vector3(Tools.RandRange(-300,300),Tools.RandRange(-200,200),Tools.RandRange(-300,300))), this, AssetLoader.AssetSource.engine);
             }
-            
 
-            /*
             // Move camera
             Camera.WorldCamera?.Position = new Vector3(0f,0.5f,1f);
 
-
             // Default actors
-
             EntityFactory.CreateActor( "actor_test", new Transform( new Vector3(0f,0f,0f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.adventure);
-            
-            float radius = 6f;
-            
-            EntityFactory.CreateActor( "actor_pointer", new Transform( new Vector3(0f,0f,radius)), this, AssetLoader.AssetSource.engine);
-            
-            EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(radius,0f,0f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
-
-            EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(-radius,0f,0f), Quaternion.CreateFromAxisAngle(Tools.Up, 45f) * Quaternion.CreateFromAxisAngle(Tools.Right, 45f)), this, AssetLoader.AssetSource.engine);
-
-            EntityFactory.CreateActor( "actor_cube", new Transform( new Vector3(0f,0f,-radius), Quaternion.CreateFromAxisAngle(Tools.Up, 45f) * Quaternion.CreateFromAxisAngle(Tools.Right, 45f), Vector3.One * 0.15f), this, AssetLoader.AssetSource.engine);
-            */
         }
 
         public override void LoadExits()
