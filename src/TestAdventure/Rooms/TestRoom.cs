@@ -40,9 +40,9 @@ namespace TestAdventure
 
 
             // Performance test
-            for(int i = 0; i < 5; i++)
+            for(int i = 0; i < 1000; i++)
             {
-                EntityFactory.CreateActor( "actor_pointer", new Transform( new Vector3(Tools.RandRange(-100,100),Tools.RandRange(-100,100),Tools.RandRange(-100,100))), this, AssetLoader.AssetSource.engine);
+                EntityFactory.CreateActor( "actor_pointer", new Transform( new Vector3(Tools.RandRange(-300,300),Tools.RandRange(-200,200),Tools.RandRange(-300,300))), this, AssetLoader.AssetSource.engine);
             }
             
 

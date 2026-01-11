@@ -9,17 +9,19 @@ namespace Environments
 {
     public class DayNightCycle : Environment
     {
-        public DayNightCycle(string asset_key, Environment env_dawn, Environment env_day, Environment env_dusk, Environment env_night) : base(asset_key, Vector4.Zero, 0f, Vector4.Zero)
+        public DayNightCycle(string asset_key, Environment env_dawn, Environment env_day, Environment env_dusk, Environment env_night, Environment env_rainday, Environment env_rainnight) : base(asset_key, Vector4.Zero, 0f, Vector4.Zero)
         {
             dawn = env_dawn;
             day = env_day;
             dusk = env_dusk;
             night = env_night;
+            rainday = env_rainday;
+            rainnight = env_rainnight;
 
             // Multiblend skybox behavior
             multiblend_skybox_mat = AssetLoader.MaterialAssetLoad(asset_key
-                                                                , new( [dawn.SkyboxTexture , day.SkyboxTexture  , dusk.SkyboxTexture, night.SkyboxTexture]
-                                                                ,      [new("uTextureDawn", 0), new("uTextureDay", 1), new("uTextureDusk", 2), new("uTextureNight", 3), new("uDuskPerc", cycle), new("uNightPerc", cycle), new("uDawnPerc", cycle)]
+                                                                , new( [dawn.SkyboxTexture , day.SkyboxTexture  , dusk.SkyboxTexture, night.SkyboxTexture, rainday.SkyboxTexture, rainnight.SkyboxTexture]
+                                                                ,      [new("uTextureDawn", 0), new("uTextureDay", 1), new("uTextureDusk", 2), new("uTextureNight", 3), new("uTextureDayRain", 4), new("uTextureNightRain", 5), new("uDuskPerc", cycle), new("uNightPerc", cycle), new("uDawnPerc", cycle), new("uRainPerc", rain_intensity)]
                                                                 ,      AssetLoader.ShaderAssetGet("skybox_daynight_multiblend", AssetLoader.AssetSource.engine)));
         }
 
@@ -27,9 +29,12 @@ namespace Environments
         private Environment day;
         private Environment night;
         private Environment dusk;
+        private Environment rainday;
+        private Environment rainnight;
         private MaterialData multiblend_skybox_mat;
 
         private float cycle = 0f;
+        public float rain_intensity = 0f;
 
         public override void ApplyEnvironment(Room host_room)
         {
@@ -65,25 +70,29 @@ namespace Environments
                     case "uDawnPerc":
                         uniform.value = dawn_intensity;
                     break;
+                    
+                    case "uRainPerc":
+                        uniform.value = rain_intensity;
+                    break;
                 }
                 // reassign
                 skymat.Uniforms[i] = uniform;
             }
 
-            FogDistance = day.FogDistance;
-            FogDistance = float.Lerp(FogDistance, dusk.FogDistance, dusk_intensity);
-            FogDistance = float.Lerp(FogDistance, night.FogDistance, night_intensity);
-            FogDistance = float.Lerp(FogDistance, dawn.FogDistance, dawn_intensity);
+            FogDistance = float.Lerp(day.FogDistance, rainday.FogDistance, rain_intensity);
+            FogDistance = float.Lerp(FogDistance, float.Lerp(dusk.FogDistance, rainday.FogDistance, rain_intensity), dusk_intensity);
+            FogDistance = float.Lerp(FogDistance, float.Lerp(night.FogDistance, rainnight.FogDistance, rain_intensity), night_intensity);
+            FogDistance = float.Lerp(FogDistance, float.Lerp(dawn.FogDistance, rainday.FogDistance, rain_intensity), dawn_intensity);
 
-            FogColor = day.FogColor;
-            FogColor = Vector4.Lerp(FogColor, dusk.FogColor, dusk_intensity);
-            FogColor = Vector4.Lerp(FogColor, night.FogColor, night_intensity);
-            FogColor = Vector4.Lerp(FogColor, dawn.FogColor, dawn_intensity);
+            FogColor = Vector4.Lerp(day.FogColor, rainday.FogColor, rain_intensity);
+            FogColor = Vector4.Lerp(FogColor, Vector4.Lerp(dusk.FogColor, rainday.FogColor, rain_intensity), dusk_intensity);     
+            FogColor = Vector4.Lerp(FogColor, Vector4.Lerp(night.FogColor, rainnight.FogColor, rain_intensity), night_intensity);   
+            FogColor = Vector4.Lerp(FogColor, Vector4.Lerp(dawn.FogColor, rainday.FogColor, rain_intensity), dawn_intensity);    
 
-            AmbientLight = day.AmbientLight;
-            AmbientLight = Vector4.Lerp(AmbientLight, dusk.AmbientLight, dusk_intensity);
-            AmbientLight = Vector4.Lerp(AmbientLight, night.AmbientLight, night_intensity);
-            AmbientLight = Vector4.Lerp(AmbientLight, dawn.AmbientLight, dawn_intensity);
+            AmbientLight = Vector4.Lerp(day.AmbientLight, rainday.AmbientLight, rain_intensity);
+            AmbientLight = Vector4.Lerp(AmbientLight, Vector4.Lerp(dusk.AmbientLight, rainday.AmbientLight, rain_intensity), dusk_intensity);
+            AmbientLight = Vector4.Lerp(AmbientLight, Vector4.Lerp(night.AmbientLight, rainnight.AmbientLight, rain_intensity), night_intensity);    
+            AmbientLight = Vector4.Lerp(AmbientLight, Vector4.Lerp(dawn.AmbientLight, rainday.AmbientLight, rain_intensity), dawn_intensity);
         }
 
         public override bool IsValid()
