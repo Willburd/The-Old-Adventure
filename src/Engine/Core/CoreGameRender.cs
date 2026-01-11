@@ -96,7 +96,7 @@ namespace Engine
 
             // Assemble a list in order of priority.
             SortedList<uint,List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
-            ApplyEnvironmentUniforms(vertex_uniforms, tick_delta);
+            ApplyPrerenderEnvironmentUniforms(vertex_uniforms, tick_delta);
             OnPreRenderTick();
             foreach(Entity check in Entity.EntityList)
             {
@@ -152,7 +152,11 @@ namespace Engine
         /// </summary>
         private static void ApplyPrerenderEnvironmentUniforms(List<ShaderData.Uniform> vertex_uniforms, double tick_delta)
         {
-            ApplyVertexUniforms(vertex_uniforms, new Vector4[max_lights], new Vector4[max_lights], 0, new Vector4(1f, 1f, 1f, 0f), float.PositiveInfinity);
+            Vector4[] light_pos = new Vector4[max_lights];
+            Vector4[] light_col = new Vector4[max_lights];
+            light_pos[0] = new(0f,0f,0f,float.PositiveInfinity);
+            light_col[0] = new(1f,1f,1f,1f);
+            ApplyVertexUniforms(vertex_uniforms, light_pos, light_col, 1, Vector4.Zero, float.PositiveInfinity);
         }
 
         /// <summary>

@@ -51,6 +51,7 @@ namespace Engine
 
         public static Actor CreateActor(string entity_key, Transform initial_location,Room? room_link = null, AssetLoader.AssetSource source = AssetLoader.AssetSource.adventure)
         {
+            int pre_count = Entity.UninitEntityList.Count + Entity.EntityList.Count;
             string actual_key = GetEntityPrefix(source) + entity_key;
             Debug.Assert(entity_library.ContainsKey(actual_key), "Invalid asset key in entity library. Does it exist in the entities.json?");
             Console.WriteLine("ActorFactory-> " + actual_key);
@@ -60,6 +61,9 @@ namespace Engine
             {
                 entity_Factory.ProduceComponents(actor, actual_key, component_key);
             }
+
+            if(pre_count < 100 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 100) Console.WriteLine("WARNING: Excessive entity count, 100 ents.");  
+            if(pre_count < 200 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 200) Console.WriteLine("WARNING: Extreme entity count, 200 ents.");
             return actor;
         }
 
