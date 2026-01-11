@@ -95,6 +95,15 @@ namespace Engine
         {
             string get_key = AssetLoader.AssetKey(Asset.AssetType.shader, asset_key, source);
             if(asset_library.ContainsKey( get_key)) return (ShaderData)asset_library[get_key].Data;
+            // Check if exists
+            if(!File.Exists(vertext_path) || !File.Exists(frag_path)) 
+            {
+                Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
+                if(!File.Exists(vertext_path)) Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X BAD SHADER, FILE DOES NOT EXIST : " + vertext_path);
+                if(!File.Exists(frag_path)) Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X BAD SHADER, FILE DOES NOT EXIST : " + frag_path);
+                Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
+                return (ShaderData)LocateAsset(AssetLoader.AssetKey(Asset.AssetType.shader, "standard", AssetSource.engine)).Data;
+            }
             return (ShaderData)InvokeAsset( get_key, new AssetShader(get_key, vertext_path, frag_path));
         }
 

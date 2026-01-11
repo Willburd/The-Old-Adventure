@@ -11,7 +11,9 @@ namespace Rendering
         private uint _handle;
         private GL _gl;
 
-        public ShaderData(string vertexPath, string fragmentPath)
+        private string debug_name = "";
+
+        public ShaderData(string name, string vertexPath, string fragmentPath)
         {
             _gl = Engine.Core.OpenGLContext;
 
@@ -30,6 +32,7 @@ namespace Rendering
             _gl.DetachShader(_handle, fragment);
             _gl.DeleteShader(vertex);
             _gl.DeleteShader(fragment);
+            debug_name = name;
         }
 
         public void Use()

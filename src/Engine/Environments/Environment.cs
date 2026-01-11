@@ -8,7 +8,7 @@ namespace Environments
 {
     public class Environment
     {
-        public Room Host { get; protected set; }
+        public Room? Host { get; protected set; }
         public float FogDistance { get; protected set; }
         public Vector4 FogColor { get; protected set; }
         public Vector4 AmbientLight { get; protected set; }
@@ -17,7 +17,7 @@ namespace Environments
 
         protected Skybox? skybox_model = null;
 
-        public Environment(Room host, Vector4 fog_col, float fog_dist, Vector4 ambient_light, TextureData? skybox_tex)
+        public Environment(Room? host, Vector4 fog_col, float fog_dist, Vector4 ambient_light, TextureData? skybox_tex)
         {
             Host = host;
             FogDistance = fog_dist;
@@ -26,7 +26,16 @@ namespace Environments
             SkyboxTexture = skybox_tex;
         }
 
-        public Environment(Room host, Vector4 fog_col, float fog_dist, Vector4 ambient_light, MaterialData? skybox_mat)
+        public Environment(Vector4 fog_col, float fog_dist, Vector4 ambient_light, TextureData? skybox_tex)
+        {
+            Host = null;
+            FogDistance = fog_dist;
+            FogColor = fog_col;
+            AmbientLight = ambient_light;
+            SkyboxTexture = skybox_tex;
+        }
+
+        public Environment(Room? host, Vector4 fog_col, float fog_dist, Vector4 ambient_light, MaterialData? skybox_mat)
         {
             Host = host;
             FogDistance = fog_dist;
@@ -35,7 +44,16 @@ namespace Environments
             SkyboxMaterial = skybox_mat;
         }
         
-        public Environment(Room host, Vector4 fog_col, float fog_dist, Vector4 ambient_light)
+        public Environment(Vector4 fog_col, float fog_dist, Vector4 ambient_light, MaterialData? skybox_mat)
+        {
+            Host = null;
+            FogDistance = fog_dist;
+            FogColor = fog_col;
+            AmbientLight = ambient_light;
+            SkyboxMaterial = skybox_mat;
+        }
+        
+        public Environment(Room? host, Vector4 fog_col, float fog_dist, Vector4 ambient_light)
         {
             Host = host;
             FogDistance = fog_dist;
@@ -51,17 +69,23 @@ namespace Environments
             {
                 // Assemble from texture
                 ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
-                skybox_model = new Skybox(Host);
                 SkyboxMaterial = AssetLoader.MaterialAssetLoad( "testroom_skybox", new( [SkyboxTexture], [new("uTexture0", 0)], standard_shader));
-                skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), SkyboxMaterial);
+                if(Host != null)
+                {
+                    skybox_model = new Skybox(Host);
+                    skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), SkyboxMaterial);
+                }
                 return;
             }
             if(SkyboxMaterial != null)
             {
                 // Assemble from material
-                skybox_model = new Skybox(Host);
-                skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), SkyboxMaterial);
                 SkyboxTexture = SkyboxMaterial.Textures[0];
+                if(Host != null)
+                {
+                    skybox_model = new Skybox(Host);
+                    skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), SkyboxMaterial);
+                }
                 return;
             }
         }

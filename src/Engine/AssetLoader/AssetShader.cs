@@ -8,7 +8,7 @@ namespace Engine
         public AssetShader(string asset_key, string vertex_shader, string frag_shader) : base(asset_key, frag_shader)
         {
             // Compile source strings
-            Rendering.ShaderData shader_data = new(vertex_shader, frag_shader);
+            Rendering.ShaderData shader_data = new(asset_key, vertex_shader, frag_shader);
             // Get the shader program as our asset
             data = shader_data;
             asset_type = AssetType.shader;

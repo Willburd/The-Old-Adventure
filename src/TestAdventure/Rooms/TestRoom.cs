@@ -22,11 +22,13 @@ namespace TestAdventure
             AssetLoader.ModelAssetLoad( "testroom_terrain", AssetLoader.AssetDirectoryAdventure + "/Models/test_room.fbx");
 
             // Environment
-            //Environments.Environment day_env = new(this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_dawn"));
-            //Environments.Environment dusk_env = new(this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_day"));
-            //Environments.Environment night_env = new(this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_dusk"));
-            //Environments.Environment dawn_env = new(this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_night"));
-            Environment = new( this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_day"));
+            Environments.Environment day_env = new(new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_dawn"));
+            Environments.Environment dusk_env = new(new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_day"));
+            Environments.Environment night_env = new(new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_dusk"));
+            Environments.Environment dawn_env = new(new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_night"));
+            Environment = new Environments.DayNightCycle(this, day_env, dusk_env, night_env, dawn_env);
+            
+            //Environment = new( this, new Vector4( 0.25f, 0.46f, 0.79f, 1f), 300f, new Vector4(1f,0.95f,0.95f,1f), AssetLoader.TextureAssetGet("overworld_skybox_day"));
         }
 
         public override void LoadActors()

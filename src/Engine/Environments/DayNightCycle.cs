@@ -27,8 +27,8 @@ namespace Environments
         public override void ApplyEnvironment()
         {
             // Multiblend skybox behavior
-            MaterialData multiblend_skybox_mat = AssetLoader.MaterialAssetLoad( "testroom_terrain"
-                                                                                , new( [dawn.SkyboxTexture , day.SkyboxTexture  , night.SkyboxTexture, dusk.SkyboxTexture]
+            MaterialData multiblend_skybox_mat = AssetLoader.MaterialAssetLoad( "skybox_daynight_multiblend"
+                                                                                , new( [dawn.SkyboxTexture , day.SkyboxTexture  , dusk.SkyboxTexture, night.SkyboxTexture]
                                                                                 ,      [new("uTextureDawn", 0), new("uTextureDay", 1), new("uTextureDusk", 2), new("uTextureNight", 3), new("uDuskPerc", cycle), new("uNightPerc", cycle), new("uDawnPerc", cycle)]
                                                                                 ,      AssetLoader.ShaderAssetGet("skybox_daynight_multiblend", AssetLoader.AssetSource.engine)));
             skybox_model = new Skybox(Host);
