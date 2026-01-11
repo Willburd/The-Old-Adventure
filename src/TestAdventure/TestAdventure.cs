@@ -28,7 +28,7 @@ namespace TestAdventure
         public override void OnInit()
         {
             // Start up initial room
-            new TestRoom();
+            new TestRoom("room_testing");
         }
 
         public override void OnGameTick()

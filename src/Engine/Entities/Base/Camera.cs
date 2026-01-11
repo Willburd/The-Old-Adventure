@@ -14,7 +14,7 @@ namespace Engine
 
 
         private static readonly List<Camera> all_cameras = [];
-        public Camera(Transform initial_location, bool is_active, Room? room_link) : base(initial_location, "Engine::Camera", room_link)
+        public Camera(Transform initial_location, string actor_id, bool is_active, Room? room_link) : base(initial_location, actor_id, "Engine::Camera", room_link)
         {
             all_cameras.Add(this);
             IsActive = is_active;

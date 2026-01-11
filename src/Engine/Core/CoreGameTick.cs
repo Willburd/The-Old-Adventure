@@ -83,6 +83,7 @@ namespace Engine
                 ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
                 if(ent.GetType() == typeof(Room)) initing_rooms.Add((Room)ent);
                 Entity.EntityList.Add(ent);
+                Entity.EntityLookupList.Add(ent.EntityID,ent);
             }
             Entity.UninitEntityList.Clear();
 
@@ -250,6 +251,7 @@ namespace Engine
                         else
                         {
                             Entity.EntityList.Remove(ent);
+                            Entity.EntityLookupList.Remove(ent.EntityID);
                         }
                     }));
                     if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);

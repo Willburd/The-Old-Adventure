@@ -4,7 +4,7 @@ namespace Engine
     {
         public Room? OwnerRoom {get; private set;} = null;
 
-        public Actor(Transform initial_location, string entity_identity_key, Room? room_link) : base(initial_location, entity_identity_key)
+        public Actor(Transform initial_location, string actor_id, string entity_asset_key, Room? room_link) : base(initial_location, actor_id, entity_asset_key)
         {
             if(room_link != null) LinkRoom(room_link);
         }
@@ -18,11 +18,13 @@ namespace Engine
         {
             OwnerRoom = room;
             OwnerRoom.ActorList.Add(this);
+            OwnerRoom.ActorLookupList.Add(EntityID,this);
         }
         
         public void UnlinkRoom()
         {
             OwnerRoom?.ActorList.Remove(this);
+            OwnerRoom?.ActorLookupList.Remove(EntityID);
             OwnerRoom = null;
         }
 

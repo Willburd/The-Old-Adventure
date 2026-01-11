@@ -22,20 +22,21 @@ namespace Engine
         public Environments.Environment? TempEnvironmentOverride { get; set; } = null;
 
         public List<Actor> ActorList {get; private set;} = [];
+        public Dictionary<string,Actor> ActorLookupList {get; private set;} = [];
 
-        public Room() : base(Transform.Identity, "Engine::Room")
+        public Room(string room_id) : base(Transform.Identity, room_id, "Engine::Room")
         {
             Console.WriteLine("=====================================================");
             Console.WriteLine("=======> Room Loading : " + GetType());
             if(Core.EditorMode) 
             {
                 // Meant for debugging scenes
-                new EditorCamera(new Transform( new Vector3(0f,0f,0f)), true, this);
+                new EditorCamera(new Transform( new Vector3(0f,0f,0f)), room_id + "_editorcam", true, this);
             }
             else
             {
                 // standard camera
-                new Camera(new Transform( new Vector3(0f,0f,0f)), true, this);
+                new Camera(new Transform( new Vector3(0f,0f,0f)), room_id + "_cam", true, this);
             }
             loaded_rooms.Add(this);
             // All scenes implicitly have these

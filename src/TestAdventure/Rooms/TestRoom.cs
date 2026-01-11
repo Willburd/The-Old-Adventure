@@ -5,7 +5,7 @@ using Rendering;
 
 namespace TestAdventure
 {
-    public class TestRoom() : Room()
+    public class TestRoom(string room_id) : Room(room_id)
     {
         public override void LoadAssets()
         {
@@ -41,14 +41,14 @@ namespace TestAdventure
             // Performance test
             for(int i = 0; i < 100; i++)
             {
-                EntityFactory.CreateActor( "actor_pointer", new Transform( new Vector3(Tools.RandRange(-300,300),Tools.RandRange(-200,200),Tools.RandRange(-300,300))), this, AssetLoader.AssetSource.engine);
+                EntityFactory.CreateActor( "id_pointer_"+i , "actor_pointer", new Transform( new Vector3(Tools.RandRange(-300,300),Tools.RandRange(-200,200),Tools.RandRange(-300,300))), this, AssetLoader.AssetSource.engine);
             }
 
             // Move camera
             Camera.WorldCamera?.Position = new Vector3(0f,0.5f,1f);
 
             // Default actors
-            EntityFactory.CreateActor( "actor_test", new Transform( new Vector3(0f,0f,0f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.adventure);
+            EntityFactory.CreateActor( "id_test", "actor_test", new Transform( new Vector3(0f,0f,0f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.adventure);
         }
 
         public override void LoadExits()

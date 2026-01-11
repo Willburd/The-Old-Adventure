@@ -12,10 +12,12 @@ namespace Engine
         public static List<Entity> UninitEntityList { get; set; }= [];
 
         public static List<Entity> EntityList { get; set; } = [];
+        public static Dictionary<string,Entity> EntityLookupList { get; set; } = [];
 
         public static List<Entity> DestructingEntities { get; set; } = [];
 
-        public string EntityKey { get; private set;}
+        public string EntityID { get; private set;}
+        public string AssetKey { get; private set;}
 
         public static void DestroyAllEntities()
         {
@@ -60,10 +62,11 @@ namespace Engine
             return Enabled;
         }
 
-        public Entity(Transform initial_location,string entity_identity_key)
+        public Entity(Transform initial_location, string entity_id, string entity_asset_key)
         {
             UninitEntityList.Add(this);
-            EntityKey = entity_identity_key;
+            EntityID = entity_id;
+            AssetKey = entity_asset_key;
             SetTransform(initial_location);
         }
 
@@ -74,23 +77,35 @@ namespace Engine
         public void Destroy()
         {
             Enabled = false;
-            SendSignal(Core.Signals.destroy);
-            DestructingEntities.Add(this);
-            foreach(EntComponent component in GetAllComponents())
+            if(!DestructingEntities.Contains(this)) 
             {
-                RemoveComponent(component);
+                DestructingEntities.Add(this);
+                SendSignal(Core.Signals.destroy);
+                foreach(EntComponent component in GetAllComponents())
+                {
+                    RemoveComponent(component);
+                }
+                // Debug info
+                if(GetType() == typeof(Actor))
+                {
+                    // Show our linked room
+                    Actor us_as_actor = (Actor)this;
+                    Console.WriteLine("EntityDestroy-X ("+EntityID+")["+us_as_actor.OwnerRoom?.EntityID+"] : " + AssetKey);
+                }
+                else
+                {
+                    // Just delete info
+                    Console.WriteLine("EntityDestroy-X ("+EntityID+") : " + AssetKey);
+                }
+                // finish up
+                OnCleanup();
             }
-            OnCleanup();
-            Console.WriteLine("EntityDestroy-X " + EntityKey);
         }
 
         /// <summary>
         /// Called at the end of Destroy, handles any special cleanup an entity type does.
         /// </summary>
-        protected virtual void OnCleanup()
-        {
-            
-        }
+        protected virtual void OnCleanup() { }
 
         public float MinimumRenderDistance { get; protected set; } = 8f;
 

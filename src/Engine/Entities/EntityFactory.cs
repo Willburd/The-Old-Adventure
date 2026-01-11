@@ -49,14 +49,14 @@ namespace Engine
         /// </summary>
         private static Dictionary<string, List<string>> entity_library = [];
 
-        public static Actor CreateActor(string entity_key, Transform initial_location,Room? room_link = null, AssetLoader.AssetSource source = AssetLoader.AssetSource.adventure)
+        public static Actor CreateActor(string id, string asset_key, Transform initial_location,Room? room_link = null, AssetLoader.AssetSource source = AssetLoader.AssetSource.adventure)
         {
             int pre_count = Entity.UninitEntityList.Count + Entity.EntityList.Count;
-            string actual_key = GetEntityPrefix(source) + entity_key;
+            string actual_key = GetEntityPrefix(source) + asset_key;
             Debug.Assert(entity_library.ContainsKey(actual_key), "Invalid asset key in entity library. Does it exist in the entities.json?");
-            Console.WriteLine("ActorFactory-> " + actual_key);
+            Console.WriteLine("ActorFactory ("+id+") -> " + actual_key);
 
-            Actor actor = new(initial_location, actual_key, room_link);
+            Actor actor = new(initial_location, id, actual_key, room_link);
             foreach(string component_key in entity_library[actual_key])
             {
                 entity_Factory.ProduceComponents(actor, actual_key, component_key);
@@ -67,16 +67,29 @@ namespace Engine
             return actor;
         }
 
+        /// <summary>
+        /// Gets a loaded actor by its entity key. 
+        /// </summary>
+        public static Actor? GetActor(string entity_key, Room? specific_room = null)
+        {
+            if(specific_room != null)
+            {
+                if(!specific_room.ActorLookupList.TryGetValue(entity_key, out Actor? roomactor)) return null;
+                return roomactor;
+            }
+            if(!Entity.EntityLookupList.TryGetValue(entity_key, out Entity? globalactor)) return null;
+            return (Actor)globalactor;
+        }
 
         /// <summary>
         /// Attaches components to entities.
         /// </summary>
-        protected virtual EntComponents.EntComponent ProduceComponents(Entity ent, string entity_key, string component_key)
+        protected virtual EntComponents.EntComponent ProduceComponents(Entity ent, string asset_key, string component_key)
         {
             switch(component_key)
             {
                 default:
-                    Debug.Assert(false,"A non existant component typekey was added to a " + entity_key + " during json decode: " + component_key);
+                    Debug.Assert(false,"A non existant component typekey was added to a " + asset_key + " during json decode: " + component_key);
                     return null;
 
                 ///////////////////////////////////////////////////
