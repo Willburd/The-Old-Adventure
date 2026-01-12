@@ -50,8 +50,6 @@ namespace EntComponents
                 Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Vector3.Transform(Tools.Up, Quaternion.Inverse(Camera.WorldCamera.Rotation)), input.CameraInput.X * mouse_multiplier);
                 Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraInput.Y * mouse_multiplier);
             }
-
-
             return 1;
         }
 

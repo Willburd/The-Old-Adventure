@@ -32,13 +32,14 @@ namespace Engine
         /// </summary>
         public static bool KeyPressed(Key key)
         {
-            if(!input_state.ContainsKey(key)) 
+            if(!input_state.TryGetValue(key, out bool value)) 
             {
-                input_state.Add(key,false);
+                value = false;
+                input_state.Add(key, value);
                 previous_input_state.Add(key,false);
                 return false;
             }
-            return input_state[key] && !previous_input_state[key];
+            return value && !previous_input_state[key];
         }
         
         /// <summary>
@@ -46,13 +47,14 @@ namespace Engine
         /// </summary>
         public static bool KeyReleased(Key key)
         {
-            if(!input_state.ContainsKey(key)) 
+            if(!input_state.TryGetValue(key, out bool value)) 
             {
-                input_state.Add(key,false);
+                value = false;
+                input_state.Add(key, value);
                 previous_input_state.Add(key,false);
                 return false;
             }
-            return !input_state[key] && previous_input_state[key];
+            return input_state[key] = !value && previous_input_state[key];
         }
         
         /// <summary>
@@ -60,8 +62,8 @@ namespace Engine
         /// </summary>
         public static bool KeyHeld(Key key)
         {
-            if(!input_state.ContainsKey(key)) return false;
-            return input_state[key];
+            if(!input_state.TryGetValue(key, out bool value)) return false;
+            return value;
         }
 
         // The following is for engine use only.
@@ -72,10 +74,9 @@ namespace Engine
         public void InvokeKeyPressed(IKeyboard keyboard, Key key, int keyCode)
         {
             // A new hand touches the beacon
-            if(!input_state.ContainsKey(key))
+            if(input_state.TryAdd(key, true))
             {
                 previous_input_state.Add(key,false);
-                input_state.Add(key,true);
                 return;
             }
             // Update previous state
@@ -88,10 +89,9 @@ namespace Engine
         /// </summary>
         public void InvokeKeyReleased(IKeyboard keyboard, Key key, int keyCode)
         {
-            if(!input_state.ContainsKey(key))
+            if(input_state.TryAdd(key, false))
             {
                 previous_input_state.Add(key,true);
-                input_state.Add(key,false);
                 return;
             }
             input_state[key] = false;
