@@ -1,5 +1,6 @@
 using System.Numerics;
 using Engine;
+using Silk.NET.Input;
 
 namespace EntComponents
 {
@@ -11,7 +12,7 @@ namespace EntComponents
         
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.create, Core.Signals.editor_update];
+            return [Core.Signals.create, Core.Signals.editor_update, Core.Signals.key_pressed, Core.Signals.key_released];
         }
 
         protected override uint HandleCreate()
@@ -50,18 +51,34 @@ namespace EntComponents
                 Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraInput.Y * mouse_multiplier);
             }
 
-            // Raycast testing
-            Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
-            Collider.RaycastHit? hit = Collider.DoRaycastNearest( Host.Position, Vector3.Transform(Tools.Forward * 5f,Host.Rotation));
-            if(hit != null) col?.OffsetPos = hit.Value.HitPosition;
 
+            return 1;
+        }
+
+        protected override uint HandleKeyPressed(Key key)
+        {
+            if(key == InputHandler.input_key_cancel)
+            {
+                // Raycast testing
+                Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
+                Collider.RaycastHit? hit = Collider.DoRaycastNearest( Host.Position, Vector3.Transform(Tools.Forward * 5f,Host.Rotation));
+                if(hit != null) 
+                {
+                    col?.OffsetPos = hit.Value.HitPosition;
+                    Console.WriteLine("COLLISION POSITION [" + hit.Value.HitPosition + "]");
+                }
+                return 1;
+            }
+            return 0;
+        }
+
+        protected override uint HandleKeyReleased(Key key)
+        {
             return 1;
         }
 
         protected override uint HandleCollisions(List<Collider.Collision> collisions)
         {
-            //Console.WriteLine(collisions.Count);
-            
             return 1;
         }
     }

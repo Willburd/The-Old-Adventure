@@ -8,6 +8,24 @@ namespace EntComponents
     /// </summary>
     public class Input(Entity host_entity) : EntComponent(host_entity)
     {
+        public override List<Core.Signals> PrepareSignals()
+        {
+            return [Core.Signals.global_key_pressed, Core.Signals.global_key_released];
+        }
+        
+        public override uint ReceiveSignal(Core.Signals signal, object[] args)
+        {
+            switch(signal)            
+            {
+                // Forward global signal of key being pressed, to all components on our entity that are listening to inputs.
+                case Core.Signals.global_key_pressed:
+                    return Host.SendSignal(Core.Signals.key_pressed, args[0]);
+                case Core.Signals.global_key_released:
+                    return Host.SendSignal(Core.Signals.key_released, args[0]);
+            }
+            return base.ReceiveSignal(signal,args);
+        }
+
         public Vector3 MoveInput
         {
             get

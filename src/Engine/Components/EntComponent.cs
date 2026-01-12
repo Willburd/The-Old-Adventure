@@ -92,7 +92,7 @@ namespace EntComponents
 
                 /////////////////////////////////////////////////////////
                 // Update handlers
-                // /////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////
                 case Core.Signals.pre_update:
                     if(!ActiveUpdate) return 0;
                     return HandlePreUpdate();
@@ -105,6 +105,16 @@ namespace EntComponents
                 case Core.Signals.post_update:
                     if(!ActiveUpdate) return 0;
                     return HandlePostUpdate();
+
+                /////////////////////////////////////////////////////////
+                // Input handlers
+                /////////////////////////////////////////////////////////
+                case Core.Signals.key_pressed:
+                    if(!ActiveUpdate) return 0;
+                    return HandleKeyPressed((Key)args[0]);
+                case Core.Signals.key_released:
+                    if(!ActiveUpdate) return 0;
+                    return HandleKeyReleased((Key)args[0]);
 
                 /////////////////////////////////////////////////////////
                 // Collision handling
@@ -139,7 +149,7 @@ namespace EntComponents
             // You would call AssetLoader.MaterialAssetLoad() and such here for the asset!
             // Shaders should be loaded by the game itself, and assets used in nearly every room should be treated the same way!
 
-            return 1;
+            return 0;
         }
 
         /// <summary>
@@ -147,7 +157,7 @@ namespace EntComponents
         /// </summary>
         protected virtual uint HandleCreate()
         {
-            return 1;
+            return 0;
         }
 
         /// <summary>
@@ -155,7 +165,7 @@ namespace EntComponents
         /// </summary>
         protected virtual uint HandlePreUpdate()
         {
-            return 1;
+            return 0;
         }
 
         /// <summary>
@@ -163,7 +173,7 @@ namespace EntComponents
         /// </summary>
         protected virtual uint HandleEditorUpdate()
         {
-            return 1;
+            return 0;
         }
 
         /// <summary>
@@ -171,7 +181,7 @@ namespace EntComponents
         /// </summary>
         protected virtual uint HandleUpdate()
         {
-            return 1;
+            return 0;
         }
 
         /// <summary>
@@ -179,7 +189,23 @@ namespace EntComponents
         /// </summary>
         protected virtual uint HandlePostUpdate()
         {
-            return 1;
+            return 0;
+        }
+
+        /// <summary>
+        /// Used to respond to input key pressed
+        /// </summary>
+        protected virtual uint HandleKeyPressed(Key key)
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// Used to respond to input key release
+        /// </summary>
+        protected virtual uint HandleKeyReleased(Key key)
+        {
+            return 0;
         }
 
         /// <summary>
@@ -235,7 +261,7 @@ namespace EntComponents
         /// </summary>
         protected virtual uint OnDestroy()
         {
-            return 1;
+            return 0;
         }
     }
 }

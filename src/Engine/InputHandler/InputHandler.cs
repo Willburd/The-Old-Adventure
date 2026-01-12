@@ -20,6 +20,11 @@ namespace Engine
         public static Key input_key_editor_rotate_ccw = Key.Delete;
         public static Key input_key_exit = Key.Escape;
 
+        public static Key input_key_confirm = Key.Z;
+        public static Key input_key_cancel = Key.X;
+        public static Key input_key_menu = Key.Enter;
+
+
         // Public interface
 
         /// <summary>
@@ -75,6 +80,7 @@ namespace Engine
             }
             // Update previous state
             input_state[key] = true;
+            Entity.SendGlobalSignal(Core.Signals.global_key_pressed, key);
         }
 
         /// <summary>
@@ -89,6 +95,7 @@ namespace Engine
                 return;
             }
             input_state[key] = false;
+            Entity.SendGlobalSignal(Core.Signals.global_key_released, key);
         }
 
         /// <summary>
