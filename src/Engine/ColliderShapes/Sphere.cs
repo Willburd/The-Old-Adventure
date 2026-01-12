@@ -1,6 +1,6 @@
 using System.Numerics;
 using EntComponents;
-using Asset;
+using Assets;
 
 namespace Engine.ColliderShapes
 {

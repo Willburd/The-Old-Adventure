@@ -1,11 +1,11 @@
-using Asset;
+using Assets;
 
 namespace Engine
 {
     /// <summary>
     /// Shader asset, stores a compiled shader's index in the GL context. Either loaded from a file or directly compiled.
     /// </summary>
-    public class AssetShader : Asset
+    public class AssetShader : LoadedAsset
     {
         public AssetShader(string asset_key, string vertex_shader, string frag_shader) : base(asset_key, frag_shader)
         {

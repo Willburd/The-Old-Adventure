@@ -7,7 +7,7 @@ using System.Numerics;
 using Rendering;
 using AssimpMesh = Silk.NET.Assimp.Mesh;
 
-namespace Asset
+namespace Assets
 {
     public class ModelData : IDisposable
     {

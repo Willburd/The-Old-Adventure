@@ -3,7 +3,7 @@ namespace Engine
     /// <summary>
     /// Base asset class, handles loading and unloading of data read from files. Can be marked persistent to prevent deletion during basic unloads like room transitions.
     /// </summary>
-    public class Asset
+    public class LoadedAsset
     {
 #pragma warning disable CS8618 // Were the base type, all our children set us...
         /// <summary>
@@ -11,7 +11,7 @@ namespace Engine
         /// </summary>
         protected Object data;
 
-        public Asset(string key, string path)
+        public LoadedAsset(string key, string path)
         {
             asset_key = key;
             if(path != "") file_path = path;
@@ -33,7 +33,7 @@ namespace Engine
         protected AssetType asset_type = AssetType.invalid;
 
         /// <summary>
-        /// Asset key, mostly for debugging.
+        /// Assets key, mostly for debugging.
         /// </summary>
         protected string asset_key;
 
@@ -103,7 +103,7 @@ namespace Engine
         {
             if(!valid)
             {
-                Console.WriteLine("Asset " + asset_key + " was invalid!");
+                Console.WriteLine("Assets " + asset_key + " was invalid!");
                 asset_type = AssetType.invalid;
                 return false;
             }

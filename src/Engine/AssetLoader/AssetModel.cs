@@ -1,11 +1,11 @@
-using Asset;
+using Assets;
 
 namespace Engine
 {
     /// <summary>
     /// Model asset, 
     /// </summary>
-    public class AssetModel : Asset
+    public class AssetModel : LoadedAsset
     {
         public AssetModel(string asset_key, string file_path) : base(asset_key, file_path)
         {

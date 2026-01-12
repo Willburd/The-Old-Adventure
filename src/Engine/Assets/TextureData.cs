@@ -8,7 +8,7 @@ using Silk.NET.OpenGL;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace Asset
+namespace Assets
 {
     public class TextureData : IDisposable
     {
@@ -29,7 +29,7 @@ namespace Asset
 
             Bind();
 
-            Debug.Assert(System.IO.File.Exists(path),"Texture Asset file does not exist : " + path);
+            Debug.Assert(System.IO.File.Exists(path),"Texture Assets file does not exist : " + path);
 
             using (var img = Image.Load<Rgba32>(path))
             {

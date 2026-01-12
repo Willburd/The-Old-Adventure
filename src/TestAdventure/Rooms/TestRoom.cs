@@ -1,7 +1,7 @@
 using Engine;
 using EntComponents;
 using System.Numerics;
-using Asset;
+using Assets;
 
 namespace TestAdventure
 {

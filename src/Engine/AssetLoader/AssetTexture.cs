@@ -1,4 +1,4 @@
-using Asset;
+using Assets;
 using Silk.NET.OpenGL;
 
 namespace Engine
@@ -6,7 +6,7 @@ namespace Engine
     /// <summary>
     /// Model asset, 
     /// </summary>
-    public class AssetTexture : Asset
+    public class AssetTexture : LoadedAsset
     {
         public AssetTexture(string asset_key, string file_path, TextureTarget tex_target) : base(asset_key, file_path)
         {

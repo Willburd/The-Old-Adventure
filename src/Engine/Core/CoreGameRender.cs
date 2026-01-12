@@ -1,4 +1,4 @@
-using Asset;
+using Assets;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
 using System.Drawing;

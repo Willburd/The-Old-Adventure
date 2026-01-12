@@ -1,5 +1,5 @@
 using Engine;
-using Asset;
+using Assets;
 
 namespace EntComponents.ActorBehavior
 {

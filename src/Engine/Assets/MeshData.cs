@@ -5,7 +5,7 @@ using System.Diagnostics;
 using Silk.NET.OpenGL;
 using Rendering;
 
-namespace Asset
+namespace Assets
 {
     public class MeshData : IDisposable
     {

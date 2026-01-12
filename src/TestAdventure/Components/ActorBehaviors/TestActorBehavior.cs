@@ -1,6 +1,6 @@
 using System.Numerics;
 using Engine;
-using Asset;
+using Assets;
 
 namespace EntComponents.ActorBehavior
 {

@@ -1,7 +1,7 @@
 using Engine;
 using Silk.NET.OpenGL;
 
-namespace Asset
+namespace Assets
 {
     public class MaterialData : IDisposable
     {

@@ -6,7 +6,7 @@ namespace Engine
     /// <summary>
     /// Model asset, 
     /// </summary>
-    public class AssetEnvironment : Asset
+    public class AssetEnvironment : LoadedAsset
     {
         public AssetEnvironment(string asset_key, Environments.Environment enviro) : base(asset_key, "")
         {

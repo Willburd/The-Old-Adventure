@@ -4,7 +4,7 @@
 using System.Numerics;
 using Silk.NET.OpenGL;
 
-namespace Asset
+namespace Assets
 {
     public class ShaderData : IDisposable
     {

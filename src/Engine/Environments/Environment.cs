@@ -1,7 +1,7 @@
 using EntComponents;
 using System.Numerics;
 using Engine;
-using Asset;
+using Assets;
 
 namespace Environments
 {

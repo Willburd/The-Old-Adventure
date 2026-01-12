@@ -1,6 +1,6 @@
 using Engine;
 using Silk.NET.Input;
-using Asset;
+using Assets;
 
 namespace EntComponents.ActorBehavior
 {

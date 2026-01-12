@@ -1,11 +1,11 @@
-using Asset;
+using Assets;
 
 namespace Engine
 {
     /// <summary>
     /// Material asset, stores a collection of textures, uniform shader values and a shader for use.
     /// </summary>
-    public class AssetMaterial : Asset
+    public class AssetMaterial : LoadedAsset
     {
         public AssetMaterial(string asset_key, MaterialData new_material) : base(asset_key, "")
         {
