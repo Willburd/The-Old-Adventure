@@ -3,9 +3,9 @@ using System.Numerics;
 using Engine;
 using Assets;
 
-namespace Environments
+namespace Assets
 {
-    public class Environment
+    public class EnvironmentData
     {
         public Room? Host { get; protected set; }
         public float FogDistance { get; protected set; }
@@ -18,7 +18,7 @@ namespace Environments
 
         protected Skybox? skybox_model = null;
 
-        public Environment(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light, TextureData? skybox_tex)
+        public EnvironmentData(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light, TextureData? skybox_tex)
         {
             AssetKey = asset_key;
             Host = null;
@@ -31,7 +31,7 @@ namespace Environments
             SkyboxMaterial = AssetLoader.MaterialAssetLoad( "testroom_skybox", new( [SkyboxTexture], [new("uTexture0", 0)], AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine)));
         }
 
-        public Environment(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light, MaterialData? skybox_mat)
+        public EnvironmentData(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light, MaterialData? skybox_mat)
         {
             AssetKey = asset_key;
             Host = null;
@@ -44,7 +44,7 @@ namespace Environments
             SkyboxTexture = SkyboxMaterial.Textures[0];
         }
         
-        public Environment(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light)
+        public EnvironmentData(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light)
         {
             AssetKey = asset_key;
             Host = null;

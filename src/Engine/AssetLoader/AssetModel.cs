@@ -3,7 +3,7 @@ using Assets;
 namespace Engine
 {
     /// <summary>
-    /// Model asset, 
+    /// Model asset, Stores mesh data.
     /// </summary>
     public class AssetModel : LoadedAsset
     {

@@ -5,9 +5,9 @@ using Assets;
 
 namespace Environments
 {
-    public class DayNightCycle : Environment
+    public class DayNightCycle : EnvironmentData
     {
-        public DayNightCycle(string asset_key, Environment env_dawn, Environment env_day, Environment env_dusk, Environment env_night, Environment env_rainday, Environment env_rainnight) : base(asset_key, Vector4.Zero, 0f, Vector4.Zero)
+        public DayNightCycle(string asset_key, EnvironmentData env_dawn, EnvironmentData env_day, EnvironmentData env_dusk, EnvironmentData env_night, EnvironmentData env_rainday, EnvironmentData env_rainnight) : base(asset_key, Vector4.Zero, 0f, Vector4.Zero)
         {
             dawn = env_dawn;
             day = env_day;
@@ -23,12 +23,12 @@ namespace Environments
                                                                 ,      AssetLoader.ShaderAssetGet("skybox_daynight_multiblend", AssetLoader.AssetSource.engine)));
         }
 
-        private Environment dawn;
-        private Environment day;
-        private Environment night;
-        private Environment dusk;
-        private Environment rainday;
-        private Environment rainnight;
+        private EnvironmentData dawn;
+        private EnvironmentData day;
+        private EnvironmentData night;
+        private EnvironmentData dusk;
+        private EnvironmentData rainday;
+        private EnvironmentData rainnight;
         private MaterialData multiblend_skybox_mat;
 
         private float cycle = 0f;

@@ -1,14 +1,13 @@
-using Silk.NET.Assimp;
-using Silk.NET.OpenGL;
+using Assets;
 
 namespace Engine
 {
     /// <summary>
-    /// Model asset, 
+    /// Environment asset, stores environment property data.
     /// </summary>
     public class AssetEnvironment : LoadedAsset
     {
-        public AssetEnvironment(string asset_key, Environments.Environment enviro) : base(asset_key, "")
+        public AssetEnvironment(string asset_key, EnvironmentData enviro) : base(asset_key, "")
         {
             data = enviro;
             asset_type = AssetType.environment;
@@ -17,7 +16,7 @@ namespace Engine
         public override bool CheckIntegrity(bool valid = true)
         {
             if(data == null) return false;
-            Environments.Environment check = (Environments.Environment)data;
+            EnvironmentData check = (EnvironmentData)data;
             return base.CheckIntegrity(check.IsValid());
         }
     }

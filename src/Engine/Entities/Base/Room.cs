@@ -1,6 +1,6 @@
 using System.Numerics;
 using EntComponents;
-using System.Drawing;
+using Assets;
 
 namespace Engine
 {
@@ -14,12 +14,12 @@ namespace Engine
         /// <summary>
         /// Environment controller for the room, used to set fog, light properties, skybox, and other effects not stored in the room itself. So that a room may use different environments if it needs to.
         /// </summary>
-        public Environments.Environment? Environment { get; set; } = null;
+        public EnvironmentData? Environment { get; set; } = null;
         
         /// <summary>
         /// Environment controller override. Used when something needs to temporarily take control of the environment without permanently changing it. Needs to handle it's own fade in and out.
         /// </summary>
-        public Environments.Environment? TempEnvironmentOverride { get; set; } = null;
+        public EnvironmentData? TempEnvironmentOverride { get; set; } = null;
 
         public List<Actor> ActorList {get; private set;} = [];
         public Dictionary<string,Actor> ActorLookupList {get; private set;} = [];

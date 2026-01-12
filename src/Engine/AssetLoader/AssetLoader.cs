@@ -156,11 +156,11 @@ namespace Engine
         /// <summary>
         /// Creates an environment asset and adds it to the asset library for reuse
         /// </summary>
-        public static Environments.Environment EnvironmentAssetLoad(Environments.Environment new_environment, AssetSource source = AssetSource.adventure)
+        public static EnvironmentData EnvironmentAssetLoad(EnvironmentData new_environment, AssetSource source = AssetSource.adventure)
         {
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.environment, new_environment.AssetKey, source);
-            if(asset_library.ContainsKey( get_key)) return (Environments.Environment)asset_library[get_key].Data;
-            return (Environments.Environment)InvokeAsset( get_key, new AssetEnvironment(get_key, new_environment));
+            if(asset_library.ContainsKey( get_key)) return (EnvironmentData)asset_library[get_key].Data;
+            return (EnvironmentData)InvokeAsset( get_key, new AssetEnvironment(get_key, new_environment));
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -248,12 +248,12 @@ namespace Engine
         /// <summary>
         /// Gets an environment from the asset library
         /// </summary>
-        public static Environments.Environment EnvironmentAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
+        public static EnvironmentData EnvironmentAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
             LoadedAsset ast = LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.environment, asset_key, source));
             ast ??= LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.environment, "standard_day", AssetSource.engine));
             Debug.Assert(ast.CheckType(LoadedAsset.AssetType.environment));
-            return (Environments.Environment)ast.Data;
+            return (EnvironmentData)ast.Data;
         }
     }
 }

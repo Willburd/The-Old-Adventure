@@ -4,7 +4,7 @@ using Silk.NET.OpenGL;
 namespace Engine
 {
     /// <summary>
-    /// Model asset, 
+    /// Texture asset, stores image data.
     /// </summary>
     public class AssetTexture : LoadedAsset
     {
