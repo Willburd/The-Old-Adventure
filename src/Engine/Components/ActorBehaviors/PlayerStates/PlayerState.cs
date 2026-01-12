@@ -29,26 +29,17 @@ namespace EntComponents.ActorBehavior.PlayerStates
         /// <summary>
         /// Called when the player enters this state.
         /// </summary>
-        public virtual void Start(PlayerState? previous_state)
-        {
-            
-        }
+        public virtual void Start(PlayerState? previous_state) { }
 
         /// <summary>
         /// Called when the player leaves this state.
         /// </summary>
-        public virtual void End(PlayerState? new_state)
-        {
-            
-        }
+        public virtual void End(PlayerState? new_state) { }
 
         /// <summary>
         /// Called during update, performs logic for the current player state
         /// </summary>
-        public virtual void Process()
-        {
-            
-        }
+        public virtual void Process() { }
         
         /// <summary>
         /// Gets the first component of a specific type attached to our player

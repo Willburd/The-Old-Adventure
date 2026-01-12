@@ -5,7 +5,7 @@ namespace EntComponents.ActorBehavior
 {
     public class PlayerCameraBehavior(Entity host_entity) : EntComponent(host_entity)
     {
-        private float distance_from_player = 1.4f;
+        private float distance_from_player = 4.4f;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
@@ -22,8 +22,8 @@ namespace EntComponents.ActorBehavior
             if(input != null)
             {
                 Vector3 current_pos = Host.Position;
-                current_pos += Vector3.Transform( Tools.Right, Quaternion.CreateFromAxisAngle( Vector3.Transform(Tools.Up, Quaternion.Inverse(Host.Rotation)), input.CameraInput.X * InputHandler.mouse_sensitivity));
-                current_pos += Vector3.Transform( Tools.Up, Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraInput.Y * InputHandler.mouse_sensitivity));
+                //current_pos += Vector3.Transform( Tools.Right, Quaternion.CreateFromAxisAngle( Vector3.Transform(Tools.Up, Quaternion.Inverse(Host.Rotation)), input.CameraInput.X * InputHandler.mouse_sensitivity));
+                //current_pos += Vector3.Transform( Tools.Up, Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraInput.Y * InputHandler.mouse_sensitivity));
                 Host.Position = current_pos;
             }
 
@@ -36,8 +36,8 @@ namespace EntComponents.ActorBehavior
             if(Host.Position == player.Position) Host.Position += Vector3.Transform(Tools.Backward * 0.01f, player.Rotation); // no trapping it
             
             // Get our desired location, then check if we're blocked by a wall
-            Vector3 want_offset = Tools.DirVector(player.Position, Host.Position) * distance_from_player;
-            Vector3 goal_pos = start_pos;
+            Vector3 want_offset = Tools.DirVector(start_pos, Host.Position) * distance_from_player;
+            Vector3 goal_pos = start_pos + want_offset;
             Collider.RaycastHit? hit = Collider.DoRaycastNearest(start_pos, want_offset, Collider.mask_worldgeo);
             if(hit != null)
             {
@@ -45,8 +45,8 @@ namespace EntComponents.ActorBehavior
             }
 
             // Move toward our goal
-            Host.Position = Vector3.Lerp(Host.Position,goal_pos, 0.85f);
-            Host.Rotation = Tools.LookAt( Host.Position, player.Position);
+            //Host.Position = goal_pos;
+            Host.Rotation = Tools.LookAt(Host.Position, player.Position);
             return 1;
         }
     }

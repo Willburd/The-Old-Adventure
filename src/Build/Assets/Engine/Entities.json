@@ -19,6 +19,7 @@
         "Collider": {},
         "PhysicsBody": {},
         "Animator": {},
+        "Input": {},
         "PlayerActorBehavior": {}
     }
 }

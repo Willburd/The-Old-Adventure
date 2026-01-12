@@ -1,4 +1,5 @@
 using System.Numerics;
+using Silk.NET.Maths;
 
 // The eternal curse.
 // From: https://stackoverflow.com/questions/70462758/c-sharp-how-to-convert-quaternions-to-euler-angles-xyz
@@ -87,7 +88,7 @@ namespace Engine
         /// <param name="sourcePoint">Coordinates of source point</param>
         /// <param name="destPoint">Coordinates of destionation point</param>
         /// <returns></returns>
-        public static Quaternion LookAt(Vector3 sourcePoint, Vector3 destPoint)
+        public static Quaternion PointTo(Vector3 sourcePoint, Vector3 destPoint)
         {
             Vector3 forwardVector = Vector3.Normalize(destPoint - sourcePoint);
 
@@ -103,9 +104,21 @@ namespace Engine
             }
 
             float rotAngle = (float)Math.Acos(dot);
-            Vector3 rotAxis = Vector3.Cross(Tools.Forward, forwardVector);
-            rotAxis = Vector3.Normalize(rotAxis);
+            Vector3 rotAxis = Vector3.Normalize(Vector3.Cross(Tools.Forward, forwardVector));
             return Quaternion.Normalize(CreateFromAxisAngle(rotAxis, rotAngle));
+        }
+        
+        /// Similar to above, but the up axis is locked to Y+, TODO - Merge with above and allow specifying an axis of rotation
+        public static Quaternion LookAt(Vector3 sourcePoint, Vector3 destPoint)
+        {
+            if(sourcePoint == destPoint) return Quaternion.Identity;
+            // Solve rotation around Y axis
+            Vector3 dirvec = Tools.DirVector(sourcePoint, destPoint);
+            float rad_angle = MathF.Atan2(dirvec.X, dirvec.Z);
+            Quaternion around_y_rot = CreateFromAxisAngle( Tools.Up, rad_angle);
+            // Now rotate to face Y axis difference
+            dirvec = Vector3.Transform(dirvec, Quaternion.Inverse(around_y_rot));
+            return around_y_rot * CreateFromAxisAngle( Tools.Right, -MathF.Atan2(dirvec.Y, dirvec.Z));
         }
 
         // just in case you need that function also
