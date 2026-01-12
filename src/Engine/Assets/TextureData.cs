@@ -8,7 +8,7 @@ using Silk.NET.OpenGL;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace Rendering
+namespace Asset
 {
     public class TextureData : IDisposable
     {

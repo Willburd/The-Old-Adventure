@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Diagnostics;
-using System.Numerics;
 using Silk.NET.OpenGL;
+using Rendering;
 
-namespace Rendering
+namespace Asset
 {
     public class MeshData : IDisposable
     {

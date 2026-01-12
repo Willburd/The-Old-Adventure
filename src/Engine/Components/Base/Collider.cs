@@ -1,7 +1,6 @@
 using System.Numerics;
-using System.Security.Cryptography.X509Certificates;
 using Engine;
-using Rendering;
+using Asset;
 
 namespace EntComponents
 {

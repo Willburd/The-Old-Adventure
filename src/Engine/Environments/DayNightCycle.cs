@@ -1,9 +1,7 @@
-using System.Drawing;
 using System.Numerics;
 using Engine;
 using EntComponents;
-using Rendering;
-using Silk.NET.OpenGL;
+using Asset;
 
 namespace Environments
 {

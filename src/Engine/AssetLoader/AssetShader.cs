@@ -1,3 +1,5 @@
+using Asset;
+
 namespace Engine
 {
     /// <summary>
@@ -8,7 +10,7 @@ namespace Engine
         public AssetShader(string asset_key, string vertex_shader, string frag_shader) : base(asset_key, frag_shader)
         {
             // Compile source strings
-            Rendering.ShaderData shader_data = new(asset_key, vertex_shader, frag_shader);
+            ShaderData shader_data = new(asset_key, vertex_shader, frag_shader);
             // Get the shader program as our asset
             data = shader_data;
             asset_type = AssetType.shader;
@@ -16,14 +18,14 @@ namespace Engine
 
         public override void Unload()
         {
-            (data as Rendering.ShaderData)?.Dispose();
+            (data as ShaderData)?.Dispose();
             base.Unload();
         }
         
         public override bool CheckIntegrity(bool valid = true)
         {
             if(data == null) return false;
-            Rendering.ShaderData check = (Rendering.ShaderData)data;
+            ShaderData check = (ShaderData)data;
             return base.CheckIntegrity(check.IsValid());
         }
     }

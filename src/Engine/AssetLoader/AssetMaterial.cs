@@ -1,4 +1,4 @@
-using Rendering;
+using Asset;
 
 namespace Engine
 {
@@ -16,14 +16,14 @@ namespace Engine
 
         public override void Unload()
         {
-            (data as Rendering.MaterialData)?.Dispose();
+            (data as MaterialData)?.Dispose();
             base.Unload();
         }
         
         public override bool CheckIntegrity(bool valid = true)
         {
             if(data == null) return false;
-            Rendering.MaterialData check = (Rendering.MaterialData)data;
+            MaterialData check = (MaterialData)data;
             return base.CheckIntegrity(check.IsValid());
         }
     }

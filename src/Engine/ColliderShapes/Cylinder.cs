@@ -1,6 +1,6 @@
 using System.Numerics;
 using EntComponents;
-using Rendering;
+using Asset;
 using Silk.NET.Assimp;
 
 namespace Engine.ColliderShapes

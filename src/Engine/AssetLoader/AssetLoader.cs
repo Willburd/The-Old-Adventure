@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Rendering;
+using Asset;
 
 namespace Engine
 {
@@ -91,7 +91,7 @@ namespace Engine
         /// <summary>
         /// Loads a shader asset from disk into the asset library
         /// </summary>
-        public static Rendering.ShaderData ShaderAssetLoad(string asset_key, string vertext_path, string frag_path, AssetSource source = AssetSource.adventure)
+        public static ShaderData ShaderAssetLoad(string asset_key, string vertext_path, string frag_path, AssetSource source = AssetSource.adventure)
         {
             string get_key = AssetLoader.AssetKey(Asset.AssetType.shader, asset_key, source);
             if(asset_library.ContainsKey( get_key)) return (ShaderData)asset_library[get_key].Data;
@@ -205,44 +205,44 @@ namespace Engine
         /// Gets a shader from the asset library
         /// </summary>
         /// 
-        public static Rendering.ShaderData ShaderAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
+        public static ShaderData ShaderAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
             Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.shader, asset_key, source));
             Debug.Assert(ast.CheckType(Asset.AssetType.shader));
-            return (Rendering.ShaderData)ast.Data;
+            return (ShaderData)ast.Data;
         }
         
         /// <summary>
         /// Gets a Model from the asset library
         /// </summary>
-        public static Rendering.ModelData ModelAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
+        public static ModelData ModelAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
             Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.model, asset_key, source));
             ast ??= LocateAsset(AssetLoader.AssetKey(Asset.AssetType.model, "no_model", AssetSource.engine));
             Debug.Assert(ast.CheckType(Asset.AssetType.model));
-            return (Rendering.ModelData)ast.Data;
+            return (ModelData)ast.Data;
         }
 
         /// <summary>
         /// Gets a texture from the asset library
         /// </summary>
-        public static Rendering.TextureData TextureAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
+        public static TextureData TextureAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
             Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.textures, asset_key, source));
             ast ??= LocateAsset(AssetLoader.AssetKey(Asset.AssetType.textures, "no_tex", AssetSource.engine));
             Debug.Assert(ast.CheckType(Asset.AssetType.textures));
-            return (Rendering.TextureData)ast.Data;
+            return (TextureData)ast.Data;
         }
 
         /// <summary>
         /// Gets a material from the asset library
         /// </summary>
-        public static Rendering.MaterialData MaterialAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
+        public static MaterialData MaterialAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
             Asset ast = LocateAsset(AssetLoader.AssetKey(Asset.AssetType.material, asset_key, source));
             ast ??= LocateAsset(AssetLoader.AssetKey(Asset.AssetType.material, "no_mat", AssetSource.engine));
             Debug.Assert(ast.CheckType(Asset.AssetType.material));
-            return (Rendering.MaterialData)ast.Data;
+            return (MaterialData)ast.Data;
         }
 
         /// <summary>

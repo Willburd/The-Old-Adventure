@@ -1,7 +1,6 @@
 using System.Numerics;
 using Engine;
-using Rendering;
-using Silk.NET.Maths;
+using Asset;
 
 namespace EntComponents
 {

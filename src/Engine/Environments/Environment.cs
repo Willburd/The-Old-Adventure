@@ -1,8 +1,7 @@
 using EntComponents;
 using System.Numerics;
 using Engine;
-using Silk.NET.Assimp;
-using Rendering;
+using Asset;
 
 namespace Environments
 {

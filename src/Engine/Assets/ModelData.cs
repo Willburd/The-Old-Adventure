@@ -4,9 +4,10 @@
 using Silk.NET.Assimp;
 using Silk.NET.OpenGL;
 using System.Numerics;
+using Rendering;
 using AssimpMesh = Silk.NET.Assimp.Mesh;
 
-namespace Rendering
+namespace Asset
 {
     public class ModelData : IDisposable
     {
