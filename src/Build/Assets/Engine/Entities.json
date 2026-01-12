@@ -13,5 +13,10 @@
         "PhysicsBody": {},
         "Animator": {},
         "FlyAwayBirdActorBehavior": {}
+    },
+    "actor_player": {
+        "WorldRender": {},
+        "Animator": {},
+        "PlayerActorBehavior": {}
     }
 }

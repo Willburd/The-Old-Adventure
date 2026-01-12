@@ -113,6 +113,9 @@ namespace Engine
                 case "Light":
                     return new EntComponents.Light(ent);
 
+                case "Input":
+                    return new EntComponents.Input(ent);
+
                 ///////////////////////////////////////////////////
                 // Editor
                 ///////////////////////////////////////////////////
@@ -122,6 +125,9 @@ namespace Engine
                 ///////////////////////////////////////////////////
                 // Behaviors
                 ///////////////////////////////////////////////////
+                case "PlayerActorBehavior":
+                    return new EntComponents.ActorBehavior.PlayerActorBehavior(ent);
+
                 case "CubeActorBehavior":
                     return new EntComponents.ActorBehavior.CubeActorBehavior(ent);
 

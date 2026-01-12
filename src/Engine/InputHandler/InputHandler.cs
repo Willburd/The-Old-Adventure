@@ -10,14 +10,14 @@ namespace Engine
         public static Dictionary<Key,bool> input_state = [];
 
         // Input statics, todo - Move to a config struct
-        public static Key input_key_forward = Key.W;
-        public static Key input_key_backward = Key.S;
-        public static Key input_key_left = Key.A;
-        public static Key input_key_Right = Key.D;
-        public static Key input_key_editor_up = Key.R;
-        public static Key input_key_editor_down = Key.F;
-        public static Key input_key_editor_rotate_cw = Key.E;
-        public static Key input_key_editor_rotate_ccw = Key.Q;
+        public static Key input_key_forward = Key.Up;
+        public static Key input_key_backward = Key.Down;
+        public static Key input_key_left = Key.Left;
+        public static Key input_key_Right = Key.Right;
+        public static Key input_key_editor_up = Key.PageUp;
+        public static Key input_key_editor_down = Key.PageDown;
+        public static Key input_key_editor_rotate_cw = Key.End;
+        public static Key input_key_editor_rotate_ccw = Key.Delete;
         public static Key input_key_exit = Key.Escape;
 
         // Public interface

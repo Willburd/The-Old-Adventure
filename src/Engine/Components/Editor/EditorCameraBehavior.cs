@@ -27,61 +27,34 @@ namespace EntComponents
 
         protected override uint HandleEditorUpdate()
         {
+            // TODO - Move this exit game stuff to somewhere in the Core somehow.
             if(InputHandler.KeyPressed( InputHandler.input_key_exit ))
             {
                 Core.RequestShutdown();
                 return 1;
             }
-            
-            float camera_speed = 0.1f;
-            if(InputHandler.KeyHeld( InputHandler.input_key_forward ))
-            {
-                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Forward * camera_speed, Camera.WorldCamera.Location.Rotation);
-            }
-            if(InputHandler.KeyHeld( InputHandler.input_key_backward ))
-            {
-                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Backward * camera_speed, Camera.WorldCamera.Location.Rotation);
-            }
-            if(InputHandler.KeyHeld( InputHandler.input_key_left ))
-            {
-                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Left * camera_speed, Camera.WorldCamera.Location.Rotation);
-            }
-            if(InputHandler.KeyHeld( InputHandler.input_key_Right ))
-            {
-                Camera.WorldCamera?.Position += Vector3.Transform(Tools.Right * camera_speed, Camera.WorldCamera.Location.Rotation);
-            }
-            if(InputHandler.KeyHeld( InputHandler.input_key_editor_up ))
-            {
-                Camera.WorldCamera?.Position += Tools.Up * camera_speed;
-            }
-            if(InputHandler.KeyHeld( InputHandler.input_key_editor_down ))
-            {
-                Camera.WorldCamera?.Position += Tools.Down * camera_speed;
-            }
-            
-            float rotate_speed = 0.02f;
-            if(InputHandler.KeyHeld( InputHandler.input_key_editor_rotate_cw ))
-            {
-                Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Forward, rotate_speed);
-            }
-            if(InputHandler.KeyHeld( InputHandler.input_key_editor_rotate_ccw ))
-            {
-                Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Forward, -rotate_speed);
-            }
 
-            // Mouse movement
-            float mouse_multiplier = 0.001f;
-            Vector2 mouse_delta = InputHandler.MouseDelta * mouse_multiplier;
-            Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Up, -mouse_delta.X);
-            Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, -mouse_delta.Y);
+            // Handle editor camera logic
+            Input? input = (Input?)Host.GetComponent(typeof(Input));
+            if(input != null)
+            {
+                // Movement
+                float camera_speed = 0.1f;
+                Camera.WorldCamera?.Position += Vector3.Transform(input.MoveInput * camera_speed, Camera.WorldCamera.Location.Rotation);
+                float rotate_speed = 0.02f;
+                Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Forward, input.CameraRoll * rotate_speed);
+
+                // Mouse movement
+                float mouse_multiplier = 0.001f;
+                Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Vector3.Transform(Tools.Up, Quaternion.Inverse(Camera.WorldCamera.Rotation)), input.CameraInput.X * mouse_multiplier);
+                Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraInput.Y * mouse_multiplier);
+            }
 
             // Raycast testing
             Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
             Collider.RaycastHit? hit = Collider.DoRaycastNearest( Host.Position, Vector3.Transform(Tools.Forward * 5f,Host.Rotation));
-            if(hit != null)
-            {
-                col?.OffsetPos = hit.Value.HitPosition;
-            }
+            if(hit != null) col?.OffsetPos = hit.Value.HitPosition;
+
             return 1;
         }
 
