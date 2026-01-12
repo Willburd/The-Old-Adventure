@@ -30,7 +30,6 @@ namespace EntComponents.ActorBehavior.PlayerStates
                 {
                     // Rotation
                     Vector3 move_dir = input.MoveInput;
-                    Console.WriteLine(move_dir);
                     Host.Rotation *= Tools.CreateFromAxisAngle(Tools.Up, move_dir.X * -0.1f);
                     // Movement
                     move_dir.X = 0f;

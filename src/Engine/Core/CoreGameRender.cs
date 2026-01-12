@@ -117,7 +117,7 @@ namespace Engine
                 if(dist > world_load_radius) continue;
                 if(dist > check.MinimumRenderDistance)
                 {
-                    float dot_prod = Vector3.Dot(Tools.DirVector(world_load_position, check.Position), camera_vector);
+                    float dot_prod = Vector3.Dot(Tools.DirVector(check.Position, world_load_position), camera_vector);
                     if(dot_prod >= frustum_dot_product_limit) continue; // Nothing behind us
                 }
 

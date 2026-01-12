@@ -29,8 +29,8 @@ namespace Engine.ColliderShapes
             {
                 if(sphere_col.ColHost.OffsetPos.Y + sphere_col.our_sphere.Radius >= ColHost.OffsetPos.Y && sphere_col.ColHost.OffsetPos.Y - sphere_col.our_sphere.Radius <= ColHost.OffsetPos.Y + height)
                 {
-                    Vector3 our_rad_vector = ColHost.OffsetPos + (Tools.DirVector(ColHost.OffsetPos, sphere_col.ColHost.OffsetPos) * radius); // from us to the other by our radius
-                    Vector3 other_rad_vector = sphere_col.ColHost.OffsetPos + (Tools.DirVector(sphere_col.ColHost.OffsetPos, ColHost.OffsetPos) * sphere_col.our_sphere.Radius); // from other to us by the others radius
+                    Vector3 our_rad_vector = ColHost.OffsetPos + (Tools.DirVector(sphere_col.ColHost.OffsetPos, ColHost.OffsetPos) * radius); // from us to the other by our radius
+                    Vector3 other_rad_vector = sphere_col.ColHost.OffsetPos + (Tools.DirVector(ColHost.OffsetPos, sphere_col.ColHost.OffsetPos) * sphere_col.our_sphere.Radius); // from other to us by the others radius
                     Vector3 mid_pos = Vector3.Lerp(our_rad_vector,other_rad_vector,0.5f); // Get a point between!
 
                     return new(ColHost, sphere_col.ColHost, mid_pos);
@@ -57,8 +57,8 @@ namespace Engine.ColliderShapes
                 if(InRadius(host_pos, other_pos, our_rad + other_rad))
                 {
                     // Horizontal midpoint
-                    Vector3 col_vector = ColHost.OffsetPos + (Tools.DirVector(ColHost.OffsetPos, cylinder_col.ColHost.OffsetPos) * radius); // from us to them
-                    Vector3 ret_vector = cylinder_col.ColHost.OffsetPos + (Tools.DirVector(cylinder_col.ColHost.OffsetPos, ColHost.OffsetPos) * cylinder_col.radius); // from them to us
+                    Vector3 col_vector = ColHost.OffsetPos + (Tools.DirVector(cylinder_col.ColHost.OffsetPos, ColHost.OffsetPos) * radius); // from us to them
+                    Vector3 ret_vector = cylinder_col.ColHost.OffsetPos + (Tools.DirVector(ColHost.OffsetPos, cylinder_col.ColHost.OffsetPos) * cylinder_col.radius); // from them to us
                     Vector3 mid_pos = Vector3.Lerp(col_vector,ret_vector,0.5f); // Get a point between!
 
                     // Vertical midpoint

@@ -113,7 +113,7 @@ namespace Engine
         {
             if(sourcePoint == destPoint) return Quaternion.Identity;
             // Solve rotation around Y axis
-            Vector3 dirvec = Tools.DirVector(sourcePoint, destPoint);
+            Vector3 dirvec = Tools.DirVector(destPoint, sourcePoint);
             float rad_angle = MathF.Atan2(dirvec.X, dirvec.Z);
             Quaternion around_y_rot = CreateFromAxisAngle( Tools.Up, rad_angle);
             // Now rotate to face Y axis difference

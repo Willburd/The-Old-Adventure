@@ -32,7 +32,7 @@ namespace EntComponents.ActorBehavior
             if(player == null) return 0;
 
             // From the center of the player
-            Vector3 start_pos = player.Position + Tools.Up;
+            Vector3 start_pos = player.Position + Tools.Up; // halfway up actor, more or less.
             if(Host.Position == player.Position) Host.Position += Vector3.Transform(Tools.Backward * 0.01f, player.Rotation); // no trapping it
             
             // Get our desired location, then check if we're blocked by a wall
@@ -41,12 +41,12 @@ namespace EntComponents.ActorBehavior
             Collider.RaycastHit? hit = Collider.DoRaycastNearest(start_pos, want_offset, Collider.mask_worldgeo);
             if(hit != null)
             {
-                //goal_pos = hit.Value.HitPosition;
+                goal_pos = hit.Value.HitPosition;
             }
 
             // Move toward our goal
-            //Host.Position = goal_pos;
-            Host.Rotation = Tools.LookAt(Host.Position, player.Position);
+            Host.Position = Vector3.Lerp( Host.Position, goal_pos, 0.8f) ;
+            Host.Rotation = Tools.LookAt(Host.Position, start_pos);
             return 1;
         }
     }

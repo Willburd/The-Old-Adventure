@@ -48,7 +48,7 @@ namespace Engine
 
         public static Vector3 DirVector(Vector3 start, Vector3 end)
         {
-            return Vector3.Normalize(start - end);
+            return Vector3.Normalize(end - start);
         }
 
         public static float FlattenedDistance(Vector3 start, Vector3 end)

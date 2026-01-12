@@ -20,8 +20,8 @@ namespace Engine.ColliderShapes
             
             if(Vector3.Distance(host_pos, other_point) <= our_sphere.Radius + sphere_col.our_sphere.Radius)
             {
-                Vector3 col_vector = ColHost.OffsetPos + (Tools.DirVector(ColHost.OffsetPos, sphere_col.ColHost.OffsetPos) * our_sphere.Radius); // from us to them
-                Vector3 ret_vector = sphere_col.ColHost.OffsetPos + (Tools.DirVector(sphere_col.ColHost.OffsetPos, ColHost.OffsetPos) * sphere_col.our_sphere.Radius); // from them to us
+                Vector3 col_vector = ColHost.OffsetPos + (Tools.DirVector(sphere_col.ColHost.OffsetPos, ColHost.OffsetPos) * our_sphere.Radius); // from us to them
+                Vector3 ret_vector = sphere_col.ColHost.OffsetPos + (Tools.DirVector(ColHost.OffsetPos, sphere_col.ColHost.OffsetPos) * sphere_col.our_sphere.Radius); // from them to us
                 return new(ColHost,sphere_col.ColHost, Vector3.Lerp(col_vector,ret_vector,0.5f)); // Get a point between!
             }
             return null;
