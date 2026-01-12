@@ -9,9 +9,16 @@ namespace EntComponents
     public class PhysicsBody(Entity host_entity) : EntComponent(host_entity)
     {
         public Vector3 Velocity {get; set;} = new Vector3();
-        public Vector3 Friction {get; set;} = new Vector3(0.01f, 0f, 0.01f);
-        public Vector3 Gravity {get; set;} = new Vector3(0f,0.1f,0f);
+        public const float default_friction = 0.01f;
+        public Vector3 Friction {get; set;} = new Vector3(default_friction, 0f, default_friction);
+        public const float default_gravity = 0.01f;
+        public Vector3 Gravity {get; set;} = new Vector3(0f,-default_gravity,0f);
+        public bool HasGravity {get; set;} = true;
 
+        public override List<Core.Signals> PrepareSignals()
+        {
+            return [Core.Signals.apply_physics];
+        }
         public override uint ReceiveSignal(Core.Signals signal, object[] args)
         {
             switch(signal)
@@ -25,7 +32,7 @@ namespace EntComponents
 
         private uint HandlePhysicsUpdate()
         {
-            Velocity += Gravity;
+            if(HasGravity) Velocity += Gravity;
             Velocity = Tools.Decelerate(Velocity, Friction);
             Host.Position += Velocity;
 

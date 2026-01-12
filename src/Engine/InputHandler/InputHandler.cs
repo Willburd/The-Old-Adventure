@@ -24,6 +24,7 @@ namespace Engine
         public static Key input_key_cancel = Key.X;
         public static Key input_key_menu = Key.Enter;
 
+        public static float mouse_sensitivity = 0.001f;
 
         // Public interface
 
@@ -73,6 +74,12 @@ namespace Engine
         /// </summary>
         public void InvokeKeyPressed(IKeyboard keyboard, Key key, int keyCode)
         {
+            // Exit game
+            if(key == input_key_exit)
+            {
+                Core.RequestShutdown();
+                return;
+            }
             // A new hand touches the beacon
             if(input_state.TryAdd(key, true))
             {

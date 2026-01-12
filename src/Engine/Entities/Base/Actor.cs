@@ -8,6 +8,21 @@ namespace Engine
         {
             if(room_link != null) LinkRoom(room_link);
         }
+        
+
+        /// <summary>
+        /// Gets a loaded actor by its entity key. 
+        /// </summary>
+        public static Actor? GetActor(string entity_key, Room? specific_room = null)
+        {
+            if(specific_room != null)
+            {
+                if(!specific_room.ActorLookupList.TryGetValue(entity_key, out Actor? roomactor)) return null;
+                return roomactor;
+            }
+            if(!Entity.EntityLookupList.TryGetValue(entity_key, out Entity? globalactor)) return null;
+            return (Actor)globalactor;
+        }
 
         public override bool RoomEnabled()
         {

@@ -36,7 +36,7 @@ namespace Engine
             else
             {
                 // standard camera
-                new Camera(new Transform( new Vector3(0f,0f,0f)), room_id + "_cam", true, this);
+                new PlayerCamera(new Transform( new Vector3(0f,0f,0f)), room_id + "_cam", true, this);
             }
             loaded_rooms.Add(this);
             // All scenes implicitly have these

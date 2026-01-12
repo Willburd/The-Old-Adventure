@@ -14,8 +14,12 @@ namespace EntComponents
         /// <summary>
         /// Checked against a bitmask when doing collision detection. Allows for raycasts and other colliders to entirely ignore other colliders if masked correctly.
         /// </summary>
-        public uint CollisionMask { get; set; } = mask_standard;
-        public const uint mask_standard = 1 << 0;
+        public uint CollisionMask { get; set; } = mask_generic;
+        public const uint mask_generic = 1 << 0;
+        public const uint mask_worldgeo = 1 << 1;
+        public const uint mask_player = 1 << 3;
+        public const uint mask_none = 0;
+        public const uint mask_all = uint.MaxValue;
 
         /// <summary>
         /// Increased with every collider spawned and periodically reset by room unloading. Used to keep track of which colliders we've been in contact with for collision start and end signals
@@ -118,7 +122,7 @@ namespace EntComponents
         /// <summary>
         /// Performs a raycast against all existing colliders in the room, unless otherwise specified. Returns a list of all collisions that occured, specific collision information is in each collider.
         /// </summary>
-        public static RaycastHit? DoRaycastNearest(Vector3 start, Vector3 direction, uint collision_mask = mask_standard, Entity? specific_entity = null)
+        public static RaycastHit? DoRaycastNearest(Vector3 start, Vector3 direction, uint collision_mask = mask_all, Entity? specific_entity = null)
         {
             List<RaycastHit> hits = DoRaycast(start, direction, collision_mask, specific_entity);
             
@@ -138,7 +142,7 @@ namespace EntComponents
         /// <summary>
         /// Performs a raycast against all existing colliders in the room, unless otherwise specified. Returns a list of all collisions that occured, specific collision information is in each collider.
         /// </summary>
-        public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 direction, uint collision_mask = mask_standard, Entity? specific_entity = null)
+        public static List<RaycastHit> DoRaycast(Vector3 start, Vector3 direction, uint collision_mask = mask_all, Entity? specific_entity = null)
         {
             List<RaycastHit> hit_rays = [];
             Raycast ray = new(start, direction, collision_mask);
@@ -175,34 +179,39 @@ namespace EntComponents
             in_collision_with = [];
 
             // Keep track of current collisions
+            List<Task> thread_batch = new List<Task>();
             List<Collision> all_collisions = [];
             List<Collision> all_triggers = [];
-
             foreach(Collider col in all_colliders.Cast<Collider>())
             {
-                // No self detection
-                if(col == this) continue;
-                if((col.CollisionMask & CollisionMask) == 0) continue; 
-
-                // Check for overlap
-                Collision? check_collision = CheckIsColliding(col);
-                if(check_collision != null) 
+                thread_batch.Add(Task.Run(() =>
                 {
-                    // Triggers only detect collisions with physics colliders, and not with other triggers
-                    if(IsTrigger())
+                    // No self detection
+                    if(col == null || col == this) return;
+                    if((col.CollisionMask & CollisionMask) == 0) return; 
+
+                    // Check for overlap
+                    Collision? check_collision = CheckIsColliding(col);
+                    if(check_collision != null) 
                     {
-                        if(!col.IsTrigger())
+                        // Triggers only detect collisions with physics colliders, and not with other triggers
+                        if(IsTrigger())
                         {
-                            all_triggers.Add((Collision)check_collision);
-                            in_collision_with.Add(col.our_collider_index);
+                            if(!col.IsTrigger())
+                            {
+                                all_triggers.Add((Collision)check_collision);
+                                in_collision_with.Add(col.our_collider_index);
+                            }
+                            return;
                         }
-                        continue;
+                        // The other colliders cannot be a trigger, so we've found an actual collision!
+                        all_collisions.Add((Collision)check_collision);
+                        in_collision_with.Add(col.our_collider_index);
                     }
-                    // The other colliders cannot be a trigger, so we've found an actual collision!
-                    all_collisions.Add((Collision)check_collision);
-                    in_collision_with.Add(col.our_collider_index);
-                }
+                }));
+                if(thread_batch.Count >= Core.BatchSize) Core.AwaitCurrentBatch(thread_batch);
             }
+            Core.AwaitCurrentBatch(thread_batch);
 
             // Fire a signal for all colliders we've left
             List<int> colliders_started = GetStartedCollidingWith();

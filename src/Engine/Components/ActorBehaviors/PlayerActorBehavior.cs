@@ -1,11 +1,29 @@
 using Engine;
 using Silk.NET.Input;
 using Assets;
+using Silk.NET.GLFW;
 
 namespace EntComponents.ActorBehavior
 {
-    public class PlayerActorBehavior(Entity host_entity) : EntComponent(host_entity)
+    public class PlayerActorBehavior : EntComponent
     {
+        public const string player_actor_id = "global_id_actor_player";
+
+        public PlayerActorBehavior(Entity host_entity) : base(host_entity)
+        {
+            current_state = new PlayerStates.Grounded(this);
+            host_entity.MinimumRenderDistance = float.PositiveInfinity;
+        }
+
+        protected PlayerStates.PlayerState? current_state;
+
+        public void SetPlayerState(PlayerStates.PlayerState? new_state)
+        {
+            current_state?.End(new_state);
+            new_state?.Start(current_state);
+            current_state = new_state;
+        }
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,14 +62,18 @@ namespace EntComponents.ActorBehavior
             
             // Collision
             Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
-            collision?.SetShape( new Engine.ColliderShapes.CylinderCol(0.5f,0.2f));
+            collision?.SetShape( new Engine.ColliderShapes.CylinderCol(0.75f,0.25f));
+            collision?.CollisionMask = Collider.mask_player;
+
+            // Player handling
+            SetPlayerState( new PlayerStates.Grounded(this));
 
             return 1;
         }
 
         protected override uint HandleUpdate()
         {
-
+            current_state?.Process();
             return 1;
         }
 

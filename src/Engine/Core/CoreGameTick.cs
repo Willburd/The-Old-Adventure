@@ -56,21 +56,9 @@ namespace Engine
         /// </summary>
         private void GameTick()
         {
-            /////////////////////////////////////////////////
-            // Threading batch control
-            /////////////////////////////////////////////////
-            ThreadPool.GetMaxThreads(out int total_available_threads, out int max_asyncthread_count);
-            int batch_size =max_asyncthread_count - 1; // incase we're running on something with more limited threads
-            // We never want to overrun our task pool, otherwise we'll hit the dreaded 0.5 second reschedual in a gametick.
-
+            // threading
             List<Task> thread_batch = new List<Task>();
-            Action<List<Task>> AwaitCurrentBatch = thread_batch =>
-            {
-                if(thread_batch.Count == 0) return;
-                Task.WaitAll(thread_batch);
-                thread_batch.Clear();
-            };
-
+            
             /////////////////////////////////////////////////
             // Entity creation
             /////////////////////////////////////////////////
@@ -109,7 +97,7 @@ namespace Engine
                         if(Vector3.Distance(world_load_position,ent.Position) <= world_load_radius) active_entities.Add(ent);
                     }
                 }));
-                if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                if(thread_batch.Count >= BatchSize) AwaitCurrentBatch(thread_batch);
             }
             AwaitCurrentBatch(thread_batch);
 
@@ -125,7 +113,7 @@ namespace Engine
                         if(ent == null) return; // TODO - Discover the desync
                         ent.SendSignal(Signals.editor_update);
                     }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    if(thread_batch.Count >= BatchSize) AwaitCurrentBatch(thread_batch);
                 }
                 AwaitCurrentBatch(thread_batch);
             }
@@ -160,7 +148,7 @@ namespace Engine
                             room.OnRoomDisabledUpdate();
                         }
                     }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    if(thread_batch.Count >= BatchSize) AwaitCurrentBatch(thread_batch);
                 }
                 AwaitCurrentBatch(thread_batch);
                 
@@ -175,7 +163,7 @@ namespace Engine
                         if(ent == null) return; // TODO - Discover the desync
                         ent.SendSignal(Signals.apply_physics);
                     }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    if(thread_batch.Count >= BatchSize) AwaitCurrentBatch(thread_batch);
                 }
                 AwaitCurrentBatch(thread_batch);
 
@@ -194,7 +182,7 @@ namespace Engine
                         if(!collider.Host.IsInitilized || !collider.Host.RoomEnabled() || !collider.Active) return;
                         collider.CheckCollisions(all_colliders);
                     }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    if(thread_batch.Count >= BatchSize) AwaitCurrentBatch(thread_batch);
                 }
                 AwaitCurrentBatch(thread_batch);
 
@@ -213,7 +201,7 @@ namespace Engine
                         if(ent == null) return; // TODO - Discover the desync
                         ent.SendSignal(Signals.update);
                     }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    if(thread_batch.Count >= BatchSize) AwaitCurrentBatch(thread_batch);
                 }
                 AwaitCurrentBatch(thread_batch);
 
@@ -225,7 +213,7 @@ namespace Engine
                         if(ent == null) return; // TODO - Discover the desync
                         ent.SendSignal(Signals.post_update);
                     }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    if(thread_batch.Count >= BatchSize) AwaitCurrentBatch(thread_batch);
                 }
                 AwaitCurrentBatch(thread_batch);
             }
@@ -254,7 +242,7 @@ namespace Engine
                             Entity.EntityLookupList.Remove(ent.EntityID);
                         }
                     }));
-                    if(thread_batch.Count >= batch_size) AwaitCurrentBatch(thread_batch);
+                    if(thread_batch.Count >= BatchSize) AwaitCurrentBatch(thread_batch);
                 }
             }
 

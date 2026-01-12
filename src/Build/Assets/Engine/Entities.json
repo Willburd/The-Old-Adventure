@@ -16,6 +16,8 @@
     },
     "actor_player": {
         "WorldRender": {},
+        "Collider": {},
+        "PhysicsBody": {},
         "Animator": {},
         "PlayerActorBehavior": {}
     }

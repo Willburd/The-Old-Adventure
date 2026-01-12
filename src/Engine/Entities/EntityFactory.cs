@@ -68,20 +68,6 @@ namespace Engine
         }
 
         /// <summary>
-        /// Gets a loaded actor by its entity key. 
-        /// </summary>
-        public static Actor? GetActor(string entity_key, Room? specific_room = null)
-        {
-            if(specific_room != null)
-            {
-                if(!specific_room.ActorLookupList.TryGetValue(entity_key, out Actor? roomactor)) return null;
-                return roomactor;
-            }
-            if(!Entity.EntityLookupList.TryGetValue(entity_key, out Entity? globalactor)) return null;
-            return (Actor)globalactor;
-        }
-
-        /// <summary>
         /// Attaches components to entities.
         /// </summary>
         protected virtual EntComponents.EntComponent ProduceComponents(Entity ent, string asset_key, string component_key)
@@ -117,10 +103,13 @@ namespace Engine
                     return new EntComponents.Input(ent);
 
                 ///////////////////////////////////////////////////
-                // Editor
+                // Cameras
                 ///////////////////////////////////////////////////
+                case "PlayerCameraBehavior":
+                    return new EntComponents.ActorBehavior.PlayerCameraBehavior(ent);
+
                 case "EditorCameraBehavior":
-                    return new EntComponents.EditorCameraBehavior(ent);
+                    return new EntComponents.ActorBehavior.EditorCameraBehavior(ent);
 
                 ///////////////////////////////////////////////////
                 // Behaviors

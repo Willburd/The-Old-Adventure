@@ -2,7 +2,7 @@ using System.Numerics;
 using Engine;
 using Silk.NET.Input;
 
-namespace EntComponents
+namespace EntComponents.ActorBehavior
 {
     public class EditorCameraBehavior(Entity host_entity) : EntComponent(host_entity)
     {
@@ -21,34 +21,26 @@ namespace EntComponents
             Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
             col?.SetShape(new Engine.ColliderShapes.PointCol());
             col?.SyncRelativePosition = false;
-            col?.CollisionMask = 0; // Nope, using this for debugging
+            col?.CollisionMask = Collider.mask_none; // Nope, using this for debugging
 
             return 1;
         }
 
         protected override uint HandleEditorUpdate()
         {
-            // TODO - Move this exit game stuff to somewhere in the Core somehow.
-            if(InputHandler.KeyPressed( InputHandler.input_key_exit ))
-            {
-                Core.RequestShutdown();
-                return 1;
-            }
-
             // Handle editor camera logic
             Input? input = (Input?)Host.GetComponent(typeof(Input));
             if(input != null)
             {
                 // Movement
                 float camera_speed = 0.1f;
-                Camera.WorldCamera?.Position += Vector3.Transform(input.MoveInput * camera_speed, Camera.WorldCamera.Location.Rotation);
+                Host.Position += Vector3.Transform(input.MoveInput * camera_speed, Host.Location.Rotation);
                 float rotate_speed = 0.02f;
-                Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Forward, input.CameraRoll * rotate_speed);
+                Host.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Forward, input.CameraRoll * rotate_speed);
 
                 // Mouse movement
-                float mouse_multiplier = 0.001f;
-                Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Vector3.Transform(Tools.Up, Quaternion.Inverse(Camera.WorldCamera.Rotation)), input.CameraInput.X * mouse_multiplier);
-                Camera.WorldCamera?.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraInput.Y * mouse_multiplier);
+                Host.Rotation *= Quaternion.CreateFromAxisAngle( Vector3.Transform(Tools.Up, Quaternion.Inverse(Host.Rotation)), input.CameraInput.X * InputHandler.mouse_sensitivity);
+                Host.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraInput.Y * InputHandler.mouse_sensitivity);
             }
             return 1;
         }

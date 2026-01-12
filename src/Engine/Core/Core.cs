@@ -59,8 +59,23 @@ namespace Engine
 
             // Finished game, end it off.
             WindowContext.Dispose();
+
+            // Setup batching
+            ThreadPool.GetMaxThreads(out int total_available_threads, out int max_asyncthread_count);
+            BatchSize = max_asyncthread_count - 1; // incase we're running on something with more limited threads
+            // We never want to overrun our task pool, otherwise we'll hit the dreaded 0.5 second reschedual in a gametick.
         }
 
+
+        // Threading batch control
+        public static int BatchSize { get; private set; }
+        public static void AwaitCurrentBatch(List<Task> thread_batch)
+        {
+            if(thread_batch.Count == 0) return;
+            Task.WaitAll(thread_batch);
+            thread_batch.Clear();
+        }
+        
         private static bool shutting_down = false;
         public static void RequestShutdown()
         {

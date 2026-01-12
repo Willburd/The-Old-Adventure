@@ -107,7 +107,7 @@ namespace Engine
         /// </summary>
         protected virtual void OnCleanup() { }
 
-        public float MinimumRenderDistance { get; protected set; } = 8f;
+        public float MinimumRenderDistance { get; set; } = 8f;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Component helpers

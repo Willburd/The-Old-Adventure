@@ -2,6 +2,7 @@ using Engine;
 using EntComponents;
 using System.Numerics;
 using Assets;
+using EntComponents.ActorBehavior;
 
 namespace TestAdventure
 {
@@ -34,6 +35,7 @@ namespace TestAdventure
             // Set collider
             Collider? terrain_collider = (Collider?)GetComponent(typeof(Collider));
             terrain_collider?.SetShape( new Engine.ColliderShapes.WorldGeometryCol(renderer.GetMeshByName("col.001")));
+            terrain_collider.CollisionMask = Collider.mask_worldgeo;
 
             Light glow_test = new Light(this);
             glow_test.SetData( new Vector4(1f,1f,1f,1f), 12f, new Vector3(4f,2f,8f));
@@ -48,7 +50,7 @@ namespace TestAdventure
             Camera.WorldCamera?.Position = new Vector3(0f,0.5f,1f);
 
             // Default actors
-            EntityFactory.CreateActor( "id_test", "actor_test", new Transform( new Vector3(0f,0f,0f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.adventure);
+            EntityFactory.CreateActor( PlayerActorBehavior.player_actor_id, "actor_player", new Transform( new Vector3(0f,0f,5f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
         }
 
         public override void LoadExits()
