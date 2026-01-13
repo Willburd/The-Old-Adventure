@@ -6,7 +6,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
 {
     public class Grounded(PlayerActorBehavior owner) : PlayerState(owner)
     {
-        public override void Start(PlayerState? previous_state)
+        public override void Start(BehaviorStateMachine? previous_state)
         {
             PhysicsBody? phys = (PhysicsBody?)GetComponent(typeof(PhysicsBody));
             phys?.HasGravity = true;
