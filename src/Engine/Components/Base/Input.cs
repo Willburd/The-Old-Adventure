@@ -47,7 +47,7 @@ namespace EntComponents
             get
             {
                 if(!ActiveUpdate) return Vector2.Zero;
-                return -InputHandler.MouseDelta;
+                return -new Vector2(InputHandler.MouseDelta.X * InputHandler.camera_sign_x, InputHandler.MouseDelta.Y * InputHandler.camera_sign_y);
             }
         }
 

@@ -21,7 +21,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
             if(hit != null && phys != null)
             {
                 // Snap to floor
-                Host.Position = new Vector3(Host.Position.X, (hit.Value.HitPosition + (Tools.Up * 0.01f)).Y, Host.Position.Z);
+                Host.Position = new Vector3(Host.Position.X, hit.Value.HitPosition.Y, Host.Position.Z);
                 phys.HasGravity = false;
                 phys.Velocity = new Vector3(phys.Velocity.X, 0f, phys.Velocity.Z);
 

@@ -24,6 +24,8 @@ namespace Engine
         public static Key input_key_cancel = Key.X;
         public static Key input_key_menu = Key.Enter;
 
+        public static int camera_sign_x = 1;
+        public static int camera_sign_y = -1;
         public static float mouse_sensitivity = 0.001f;
 
         // Public interface

@@ -10,7 +10,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
         public const float ground_run_maxspeed = 0.1f;
 
         
-        public const float ground_snap_threshold = 0.1f;
+        public const float ground_snap_threshold = 0.05f;
 
 
         public PlayerState(PlayerActorBehavior owner)
