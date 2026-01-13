@@ -32,6 +32,11 @@ namespace EntComponents
             {
                 Vector3 dir = Vector3.Zero;
                 if(!ActiveUpdate) return dir;
+                Vector2 pad_move = InputHandler.GamepadMove;
+                if(pad_move.Length() > 0)
+                {
+                    return new Vector3(pad_move.X,0f,pad_move.Y);
+                }
                 if(InputHandler.KeyHeld( InputHandler.input_key_forward )) dir += Tools.Forward;
                 if(InputHandler.KeyHeld( InputHandler.input_key_backward )) dir += Tools.Backward;
                 if(InputHandler.KeyHeld( InputHandler.input_key_left )) dir += Tools.Left;
@@ -47,6 +52,11 @@ namespace EntComponents
             get
             {
                 if(!ActiveUpdate) return Vector2.Zero;
+                Vector2 pad_move = InputHandler.GamepadCamera;
+                if(pad_move.Length() > 0)
+                {
+                    return pad_move;
+                }
                 return -new Vector2(InputHandler.MouseDelta.X * InputHandler.camera_sign_x, InputHandler.MouseDelta.Y * InputHandler.camera_sign_y);
             }
         }

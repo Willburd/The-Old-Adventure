@@ -8,6 +8,8 @@ namespace Engine
     {
         public static Dictionary<Key,bool> previous_input_state = [];
         public static Dictionary<Key,bool> input_state = [];
+        public static Dictionary<Button,bool> previous_button_state = [];
+        public static Dictionary<Button,bool> button_state = [];
 
         // Input statics, todo - Move to a config struct
         public static Key input_key_forward = Key.Up;
@@ -57,7 +59,21 @@ namespace Engine
                 previous_input_state.Add(key,false);
                 return false;
             }
-            return input_state[key] = !value && previous_input_state[key];
+            return input_state[key] != value && previous_input_state[key];
+        }
+        
+        /// <summary>
+        /// Used to check if a specific button was pressed this frame.
+        /// </summary>
+        public static bool ButtonPressed(Button button)
+        {
+            if(!button_state.TryGetValue(button, out bool value)) 
+            {
+                value = false;
+                button_state.Add(button, value);
+                previous_button_state.Add(button,false);
+            }
+            return value && !previous_button_state[button];
         }
         
         /// <summary>
@@ -69,12 +85,35 @@ namespace Engine
             return value;
         }
 
-        // The following is for engine use only.
+        /// <summary>
+        /// Used to check if a specific button was released this frame.
+        /// </summary>
+        public static bool ButtonReleased(Button button)
+        {
+            if(!button_state.TryGetValue(button, out bool value)) 
+            {
+                value = false;
+                button_state.Add(button, value);
+                previous_button_state.Add(button,false);
+            }
+            return button_state[button] != value && previous_button_state[button];
+        }
 
         /// <summary>
-        /// Fired from the window itself in HandleKeyDown(). Do not use externally.
+        /// Used to check if a specific button is held
         /// </summary>
-        public void InvokeKeyPressed(IKeyboard keyboard, Key key, int keyCode)
+        public static bool ButtonHeld(Button button)
+        {
+            if(!button_state.TryGetValue(button, out bool value)) return false;
+            return value;
+        }
+        
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        // The following is for engine use only.
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        public static void InvokeKeyPressed(IKeyboard keyboard, Key key, int keyCode)
         {
             // Exit game
             if(key == input_key_exit)
@@ -93,10 +132,7 @@ namespace Engine
             Entity.SendGlobalSignal(Core.Signals.global_key_pressed, key);
         }
 
-        /// <summary>
-        /// Fired from the window itself in HandleKeyUp(). Do not use externally.
-        /// </summary>
-        public void InvokeKeyReleased(IKeyboard keyboard, Key key, int keyCode)
+        public static void InvokeKeyReleased(IKeyboard keyboard, Key key, int keyCode)
         {
             if(input_state.TryAdd(key, false))
             {
@@ -106,6 +142,85 @@ namespace Engine
             input_state[key] = false;
             Entity.SendGlobalSignal(Core.Signals.global_key_released, key);
         }
+
+        public static void InvokeMouseWheel(IMouse mouse, ScrollWheel scrollWheel)
+        {
+            
+        }
+
+        public static void InvokeInputConnection(IInputDevice device, bool was_connected)
+        {
+            string connection_state = was_connected ? "connected" : "disconnected";
+            if(device is IGamepad)
+            {
+                InvokeGamepadConnection(was_connected, connection_state, (IGamepad)device);
+            }
+        }
+
+        public static void InvokeGamepadConnection(bool was_connected, string state, IGamepad gamepad)
+        {
+            if(was_connected)
+            {
+                gamepad.Deadzone = new(0.2f, DeadzoneMethod.AdaptiveGradient);
+                gamepad.ButtonDown += InvokeButtonPressed;
+                gamepad.ButtonUp += InvokeButtonReleased;
+                gamepad.ThumbstickMoved += InvokeThumbstickMoved;
+                gamepad.TriggerMoved += InvokeTriggerMoved;
+            }
+            else
+            {
+                gamepad.ButtonDown -= InvokeButtonPressed;
+                gamepad.ButtonUp -= InvokeButtonReleased;
+                gamepad.ThumbstickMoved -= InvokeThumbstickMoved;
+                gamepad.TriggerMoved -= InvokeTriggerMoved;
+            }
+        }
+
+        public static void InvokeButtonPressed(IGamepad gamepad, Button button)
+        {
+            // A new hand touches the beacon
+            if(button_state.TryAdd(button, true))
+            {
+                previous_button_state.Add(button,false);
+                return;
+            }
+            // Update previous state
+            button_state[button] = true;
+            Entity.SendGlobalSignal(Core.Signals.global_key_pressed, button);
+        }
+
+        public static void InvokeButtonReleased(IGamepad gamepad, Button button)
+        {
+            if(button_state.TryAdd(button, false))
+            {
+                previous_button_state.Add(button,true);
+                return;
+            }
+            button_state[button] = false;
+            Entity.SendGlobalSignal(Core.Signals.global_key_released, button);
+        }
+
+        public static Vector2 GamepadMove {get; private set;}
+        public static Vector2 GamepadCamera {get; private set;}
+        public static void InvokeThumbstickMoved(IGamepad gamepad, Thumbstick stick)
+        {
+            if(stick.Index == 0)
+            {
+                // left stick
+                GamepadMove = new Vector2(stick.X, stick.Y);
+            }
+            else
+            {
+                // right stick
+                GamepadCamera = new Vector2(stick.X, stick.Y);
+            }
+        }
+
+        public static void InvokeTriggerMoved(IGamepad gamepad, Trigger trigger)
+        {
+            
+        }
+
 
         /// <summary>
         /// Updates the previously held key state. Do not use externally.
@@ -117,7 +232,10 @@ namespace Engine
             {
                 previous_input_state[key] = state;
             }
-
+            foreach((Button button, bool state) in button_state)
+            {
+                previous_button_state[button] = state;
+            }
             // Mouse too!
             MouseUpdate();
         }

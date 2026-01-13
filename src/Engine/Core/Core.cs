@@ -66,9 +66,18 @@ namespace Engine
             // We never want to overrun our task pool, otherwise we'll hit the dreaded 0.5 second reschedual in a gametick.
         }
 
+        /// <summary>
+        /// Override during OnInit() with your own subtype if your adventure requires an extended InputHandler()
+        /// </summary>
+        protected static InputHandler input_handler = new InputHandler();
+
 
         // Threading batch control
         public static int BatchSize { get; private set; }
+
+        /// <summary>
+        /// Batch tasks to a certain count. Called during loops to await each batch. Prevents overloading threadpool.
+        /// </summary>
         public static void AwaitCurrentBatch(List<Task> thread_batch)
         {
             if(thread_batch.Count == 0) return;

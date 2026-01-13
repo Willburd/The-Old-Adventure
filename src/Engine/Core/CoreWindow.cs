@@ -2,6 +2,7 @@ using Silk.NET.Input;
 using Silk.NET.Windowing;
 using Silk.NET.OpenGL;
 using System.Numerics;
+using EntComponents;
 
 namespace Engine
 {
@@ -17,15 +18,16 @@ namespace Engine
             IInputContext input = WindowContext.CreateInput();
             for (int i = 0; i < input.Keyboards.Count; i++)
             {
-                input.Keyboards[i].KeyDown += HandleKeyDown;
-                input.Keyboards[i].KeyUp += HandleKeyUp;
+                input.Keyboards[i].KeyDown += InputHandler.InvokeKeyPressed;
+                input.Keyboards[i].KeyUp += InputHandler.InvokeKeyReleased;
             }
             for (int i = 0; i < input.Mice.Count; i++)
             {
                 input.Mice[i].Cursor.CursorMode = CursorMode.Raw;
                 input.Mice[i].MouseMove += HandleMouseRawUpdate;
-                input.Mice[i].Scroll += HandleMouseWheel;
+                input.Mice[i].Scroll += InputHandler.InvokeMouseWheel;
             }
+            input.ConnectionChanged += InputHandler.InvokeInputConnection;
 
             // Get the openGL context from the window
             OpenGLContext = WindowContext.CreateOpenGL();
