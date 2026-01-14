@@ -1,6 +1,7 @@
 using System.Numerics;
 using Engine;
 using Assets;
+using Engine.ColliderShapes;
 
 namespace EntComponents
 {
@@ -103,18 +104,40 @@ namespace EntComponents
             public uint collision_mask = collision_mask;
         }
 
-        public struct RaycastHit(Raycast ray, Collider hit_col, float dist)
+        public struct RaycastHit(Raycast ray, Collider hit_col, float dist, Vector3 normal)
         {
-            public Vector3 StartPos { get; set; } = ray.start_vector;
-            public Vector3 direction = ray.direction;
-            public Collider hit_collider = hit_col;
-            public float distance = dist;
+            public Vector3 StartPos { get; private set; } = ray.start_vector;
+            public Vector3 Direction { get; private set; } = ray.direction;
+            public float Distance { get; private set; } = dist;
+            public Vector3 Normal { get; private set; } = normal;
+            public Collider HitCollider { get; private set; } = hit_col;
             public Vector3 HitPosition
             {
                 get
                 {
-                    float perc = distance / direction.Length();
-                    return Vector3.Lerp(StartPos, StartPos + direction, perc);
+                    float perc = Distance / Direction.Length();
+                    return Vector3.Lerp(StartPos, StartPos + Direction, perc);
+                }
+            }
+            public bool IsFloor
+            {
+                get
+                {
+                    return Normal.Y > WorldGeometryCol.wall_y_threshold;
+                }
+            }
+            public bool IsCeil
+            {
+                get
+                {
+                    return Normal.Y < WorldGeometryCol.wall_y_threshold;
+                }
+            }
+            public bool IsWall
+            {
+                get
+                {
+                    return !IsFloor && !IsCeil;
                 }
             }
         }
@@ -130,10 +153,10 @@ namespace EntComponents
             RaycastHit? nearest_hit = null;
             foreach (RaycastHit hit in hits)
             {
-                if (hit.distance < dist)
+                if (hit.Distance < dist)
                 {
                     nearest_hit = hit;
-                    dist = hit.distance;
+                    dist = hit.Distance;
                 }
             }
             return nearest_hit;

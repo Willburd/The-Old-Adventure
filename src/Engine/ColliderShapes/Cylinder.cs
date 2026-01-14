@@ -12,7 +12,7 @@ namespace Engine.ColliderShapes
 
         private bool InRadius(Vector3 center, Vector3 check_point, float check_radius)
         {
-            return Tools.FlattenedDistance(center, check_point) <= check_radius;
+            return Tools.FlatDistance(center, check_point) <= check_radius;
         }
 
         public override Collider.Collision? InOurShape(PointCol point_col)

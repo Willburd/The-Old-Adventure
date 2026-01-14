@@ -56,8 +56,15 @@ namespace Engine
         {
             return Vector3.Normalize(end - start);
         }
+        
+        public static Vector3 FlatDirVector(Vector3 start, Vector3 end)
+        {
+            Vector3 vec = Vector3.Normalize(end - start);
+            vec.Y = 0;
+            return vec;
+        }
 
-        public static float FlattenedDistance(Vector3 start, Vector3 end)
+        public static float FlatDistance(Vector3 start, Vector3 end)
         {
             start.Y = 0;
             end.Y = 0;

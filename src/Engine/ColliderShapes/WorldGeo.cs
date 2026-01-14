@@ -25,7 +25,7 @@ namespace Engine.ColliderShapes
                 float? distance = check_ray.Intersects(tri);
                 if (distance != null && distance <= ray.direction.Length())
                 {
-                    return new Collider.RaycastHit(ray, ColHost, (float)distance);
+                    return new Collider.RaycastHit(ray, ColHost, (float)distance, new Vector3(tri.Normal.X, tri.Normal.Y, tri.Normal.Z));
                 }
             }
             return null;

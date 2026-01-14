@@ -42,7 +42,6 @@ namespace Assets
         public GL GL { get; }
 
         public List<Vim.Math3d.Triangle> CollisionTriangles { get; private set; } = [];
-        public List<Vector3> CollisionNormals { get; private set; } = [];
 
         private struct VBOInit(int element_count, VertexAttribPointerType type, bool normalized, uint size, bool is_collision)
         {
@@ -104,7 +103,6 @@ namespace Assets
                         Vim.Math3d.Vector3 triC = vert_collection[(int)Indices[index++]];
                         Vim.Math3d.Triangle tri = new(triA, triB, triC);
                         CollisionTriangles.Add(tri);
-                        CollisionNormals.Add(new Vector3(tri.Normal.X, tri.Normal.Y, tri.Normal.Z));
                     }
                 }
             }

@@ -19,27 +19,23 @@ namespace EntComponents.ActorBehavior.CameraStates
 
             // Camera movement
             Input input = (Input)Host.GetComponent(typeof(Input));
-            if (input != null)
-            {
-                camera_rotation_angle += input.CameraMove.X;
-                camera_pitch_angle += input.CameraMove.Y;
-                camera_pitch_angle = Math.Clamp(camera_pitch_angle, 2f, 4.50f);
-            }
+            camera_rotation_angle += input.CameraMove.X;
+            camera_pitch_angle += input.CameraMove.Y;
+            camera_pitch_angle = Math.Clamp(camera_pitch_angle, 2f, 4.50f);
 
             // Get our desired location, then check if we're blocked by a wall
             Quaternion aim_rotation = Quaternion.Inverse(Quaternion.CreateFromAxisAngle(Tools.Right, camera_pitch_angle) * Quaternion.CreateFromAxisAngle(Tools.Up, camera_rotation_angle));
             Vector3 want_offset = Vector3.Transform(Tools.Forward, aim_rotation) * distance_from_player;
 
             // Push against walls
-            Vector3 goal_pos = start_pos + want_offset;
             Collider.RaycastHit? hit = Collider.DoRaycastNearest(start_pos, want_offset, Collider.mask_worldgeo);
             if (hit != null)
             {
-                //goal_pos = hit.Value.HitPosition;
+                want_offset = Vector3.Normalize(want_offset) * hit.Value.Distance * 0.99f;
             }
 
             // Move to the new position
-            Host.Position = goal_pos;
+            Host.Position = start_pos + want_offset;
             Host.Rotation = Tools.LookAt(Host.Position, start_pos);
         }
     }

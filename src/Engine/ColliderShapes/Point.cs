@@ -40,7 +40,7 @@ namespace Engine.ColliderShapes
         {
             Vector3 other_point = cylinder_col.ColHost.OffsetPos;
 
-            float radius_distance = Tools.FlattenedDistance(ColHost.OffsetPos, other_point);
+            float radius_distance = Tools.FlatDistance(ColHost.OffsetPos, other_point);
             float height_distance = MathF.Abs(ColHost.OffsetPos.Y - (other_point.Y + (cylinder_col.height / 2f)));
 
             if (radius_distance <= cylinder_col.radius && height_distance <= (cylinder_col.height / 2f))

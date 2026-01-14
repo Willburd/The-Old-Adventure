@@ -15,11 +15,10 @@ namespace Engine.ColliderShapes
             float? distance = test_ray.Intersects(our_triangle);
             if (distance != null && distance <= ray.direction.Length())
             {
-                return new Collider.RaycastHit(ray, ColHost, (float)distance);
+                return new Collider.RaycastHit(ray, ColHost, (float)distance, new Vector3(our_triangle.Normal.X, our_triangle.Normal.Y, our_triangle.Normal.Z));
             }
             return null;
         }
-
 
         public override MeshData? DrawModel()
         {
