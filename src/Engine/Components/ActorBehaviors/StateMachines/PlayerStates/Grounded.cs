@@ -41,7 +41,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
             {
                 // Rotation
                 Vector3 move_dir = input.Move;
-                Host.Rotation *= Tools.CreateFromAxisAngle(Tools.Up, move_dir.X * -0.1f);
+                Host.Rotation *=  Quaternion.CreateFromAxisAngle(Tools.Up, move_dir.X * -0.1f);
                 // Movement
                 move_dir.X = 0f;
                 phys.Velocity = Tools.Accelerate(phys.Velocity, Vector3.Transform(move_dir, Host.Rotation) * ground_acceleration, ground_run_maxspeed);
