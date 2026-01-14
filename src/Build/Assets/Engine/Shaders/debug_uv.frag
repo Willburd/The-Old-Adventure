@@ -1,10 +1,9 @@
 #version 330 core
 in vec2 TexCoords;
-in vec3 Normal;
 
 out vec4 FragColor;
 
 void main()
 {
-    FragColor = vec4( Normal.x, Normal.y, Normal.z, 1.0);
+    FragColor = vec4( TexCoords.x, TexCoords.y, 0.0, 1.0);
 }

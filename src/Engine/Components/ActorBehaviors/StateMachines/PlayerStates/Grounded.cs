@@ -49,6 +49,12 @@ namespace EntComponents.ActorBehavior.PlayerStates
                     phys.Velocity = Tools.Accelerate(phys.Velocity, Vector3.Transform(Tools.Forward, Host.Rotation) * ground_acceleration, ground_run_maxspeed);
                 }
             }
+
+
+
+
+            // Wallblocking
+            
         }
     }
 }

@@ -7,6 +7,8 @@ namespace Engine.ColliderShapes
 {
     public class WorldGeometryCol : ColShape
     {
+        public const float wall_y_threshold = 0.4f; // Must match in debug_walls.frag shader
+
         public WorldGeometryCol(MeshData mesh)
         {
             Debug.Assert(mesh != null, "Collision mesh was assigned as null");

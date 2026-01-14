@@ -102,7 +102,7 @@ namespace Assets
                         Vim.Math3d.Vector3 triA = vert_collection[(int)Indices[index++]];
                         Vim.Math3d.Vector3 triB = vert_collection[(int)Indices[index++]];
                         Vim.Math3d.Vector3 triC = vert_collection[(int)Indices[index++]];
-                        Vim.Math3d.Triangle tri = new Vim.Math3d.Triangle(triA, triB, triC);
+                        Vim.Math3d.Triangle tri = new(triA, triB, triC);
                         CollisionTriangles.Add(tri);
                         CollisionNormals.Add(new Vector3(tri.Normal.X, tri.Normal.Y, tri.Normal.Z));
                     }
