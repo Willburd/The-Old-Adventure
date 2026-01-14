@@ -169,7 +169,7 @@ namespace Engine
         {
             if (was_connected)
             {
-                gamepad.Deadzone = new(0.2f, DeadzoneMethod.AdaptiveGradient);
+                gamepad.Deadzone = new(0.1f, DeadzoneMethod.Traditional);
                 gamepad.ButtonDown += InvokeButtonPressed;
                 gamepad.ButtonUp += InvokeButtonReleased;
                 gamepad.ThumbstickMoved += InvokeThumbstickMoved;
