@@ -193,7 +193,7 @@ namespace Engine
             }
             // Update previous state
             button_state[button.Name] = true;
-            Entity.SendGlobalSignal(Core.Signals.global_input_pressed, null, button);
+            Entity.SendGlobalSignal(Core.Signals.global_input_pressed, null, button.Name);
         }
 
         public static void InvokeButtonReleased(IGamepad gamepad, Button button)
@@ -204,7 +204,7 @@ namespace Engine
                 return;
             }
             button_state[button.Name] = false;
-            Entity.SendGlobalSignal(Core.Signals.global_input_released, null, button);
+            Entity.SendGlobalSignal(Core.Signals.global_input_released, null, button.Name);
         }
 
         public static void InvokeThumbstickMoved(IGamepad gamepad, Thumbstick stick)

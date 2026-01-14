@@ -27,6 +27,10 @@ namespace Engine
                 input.Mice[i].MouseMove += HandleMouseRawUpdate;
                 input.Mice[i].Scroll += InputHandler.InvokeMouseWheel;
             }
+            for (int i = 0; i < input.Gamepads.Count; i++)
+            {
+                InputHandler.InvokeGamepadConnection( true, "connected", input.Gamepads[i]);
+            }
             input.ConnectionChanged += InputHandler.InvokeInputConnection;
 
             // Get the openGL context from the window
