@@ -4,6 +4,7 @@
 using System.Diagnostics;
 using Silk.NET.OpenGL;
 using Rendering;
+using System.Numerics;
 
 namespace Assets
 {
@@ -41,6 +42,7 @@ namespace Assets
         public GL GL { get; }
 
         public List<Vim.Math3d.Triangle> CollisionTriangles { get; private set; } = [];
+        public List<Vector3> CollisionNormals { get; private set; } = [];
 
         private struct VBOInit(int element_count, VertexAttribPointerType type, bool normalized, uint size, bool is_collision)
         {
@@ -97,10 +99,12 @@ namespace Assets
                     index = 0;
                     while (index < Indices.Length)
                     {
-                        Vim.Math3d.Vector3 triX = vert_collection[(int)Indices[index++]];
-                        Vim.Math3d.Vector3 triY = vert_collection[(int)Indices[index++]];
-                        Vim.Math3d.Vector3 triZ = vert_collection[(int)Indices[index++]];
-                        CollisionTriangles.Add(new Vim.Math3d.Triangle(triX, triY, triZ));
+                        Vim.Math3d.Vector3 triA = vert_collection[(int)Indices[index++]];
+                        Vim.Math3d.Vector3 triB = vert_collection[(int)Indices[index++]];
+                        Vim.Math3d.Vector3 triC = vert_collection[(int)Indices[index++]];
+                        Vim.Math3d.Triangle tri = new Vim.Math3d.Triangle(triA, triB, triC);
+                        CollisionTriangles.Add(tri);
+                        CollisionNormals.Add(new Vector3(tri.Normal.X, tri.Normal.Y, tri.Normal.Z));
                     }
                 }
             }
