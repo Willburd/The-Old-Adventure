@@ -59,7 +59,7 @@ namespace Engine
         public Transform(float anglex, float angley, float anglez)
         {
             Position = Vector3.Zero;
-            Rotation = Tools.Euler(anglex, angley, anglez);
+            Rotation = Tools.Degrees(anglex, angley, anglez);
             Scale = Vector3.One;
         }
 

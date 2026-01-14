@@ -102,6 +102,9 @@ namespace Engine
                 case "Input":
                     return new EntComponents.Input(ent);
 
+                case "Rotates":
+                    return new EntComponents.Rotates(ent);
+
                 ///////////////////////////////////////////////////
                 // Cameras
                 ///////////////////////////////////////////////////

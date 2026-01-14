@@ -7,12 +7,18 @@ namespace Engine
 {
     public static partial class Tools
     {
-        public static Quaternion Euler(float xangle, float yangle, float zangle)
+        /// <summary>
+        /// Creates a quaternion with the specified eular angles in degrees.
+        /// </summary>
+        public static Quaternion Degrees(float xangle, float yangle, float zangle)
         {
-            return Euler(new Vector3(xangle, yangle, zangle));
+            return Degrees(new Vector3(xangle, yangle, zangle));
         }
 
-        public static Quaternion Euler(Vector3 v)
+        /// <summary>
+        /// Creates a quaternion with the specified eular angles in degrees packed in a vector.
+        /// </summary>
+        public static Quaternion Degrees(Vector3 v)
         {
             // We assume degrees.
             v.X = DegreesToRadians(v.X);
@@ -21,11 +27,17 @@ namespace Engine
             return Radians(v);
         }
 
+        /// <summary>
+        /// Creates a quaternion with the specified eular angles in radians.
+        /// </summary>
         public static Quaternion Radians(float xangle, float yangle, float zangle)
         {
             return Radians(new Vector3(xangle, yangle, zangle));
         }
 
+        /// <summary>
+        /// Creates a quaternion with the specified eular angles in radians packed in a vector.
+        /// </summary>
         public static Quaternion Radians(Vector3 v)
         {
             // Four dimensional rotation WOOOOOOOOOOOOO
@@ -44,6 +56,9 @@ namespace Engine
             };
         }
 
+        /// <summary>
+        /// Convert's a radian's forward angle into a packed vector of eular angles in radians
+        /// </summary>
         public static Vector3 ToRadians(Quaternion q)
         {
             Vector3 angles = new();
@@ -72,7 +87,10 @@ namespace Engine
             return angles;
         }
 
-        public static Vector3 ToEulers(Quaternion q)
+        /// <summary>
+        /// Convert's a radian's forward angle into a packed vector of eular angles in degrees
+        /// </summary>
+        public static Vector3 ToDegrees(Quaternion q)
         {
             Vector3 angles = ToRadians(q);
             angles.X = RadiansToDegrees(angles.X);
@@ -128,10 +146,16 @@ namespace Engine
             return LookAt(current, target);
         }
 
-        public static Quaternion GetFlatRotation(Vector3 dirvec)
+        public static Quaternion FlatRotation(Vector3 dirvec)
         {
-            if (dirvec.X == 0 && dirvec.Y == 0) return Quaternion.Identity;
+            dirvec = Vector3.Normalize(dirvec);
+            if (dirvec.X == 0 && dirvec.Z == 0) return Quaternion.Identity;
             return LookAtLockedZ(Vector3.Zero, dirvec);
+        }
+        
+        public static Quaternion FlatRotation(Quaternion source)
+        {
+            return FlatRotation( Vector3.Transform(Forward, source));
         }
     }
 }

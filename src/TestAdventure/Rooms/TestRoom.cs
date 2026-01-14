@@ -45,6 +45,28 @@ namespace TestAdventure
 
             // Default actors
             EntityFactory.CreateActor( PlayerActorBehavior.player_actor_id, "actor_player", new Transform( new Vector3(0f,0f,5f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
+
+
+            // WTF IS GOING ON HERE
+            AssetLoader.ModelAssetLoad("test_pointer", AssetLoader.AssetDirectoryEngine + "/Models/pointer.fbx", AssetLoader.AssetSource.engine);
+            for(int i = 0; i < 360; i += 45)
+            {
+                float angle = i;
+                float offset = i / 25f;
+
+                Actor temp = new(new Transform(new Vector3(offset, 1f, 0f)), "pointA"+angle, null, this);
+                WorldRender render = new(temp);
+                Rotates rot = new Rotates(temp);
+                rot.rotation = new Vector3(0f, 0.01f, 0f);
+                render.SetModel(AssetLoader.ModelAssetGet("test_pointer",AssetLoader.AssetSource.engine), AssetLoader.MaterialAssetGet("debug_normals", AssetLoader.AssetSource.engine));
+                temp.Rotation = Quaternion.CreateFromAxisAngle(Tools.Up, Tools.DegreesToRadians(angle));
+
+                Actor new_temp = new(new Transform(new Vector3(offset, 2f, 0f)), "pointB"+angle, null, this);
+                rot = new Rotates(new_temp);
+                rot.sync_to_actor = temp;
+                WorldRender new_render = new(new_temp);
+                new_render.SetModel(AssetLoader.ModelAssetGet("test_pointer",AssetLoader.AssetSource.engine), AssetLoader.MaterialAssetGet("debug_normals", AssetLoader.AssetSource.engine));
+            }
         }
 
         public override void LoadExits()
