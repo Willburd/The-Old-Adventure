@@ -31,21 +31,21 @@ namespace Engine
 
             // Get the openGL context from the window
             OpenGLContext = WindowContext.CreateOpenGL();
-            singleton?.ConfigureGL();
+            singleton.ConfigureGL();
             
             // Set buffering mode
             WindowContext.ShouldSwapAutomatically = false;
 
             // Load adventure specific assets
-            singleton?.LoadBaseAssets();
-            singleton?.OnLoadAssets();
+            singleton.LoadBaseAssets();
+            singleton.OnLoadAssets();
 
             // Request the first frame right away!
             RequestUpdate = true;
             RequestRender = true;
 
             // Finalize setup with gamespecific postinit.
-            singleton?.OnInit();
+            singleton.OnInit();
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Engine
         private static void HandleWindowClosing()
         {
             // Shutdown
-            singleton?.MainLoopEnd();
+            singleton.MainLoopEnd();
         }
 
         /// <summary>

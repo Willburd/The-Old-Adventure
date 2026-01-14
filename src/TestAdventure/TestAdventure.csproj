@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>../Build/Bin</OutputPath>
+    <NoWarn>$(NoWarn);CS8600;CS8601;CS8602;CS8604;CS8605</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

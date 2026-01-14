@@ -30,7 +30,7 @@ namespace EntComponents.ActorBehavior
             fly_destination = new Vector3(MathF.Round(Tools.RandRange(-1,1)) * 1000f, 60f, MathF.Round(Tools.RandRange(-1,1)) * 1000f);
             if(fly_destination.X == fly_destination.Z) fly_destination.X = -1000;
             
-            TriggerVolume? trigger = (TriggerVolume?)Host.GetComponent(typeof(TriggerVolume));
+            TriggerVolume trigger = (TriggerVolume)Host.GetComponent(typeof(TriggerVolume));
 
             // TODO - Set trigger volume size
 

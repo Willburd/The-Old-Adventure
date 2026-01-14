@@ -120,14 +120,14 @@ namespace Assets
 
         public void Bind()
         {
-            VAO?.Bind();
+            VAO.Bind();
         }
 
         public void Dispose()
         {
-            VAO?.Dispose();
-            VBO?.Dispose();
-            EBO?.Dispose();
+            VAO.Dispose();
+            VBO.Dispose();
+            EBO.Dispose();
         }
     }
 }

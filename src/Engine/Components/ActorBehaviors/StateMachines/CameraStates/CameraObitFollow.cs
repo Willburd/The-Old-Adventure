@@ -11,14 +11,14 @@ namespace EntComponents.ActorBehavior.CameraStates
         public override void Process()
         {
             // Try to orbit player
-            Actor? player = Actor.GetActor( PlayerActorBehavior.player_actor_id);
+            Actor player = Actor.GetActor( PlayerActorBehavior.player_actor_id);
             if(player == null) return;
 
             // From the center of the player
             Vector3 start_pos = player.Position + (Tools.Up * 0.2f); // halfway up actor, more or less.
             
             // Camera movement
-            Input? input = (Input?)Host.GetComponent(typeof(Input));
+            Input input = (Input)Host.GetComponent(typeof(Input));
             if(input != null)
             {
                 camera_rotation_angle += input.CameraMove.X;

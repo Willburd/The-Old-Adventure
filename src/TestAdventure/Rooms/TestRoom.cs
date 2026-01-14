@@ -29,19 +29,19 @@ namespace TestAdventure
         public override void LoadActors()
         {
             // Create renderer model, move us into place.
-            WorldRender? renderer = (WorldRender?)GetComponent(typeof(WorldRender));
-            renderer?.SetModel( AssetLoader.ModelAssetGet("testroom_terrain"), AssetLoader.MaterialAssetGet("testroom_terrain"));
+            WorldRender renderer = (WorldRender)GetComponent(typeof(WorldRender));
+            renderer.SetModel( AssetLoader.ModelAssetGet("testroom_terrain"), AssetLoader.MaterialAssetGet("testroom_terrain"));
 
             // Set collider
-            Collider? terrain_collider = (Collider?)GetComponent(typeof(Collider));
-            terrain_collider?.SetShape( new Engine.ColliderShapes.WorldGeometryCol(renderer.GetMeshByName("col.001")));
-            terrain_collider?.CollisionMask = Collider.mask_worldgeo;
+            Collider terrain_collider = (Collider)GetComponent(typeof(Collider));
+            terrain_collider.SetShape( new Engine.ColliderShapes.WorldGeometryCol(renderer.GetMeshByName("col.001")));
+            terrain_collider.CollisionMask = Collider.mask_worldgeo;
 
             Light glow_test = new Light(this);
             glow_test.SetData( new Vector4(1f,1f,1f,1f), 12f, new Vector3(4f,2f,8f));
 
             // Move camera
-            Camera.WorldCamera?.Position = new Vector3(0f,0.5f,1f);
+            Camera.WorldCamera.Position = new Vector3(0f,0.5f,1f);
 
             // Default actors
             EntityFactory.CreateActor( PlayerActorBehavior.player_actor_id, "actor_player", new Transform( new Vector3(0f,0f,5f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);

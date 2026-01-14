@@ -6,7 +6,7 @@ namespace Engine.ColliderShapes
 {
     public class ColShape()
     {
-        public Collider ColHost { get; set;}
+        public Collider? ColHost { get; set; } = null;
 
         public Collider.Collision? InOurShape(Collider other_collider)
         {

@@ -17,7 +17,7 @@ namespace Engine
 
         public override void Unload()
         {
-            (data as ModelData)?.Dispose();
+            (data as ModelData).Dispose();
             base.Unload();
         }
         

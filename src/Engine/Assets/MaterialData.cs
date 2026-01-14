@@ -52,7 +52,7 @@ namespace Assets
         
         public void UseBlendMode()
         {
-            Core.OpenGLContext?.BlendFunc(BlendingSource, BlendingDestination);
+            Core.OpenGLContext.BlendFunc(BlendingSource, BlendingDestination);
         }
 
         public void Dispose()

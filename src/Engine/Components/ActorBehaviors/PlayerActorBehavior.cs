@@ -54,16 +54,16 @@ namespace EntComponents.ActorBehavior
         protected override uint HandleCreate()
         {
             // Set the render's model and materials
-            WorldRender? renderer = (WorldRender?)Host.GetComponent(typeof(WorldRender));
+            WorldRender renderer = (WorldRender)Host.GetComponent(typeof(WorldRender));
 
             var sign_model = AssetLoader.ModelAssetGet("sign");
-            renderer?.SetModel( sign_model, AssetLoader.MaterialAssetGet("sign_wood"));
-            renderer?.SetMaterial( AssetLoader.MaterialAssetGet("sign_face"), sign_model.GetMeshIndex("Sign_1"));
+            renderer.SetModel( sign_model, AssetLoader.MaterialAssetGet("sign_wood"));
+            renderer.SetMaterial( AssetLoader.MaterialAssetGet("sign_face"), sign_model.GetMeshIndex("Sign_1"));
             
             // Collision
-            Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
-            collision?.SetShape( new Engine.ColliderShapes.CylinderCol(0.75f,0.25f));
-            collision?.CollisionMask = Collider.mask_player;
+            Collider collision = (Collider)Host.GetComponent(typeof(Collider));
+            collision.SetShape( new Engine.ColliderShapes.CylinderCol(0.75f,0.25f));
+            collision.CollisionMask = Collider.mask_player;
 
             // Player handling
             SetPlayerState( new PlayerStates.Grounded(this));
@@ -91,7 +91,7 @@ namespace EntComponents.ActorBehavior
             return 1;
         }
 
-        protected override uint HandleCollisions(List<Collider.Collision>? collisions)
+        protected override uint HandleCollisions(List<Collider.Collision> collisions)
         {
             return 1;
         }

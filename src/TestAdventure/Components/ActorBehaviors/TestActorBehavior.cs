@@ -37,20 +37,20 @@ namespace EntComponents.ActorBehavior
         protected override uint HandleCreate()
         {
             // Set the render's model and materials
-            WorldRender? renderer = (WorldRender?)Host.GetComponent(typeof(WorldRender));
+            WorldRender renderer = (WorldRender)Host.GetComponent(typeof(WorldRender));
 
             var sign_model = AssetLoader.ModelAssetGet("sign");
-            renderer?.SetModel( sign_model, AssetLoader.MaterialAssetGet("sign_wood"));
-            renderer?.SetMaterial( AssetLoader.MaterialAssetGet("sign_face"), sign_model.GetMeshIndex("Sign_1"));
+            renderer.SetModel( sign_model, AssetLoader.MaterialAssetGet("sign_wood"));
+            renderer.SetMaterial( AssetLoader.MaterialAssetGet("sign_face"), sign_model.GetMeshIndex("Sign_1"));
             
             // Collision
-            Collider? collision = (Collider?)Host.GetComponent(typeof(Collider));
-            collision?.SetShape( new Engine.ColliderShapes.PointCol());
+            Collider collision = (Collider?)Host.GetComponent(typeof(Collider));
+            collision.SetShape( new Engine.ColliderShapes.PointCol());
 
             // Trigger
-            TriggerVolume? trigger = (TriggerVolume?)Host.GetComponent(typeof(TriggerVolume));
-            trigger?.SetShape( new Engine.ColliderShapes.SphereCol(0.5f));
-            trigger?.OffsetPos = new(0f,0f,1f);
+            TriggerVolume trigger = (TriggerVolume?)Host.GetComponent(typeof(TriggerVolume));
+            trigger.SetShape( new Engine.ColliderShapes.SphereCol(0.5f));
+            trigger.OffsetPos = new(0f,0f,1f);
 
             return 1;
         }

@@ -50,7 +50,7 @@ namespace Environments
             float night_intensity = Math.Clamp(-MathF.Sin(cycle_mod * (MathF.PI * 2)) * 1.5f, 0f,1f);
             float dawn_intensity = Math.Clamp( MathF.Pow(MathF.Sin((cycle_mod * MathF.PI) + (MathF.PI * 0.5f)), 20f) * 1.1f, 0f,1f);
 
-            MaterialData? skymat = skybox_model?.GetMaterial(0);
+            MaterialData skymat = skybox_model.GetMaterial(0);
             if(skymat == null) return;
             for(int i = 0; i < skymat.Uniforms.Count; i++)
             {

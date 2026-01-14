@@ -18,7 +18,7 @@ namespace Engine
 
         public override void Unload()
         {
-            (data as ShaderData)?.Dispose();
+            (data as ShaderData).Dispose();
             base.Unload();
         }
         

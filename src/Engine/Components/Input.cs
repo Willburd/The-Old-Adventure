@@ -16,7 +16,7 @@ namespace EntComponents
             return [Core.Signals.global_input_pressed, Core.Signals.global_input_released];
         }
         
-        public override uint ReceiveSignal(Core.Signals signal, object[] args)
+        public override uint ReceiveSignal(Core.Signals signal, object?[] args)
         {
             switch(signal)            
             {

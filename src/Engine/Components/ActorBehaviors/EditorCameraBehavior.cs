@@ -18,10 +18,10 @@ namespace EntComponents.ActorBehavior
         protected override uint HandleCreate()
         {
             
-            Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
-            col?.SetShape(new Engine.ColliderShapes.PointCol());
-            col?.SyncRelativePosition = false;
-            col?.CollisionMask = Collider.mask_none; // Nope, using this for debugging
+            Collider col = (Collider)Host.GetComponent(typeof(Collider));
+            col.SetShape(new Engine.ColliderShapes.PointCol());
+            col.SyncRelativePosition = false;
+            col.CollisionMask = Collider.mask_none; // Nope, using this for debugging
 
             return 1;
         }
@@ -29,19 +29,18 @@ namespace EntComponents.ActorBehavior
         protected override uint HandleEditorUpdate()
         {
             // Handle editor camera logic
-            Input? input = (Input?)Host.GetComponent(typeof(Input));
-            if(input != null)
-            {
-                // Movement
-                float camera_speed = 0.1f;
-                Host.Position += Vector3.Transform(input.Move * camera_speed, Host.Location.Rotation);
-                float rotate_speed = 0.02f;
-                Host.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Forward, input.CameraRoll * rotate_speed);
+            Input input = (Input)Host.GetComponent(typeof(Input));
 
-                // Mouse movement
-                Host.Rotation *= Quaternion.CreateFromAxisAngle( Vector3.Transform(Tools.Up, Quaternion.Inverse(Host.Rotation)), input.CameraMove.X);
-                Host.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraMove.Y);
-            }
+            // Movement
+            float camera_speed = 0.1f;
+            Host.Position += Vector3.Transform(input.Move * camera_speed, Host.Location.Rotation);
+            float rotate_speed = 0.02f;
+            Host.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Forward, input.CameraRoll * rotate_speed);
+
+            // Mouse movement
+            Host.Rotation *= Quaternion.CreateFromAxisAngle( Vector3.Transform(Tools.Up, Quaternion.Inverse(Host.Rotation)), input.CameraMove.X);
+            Host.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraMove.Y);
+        
             return 1;
         }
 
@@ -50,11 +49,11 @@ namespace EntComponents.ActorBehavior
             if(key == InputHandler.KeyIDConfirm || button == InputHandler.ButtonIDConfirm)
             {
                 // Raycast testing
-                Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
+                Collider col = (Collider)Host.GetComponent(typeof(Collider));
                 Collider.RaycastHit? hit = Collider.DoRaycastNearest( Host.Position, Vector3.Transform(Tools.Forward * 5f,Host.Rotation));
-                if(hit != null) 
+                if (hit != null)
                 {
-                    col?.OffsetPos = hit.Value.HitPosition;
+                    col.OffsetPos = hit.Value.HitPosition;
                     Console.WriteLine("COLLISION POSITION [" + hit.Value.HitPosition + "]");
                 }
                 return 1;

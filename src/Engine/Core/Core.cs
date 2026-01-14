@@ -6,15 +6,15 @@ namespace Engine
 {
     public partial class Core 
     {
-        public static Core? singleton;
+        public static Core singleton;
         protected const string AdventureTitle = "The Old Adventure";
         protected readonly string adventure_id;
-        public static string? AdventureID
+        public static string AdventureID
         {
             get
             {
                 if(singleton == null) return "UnitTest";
-                return singleton?.adventure_id;
+                return singleton.adventure_id;
             }
         }
 

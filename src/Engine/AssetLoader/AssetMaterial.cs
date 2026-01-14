@@ -16,7 +16,7 @@ namespace Engine
 
         public override void Unload()
         {
-            (data as MaterialData)?.Dispose();
+            (data as MaterialData).Dispose();
             base.Unload();
         }
         

@@ -49,21 +49,21 @@ namespace Engine
         public virtual void ConfigureGL()
         {
             // Default draw control
-            OpenGLContext?.ClearColor(Color.CornflowerBlue);
+            OpenGLContext.ClearColor(Color.CornflowerBlue);
             
             // Depth control
-            OpenGLContext?.Enable(EnableCap.DepthTest);
-            OpenGLContext?.DepthFunc(DepthFunction.Less);
+            OpenGLContext.Enable(EnableCap.DepthTest);
+            OpenGLContext.DepthFunc(DepthFunction.Less);
 
             // Blending
-            OpenGLContext?.Enable(EnableCap.Blend);
+            OpenGLContext.Enable(EnableCap.Blend);
 
             // Backface culling
-            OpenGLContext?.Enable(EnableCap.CullFace);
-            OpenGLContext?.CullFace(GLEnum.Back);
+            OpenGLContext.Enable(EnableCap.CullFace);
+            OpenGLContext.CullFace(GLEnum.Back);
 
             // GLTF format
-            OpenGLContext?.FrontFace(FrontFaceDirection.Ccw); 
+            OpenGLContext.FrontFace(FrontFaceDirection.Ccw); 
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Engine
             {
                 ElapsedGameFrames++;
                 // We're effectively lerping between the previous draw and the new draw based on how far the gametick has progressed
-                singleton?.RenderTick(GameTickDelta); 
+                singleton.RenderTick(GameTickDelta); 
                 game_fps_accumulator %= FpsTickInterval;
                 RequestRender = false;
                 WindowContext.SwapBuffers();
@@ -92,7 +92,7 @@ namespace Engine
         {
             // Clear screen
             List<ShaderData.Uniform> vertex_uniforms = [];
-            OpenGLContext?.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Draw radius
             Vector3 world_load_position = Vector3.Zero;
@@ -129,7 +129,7 @@ namespace Engine
             }
 
             // Primary rendering
-            OpenGLContext?.Clear(ClearBufferMask.DepthBufferBit);
+            OpenGLContext.Clear(ClearBufferMask.DepthBufferBit);
             vertex_uniforms.Clear();
             ApplyEnvironmentUniforms(vertex_uniforms, tick_delta);
             OnRenderTick();
@@ -142,7 +142,7 @@ namespace Engine
             }
             
             // Late rendering
-            OpenGLContext?.Clear(ClearBufferMask.DepthBufferBit);
+            OpenGLContext.Clear(ClearBufferMask.DepthBufferBit);
             OnPostRenderTick();
             foreach((uint key, List<Entity> draw_list) in render_queue)
             {
@@ -153,7 +153,7 @@ namespace Engine
             }
 
             // Hud rendering
-            OpenGLContext?.Clear(ClearBufferMask.DepthBufferBit);
+            OpenGLContext.Clear(ClearBufferMask.DepthBufferBit);
             OnRenderHudTick();
             foreach((uint key, List<Entity> draw_list) in render_queue)
             {

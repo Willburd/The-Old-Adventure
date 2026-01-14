@@ -87,7 +87,7 @@ namespace Assets
                     vertex.Color = new Vector4(1f,1f,1f,0f);
                 }
                 // texture coordinates
-                if (mesh->MTextureCoords[0] != null) // does the mesh contain texture coordinates?
+                if (mesh->MTextureCoords[0] != null) // does the mesh contain texture coordinates
                 {
                     // a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
                     // use models where a vertex can have multiple texture coordinates so we always take the first set (0).

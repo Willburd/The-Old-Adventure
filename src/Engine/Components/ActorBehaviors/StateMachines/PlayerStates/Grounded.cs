@@ -8,15 +8,15 @@ namespace EntComponents.ActorBehavior.PlayerStates
     {
         public override void Start(BehaviorStateMachine? previous_state)
         {
-            PhysicsBody? phys = (PhysicsBody?)GetComponent(typeof(PhysicsBody));
-            phys?.HasGravity = true;
-            phys?.Friction = new Vector3(ground_friction, 0f, ground_friction);
+            PhysicsBody phys = (PhysicsBody)GetComponent(typeof(PhysicsBody));
+            phys.HasGravity = true;
+            phys.Friction = new Vector3(ground_friction, 0f, ground_friction);
         }
 
         public override void Process()
         {
-            Input? input = (Input?)Host.GetComponent(typeof(Input));
-            PhysicsBody? phys = (PhysicsBody?)GetComponent(typeof(PhysicsBody));
+            Input input = (Input)Host.GetComponent(typeof(Input));
+            PhysicsBody phys = (PhysicsBody)GetComponent(typeof(PhysicsBody));
 
             // Check for floor
             bool on_ground = false;
@@ -32,7 +32,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
             else
             {
                 // Gravity
-                phys?.HasGravity = true;
+                phys.HasGravity = true;
                 on_ground = false;
             }
 
@@ -44,7 +44,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
                 Host.Rotation *= Tools.CreateFromAxisAngle(Tools.Up, move_dir.X * -0.1f);
                 // Movement
                 move_dir.X = 0f;
-                phys?.Velocity = Tools.Accelerate(phys.Velocity, Vector3.Transform(move_dir, Host.Rotation) * ground_acceleration, ground_run_maxspeed);
+                phys.Velocity = Tools.Accelerate(phys.Velocity, Vector3.Transform(move_dir, Host.Rotation) * ground_acceleration, ground_run_maxspeed);
             }
         }
     }

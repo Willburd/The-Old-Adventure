@@ -13,7 +13,7 @@ namespace Engine
 
         public static void RemoveAsset(string asset_key)
         {
-            if(!asset_library.TryGetValue(asset_key, out LoadedAsset? value)) return;
+            if(!asset_library.TryGetValue(asset_key, out LoadedAsset value)) return;
             value.Unload();
             asset_library.Remove(asset_key);
         }
@@ -195,9 +195,9 @@ namespace Engine
         /// <summary>
         /// Get an asset from asset_library. The asset must exist, weirdly named to avoid accidental use. Use the proper get asset functions.
         /// </summary>
-        public static LoadedAsset LocateAsset(string asset_key)
+        public static LoadedAsset? LocateAsset(string asset_key)
         {
-            asset_library.TryGetValue(asset_key, out LoadedAsset? found_asset);
+            asset_library.TryGetValue(asset_key, out LoadedAsset found_asset);
             return found_asset;
         }
         

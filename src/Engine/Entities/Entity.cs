@@ -139,7 +139,7 @@ namespace Engine
         /// </summary>
         public List<EntComponent> GetComponentList(Type comp_type)
         {
-            attached_components.TryGetValue(comp_type, out List<EntComponent>? found_list);
+            attached_components.TryGetValue(comp_type, out List<EntComponent> found_list);
             if(found_list == null) return [];
             return found_list;
         }
@@ -149,7 +149,7 @@ namespace Engine
         /// </summary>
         public EntComponent? GetComponent(Type comp_type)
         {
-            attached_components.TryGetValue(comp_type, out List<EntComponent>? found_list);
+            attached_components.TryGetValue(comp_type, out List<EntComponent> found_list);
             if(found_list == null) return null;
             return found_list[0];
         }
@@ -198,7 +198,7 @@ namespace Engine
         public uint SendSignal(Core.Signals signal, params object?[] args)
         {
             if(!IsInitilized) return 0; // Nope, we don't do anything with this until we are initilized!
-            if(!linked_signals.TryGetValue(signal, out List<EntComponent>? signal_list)) return 0;
+            if(!linked_signals.TryGetValue(signal, out List<EntComponent> signal_list)) return 0;
             uint return_flags = 0;
             foreach(EntComponent comp in signal_list)
             {

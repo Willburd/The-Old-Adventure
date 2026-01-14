@@ -20,7 +20,7 @@ namespace Engine
                 if(!specific_room.ActorLookupList.TryGetValue(entity_key, out Actor? roomactor)) return null;
                 return roomactor;
             }
-            if(!Entity.EntityLookupList.TryGetValue(entity_key, out Entity? globalactor)) return null;
+            if(!EntityLookupList.TryGetValue(entity_key, out Entity? globalactor)) return null;
             return (Actor)globalactor;
         }
 

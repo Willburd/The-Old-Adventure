@@ -289,7 +289,7 @@ namespace EntComponents
             return sig_list;
         }
 
-        public override uint ReceiveSignal(Core.Signals signal, object[] args)
+        public override uint ReceiveSignal(Core.Signals signal, object?[] args)
         {
             switch(signal)
             {

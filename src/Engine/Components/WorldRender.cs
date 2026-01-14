@@ -74,7 +74,7 @@ namespace EntComponents
             return [Core.Signals.render_priority, Core.Signals.render];
         }
 
-        public override uint ReceiveSignal(Core.Signals signal, object[] args)
+        public override uint ReceiveSignal(Core.Signals signal, object?[] args)
         {
             switch(signal)
             {

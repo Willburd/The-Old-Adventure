@@ -45,7 +45,7 @@ namespace Engine
             if(game_tick_accumulator >= GameTickInterval || RequestUpdate)
             {
                 ElapsedGameTicks++;
-                singleton?.GameTick();
+                singleton.GameTick();
                 game_tick_accumulator %= GameTickInterval;
                 RequestUpdate = false;
             }

@@ -18,7 +18,7 @@ namespace Engine
 
         public override void Unload()
         {
-            (data as TextureData)?.Dispose();
+            (data as TextureData).Dispose();
             base.Unload();
         }
         

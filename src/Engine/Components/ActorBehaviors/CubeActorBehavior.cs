@@ -34,8 +34,8 @@ namespace EntComponents.ActorBehavior
         protected override uint HandleCreate()
         {
             // Set the render's model and materials
-            WorldRender? renderer = (WorldRender?)Host.GetComponent(typeof(WorldRender));
-            renderer?.SetModel( AssetLoader.ModelAssetGet("test_cube", AssetLoader.AssetSource.engine), AssetLoader.MaterialAssetGet("example", AssetLoader.AssetSource.engine));
+            WorldRender renderer = (WorldRender)Host.GetComponent(typeof(WorldRender));
+            renderer.SetModel(AssetLoader.ModelAssetGet("test_cube", AssetLoader.AssetSource.engine), AssetLoader.MaterialAssetGet("example", AssetLoader.AssetSource.engine));
 
             return 1;
         }
