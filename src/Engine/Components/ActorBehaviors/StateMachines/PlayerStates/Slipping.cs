@@ -21,23 +21,16 @@ namespace EntComponents.ActorBehavior.PlayerStates
             Collider col = (Collider)GetComponent(typeof(Collider));
             float player_radius = ((CylinderCol)col.CollisionShape).radius;
 
-            // Check for floor
-            Collider.RaycastHit? hit = FloorCollision();
-            if (hit == null)
+            // process collisions
+            Collider.RaycastHit? floorhit = StandardProcessFloors(phys);
+            if (floorhit == null)
             {
                 Player.SetPlayerState(new Falling(Player));
                 return;
             }
-
-            // Snap to floor
-            Host.Position = new Vector3(hit.Value.HitPosition.X, hit.Value.HitPosition.Y, hit.Value.HitPosition.Z) + new Vector3(0f, -ground_snap_distance, 0f);
-            phys.Velocity = new Vector3(phys.Velocity.X, 0f, phys.Velocity.Z);
-
-            // Process walls
-            StandardProcessWalls(phys, player_radius);
-
+            
             // Slide down hills
-            float slip = FloorSlipFactor(hit.Value.Normal);
+            float slip = FloorSlipFactor(floorhit.Value.Normal);
 
             // TODO - Get material properties to decide slip threshold
 
@@ -49,7 +42,10 @@ namespace EntComponents.ActorBehavior.PlayerStates
             }
 
             // Keep slipping
-            phys.Velocity = Tools.Accelerate(phys.Velocity, Tools.FlatDirVector(Vector3.Zero, hit.Value.Normal) * slip_acceleration, slip_maxspeed);
+            phys.Velocity = Tools.Accelerate(phys.Velocity, Tools.FlatDirVector(Vector3.Zero, floorhit.Value.Normal) * slip_acceleration, slip_maxspeed);
+
+            StandardProcessWalls(phys, player_radius, ((CylinderCol)col.CollisionShape).height);
+            StandardProcessCeilings(phys, ((CylinderCol)col.CollisionShape).height);
         }
     }
 }

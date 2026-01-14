@@ -130,7 +130,7 @@ namespace EntComponents
             {
                 get
                 {
-                    return Normal.Y < WorldGeometryCol.wall_y_threshold;
+                    return Normal.Y < -WorldGeometryCol.wall_y_threshold;
                 }
             }
             public bool IsWall

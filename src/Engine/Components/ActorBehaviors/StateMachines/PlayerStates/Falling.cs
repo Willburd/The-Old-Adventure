@@ -20,13 +20,9 @@ namespace EntComponents.ActorBehavior.PlayerStates
             Collider col = (Collider)GetComponent(typeof(Collider));
             float player_radius = ((CylinderCol)col.CollisionShape).radius;
 
-            // Check for floor
-            Collider.RaycastHit? hit = FloorCollision();
-            if (hit != null)
+            // process floors
+            if (StandardProcessFloors(phys) != null)
             {
-                // Snap to floor
-                Host.Position = new Vector3(hit.Value.HitPosition.X, hit.Value.HitPosition.Y, hit.Value.HitPosition.Z) + new Vector3(0f, -ground_snap_distance, 0f);
-                phys.Velocity = new Vector3(phys.Velocity.X, 0f, phys.Velocity.Z);
                 Player.SetPlayerState(new Grounded(Player));
                 return;
             }
@@ -42,7 +38,8 @@ namespace EntComponents.ActorBehavior.PlayerStates
             }
 
             // Process walls
-            StandardProcessWalls(phys, player_radius);
+            StandardProcessWalls(phys, player_radius, ((CylinderCol)col.CollisionShape).height);
+            StandardProcessCeilings(phys, ((CylinderCol)col.CollisionShape).height);
         }
     }
 }

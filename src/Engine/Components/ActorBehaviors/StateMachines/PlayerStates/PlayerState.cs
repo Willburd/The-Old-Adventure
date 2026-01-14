@@ -25,7 +25,6 @@ namespace EntComponents.ActorBehavior.PlayerStates
         // Collision raycasts
         protected const float ground_snap_distance = 0.09f; // Amount above the ground that the origin of the player will be
         protected const float wallcast_y_lower = 0.04f; // Beneath this point walls will be ignored (like steps on a staircase)
-        protected const float character_height = 0.65f; // The height of the character, preventing movement under ceilings
 
         protected PlayerActorBehavior Player
         {
@@ -41,31 +40,79 @@ namespace EntComponents.ActorBehavior.PlayerStates
             return Tools.FlatRotation(Tools.DirVector(campos, Host.Position));
         }
 
-        protected Collider.RaycastHit? FloorCollision()
+        private Collider.RaycastHit? FloorCollision()
         {
             Collider.RaycastHit? hit = Collider.DoRaycastNearest(Host.Position + Tools.Up, Tools.Down * (1f + ground_snap_distance), Collider.mask_worldgeo);
-            if (hit != null) Host.Position = new Vector3(hit.Value.HitPosition.X, hit.Value.HitPosition.Y, hit.Value.HitPosition.Z) + new Vector3(0f, -ground_snap_distance, 0f);
-            return hit;
+            if (hit != null && !hit.Value.IsCeil)
+            {
+                Host.Position = new Vector3(hit.Value.HitPosition.X, hit.Value.HitPosition.Y, hit.Value.HitPosition.Z) + new Vector3(0f, -ground_snap_distance, 0f);
+                return hit;
+            }
+            return null;
         }
 
-        protected Collider.RaycastHit? WallCollision(Vector3 velocity, float height, float radius)
+        private Collider.RaycastHit? WallCollision(Vector3 velocity, float height, float radius)
         {
             Vector3 moving_vector = velocity;
             moving_vector.Y = 0f; // Flatten it
             moving_vector = Vector3.Normalize(moving_vector);
 
             Collider.RaycastHit? hit = Collider.DoRaycastNearest(Host.Position + (Tools.Up * height), moving_vector * radius, Collider.mask_worldgeo);
-            if (hit != null && hit.Value.IsWall) Host.Position = hit.Value.HitPosition + (Tools.Down * height) + (moving_vector * -radius);
-            return hit;
+            if (hit != null && !hit.Value.IsFloor)
+            {
+                Host.Position = hit.Value.HitPosition + (Tools.Down * height) + (moving_vector * -radius);
+                return hit;
+            }
+            return null;
         }
 
-        protected void StandardProcessWalls(PhysicsBody phys, float player_radius)
+        private Collider.RaycastHit? CeilingCollision(float height)
+        {
+            Collider.RaycastHit? hit = Collider.DoRaycastNearest(Host.Position, Tools.Up * height, Collider.mask_worldgeo);
+            if (hit != null && hit.Value.IsCeil)
+            {
+                Host.Position = hit.Value.HitPosition + (Tools.Down * height);
+                return hit;
+            }
+            return null;
+        }
+
+        protected Collider.RaycastHit? StandardProcessFloors(PhysicsBody phys)
+        {
+            // Snap to floor
+            Collider.RaycastHit? hit = FloorCollision();
+            if (hit != null)
+            {
+                Host.Position = new Vector3(hit.Value.HitPosition.X, hit.Value.HitPosition.Y, hit.Value.HitPosition.Z) + new Vector3(0f, -ground_snap_distance, 0f);
+                phys.Velocity = new Vector3(phys.Velocity.X, 0f, phys.Velocity.Z);
+                return hit;
+            }
+            return null;
+        }
+
+        protected Collider.RaycastHit? StandardProcessWalls(PhysicsBody phys, float player_radius, float height)
         {
             // Check upper Wallblocking
-            Collider.RaycastHit? velocity_hit = WallCollision(phys.Velocity, character_height, player_radius);
+            Collider.RaycastHit? velocity_hit = WallCollision(phys.Velocity, height, player_radius);
             velocity_hit ??= WallCollision(phys.Velocity, wallcast_y_lower, player_radius); // secondary check
-            if (velocity_hit == null) return;
-            phys.Velocity = new Vector3(0f, phys.Velocity.Y, 0f);
+            if (velocity_hit != null)
+            {
+                phys.Velocity = new Vector3(0f, phys.Velocity.Y, 0f);
+                return velocity_hit;
+            }
+            return null;
+        }
+
+        protected Collider.RaycastHit? StandardProcessCeilings(PhysicsBody phys, float height)
+        {
+            // Check for ceiling, prevent movement into crushing spaced
+            Collider.RaycastHit? ceilhit = CeilingCollision(height);
+            if (ceilhit != null)
+            {
+                phys.Velocity = new Vector3(0f, MathF.Min(0f, phys.Velocity.Y), 0f);
+                return ceilhit;
+            }
+            return null;
         }
 
         protected float FloorSlipFactor(Vector3 normal)
