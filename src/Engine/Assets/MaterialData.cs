@@ -5,7 +5,7 @@ namespace Assets
 {
     public class MaterialData : IDisposable
     {
-        public MaterialData(List<TextureData> textures_data,  List<ShaderData.Uniform> mat_unitform_data, ShaderData shader, BlendingFactor blend_src = BlendingFactor.SrcAlpha, BlendingFactor blend_dest = BlendingFactor.OneMinusSrcAlpha)
+        public MaterialData(List<TextureData> textures_data, List<ShaderData.Uniform> mat_unitform_data, ShaderData shader, BlendingFactor blend_src = BlendingFactor.SrcAlpha, BlendingFactor blend_dest = BlendingFactor.OneMinusSrcAlpha)
         {
             render_shader = shader;
             uniforms = mat_unitform_data;
@@ -17,10 +17,10 @@ namespace Assets
         private readonly ShaderData render_shader;
         private List<ShaderData.Uniform> uniforms;
         private List<TextureData> textures;
-        
-        public BlendingFactor BlendingSource {get; private set;}
-        public BlendingFactor BlendingDestination {get; private set;}
-        
+
+        public BlendingFactor BlendingSource { get; private set; }
+        public BlendingFactor BlendingDestination { get; private set; }
+
         public ShaderData Shader
         {
             get
@@ -49,7 +49,7 @@ namespace Assets
                 return textures;
             }
         }
-        
+
         public void UseBlendMode()
         {
             Core.OpenGLContext.BlendFunc(BlendingSource, BlendingDestination);
@@ -57,7 +57,7 @@ namespace Assets
 
         public void Dispose()
         {
-            
+
         }
     }
 }

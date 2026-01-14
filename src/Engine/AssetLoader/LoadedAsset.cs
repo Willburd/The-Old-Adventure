@@ -14,7 +14,7 @@ namespace Engine
         public LoadedAsset(string key, string path)
         {
             asset_key = key;
-            if(path != "") file_path = path;
+            if (path != "") file_path = path;
             Console.WriteLine(GetType() + " > " + asset_key + " : " + file_path);
         }
 #pragma warning restore CS8618
@@ -95,13 +95,13 @@ namespace Engine
         {
             Console.WriteLine(GetType() + " X " + asset_key + " : " + file_path);
         }
-        
+
         /// <summary>
         /// Checks if an asset loaded correctly.
         /// </summary>
         public virtual bool CheckIntegrity(bool valid = true)
         {
-            if(!valid)
+            if (!valid)
             {
                 Console.WriteLine("Assets " + asset_key + " was invalid!");
                 asset_type = AssetType.invalid;
@@ -115,7 +115,7 @@ namespace Engine
         /// </summary>
         public virtual bool CheckType(AssetType check_type)
         {
-            if(asset_type == check_type) return true;
+            if (asset_type == check_type) return true;
             return false;
         }
     }

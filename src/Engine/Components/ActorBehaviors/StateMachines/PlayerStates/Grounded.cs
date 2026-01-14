@@ -21,10 +21,10 @@ namespace EntComponents.ActorBehavior.PlayerStates
             // Check for floor
             bool on_ground = false;
             Collider.RaycastHit? hit = Collider.DoRaycastNearest(Host.Position + Tools.Up, Tools.Down * (1f + ground_snap_threshold), Collider.mask_worldgeo);
-            if(hit != null && phys != null)
+            if (hit != null && phys != null)
             {
                 // Snap to floor
-                Host.Position = new Vector3(hit.Value.HitPosition.X, hit.Value.HitPosition.Y, hit.Value.HitPosition.Z) + new Vector3(0f,-ground_snap_threshold,0f);
+                Host.Position = new Vector3(hit.Value.HitPosition.X, hit.Value.HitPosition.Y, hit.Value.HitPosition.Z) + new Vector3(0f, -ground_snap_threshold, 0f);
                 phys.Velocity = new Vector3(phys.Velocity.X, 0f, phys.Velocity.Z);
                 phys.HasGravity = false;
                 on_ground = true;
@@ -37,7 +37,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
             }
 
             // Movement
-            if(input != null)
+            if (input != null)
             {
                 // Rotation
                 Vector3 move_dir = input.Move;

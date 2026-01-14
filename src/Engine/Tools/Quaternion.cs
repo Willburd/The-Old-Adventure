@@ -11,7 +11,7 @@ namespace Engine
         {
             return Euler(new Vector3(xangle, yangle, zangle));
         }
-        
+
         public static Quaternion Euler(Vector3 v)
         {
             // We assume degrees.
@@ -20,7 +20,7 @@ namespace Engine
             v.Z = DegreesToRadians(v.Z);
             return Radians(v);
         }
-        
+
         public static Quaternion Radians(float xangle, float yangle, float zangle)
         {
             return Radians(new Vector3(xangle, yangle, zangle));
@@ -96,7 +96,7 @@ namespace Engine
 
             if (Math.Abs(dot - (-1.0f)) < 0.000001f)
             {
-                return new Quaternion(0f,-1f,0f,0f);
+                return new Quaternion(0f, -1f, 0f, 0f);
             }
             if (Math.Abs(dot - (1.0f)) < 0.000001f)
             {
@@ -107,18 +107,18 @@ namespace Engine
             Vector3 rotAxis = Vector3.Normalize(Vector3.Cross(Tools.Forward, forwardVector));
             return Quaternion.Normalize(CreateFromAxisAngle(rotAxis, rotAngle));
         }
-        
+
         /// Similar to above, but the up axis is locked to Y+, TODO - Merge with above and allow specifying an axis of rotation
         public static Quaternion LookAt(Vector3 sourcePoint, Vector3 destPoint)
         {
-            if(sourcePoint == destPoint) return Quaternion.Identity;
+            if (sourcePoint == destPoint) return Quaternion.Identity;
             // Solve rotation around Y axis
             Vector3 dirvec = Tools.DirVector(destPoint, sourcePoint);
             float rad_angle = MathF.Atan2(dirvec.X, dirvec.Z);
-            Quaternion around_y_rot = CreateFromAxisAngle( Tools.Up, rad_angle);
+            Quaternion around_y_rot = CreateFromAxisAngle(Tools.Up, rad_angle);
             // Now rotate to face Y axis difference
             dirvec = Vector3.Transform(dirvec, Quaternion.Inverse(around_y_rot));
-            return around_y_rot * CreateFromAxisAngle( Tools.Right, -MathF.Atan2(dirvec.Y, dirvec.Z));
+            return around_y_rot * CreateFromAxisAngle(Tools.Right, -MathF.Atan2(dirvec.Y, dirvec.Z));
         }
 
         // just in case you need that function also
@@ -136,8 +136,8 @@ namespace Engine
 
         public static Quaternion LookAtLockedZ(Vector3 current, Vector3 target)
         {
-            current *= new Vector3(1f,0f,1f);
-            target *= new Vector3(1f,0f,1f);
+            current *= new Vector3(1f, 0f, 1f);
+            target *= new Vector3(1f, 0f, 1f);
             return LookAt(current, target);
         }
     }

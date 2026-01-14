@@ -10,25 +10,25 @@ namespace Engine.ColliderShapes
 
         public Collider.Collision? InOurShape(Collider other_collider)
         {
-            if(other_collider.CollisionShape == null) return null;
+            if (other_collider.CollisionShape == null) return null;
 
             Type collision_type = other_collider.CollisionShape.GetType();
-            if(collision_type == typeof(PointCol))          return InOurShape( (PointCol)other_collider.CollisionShape);
-            if(collision_type == typeof(SphereCol))         return InOurShape( (SphereCol)other_collider.CollisionShape);
-            if(collision_type == typeof(CylinderCol))       return InOurShape( (CylinderCol)other_collider.CollisionShape);
+            if (collision_type == typeof(PointCol)) return InOurShape((PointCol)other_collider.CollisionShape);
+            if (collision_type == typeof(SphereCol)) return InOurShape((SphereCol)other_collider.CollisionShape);
+            if (collision_type == typeof(CylinderCol)) return InOurShape((CylinderCol)other_collider.CollisionShape);
             return null;
         }
 
         protected Collider.Collision? SwapSourceAndHit(Collider.Collision? col_hit)
         {
-            if(col_hit.HasValue) // Swap source and trigger
+            if (col_hit.HasValue) // Swap source and trigger
             {
                 Collider.Collision acol = col_hit.Value;
 
                 Collider temp = acol.source_collider;
                 acol.source_collider = ColHost;
                 acol.triggering_collider = temp;
-                
+
                 return acol;
             }
             return col_hit;
@@ -56,7 +56,7 @@ namespace Engine.ColliderShapes
         {
             return null;
         }
-        
+
 
         /// <summary>
         /// Model used for visualization during debugging

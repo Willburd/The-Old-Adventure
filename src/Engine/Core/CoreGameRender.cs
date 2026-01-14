@@ -9,35 +9,35 @@ namespace Engine
 {
     public partial class Core
     {
-        public static GL OpenGLContext {get; private set;}
+        public static GL OpenGLContext { get; private set; }
 
         public static bool draw_collisions = true;
 
         /// <summary>
         /// Number of frames per second for rendering.
         /// </summary>
-        private static double FPS {get; set;} = 60;
+        private static double FPS { get; set; } = 60;
 
         /// <summary>
         /// The threshold needed for the delta_time accumulator to trigger a frame render.
         /// </summary>
-        private static double FpsTickInterval {get{ return 1.0 /  FPS; }}
+        private static double FpsTickInterval { get { return 1.0 / FPS; } }
         private static double game_fps_accumulator = 0;
-        
+
         /// <summary>
         /// Skips delta_time check for rendering frames, forcing a frame to be renderer as soon as possible. Used when changing scenes for example.
         /// </summary>
-        private static bool RequestRender {get; set;}
+        private static bool RequestRender { get; set; }
 
         /// <summary>
         /// Number of renderer frames since launch.
         /// </summary>
-        public static long ElapsedGameFrames {get; private set;}
-        
+        public static long ElapsedGameFrames { get; private set; }
+
         /// <summary>
         /// Percent difference from the previous game tick, to the next gametick. Used to do "inbetween" frames during rendering. 
         /// </summary>
-        public static double GameTickDelta {get{ return game_tick_accumulator % GameTickInterval / GameTickInterval; }}
+        public static double GameTickDelta { get { return game_tick_accumulator % GameTickInterval / GameTickInterval; } }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Game Rendering
@@ -50,7 +50,7 @@ namespace Engine
         {
             // Default draw control
             OpenGLContext.ClearColor(Color.CornflowerBlue);
-            
+
             // Depth control
             OpenGLContext.Enable(EnableCap.DepthTest);
             OpenGLContext.DepthFunc(DepthFunction.Less);
@@ -63,7 +63,7 @@ namespace Engine
             OpenGLContext.CullFace(GLEnum.Back);
 
             // GLTF format
-            OpenGLContext.FrontFace(FrontFaceDirection.Ccw); 
+            OpenGLContext.FrontFace(FrontFaceDirection.Ccw);
         }
 
         /// <summary>
@@ -71,14 +71,14 @@ namespace Engine
         /// </summary>
         private static void HandleWindowRender(double deltaTime)
         {
-            if(shutting_down) return;
+            if (shutting_down) return;
 
             game_fps_accumulator += deltaTime;
-            if(game_fps_accumulator >= FpsTickInterval || RequestRender)
+            if (game_fps_accumulator >= FpsTickInterval || RequestRender)
             {
                 ElapsedGameFrames++;
                 // We're effectively lerping between the previous draw and the new draw based on how far the gametick has progressed
-                singleton.RenderTick(GameTickDelta); 
+                singleton.RenderTick(GameTickDelta);
                 game_fps_accumulator %= FpsTickInterval;
                 RequestRender = false;
                 WindowContext.SwapBuffers();
@@ -96,35 +96,35 @@ namespace Engine
 
             // Draw radius
             Vector3 world_load_position = Vector3.Zero;
-            if(Camera.WorldCamera != null) world_load_position = Camera.WorldCamera.Position;
+            if (Camera.WorldCamera != null) world_load_position = Camera.WorldCamera.Position;
 
             float frustum_dot_product_limit = -0.35f; // Very generous
             Vector3 camera_vector = Tools.Forward;
-            if(Camera.WorldCamera != null) camera_vector = Vector3.Transform(Tools.Forward,Camera.WorldCamera.Rotation);
+            if (Camera.WorldCamera != null) camera_vector = Vector3.Transform(Tools.Forward, Camera.WorldCamera.Rotation);
 
             // Assemble a list in order of priority.
-            SortedList<uint,List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
+            SortedList<uint, List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
             ApplyPrerenderEnvironmentUniforms(vertex_uniforms, tick_delta);
             OnPreRenderTick();
-            foreach(Entity check in Entity.EntityList)
+            foreach (Entity check in Entity.EntityList)
             {
                 // Check the entity for a render priority. We only draw if we have one, as that means we have a component that wants to draw!
                 uint priority = check.SendSignal(Signals.render_priority, tick_delta);
-                if(priority == 0) continue; // Not visible if no component responds.
+                if (priority == 0) continue; // Not visible if no component responds.
 
                 // Check vis culling
-                float dist = Vector3.Distance(world_load_position,check.Position);
-                if(dist > world_load_radius) continue;
-                if(dist > check.MinimumRenderDistance)
+                float dist = Vector3.Distance(world_load_position, check.Position);
+                if (dist > world_load_radius) continue;
+                if (dist > check.MinimumRenderDistance)
                 {
                     float dot_prod = Vector3.Dot(Tools.DirVector(check.Position, world_load_position), camera_vector);
-                    if(dot_prod >= frustum_dot_product_limit) continue; // Nothing behind us
+                    if (dot_prod >= frustum_dot_product_limit) continue; // Nothing behind us
                 }
 
                 // perform prerender while we're here.
-                check.SendSignal(Signals.pre_render, tick_delta, vertex_uniforms); 
+                check.SendSignal(Signals.pre_render, tick_delta, vertex_uniforms);
                 // Add to queue for all of the following render loops, instead of checking every entity for each one! We only store the ones that replied with a draw priority!
-                if(!render_queue.ContainsKey(priority)) render_queue.Add(priority, []);
+                if (!render_queue.ContainsKey(priority)) render_queue.Add(priority, []);
                 render_queue[priority].Add(check);
             }
 
@@ -133,20 +133,20 @@ namespace Engine
             vertex_uniforms.Clear();
             ApplyEnvironmentUniforms(vertex_uniforms, tick_delta);
             OnRenderTick();
-            foreach((uint key, List<Entity> draw_list) in render_queue)
+            foreach ((uint key, List<Entity> draw_list) in render_queue)
             {
-                foreach(Entity draw in draw_list)
+                foreach (Entity draw in draw_list)
                 {
                     draw.SendSignal(Signals.render, tick_delta, vertex_uniforms);
                 }
             }
-            
+
             // Late rendering
             OpenGLContext.Clear(ClearBufferMask.DepthBufferBit);
             OnPostRenderTick();
-            foreach((uint key, List<Entity> draw_list) in render_queue)
+            foreach ((uint key, List<Entity> draw_list) in render_queue)
             {
-                foreach(Entity draw in draw_list)
+                foreach (Entity draw in draw_list)
                 {
                     draw.SendSignal(Signals.post_render, tick_delta);
                 }
@@ -155,9 +155,9 @@ namespace Engine
             // Hud rendering
             OpenGLContext.Clear(ClearBufferMask.DepthBufferBit);
             OnRenderHudTick();
-            foreach((uint key, List<Entity> draw_list) in render_queue)
+            foreach ((uint key, List<Entity> draw_list) in render_queue)
             {
-                foreach(Entity draw in draw_list)
+                foreach (Entity draw in draw_list)
                 {
                     draw.SendSignal(Signals.hud_render, tick_delta);
                 }
@@ -172,8 +172,8 @@ namespace Engine
         {
             Vector4[] light_pos = new Vector4[max_lights];
             Vector4[] light_col = new Vector4[max_lights];
-            light_pos[0] = new(0f,0f,0f,float.PositiveInfinity);
-            light_col[0] = new(1f,1f,1f,1f);
+            light_pos[0] = new(0f, 0f, 0f, float.PositiveInfinity);
+            light_col[0] = new(1f, 1f, 1f, 1f);
             ApplyVertexUniforms(vertex_uniforms, light_pos, light_col, 1, Vector4.Zero, float.PositiveInfinity);
         }
 
@@ -189,13 +189,13 @@ namespace Engine
             // Environment
             float fog_distance = 1000f;
             Vector4 fog_color = Tools.ColorToVector(Color.CornflowerBlue);
-            light_pos[0] = new(0f,0f,0f,float.PositiveInfinity);
-            if(Room.loaded_rooms.Count == 0)
+            light_pos[0] = new(0f, 0f, 0f, float.PositiveInfinity);
+            if (Room.loaded_rooms.Count == 0)
             {
                 // Default lighting
-                light_col[0] = new(1f,1f,1f,1f);
+                light_col[0] = new(1f, 1f, 1f, 1f);
             }
-            else if(Room.loaded_rooms.Count == 1)
+            else if (Room.loaded_rooms.Count == 1)
             {
                 // Single environment, apply just it.
                 light_col[0] = Room.loaded_rooms[0].Environment.AmbientLight;
@@ -210,14 +210,14 @@ namespace Engine
                 Vector4 blended_environment_fog = new();
                 float blended_environment_fog_distance = 0f;
                 float total_distance = 0f;
-                foreach(Room room in Room.loaded_rooms)
+                foreach (Room room in Room.loaded_rooms)
                 {
                     total_distance += Vector3.Distance(camera_pos, room.Position);
                 }
-                foreach(Room room in Room.loaded_rooms)
+                foreach (Room room in Room.loaded_rooms)
                 {
                     float distance_merge = Vector3.Distance(camera_pos, room.Position) / total_distance;
-                    if(room.Environment != null)
+                    if (room.Environment != null)
                     {
                         blended_environment_light += room.Environment.AmbientLight * distance_merge;
                         blended_environment_fog += room.Environment.FogColor * distance_merge;
@@ -231,12 +231,12 @@ namespace Engine
 
             // Dynamic lights
             int light_count = 1;
-            foreach(Light light in EntComponent.GetAllOfType(typeof(Light)).Cast<Light>())
+            foreach (Light light in EntComponent.GetAllOfType(typeof(Light)).Cast<Light>())
             {
                 light_pos[light_count] = new(light.OffsetPos.X, light.OffsetPos.Y, light.OffsetPos.Z, light.Radius);
                 light_col[light_count] = light.Color;
                 light_count++;
-                if(light_count >= max_lights) break;
+                if (light_count >= max_lights) break;
             }
 
             // Assemble uniforms
@@ -245,8 +245,8 @@ namespace Engine
 
         private static void ApplyVertexUniforms(List<ShaderData.Uniform> vertex_uniforms, Vector4[] light_pos_array, Vector4[] light_color_array, int light_count, Vector4 fog_color, float fog_distance)
         {
-            vertex_uniforms.Add(new("uLightPositions", light_pos_array)); 
-            vertex_uniforms.Add(new("uLightColors", light_color_array)); 
+            vertex_uniforms.Add(new("uLightPositions", light_pos_array));
+            vertex_uniforms.Add(new("uLightColors", light_color_array));
             vertex_uniforms.Add(new("uLightCount", light_count)); // Number of lights, not max lights
             vertex_uniforms.Add(new("uFogColor", fog_color));
             vertex_uniforms.Add(new("uFogDistance", fog_distance));
@@ -258,7 +258,7 @@ namespace Engine
             int mesh_index = 0;
             foreach (var mesh in model.Meshes)
             {
-                RenderMesh( mesh, materials[mesh_index], vertex_uniforms);
+                RenderMesh(mesh, materials[mesh_index], vertex_uniforms);
                 mesh_index++;
             }
         }
@@ -266,9 +266,9 @@ namespace Engine
         public static void RenderMesh(MeshData mesh, MaterialData mat_data, List<ShaderData.Uniform> vertex_uniforms)
         {
             // Check for collision drawing
-            if(mesh.RawName == "col.001")
+            if (mesh.RawName == "col.001")
             {
-                if(!Core.draw_collisions) return;
+                if (!Core.draw_collisions) return;
                 mat_data = Core.collision_draw_material; // Use our collision shader
             }
 
@@ -280,28 +280,28 @@ namespace Engine
 
             // Each mesh can use a different material, and that also means shader!
             ShaderData shader = mat_data.Shader;
-            shader.Use(); 
-            foreach(ShaderData.Uniform vertuni in vertex_uniforms)
+            shader.Use();
+            foreach (ShaderData.Uniform vertuni in vertex_uniforms)
             {
                 shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
             }
 
             // Bind textures to texunits
             int tex_unit_id = 0;
-            foreach(TextureData tex in mat_data.Textures)
+            foreach (TextureData tex in mat_data.Textures)
             {
                 tex.Bind(tex_unit_id);
                 tex_unit_id++;
             }
-            
+
             // Apply shader uniforms
-            foreach(ShaderData.Uniform matuni in mat_data.Uniforms)
+            foreach (ShaderData.Uniform matuni in mat_data.Uniforms)
             {
                 shader.SetUniform(matuni.key, matuni.value, matuni.count);
             }
 
             // Draw mesh
-            Core.OpenGLContext.DrawArrays( PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+            Core.OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
         }
     }
 }

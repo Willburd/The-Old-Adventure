@@ -8,7 +8,7 @@ namespace EntComponents
         /// <summary>
         /// Contains a type indexed dictionary of lists, including every instantilized component of that type that currently exists. Objects are added and removed in the base ActorComponent constructor and destructor.
         /// </summary>
-        private static readonly Dictionary<Type,List<EntComponent>> all_components = [];
+        private static readonly Dictionary<Type, List<EntComponent>> all_components = [];
 
         public Entity Host { get; }
 
@@ -17,12 +17,12 @@ namespace EntComponents
         public EntComponent(Entity host_entity)
         {
             Host = host_entity;
-            if(!all_components.ContainsKey(GetType())) all_components.Add(GetType(),[]);
+            if (!all_components.ContainsKey(GetType())) all_components.Add(GetType(), []);
             all_components[GetType()].Add(this);
             Host.AddComponent(this);
             RegisterSignals();
         }
-        
+
         ~EntComponent()
         {
             OnDestroy();
@@ -30,21 +30,21 @@ namespace EntComponents
             all_components[GetType()].Remove(this);
             Host.RemoveComponent(this);
         }
-        
+
         /// <summary>
         /// Returns a list with all components of the type specified. If an invalid component type, or no components are instantiated of that type, it will return an empty list.
         /// </summary>
         public static List<EntComponent> GetAllOfType(Type comp_type)
         {
             all_components.TryGetValue(comp_type, out List<EntComponent> found_list);
-            if(found_list == null) return [];
+            if (found_list == null) return [];
             return found_list;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Virtual functions
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         /// <summary>
         /// Returns a list of signals that this component subscribes to by default, for both register and unregister. Making it easy to sub to multiple signals with minimal conditions. Otherwise override RegisterSignals() and UnregisterSignals().
         /// </summary>
@@ -58,7 +58,7 @@ namespace EntComponents
         /// </summary>
         public virtual void RegisterSignals()
         {
-            foreach(Core.Signals sig in PrepareSignals())
+            foreach (Core.Signals sig in PrepareSignals())
             {
                 Host.RegisterSignal(sig, this);
             }
@@ -69,18 +69,18 @@ namespace EntComponents
         /// </summary>
         public virtual void UnregisterSignals()
         {
-            foreach(Core.Signals sig in PrepareSignals())
+            foreach (Core.Signals sig in PrepareSignals())
             {
                 Host.UnregisterSignal(sig, this);
             }
         }
-        
+
         /// <summary>
         /// Fired when a signal is sent from the host entity. Signals are sent based on registeration order, so an assumed order should not be expected when designing component behaviors.
         /// </summary>
         public virtual uint ReceiveSignal(Core.Signals signal, object?[] args)
         {
-            switch(signal)            
+            switch (signal)
             {
                 /////////////////////////////////////////////////////////
                 // Creation and setup
@@ -94,26 +94,26 @@ namespace EntComponents
                 // Update handlers
                 /////////////////////////////////////////////////////////
                 case Core.Signals.pre_update:
-                    if(!ActiveUpdate) return 0;
+                    if (!ActiveUpdate) return 0;
                     return HandlePreUpdate();
                 case Core.Signals.editor_update:
                     return HandleEditorUpdate();
 
                 case Core.Signals.update:
-                    if(!ActiveUpdate) return 0;
+                    if (!ActiveUpdate) return 0;
                     return HandleUpdate();
                 case Core.Signals.post_update:
-                    if(!ActiveUpdate) return 0;
+                    if (!ActiveUpdate) return 0;
                     return HandlePostUpdate();
 
                 /////////////////////////////////////////////////////////
                 // Input handlers
                 /////////////////////////////////////////////////////////
                 case Core.Signals.input_pressed:
-                    if(!ActiveUpdate) return 0;
+                    if (!ActiveUpdate) return 0;
                     return HandlePressed((Key?)args[0], (ButtonName?)args[1]);
                 case Core.Signals.input_released:
-                    if(!ActiveUpdate) return 0;
+                    if (!ActiveUpdate) return 0;
                     return HandleReleased((Key?)args[0], (ButtonName?)args[1]);
 
                 /////////////////////////////////////////////////////////

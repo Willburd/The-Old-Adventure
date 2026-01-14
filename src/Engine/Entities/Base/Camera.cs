@@ -48,18 +48,18 @@ namespace Engine
             get
             {
                 return camera_active;
-            }   
+            }
 
             set
             {
                 // Enable
-                if(value)
+                if (value)
                 {
                     // If something blocks us from taking vision
-                    if(!CanBeActivated()) return;
+                    if (!CanBeActivated()) return;
 
                     // Disable previous camera if
-                    if(world_active_cam != null && world_active_cam != this)
+                    if (world_active_cam != null && world_active_cam != this)
                     {
                         world_active_cam.camera_active = false;
                         SendGlobalSignal(Core.Signals.global_camera_deactivated, world_active_cam);
@@ -71,48 +71,48 @@ namespace Engine
                     SendGlobalSignal(Core.Signals.global_camera_activated, this);
                     return;
                 }
-                
+
                 // Disable
-                if(camera_active) 
+                if (camera_active)
                 {
                     camera_active = false;
                     SendGlobalSignal(Core.Signals.global_camera_deactivated, this);
                     world_active_cam = null;
                 }
-            } 
+            }
         }
 
 
 
         public static Matrix4x4 GetCurrentInterpolatedViewMatrix(double tick_delta)
         {
-            if(world_active_cam == null) return Transform.Identity.ViewMatrix;
+            if (world_active_cam == null) return Transform.Identity.ViewMatrix;
             return world_active_cam.GetInterpolatedViewMatrix(tick_delta);
         }
 
         public static Matrix4x4 GetCurrentViewMatrix()
         {
-            if(world_active_cam == null) return Transform.Identity.ViewMatrix;
+            if (world_active_cam == null) return Transform.Identity.ViewMatrix;
             return world_active_cam.GetViewMatrix();
         }
 
         public static Matrix4x4 GetCurrentProjectionMatrix()
         {
-            if(world_active_cam == null) return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(1f), default_aspect, near_clip, far_clip);
+            if (world_active_cam == null) return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(1f), default_aspect, near_clip, far_clip);
             return world_active_cam.GetProjectionMatrix();
         }
-        
+
         public new Matrix4x4 GetInterpolatedViewMatrix(double tick_delta)
         {
             Matrix4x4.Invert(Matrix4x4.CreateTranslation(GetInterpolatedPosition(tick_delta)), out Matrix4x4 pos);
-            Matrix4x4 mat = pos * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(GetInterpolatedRotation(tick_delta))); 
+            Matrix4x4 mat = pos * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(GetInterpolatedRotation(tick_delta)));
             return mat;
         }
 
         public new Matrix4x4 GetViewMatrix()
         {
             Matrix4x4.Invert(Matrix4x4.CreateTranslation(transform.Position), out Matrix4x4 pos);
-            Matrix4x4 mat = pos * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(transform.Rotation)); 
+            Matrix4x4 mat = pos * Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(transform.Rotation));
             return mat;
         }
 

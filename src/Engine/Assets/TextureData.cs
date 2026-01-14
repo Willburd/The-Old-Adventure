@@ -18,7 +18,7 @@ namespace Assets
         public string Path { get; set; } = "NO PATH";
         public TextureType Type { get; }
 
-        public TextureTarget TexTarget { get; private set;}
+        public TextureTarget TexTarget { get; private set; }
 
         public unsafe TextureData(string path, TextureTarget tex_targ)
         {
@@ -29,11 +29,11 @@ namespace Assets
 
             Bind();
 
-            Debug.Assert(System.IO.File.Exists(path),"Texture Assets file does not exist : " + path);
+            Debug.Assert(System.IO.File.Exists(path), "Texture Assets file does not exist : " + path);
 
             using (var img = Image.Load<Rgba32>(path))
             {
-                _gl.TexImage2D(TexTarget, 0, InternalFormat.Rgba8, (uint) img.Width, (uint) img.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, null);
+                _gl.TexImage2D(TexTarget, 0, InternalFormat.Rgba8, (uint)img.Width, (uint)img.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, null);
                 img.ProcessPixelRows(accessor =>
                 {
                     for (int y = 0; y < accessor.Height; y++)
@@ -41,7 +41,7 @@ namespace Assets
                         fixed (void* data = accessor.GetRowSpan(y))
                         {
                             // Flip texture on import. Because there is literally no stanrdards in 3D software, GL uses bottom left, d3d uses top left.
-                            _gl.TexSubImage2D(TexTarget, 0, 0, (accessor.Height-1)-y, (uint)accessor.Width, 1, PixelFormat.Rgba, PixelType.UnsignedByte, data);
+                            _gl.TexSubImage2D(TexTarget, 0, 0, (accessor.Height - 1) - y, (uint)accessor.Width, 1, PixelFormat.Rgba, PixelType.UnsignedByte, data);
                         }
                     }
                 });
@@ -59,17 +59,17 @@ namespace Assets
 
             fixed (void* d = &data[0])
             {
-                _gl.TexImage2D(TexTarget, 0, (int) InternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, d);
+                _gl.TexImage2D(TexTarget, 0, (int)InternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, d);
                 SetParameters();
             }
         }
 
         private void SetParameters()
         {
-            _gl.TexParameter(TexTarget, TextureParameterName.TextureWrapS, (int) GLEnum.ClampToEdge);
-            _gl.TexParameter(TexTarget, TextureParameterName.TextureWrapT, (int) GLEnum.ClampToEdge);
-            _gl.TexParameter(TexTarget, TextureParameterName.TextureMinFilter, (int) GLEnum.LinearMipmapLinear);
-            _gl.TexParameter(TexTarget, TextureParameterName.TextureMagFilter, (int) GLEnum.Linear);
+            _gl.TexParameter(TexTarget, TextureParameterName.TextureWrapS, (int)GLEnum.ClampToEdge);
+            _gl.TexParameter(TexTarget, TextureParameterName.TextureWrapT, (int)GLEnum.ClampToEdge);
+            _gl.TexParameter(TexTarget, TextureParameterName.TextureMinFilter, (int)GLEnum.LinearMipmapLinear);
+            _gl.TexParameter(TexTarget, TextureParameterName.TextureMagFilter, (int)GLEnum.Linear);
             _gl.TexParameter(TexTarget, TextureParameterName.TextureBaseLevel, 0);
             _gl.TexParameter(TexTarget, TextureParameterName.TextureMaxLevel, 8);
             _gl.GenerateMipmap(TexTarget);

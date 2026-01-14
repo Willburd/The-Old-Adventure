@@ -5,8 +5,8 @@ namespace Engine
 {
     public partial class Core
     {
-        public static Vector2 RawMousePos {get; private set;}
-        public static Vector2 RawMouseDelta {get; private set;}
+        public static Vector2 RawMousePos { get; private set; }
+        public static Vector2 RawMouseDelta { get; private set; }
         private static Vector2 raw_old_mouse_pos = Vector2.Zero;
 
         /// <summary>

@@ -9,27 +9,27 @@ namespace Engine
     public class Entity
     {
 
-        public static List<Entity> UninitEntityList { get; set; }= [];
+        public static List<Entity> UninitEntityList { get; set; } = [];
 
         public static List<Entity> EntityList { get; set; } = [];
-        public static Dictionary<string,Entity> EntityLookupList { get; set; } = [];
+        public static Dictionary<string, Entity> EntityLookupList { get; set; } = [];
 
         public static List<Entity> DestructingEntities { get; set; } = [];
 
-        public string EntityID { get; private set;}
-        public string AssetKey { get; private set;}
+        public string EntityID { get; private set; }
+        public string AssetKey { get; private set; }
 
         public static void DestroyAllEntities()
         {
             // Do rooms first
-            List<Entity> removal_list = [.. EntityList]; 
-            foreach(Entity ent in removal_list)
+            List<Entity> removal_list = [.. EntityList];
+            foreach (Entity ent in removal_list)
             {
-                if(ent is Room) ent.Destroy();
+                if (ent is Room) ent.Destroy();
             }
             // Now unload the rest!
-            removal_list = [.. EntityList]; 
-            foreach(Entity ent in removal_list)
+            removal_list = [.. EntityList];
+            foreach (Entity ent in removal_list)
             {
                 ent.Destroy();
             }
@@ -40,7 +40,7 @@ namespace Engine
         /// If an entity has completed initilization. Initilization happens before the pre_update signal is called during the game loop. As doing this in the constructor is not possible due to execution order. (The signal system is not yet init on the entity, but the child is calling assetload/create signals.)
         /// </summary>
         private bool initilized = false;
-        public bool IsInitilized { get {return initilized;} }
+        public bool IsInitilized { get { return initilized; } }
 
         public void OnInit()
         {
@@ -70,32 +70,32 @@ namespace Engine
             SetTransform(initial_location);
         }
 
-        
+
         /// <summary>
         /// Destroys an entity.
         /// </summary>
         public void Destroy()
         {
             Enabled = false;
-            if(!DestructingEntities.Contains(this)) 
+            if (!DestructingEntities.Contains(this))
             {
                 DestructingEntities.Add(this);
                 SendSignal(Core.Signals.destroy);
-                foreach(EntComponent component in GetAllComponents())
+                foreach (EntComponent component in GetAllComponents())
                 {
                     RemoveComponent(component);
                 }
                 // Debug info
-                if(GetType() == typeof(Actor))
+                if (GetType() == typeof(Actor))
                 {
                     // Show our linked room
                     Actor us_as_actor = (Actor)this;
-                    Console.WriteLine("EntityDestroy-X ("+EntityID+")["+us_as_actor.OwnerRoom?.EntityID+"] : " + AssetKey);
+                    Console.WriteLine("EntityDestroy-X (" + EntityID + ")[" + us_as_actor.OwnerRoom?.EntityID + "] : " + AssetKey);
                 }
                 else
                 {
                     // Just delete info
-                    Console.WriteLine("EntityDestroy-X ("+EntityID+") : " + AssetKey);
+                    Console.WriteLine("EntityDestroy-X (" + EntityID + ") : " + AssetKey);
                 }
                 // finish up
                 OnCleanup();
@@ -113,15 +113,15 @@ namespace Engine
         // Component helpers
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private readonly Dictionary<Type,List<EntComponent>> attached_components = [];
-        private readonly Dictionary<Core.Signals,List<EntComponent>> linked_signals = [];
+        private readonly Dictionary<Type, List<EntComponent>> attached_components = [];
+        private readonly Dictionary<Core.Signals, List<EntComponent>> linked_signals = [];
 
         /// <summary>
         /// Adds a component to the entity. Do not call directly, called by EntComponent constructor. You only need to instantiate the component, and provide the entity as it's target.
         /// </summary>
         public EntComponent AddComponent(EntComponent component)
         {
-            if(!attached_components.ContainsKey(component.GetType())) attached_components.Add(component.GetType(),[]);
+            if (!attached_components.ContainsKey(component.GetType())) attached_components.Add(component.GetType(), []);
             attached_components[component.GetType()].Add(component);
             return component;
         }
@@ -140,7 +140,7 @@ namespace Engine
         public List<EntComponent> GetComponentList(Type comp_type)
         {
             attached_components.TryGetValue(comp_type, out List<EntComponent> found_list);
-            if(found_list == null) return [];
+            if (found_list == null) return [];
             return found_list;
         }
 
@@ -150,7 +150,7 @@ namespace Engine
         public EntComponent? GetComponent(Type comp_type)
         {
             attached_components.TryGetValue(comp_type, out List<EntComponent> found_list);
-            if(found_list == null) return null;
+            if (found_list == null) return null;
             return found_list[0];
         }
 
@@ -162,7 +162,7 @@ namespace Engine
             List<EntComponent> found_list = [];
             foreach ((Type comp_type, List<EntComponent> ent_list) in attached_components)
             {
-                foreach(EntComponent comp in ent_list)
+                foreach (EntComponent comp in ent_list)
                 {
                     found_list.Add(comp);
                 }
@@ -170,7 +170,7 @@ namespace Engine
             return found_list;
         }
 
-        
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signaling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,7 +180,7 @@ namespace Engine
         /// </summary>
         public void RegisterSignal(Core.Signals signal, EntComponent target)
         {
-            if(!linked_signals.ContainsKey(signal)) linked_signals.Add(signal,[]);
+            if (!linked_signals.ContainsKey(signal)) linked_signals.Add(signal, []);
             linked_signals[signal].Add(target);
         }
 
@@ -197,10 +197,10 @@ namespace Engine
         /// </summary>
         public uint SendSignal(Core.Signals signal, params object?[] args)
         {
-            if(!IsInitilized) return 0; // Nope, we don't do anything with this until we are initilized!
-            if(!linked_signals.TryGetValue(signal, out List<EntComponent> signal_list)) return 0;
+            if (!IsInitilized) return 0; // Nope, we don't do anything with this until we are initilized!
+            if (!linked_signals.TryGetValue(signal, out List<EntComponent> signal_list)) return 0;
             uint return_flags = 0;
-            foreach(EntComponent comp in signal_list)
+            foreach (EntComponent comp in signal_list)
             {
                 return_flags |= comp.ReceiveSignal(signal, args);
             }
@@ -209,41 +209,41 @@ namespace Engine
 
         public static void SendGlobalSignal(Core.Signals signal, params object?[] args)
         {
-            foreach(Entity ent in EntityList)
+            foreach (Entity ent in EntityList)
             {
-                ent.SendSignal(signal,args);
+                ent.SendSignal(signal, args);
             }
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Position rotation and scale in world.
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        protected readonly Transform transform = new();     
-        protected readonly Transform last_transform = new();  
+
+        protected readonly Transform transform = new();
+        protected readonly Transform last_transform = new();
 
         public Transform Location
         {
-            get {return GetTransform();}
-            set {SetTransform(Location);}
+            get { return GetTransform(); }
+            set { SetTransform(Location); }
         }
 
         public Vector3 Position
         {
-            get {return transform.Position;}
-            set {transform.Position = value;}
+            get { return transform.Position; }
+            set { transform.Position = value; }
         }
 
         public Quaternion Rotation
         {
-            get {return transform.Rotation;}
-            set {transform.Rotation = value;}
+            get { return transform.Rotation; }
+            set { transform.Rotation = value; }
         }
 
         public Vector3 Scale
         {
-            get {return transform.Scale;}
-            set {transform.Scale = value;}
+            get { return transform.Scale; }
+            set { transform.Scale = value; }
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace Engine
 
         private void SetTransform(Transform assignment)
         {
-            if(SendSignal(Core.Signals.move_absolute, assignment) > 0) return;
+            if (SendSignal(Core.Signals.move_absolute, assignment) > 0) return;
             transform.Set(assignment);
             SnapTransform();
         }
@@ -270,17 +270,17 @@ namespace Engine
 
         public Vector3 GetInterpolatedPosition(double tick_delta)
         {
-            return Vector3.Lerp( last_transform.Position, transform.Position, (float)tick_delta);
+            return Vector3.Lerp(last_transform.Position, transform.Position, (float)tick_delta);
         }
 
         public Quaternion GetInterpolatedRotation(double tick_delta)
         {
-            return Quaternion.Lerp( last_transform.Rotation, transform.Rotation, (float)tick_delta);
+            return Quaternion.Lerp(last_transform.Rotation, transform.Rotation, (float)tick_delta);
         }
-        
+
         public Vector3 GetInterpolatedScale(double tick_delta)
         {
-            return Vector3.Lerp( last_transform.Scale, transform.Scale, (float)tick_delta);
+            return Vector3.Lerp(last_transform.Scale, transform.Scale, (float)tick_delta);
         }
 
         public Matrix4x4 GetViewMatrix()

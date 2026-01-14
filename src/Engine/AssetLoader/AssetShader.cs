@@ -21,10 +21,10 @@ namespace Engine
             (data as ShaderData).Dispose();
             base.Unload();
         }
-        
+
         public override bool CheckIntegrity(bool valid = true)
         {
-            if(data == null) return false;
+            if (data == null) return false;
             ShaderData check = (ShaderData)data;
             return base.CheckIntegrity(check.IsValid());
         }

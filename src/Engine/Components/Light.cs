@@ -10,7 +10,7 @@ namespace EntComponents
     public class Light(Entity host_entity) : EntComponent(host_entity)
     {
 
-        public Vector4 Color { get; set; } = new Vector4(1f,1f,1f,1f);
+        public Vector4 Color { get; set; } = new Vector4(1f, 1f, 1f, 1f);
 
         /// <summary>
         /// Radius of light.
@@ -30,14 +30,14 @@ namespace EntComponents
         /// <summary>
         /// Gets the origin position of the collider. If SyncRelativePosition is true it will be tied to the host's position and rotation in world space, if false it will be a untransformed world position.
         /// </summary>
-        public Vector3 OffsetPos 
-        { 
+        public Vector3 OffsetPos
+        {
             get
             {
-                if(!SyncRelativePosition) return light_offset; // Use world position
+                if (!SyncRelativePosition) return light_offset; // Use world position
                 return Host.Position + Vector3.Transform(light_offset, Host.Rotation); // Use relative position, including rotation from host.
             }
-            
+
             set
             {
                 light_offset = value;

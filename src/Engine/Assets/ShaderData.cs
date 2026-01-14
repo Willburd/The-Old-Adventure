@@ -58,58 +58,58 @@ namespace Assets
             if (location == -1) return;
 
             // Numeral
-            if(value.GetType() == typeof(uint))
+            if (value.GetType() == typeof(uint))
             {
                 _gl.Uniform1(location, (uint)value);
                 return;
             }
-            if(value.GetType() == typeof(int))
+            if (value.GetType() == typeof(int))
             {
                 _gl.Uniform1(location, (int)value);
                 return;
             }
-            if(value.GetType() == typeof(float)) 
+            if (value.GetType() == typeof(float))
             {
                 _gl.Uniform1(location, (float)value);
                 return;
             }
-            if(value.GetType() == typeof(double)) 
+            if (value.GetType() == typeof(double))
             {
                 _gl.Uniform1(location, (double)value);
                 return;
             }
 
             // Vectors
-            if(value.GetType() == typeof(Vector2)) 
+            if (value.GetType() == typeof(Vector2))
             {
                 _gl.Uniform2(location, (Vector2)value);
                 return;
             }
-            if(value.GetType() == typeof(Vector3)) 
+            if (value.GetType() == typeof(Vector3))
             {
                 _gl.Uniform3(location, (Vector3)value);
                 return;
             }
-            if(value.GetType() == typeof(Vector4)) 
+            if (value.GetType() == typeof(Vector4))
             {
                 _gl.Uniform4(location, (Vector4)value);
                 return;
             }
-            if(value.GetType() == typeof(Matrix4x4)) 
+            if (value.GetType() == typeof(Matrix4x4))
             {
                 Matrix4x4 mat_data = (Matrix4x4)value;
-                _gl.UniformMatrix4(location, count, false, (float*) &mat_data);
+                _gl.UniformMatrix4(location, count, false, (float*)&mat_data);
                 return;
             }
 
             // Arrays
-            if(value.GetType() == typeof(Vector2[])) 
+            if (value.GetType() == typeof(Vector2[]))
             {
                 int index = 0;
-                foreach(Vector2 vec in (Vector2[])value)
+                foreach (Vector2 vec in (Vector2[])value)
                 {
                     int loc = _gl.GetUniformLocation(_handle, $"{name}[{index}]");
-                    if(loc == -1) continue;
+                    if (loc == -1) continue;
                     _gl.Uniform2(loc,
                         vec.X,
                         vec.Y
@@ -118,13 +118,13 @@ namespace Assets
                 }
                 return;
             }
-            if(value.GetType() == typeof(Vector3[])) 
+            if (value.GetType() == typeof(Vector3[]))
             {
                 int index = 0;
-                foreach(Vector3 vec in (Vector3[])value)
+                foreach (Vector3 vec in (Vector3[])value)
                 {
                     int loc = _gl.GetUniformLocation(_handle, $"{name}[{index}]");
-                    if(loc == -1) continue;
+                    if (loc == -1) continue;
                     _gl.Uniform3(loc,
                         vec.X,
                         vec.Y,
@@ -134,13 +134,13 @@ namespace Assets
                 }
                 return;
             }
-            if(value.GetType() == typeof(Vector4[])) 
+            if (value.GetType() == typeof(Vector4[]))
             {
                 int index = 0;
-                foreach(Vector4 vec in (Vector4[])value)
+                foreach (Vector4 vec in (Vector4[])value)
                 {
                     int loc = _gl.GetUniformLocation(_handle, $"{name}[{index}]");
-                    if(loc == -1) continue;
+                    if (loc == -1) continue;
                     _gl.Uniform4(loc,
                         vec.X,
                         vec.Y,

@@ -5,7 +5,7 @@ namespace Engine
 {
     public static partial class AssetLoader
     {
-        private static Dictionary<string,LoadedAsset> asset_library = [];
+        private static Dictionary<string, LoadedAsset> asset_library = [];
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Assets management
@@ -13,7 +13,7 @@ namespace Engine
 
         public static void RemoveAsset(string asset_key)
         {
-            if(!asset_library.TryGetValue(asset_key, out LoadedAsset value)) return;
+            if (!asset_library.TryGetValue(asset_key, out LoadedAsset value)) return;
             value.Unload();
             asset_library.Remove(asset_key);
         }
@@ -24,15 +24,15 @@ namespace Engine
         public static void UnloadAllAssets(bool even_persistent)
         {
             List<string> removed_keys = [];
-            foreach((string key, LoadedAsset asset) in asset_library)
+            foreach ((string key, LoadedAsset asset) in asset_library)
             {
-                if(!asset.Persistent || even_persistent)
+                if (!asset.Persistent || even_persistent)
                 {
                     asset.Unload();
                     removed_keys.Add(key);
                 }
             }
-            foreach(string key in removed_keys)
+            foreach (string key in removed_keys)
             {
                 asset_library.Remove(key);
             }
@@ -43,7 +43,7 @@ namespace Engine
         /// </summary>
         public static void PersistAllAssets()
         {
-            foreach((string key, LoadedAsset asset) in asset_library)
+            foreach ((string key, LoadedAsset asset) in asset_library)
             {
                 asset.SetPersistent();
             }
@@ -61,21 +61,21 @@ namespace Engine
         public static string AssetKey(LoadedAsset.AssetType type, string asset_key, AssetSource asset_source = AssetSource.adventure)
         {
             string src_str = "Engine"; // We default to the engine if no arguments are provided, as this will usually be called by the adventure for non-engine assets anyway.
-            if(Core.AdventureID != null && asset_source == AssetSource.adventure) src_str = Core.AdventureID;
+            if (Core.AdventureID != null && asset_source == AssetSource.adventure) src_str = Core.AdventureID;
             return src_str + "::" + type + "::" + asset_key;
         }
 
-        
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Assets loading
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         /// <summary>
         /// Add asset to the asset library, weirdly named to avoid accidental use. Use the proper load asset functions.
         /// </summary>
         private static Object InvokeAsset(string asset_key, LoadedAsset new_asset)
         {
-            if(!new_asset.CheckIntegrity()) Console.WriteLine("ASSET LOAD FAILURE - " + asset_key + " : " + new_asset.FilePath);
+            if (!new_asset.CheckIntegrity()) Console.WriteLine("ASSET LOAD FAILURE - " + asset_key + " : " + new_asset.FilePath);
             asset_library.Add(asset_key, new_asset);
             return new_asset.Data;
         }
@@ -87,24 +87,24 @@ namespace Engine
         {
             return asset_library.ContainsKey(asset_key);
         }
-        
+
         /// <summary>
         /// Loads a shader asset from disk into the asset library
         /// </summary>
         public static ShaderData ShaderAssetLoad(string asset_key, string vertext_path, string frag_path, AssetSource source = AssetSource.adventure)
         {
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.shader, asset_key, source);
-            if(asset_library.ContainsKey( get_key)) return (ShaderData)asset_library[get_key].Data;
+            if (asset_library.ContainsKey(get_key)) return (ShaderData)asset_library[get_key].Data;
             // Check if exists
-            if(!File.Exists(vertext_path) || !File.Exists(frag_path)) 
+            if (!File.Exists(vertext_path) || !File.Exists(frag_path))
             {
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
-                if(!File.Exists(vertext_path)) Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X BAD SHADER, FILE DOES NOT EXIST : " + vertext_path);
-                if(!File.Exists(frag_path)) Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X BAD SHADER, FILE DOES NOT EXIST : " + frag_path);
+                if (!File.Exists(vertext_path)) Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X BAD SHADER, FILE DOES NOT EXIST : " + vertext_path);
+                if (!File.Exists(frag_path)) Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X BAD SHADER, FILE DOES NOT EXIST : " + frag_path);
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
                 return (ShaderData)LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.shader, "standard", AssetSource.engine)).Data;
             }
-            return (ShaderData)InvokeAsset( get_key, new AssetShader(get_key, vertext_path, frag_path));
+            return (ShaderData)InvokeAsset(get_key, new AssetShader(get_key, vertext_path, frag_path));
         }
 
         /// <summary>
@@ -113,34 +113,34 @@ namespace Engine
         public static ModelData ModelAssetLoad(string asset_key, string file_path, AssetSource source = AssetSource.adventure)
         {
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.model, asset_key, source);
-            if(asset_library.ContainsKey(get_key)) return (ModelData)asset_library[get_key].Data;
+            if (asset_library.ContainsKey(get_key)) return (ModelData)asset_library[get_key].Data;
             // Check if exists
-            if(!File.Exists(file_path)) 
+            if (!File.Exists(file_path))
             {
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X BAD MODEL, FILE DOES NOT EXIST : " + file_path);
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
                 return (ModelData)LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.model, "no_model", AssetSource.engine)).Data;
             }
-            return (ModelData)InvokeAsset( get_key, new AssetModel(get_key, file_path));
+            return (ModelData)InvokeAsset(get_key, new AssetModel(get_key, file_path));
         }
-        
+
         /// <summary>
         /// Loads a texture asset from disk into the asset library
         /// </summary>
         public static TextureData TextureAssetLoad(string asset_key, string file_path, Silk.NET.OpenGL.TextureTarget tex_target, AssetSource source = AssetSource.adventure)
         {
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.textures, asset_key, source);
-            if(asset_library.ContainsKey( get_key)) return (TextureData)asset_library[get_key].Data;
+            if (asset_library.ContainsKey(get_key)) return (TextureData)asset_library[get_key].Data;
             // Check if exists
-            if(!File.Exists(file_path)) 
+            if (!File.Exists(file_path))
             {
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X BAD TEXTURE, FILE DOES NOT EXIST : " + file_path);
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
                 return (TextureData)LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.textures, "no_tex", AssetSource.engine)).Data;
             }
-            return (TextureData)InvokeAsset( get_key, new AssetTexture(get_key, file_path, tex_target));
+            return (TextureData)InvokeAsset(get_key, new AssetTexture(get_key, file_path, tex_target));
         }
 
         /// <summary>
@@ -149,24 +149,24 @@ namespace Engine
         public static MaterialData MaterialAssetLoad(string asset_key, MaterialData new_material, AssetSource source = AssetSource.adventure)
         {
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.material, asset_key, source);
-            if(asset_library.ContainsKey( get_key)) return (MaterialData)asset_library[get_key].Data;
-            return (MaterialData)InvokeAsset( get_key, new AssetMaterial(get_key, new_material));
+            if (asset_library.ContainsKey(get_key)) return (MaterialData)asset_library[get_key].Data;
+            return (MaterialData)InvokeAsset(get_key, new AssetMaterial(get_key, new_material));
         }
-        
+
         /// <summary>
         /// Creates an environment asset and adds it to the asset library for reuse
         /// </summary>
         public static EnvironmentData EnvironmentAssetLoad(EnvironmentData new_environment, AssetSource source = AssetSource.adventure)
         {
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.environment, new_environment.AssetKey, source);
-            if(asset_library.ContainsKey( get_key)) return (EnvironmentData)asset_library[get_key].Data;
-            return (EnvironmentData)InvokeAsset( get_key, new AssetEnvironment(get_key, new_environment));
+            if (asset_library.ContainsKey(get_key)) return (EnvironmentData)asset_library[get_key].Data;
+            return (EnvironmentData)InvokeAsset(get_key, new AssetEnvironment(get_key, new_environment));
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Assets retrieval
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         public static string WorkingDirectory
         {
             get
@@ -200,7 +200,7 @@ namespace Engine
             asset_library.TryGetValue(asset_key, out LoadedAsset found_asset);
             return found_asset;
         }
-        
+
         /// <summary>
         /// Gets a shader from the asset library
         /// </summary>
@@ -211,7 +211,7 @@ namespace Engine
             Debug.Assert(ast.CheckType(LoadedAsset.AssetType.shader));
             return (ShaderData)ast.Data;
         }
-        
+
         /// <summary>
         /// Gets a Model from the asset library
         /// </summary>

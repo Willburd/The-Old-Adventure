@@ -14,12 +14,12 @@ namespace EntComponents
         /// Owner behavior component.
         /// </summary>
         public EntComponent Owner { get; protected set; }
-        
+
         /// <summary>
         /// Host actor that holds our component.
         /// </summary>
-        public Actor Host 
-        { 
+        public Actor Host
+        {
             get
             {
                 return (Actor)Owner.Host;
@@ -40,7 +40,7 @@ namespace EntComponents
         /// Called during update, performs logic for the current player state
         /// </summary>
         public virtual void Process() { }
-        
+
         /// <summary>
         /// Gets the first component of a specific type attached to our player
         /// </summary>

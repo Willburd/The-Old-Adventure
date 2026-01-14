@@ -14,7 +14,7 @@ namespace Assets
         public MaterialData? SkyboxMaterial { get; protected set; }
         public TextureData? SkyboxTexture { get; protected set; }
 
-        public string AssetKey { get; private set; } 
+        public string AssetKey { get; private set; }
 
         protected Skybox? skybox_model = null;
 
@@ -22,13 +22,13 @@ namespace Assets
         {
             AssetKey = asset_key;
             Host = null;
-            
+
             FogDistance = fog_dist;
             FogColor = fog_col;
             AmbientLight = ambient_light;
 
             SkyboxTexture = skybox_tex;
-            SkyboxMaterial = AssetLoader.MaterialAssetLoad( "testroom_skybox", new( [SkyboxTexture], [new("uTexture0", 0)], AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine)));
+            SkyboxMaterial = AssetLoader.MaterialAssetLoad("testroom_skybox", new([SkyboxTexture], [new("uTexture0", 0)], AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine)));
         }
 
         public EnvironmentData(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light, MaterialData skybox_mat)
@@ -43,7 +43,7 @@ namespace Assets
             SkyboxMaterial = skybox_mat;
             SkyboxTexture = SkyboxMaterial.Textures[0];
         }
-        
+
         public EnvironmentData(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light)
         {
             AssetKey = asset_key;
@@ -63,7 +63,7 @@ namespace Assets
             // Set room
             Host = host_room;
             skybox_model = new Skybox(Host);
-            skybox_model.SetModel( AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), SkyboxMaterial);
+            skybox_model.SetModel(AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), SkyboxMaterial);
             return;
         }
 
@@ -76,7 +76,7 @@ namespace Assets
 
         public virtual bool IsValid()
         {
-            if(SkyboxMaterial == null) return false;
+            if (SkyboxMaterial == null) return false;
             return SkyboxMaterial.IsValid();
         }
     }

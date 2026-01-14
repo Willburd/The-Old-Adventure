@@ -14,7 +14,7 @@ namespace Assets
             GL = gl;
             Vertices = vertices;
             Indices = indices;
-            
+
             // Metadata
             MeshIndex = mesh_index;
             RawName = name;
@@ -22,15 +22,15 @@ namespace Assets
             SetupMesh();
 
             // materials index as seperate mesh
-            foreach(MeshData data in owner.Meshes)
+            foreach (MeshData data in owner.Meshes)
             {
-                if(data.RawName == RawName) mesh_name_offset++;
+                if (data.RawName == RawName) mesh_name_offset++;
             }
         }
 
         private int mesh_name_offset = 0;
         public string RawName { get; private set; }
-        public string MeshName { get { return RawName + (mesh_name_offset > 0 ? "_"+mesh_name_offset : ""); } }
+        public string MeshName { get { return RawName + (mesh_name_offset > 0 ? "_" + mesh_name_offset : ""); } }
         public int MeshIndex { get; private set; }
 
         public float[] Vertices { get; private set; }
@@ -43,7 +43,7 @@ namespace Assets
         public List<Vim.Math3d.Triangle> CollisionTriangles { get; private set; } = [];
 
         private struct VBOInit(int element_count, VertexAttribPointerType type, bool normalized, uint size, bool is_collision)
-        {   
+        {
             public int element_count = element_count;
             public VertexAttribPointerType type = type;
             public bool normalized = normalized;
@@ -65,25 +65,25 @@ namespace Assets
                 new VBOInit(3, VertexAttribPointerType.Float, true, 3, false),      // Normal
                 new VBOInit(4, VertexAttribPointerType.Float, false, 4, false)       // Color
             ];
-            foreach(VBOInit vbo_dat in buffersizes)
+            foreach (VBOInit vbo_dat in buffersizes)
             {
                 total_vertex_size += vbo_dat.size;
             }
 
             // Collision creation
-            if(RawName == "col.001")
+            if (RawName == "col.001")
             {
                 // collect position data in the verts
                 List<Vim.Math3d.Vector3> vert_collection = [];
                 int index = 0;
-                while(index < Vertices.Length)
+                while (index < Vertices.Length)
                 {
-                    foreach(VBOInit vbo_dat in buffersizes)
+                    foreach (VBOInit vbo_dat in buffersizes)
                     {
-                        if(vbo_dat.is_collision)
+                        if (vbo_dat.is_collision)
                         {
                             Debug.Assert(vbo_dat.element_count == 3, "VBO for collision data expects to be 3 elements long");
-                            vert_collection.Add( new( (float)Math.Truncate(100 * (double)Vertices[index++]) / 100, (float)Math.Truncate(100 * (double)Vertices[index++]) / 100, (float)Math.Truncate(100 * (double)Vertices[index++]) / 100 ));
+                            vert_collection.Add(new((float)Math.Truncate(100 * (double)Vertices[index++]) / 100, (float)Math.Truncate(100 * (double)Vertices[index++]) / 100, (float)Math.Truncate(100 * (double)Vertices[index++]) / 100));
                         }
                         else
                         {
@@ -92,22 +92,22 @@ namespace Assets
                     }
                 }
                 // Assemble position floats into tris
-                if(Indices.Length > 0)
+                if (Indices.Length > 0)
                 {
                     index = 0;
-                    while(index < Indices.Length)
+                    while (index < Indices.Length)
                     {
-                        Vim.Math3d.Vector3 triX = vert_collection[ (int)Indices[index++]];
-                        Vim.Math3d.Vector3 triY = vert_collection[ (int)Indices[index++]];
-                        Vim.Math3d.Vector3 triZ = vert_collection[ (int)Indices[index++]];
-                        CollisionTriangles.Add( new Vim.Math3d.Triangle(triX,triY,triZ) );
+                        Vim.Math3d.Vector3 triX = vert_collection[(int)Indices[index++]];
+                        Vim.Math3d.Vector3 triY = vert_collection[(int)Indices[index++]];
+                        Vim.Math3d.Vector3 triZ = vert_collection[(int)Indices[index++]];
+                        CollisionTriangles.Add(new Vim.Math3d.Triangle(triX, triY, triZ));
                     }
                 }
             }
             // Self assemble it...
             uint current_offset = 0;
             uint current_index = 0;
-            foreach(VBOInit vbo_dat in buffersizes)
+            foreach (VBOInit vbo_dat in buffersizes)
             {
                 VAO.VertexAttributePointer(current_index, vbo_dat.element_count, vbo_dat.type, vbo_dat.normalized, total_vertex_size, current_offset);
                 current_offset += vbo_dat.size;

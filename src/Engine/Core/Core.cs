@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Engine
 {
-    public partial class Core 
+    public partial class Core
     {
         public static Core singleton;
         protected const string AdventureTitle = "The Old Adventure";
@@ -13,7 +13,7 @@ namespace Engine
         {
             get
             {
-                if(singleton == null) return "UnitTest";
+                if (singleton == null) return "UnitTest";
                 return singleton.adventure_id;
             }
         }
@@ -40,10 +40,10 @@ namespace Engine
         // Entry point
         public Core(string id = "UnitTest")
         {
-            
+
             adventure_id = id;
 
-            Debug.Assert(singleton == null,"Multiple cores created - " + adventure_id);
+            Debug.Assert(singleton == null, "Multiple cores created - " + adventure_id);
             singleton = this;
             Console.WriteLine("CORE INIT - " + AdventureTitle);
 
@@ -52,7 +52,7 @@ namespace Engine
 
             // Load actory factory, override in OnPreInit() for your own adventure!
             EntityFactory.InitLibrary();
-            
+
             // Start the window. Everything from here is handled by HandleWindowUpdate() and HandleWindowRender()
             WindowContext.Run();
             // HandleWindowLoad() called from Run()
@@ -80,11 +80,11 @@ namespace Engine
         /// </summary>
         public static void AwaitCurrentBatch(List<Task> thread_batch)
         {
-            if(thread_batch.Count == 0) return;
+            if (thread_batch.Count == 0) return;
             Task.WaitAll(thread_batch);
             thread_batch.Clear();
         }
-        
+
         private static bool shutting_down = false;
         public static void RequestShutdown()
         {

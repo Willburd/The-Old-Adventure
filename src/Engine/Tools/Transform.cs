@@ -30,7 +30,7 @@ namespace Engine
         public Transform()
         {
             // All to identity
-            Position =  Vector3.Zero;
+            Position = Vector3.Zero;
             Rotation = Quaternion.Identity;
             Scale = Vector3.One;
         }
@@ -41,7 +41,7 @@ namespace Engine
             Rotation = Quaternion.Identity;
             Scale = Vector3.One;
         }
-        
+
         public Transform(Vector3 position, Vector3 scale)
         {
             Position = position;
@@ -55,11 +55,11 @@ namespace Engine
             Rotation = rotation;
             Scale = Vector3.One;
         }
-        
+
         public Transform(float anglex, float angley, float anglez)
         {
             Position = Vector3.Zero;
-            Rotation = Tools.Euler(anglex,angley,anglez);
+            Rotation = Tools.Euler(anglex, angley, anglez);
             Scale = Vector3.One;
         }
 
@@ -82,15 +82,15 @@ namespace Engine
         public Quaternion Rotation { get; set; }
 
         public Vector3 Scale { get; set; }
-        
+
         public Matrix4x4 ViewMatrix
         {
             get
             {
                 return Matrix4x4.Identity * Matrix4x4.CreateFromQuaternion(Rotation) * Matrix4x4.CreateScale(Scale) * Matrix4x4.CreateTranslation(Position);
             }
-        } 
-        
+        }
+
         public void Translate(Vector3 translation)
         {
             Position += translation;

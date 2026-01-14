@@ -31,18 +31,18 @@ namespace EntComponents
         public List<int> GetNoLongerCollidingWith()
         {
             List<int> not_colliding_with_anymore = [];
-            foreach(int ind in previously_colliding_with)
+            foreach (int ind in previously_colliding_with)
             {
-                if(!in_collision_with.Contains(ind)) not_colliding_with_anymore.Add(ind);
+                if (!in_collision_with.Contains(ind)) not_colliding_with_anymore.Add(ind);
             }
             return not_colliding_with_anymore;
-        } 
+        }
         public List<int> GetStartedCollidingWith()
         {
             List<int> started_colliding_with = [];
-            foreach(int ind in in_collision_with)
+            foreach (int ind in in_collision_with)
             {
-                if(!previously_colliding_with.Contains(ind)) started_colliding_with.Add(ind);
+                if (!previously_colliding_with.Contains(ind)) started_colliding_with.Add(ind);
             }
             return started_colliding_with;
         }
@@ -58,14 +58,14 @@ namespace EntComponents
         /// <summary>
         /// Gets the origin position of the collider. If SyncRelativePosition is true it will be tied to the host's position and rotation in world space, if false it will be a untransformed world position.
         /// </summary>
-        public Vector3 OffsetPos 
-        { 
+        public Vector3 OffsetPos
+        {
             get
             {
-                if(!SyncRelativePosition) return col_offset; // Use world position
+                if (!SyncRelativePosition) return col_offset; // Use world position
                 return Host.Position + Vector3.Transform(col_offset, Host.Rotation); // Use relative position, including rotation from host.
             }
-            
+
             set
             {
                 col_offset = value;
@@ -80,7 +80,7 @@ namespace EntComponents
                 source_collider = source;
                 triggering_collider = crosser;
                 point = at_point;
-                if(!source.IsTrigger())
+                if (!source.IsTrigger())
                 {
                     all_collisions.Add(this);
                 }
@@ -94,7 +94,7 @@ namespace EntComponents
             public Collider source_collider;
             public Collider triggering_collider;
             public Vector3 point;
-        } 
+        }
 
         public struct Raycast(Vector3 startpos, Vector3 direction, uint collision_mask)
         {
@@ -106,7 +106,7 @@ namespace EntComponents
         public struct RaycastHit(Raycast ray, Collider hit_col, float dist)
         {
             public Vector3 StartPos { get; set; } = ray.start_vector;
-            public Vector3 direction  = ray.direction;
+            public Vector3 direction = ray.direction;
             public Collider hit_collider = hit_col;
             public float distance = dist;
             public Vector3 HitPosition
@@ -125,12 +125,12 @@ namespace EntComponents
         public static RaycastHit? DoRaycastNearest(Vector3 start, Vector3 direction, uint collision_mask = mask_all, Entity? specific_entity = null)
         {
             List<RaycastHit> hits = DoRaycast(start, direction, collision_mask, specific_entity);
-            
+
             float dist = float.PositiveInfinity;
             RaycastHit? nearest_hit = null;
-            foreach(RaycastHit hit in hits)
+            foreach (RaycastHit hit in hits)
             {
-                if(hit.distance < dist)
+                if (hit.distance < dist)
                 {
                     nearest_hit = hit;
                     dist = hit.distance;
@@ -146,7 +146,7 @@ namespace EntComponents
         {
             List<RaycastHit> hit_rays = [];
             Raycast ray = new(start, direction, collision_mask);
-            if(specific_entity != null)
+            if (specific_entity != null)
             {
                 // Specific entity check
                 specific_entity.SendSignal(Core.Signals.raycast, ray, hit_rays);
@@ -163,7 +163,7 @@ namespace EntComponents
         /// Each collider has a shape that is used to check against other colliders and raycasts.
         /// </summary>
         public Engine.ColliderShapes.ColShape? CollisionShape { get; private set; }
-        public void SetShape( Engine.ColliderShapes.ColShape new_shape)
+        public void SetShape(Engine.ColliderShapes.ColShape new_shape)
         {
             new_shape.ColHost = this;
             CollisionShape = new_shape;
@@ -182,22 +182,22 @@ namespace EntComponents
             List<Task> thread_batch = new List<Task>();
             List<Collision> all_collisions = [];
             List<Collision> all_triggers = [];
-            foreach(Collider col in all_colliders.Cast<Collider>())
+            foreach (Collider col in all_colliders.Cast<Collider>())
             {
                 thread_batch.Add(Task.Run(() =>
                 {
                     // No self detection
-                    if(col == null || col == this) return;
-                    if((col.CollisionMask & CollisionMask) == 0) return; 
+                    if (col == null || col == this) return;
+                    if ((col.CollisionMask & CollisionMask) == 0) return;
 
                     // Check for overlap
                     Collision? check_collision = CheckIsColliding(col);
-                    if(check_collision != null) 
+                    if (check_collision != null)
                     {
                         // Triggers only detect collisions with physics colliders, and not with other triggers
-                        if(IsTrigger())
+                        if (IsTrigger())
                         {
-                            if(!col.IsTrigger())
+                            if (!col.IsTrigger())
                             {
                                 all_triggers.Add((Collision)check_collision);
                                 in_collision_with.Add(col.our_collider_index);
@@ -209,18 +209,18 @@ namespace EntComponents
                         in_collision_with.Add(col.our_collider_index);
                     }
                 }));
-                if(thread_batch.Count >= Core.BatchSize) Core.AwaitCurrentBatch(thread_batch);
+                if (thread_batch.Count >= Core.BatchSize) Core.AwaitCurrentBatch(thread_batch);
             }
             Core.AwaitCurrentBatch(thread_batch);
 
             // Fire a signal for all colliders we've left
             List<int> colliders_started = GetStartedCollidingWith();
             List<int> colliders_ended = GetNoLongerCollidingWith();
-            foreach(Collider col in all_colliders.Cast<Collider>())
+            foreach (Collider col in all_colliders.Cast<Collider>())
             {
-                if(colliders_started.Contains(col.our_collider_index))
+                if (colliders_started.Contains(col.our_collider_index))
                 {
-                    if(!col.IsTrigger())
+                    if (!col.IsTrigger())
                     {
                         Host.SendSignal(Core.Signals.collision_start, col);
                     }
@@ -229,9 +229,9 @@ namespace EntComponents
                         Host.SendSignal(Core.Signals.trigger_start, col);
                     }
                 }
-                else if(colliders_ended.Contains(col.our_collider_index))
+                else if (colliders_ended.Contains(col.our_collider_index))
                 {
-                    if(!col.IsTrigger())
+                    if (!col.IsTrigger())
                     {
                         Host.SendSignal(Core.Signals.collision_end, col);
                     }
@@ -243,8 +243,8 @@ namespace EntComponents
             }
 
             // Inform our host of everything we've faceplanted into this frame
-            if(all_collisions.Count > 0) Host.SendSignal(Core.Signals.collision, all_collisions);
-            if(all_triggers.Count > 0) Host.SendSignal(Core.Signals.trigger, all_triggers);
+            if (all_collisions.Count > 0) Host.SendSignal(Core.Signals.collision, all_collisions);
+            if (all_triggers.Count > 0) Host.SendSignal(Core.Signals.trigger, all_triggers);
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace EntComponents
         /// </summary>
         public Collision? CheckIsColliding(Collider other_col)
         {
-            return CollisionShape?.InOurShape( other_col);
+            return CollisionShape?.InOurShape(other_col);
         }
 
         /// <summary>
@@ -260,15 +260,15 @@ namespace EntComponents
         /// </summary>
         public uint CheckIsRayHit(Raycast ray, List<RaycastHit> hits)
         {
-            if(CollisionShape == null) return 0;
-            if((ray.collision_mask & CollisionMask) == 0) return 0;
+            if (CollisionShape == null) return 0;
+            if ((ray.collision_mask & CollisionMask) == 0) return 0;
 
             RaycastHit? hit = CollisionShape.InRay(ray);
-            if(hit == null) return 0;
+            if (hit == null) return 0;
             hits.Add((RaycastHit)hit);
             return 1;
         }
-        
+
         public virtual bool IsTrigger()
         {
             return false;
@@ -277,11 +277,11 @@ namespace EntComponents
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         public override List<Core.Signals> PrepareSignals()
         {
             List<Core.Signals> sig_list = [Core.Signals.raycast];
-            if(Core.draw_collisions) 
+            if (Core.draw_collisions)
             {
                 sig_list.Add(Core.Signals.render_priority);
                 sig_list.Add(Core.Signals.render);
@@ -291,7 +291,7 @@ namespace EntComponents
 
         public override uint ReceiveSignal(Core.Signals signal, object?[] args)
         {
-            switch(signal)
+            switch (signal)
             {
                 case Core.Signals.render_priority:
                     // If we're not subbed, this never gets called.
@@ -305,7 +305,7 @@ namespace EntComponents
                     // Check our collision vs the incoming ray
                     return CheckIsRayHit((Raycast)args[0], (List<RaycastHit>)args[1]);
             }
-            return base.ReceiveSignal(signal,args);
+            return base.ReceiveSignal(signal, args);
         }
 
         /// <summary>
@@ -314,14 +314,14 @@ namespace EntComponents
         public uint DebugRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             MeshData? model = CollisionShape?.DrawModel();
-            if(model == null || CollisionShape == null) return 0;
+            if (model == null || CollisionShape == null) return 0;
 
             // position uniforms
             vertex_uniforms.Add(new("uTransform", CollisionShape.ModelTransform()));
             vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
             vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
 
-            Core.RenderMesh( model, IsTrigger() ? Core.trigger_draw_material : Core.actor_collision_draw_material, vertex_uniforms);
+            Core.RenderMesh(model, IsTrigger() ? Core.trigger_draw_material : Core.actor_collision_draw_material, vertex_uniforms);
             return 1;
         }
     }

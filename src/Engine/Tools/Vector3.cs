@@ -4,45 +4,51 @@ namespace Engine
 {
     public static partial class Tools
     {
-        public static Vector3 Up {
+        public static Vector3 Up
+        {
             get
             {
-                return new Vector3(0f,1f,0f);
+                return new Vector3(0f, 1f, 0f);
             }
         }
-        
-        public static Vector3 Down {
+
+        public static Vector3 Down
+        {
             get
             {
-                return new Vector3(0f,-1f,0f);
+                return new Vector3(0f, -1f, 0f);
             }
         }
-        
-        public static Vector3 Forward {
+
+        public static Vector3 Forward
+        {
             get
             {
-                return new Vector3(0f,0f,-1f);
+                return new Vector3(0f, 0f, -1f);
             }
         }
-        
-        public static Vector3 Backward {
+
+        public static Vector3 Backward
+        {
             get
             {
-                return new Vector3(0f,0f,1f);
+                return new Vector3(0f, 0f, 1f);
             }
         }
-        
-        public static Vector3 Right {
+
+        public static Vector3 Right
+        {
             get
             {
-                return new Vector3(1f,0f,0f);
+                return new Vector3(1f, 0f, 0f);
             }
         }
-        
-        public static Vector3 Left {
+
+        public static Vector3 Left
+        {
             get
             {
-                return new Vector3(-1f,0f,0f);
+                return new Vector3(-1f, 0f, 0f);
             }
         }
 
@@ -55,7 +61,7 @@ namespace Engine
         {
             start.Y = 0;
             end.Y = 0;
-            return Vector3.Distance(start,end);
+            return Vector3.Distance(start, end);
         }
     }
 }

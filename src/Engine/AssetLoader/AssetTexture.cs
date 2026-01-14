@@ -21,10 +21,10 @@ namespace Engine
             (data as TextureData).Dispose();
             base.Unload();
         }
-        
+
         public override bool CheckIntegrity(bool valid = true)
         {
-            if(data == null) return false;
+            if (data == null) return false;
             TextureData check = (TextureData)data;
             return base.CheckIntegrity(check.IsValid());
         }

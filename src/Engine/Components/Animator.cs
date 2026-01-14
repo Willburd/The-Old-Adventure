@@ -7,6 +7,6 @@ namespace EntComponents
     /// </summary>
     public class Animator(Entity host_entity) : EntComponent(host_entity)
     {
-        
+
     }
 }

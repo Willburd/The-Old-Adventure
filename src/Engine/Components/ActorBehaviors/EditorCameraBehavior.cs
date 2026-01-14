@@ -9,7 +9,7 @@ namespace EntComponents.ActorBehavior
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         public override List<Core.Signals> PrepareSignals()
         {
             return [Core.Signals.create, Core.Signals.editor_update, Core.Signals.input_pressed, Core.Signals.input_released];
@@ -17,7 +17,7 @@ namespace EntComponents.ActorBehavior
 
         protected override uint HandleCreate()
         {
-            
+
             Collider col = (Collider)Host.GetComponent(typeof(Collider));
             col.SetShape(new Engine.ColliderShapes.PointCol());
             col.SyncRelativePosition = false;
@@ -35,22 +35,22 @@ namespace EntComponents.ActorBehavior
             float camera_speed = 0.1f;
             Host.Position += Vector3.Transform(input.Move * camera_speed, Host.Location.Rotation);
             float rotate_speed = 0.02f;
-            Host.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Forward, input.CameraRoll * rotate_speed);
+            Host.Rotation *= Quaternion.CreateFromAxisAngle(Tools.Forward, input.CameraRoll * rotate_speed);
 
             // Mouse movement
-            Host.Rotation *= Quaternion.CreateFromAxisAngle( Vector3.Transform(Tools.Up, Quaternion.Inverse(Host.Rotation)), input.CameraMove.X);
-            Host.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraMove.Y);
-        
+            Host.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.Transform(Tools.Up, Quaternion.Inverse(Host.Rotation)), input.CameraMove.X);
+            Host.Rotation *= Quaternion.CreateFromAxisAngle(Tools.Right, input.CameraMove.Y);
+
             return 1;
         }
 
         protected override uint HandlePressed(Key? key, ButtonName? button)
         {
-            if(key == InputHandler.KeyIDConfirm || button == InputHandler.ButtonIDConfirm)
+            if (key == InputHandler.KeyIDConfirm || button == InputHandler.ButtonIDConfirm)
             {
                 // Raycast testing
                 Collider col = (Collider)Host.GetComponent(typeof(Collider));
-                Collider.RaycastHit? hit = Collider.DoRaycastNearest( Host.Position, Vector3.Transform(Tools.Forward * 5f,Host.Rotation));
+                Collider.RaycastHit? hit = Collider.DoRaycastNearest(Host.Position, Vector3.Transform(Tools.Forward * 5f, Host.Rotation));
                 if (hit != null)
                 {
                     col.OffsetPos = hit.Value.HitPosition;

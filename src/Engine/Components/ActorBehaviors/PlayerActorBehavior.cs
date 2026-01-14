@@ -36,17 +36,17 @@ namespace EntComponents.ActorBehavior
         {
             // Shaders
             ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
-            
+
             // Textures
-            TextureData sign_wood = AssetLoader.TextureAssetLoad( "sign_wood", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_wood.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
-            TextureData sign_face = AssetLoader.TextureAssetLoad( "sign_face", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_face.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
-            
+            TextureData sign_wood = AssetLoader.TextureAssetLoad("sign_wood", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_wood.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
+            TextureData sign_face = AssetLoader.TextureAssetLoad("sign_face", AssetLoader.AssetDirectoryAdventure + "/Textures/sign_face.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
+
             // Materials
-            AssetLoader.MaterialAssetLoad( "sign_wood", new( [sign_wood], [new("uTexture0", 0)], standard_shader));
-            AssetLoader.MaterialAssetLoad( "sign_face", new( [sign_face], [new("uTexture0", 0)], standard_shader));
-            
+            AssetLoader.MaterialAssetLoad("sign_wood", new([sign_wood], [new("uTexture0", 0)], standard_shader));
+            AssetLoader.MaterialAssetLoad("sign_face", new([sign_face], [new("uTexture0", 0)], standard_shader));
+
             // Model
-            AssetLoader.ModelAssetLoad( "sign", AssetLoader.AssetDirectoryAdventure + "/Models/sign.fbx");
+            AssetLoader.ModelAssetLoad("sign", AssetLoader.AssetDirectoryAdventure + "/Models/sign.fbx");
 
             return 1;
         }
@@ -57,16 +57,16 @@ namespace EntComponents.ActorBehavior
             WorldRender renderer = (WorldRender)Host.GetComponent(typeof(WorldRender));
 
             var sign_model = AssetLoader.ModelAssetGet("sign");
-            renderer.SetModel( sign_model, AssetLoader.MaterialAssetGet("sign_wood"));
-            renderer.SetMaterial( AssetLoader.MaterialAssetGet("sign_face"), sign_model.GetMeshIndex("Sign_1"));
-            
+            renderer.SetModel(sign_model, AssetLoader.MaterialAssetGet("sign_wood"));
+            renderer.SetMaterial(AssetLoader.MaterialAssetGet("sign_face"), sign_model.GetMeshIndex("Sign_1"));
+
             // Collision
             Collider collision = (Collider)Host.GetComponent(typeof(Collider));
-            collision.SetShape( new Engine.ColliderShapes.CylinderCol(0.75f,0.25f));
+            collision.SetShape(new Engine.ColliderShapes.CylinderCol(0.75f, 0.25f));
             collision.CollisionMask = Collider.mask_player;
 
             // Player handling
-            SetPlayerState( new PlayerStates.Grounded(this));
+            SetPlayerState(new PlayerStates.Grounded(this));
 
             return 1;
         }
@@ -79,7 +79,7 @@ namespace EntComponents.ActorBehavior
 
         protected override uint HandlePressed(Key? key, ButtonName? button)
         {
-            if(key == InputHandler.KeyIDCancel)
+            if (key == InputHandler.KeyIDCancel)
             {
 
                 return 1;

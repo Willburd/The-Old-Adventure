@@ -15,7 +15,7 @@ namespace Engine
 
         public override bool CheckIntegrity(bool valid = true)
         {
-            if(data == null) return false;
+            if (data == null) return false;
             EnvironmentData check = (EnvironmentData)data;
             return base.CheckIntegrity(check.IsValid());
         }

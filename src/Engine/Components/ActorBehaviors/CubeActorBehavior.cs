@@ -8,7 +8,7 @@ namespace EntComponents.ActorBehavior
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         public override List<Core.Signals> PrepareSignals()
         {
             return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.update];
@@ -18,15 +18,15 @@ namespace EntComponents.ActorBehavior
         {
             // Shaders
             ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
-            
+
             // Textures
-            TextureData example_tex = AssetLoader.TextureAssetLoad( "example", AssetLoader.AssetDirectoryEngine + "/Textures/example.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
-            
+            TextureData example_tex = AssetLoader.TextureAssetLoad("example", AssetLoader.AssetDirectoryEngine + "/Textures/example.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+
             // Materials
-            AssetLoader.MaterialAssetLoad( "example", new( [example_tex], [new("uTexture0", 0)], standard_shader), AssetLoader.AssetSource.engine);
-            
+            AssetLoader.MaterialAssetLoad("example", new([example_tex], [new("uTexture0", 0)], standard_shader), AssetLoader.AssetSource.engine);
+
             // Model
-            AssetLoader.ModelAssetLoad( "test_cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
+            AssetLoader.ModelAssetLoad("test_cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
 
             return 1;
         }

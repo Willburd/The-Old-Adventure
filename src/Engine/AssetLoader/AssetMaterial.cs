@@ -19,10 +19,10 @@ namespace Engine
             (data as MaterialData).Dispose();
             base.Unload();
         }
-        
+
         public override bool CheckIntegrity(bool valid = true)
         {
-            if(data == null) return false;
+            if (data == null) return false;
             MaterialData check = (MaterialData)data;
             return base.CheckIntegrity(check.IsValid());
         }

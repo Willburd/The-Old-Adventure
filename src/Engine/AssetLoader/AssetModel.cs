@@ -20,10 +20,10 @@ namespace Engine
             (data as ModelData).Dispose();
             base.Unload();
         }
-        
+
         public override bool CheckIntegrity(bool valid = true)
         {
-            if(data == null) return false;
+            if (data == null) return false;
             ModelData check = (ModelData)data;
             return base.CheckIntegrity(check.IsValid());
         }

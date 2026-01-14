@@ -24,7 +24,7 @@ namespace Rendering
 
         public unsafe void VertexAttributePointer(uint index, int size, VertexAttribPointerType type, bool normalized, uint stride, uint offSet)
         {
-            _gl.VertexAttribPointer(index, size, type, normalized, stride * (uint) sizeof(TVertexType), (void*) (offSet * sizeof(TVertexType)));
+            _gl.VertexAttribPointer(index, size, type, normalized, stride * (uint)sizeof(TVertexType), (void*)(offSet * sizeof(TVertexType)));
             _gl.EnableVertexAttribArray(index);
         }
 

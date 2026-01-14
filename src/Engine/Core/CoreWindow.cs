@@ -6,10 +6,10 @@ using EntComponents;
 
 namespace Engine
 {
-    public partial class Core 
+    public partial class Core
     {
-        public static IWindow WindowContext {get; private set;}
-        
+        public static IWindow WindowContext { get; private set; }
+
         /// <summary>
         /// Called when the window is created.
         /// </summary>
@@ -29,14 +29,14 @@ namespace Engine
             }
             for (int i = 0; i < input.Gamepads.Count; i++)
             {
-                InputHandler.InvokeGamepadConnection( true, "connected", input.Gamepads[i]);
+                InputHandler.InvokeGamepadConnection(true, "connected", input.Gamepads[i]);
             }
             input.ConnectionChanged += InputHandler.InvokeInputConnection;
 
             // Get the openGL context from the window
             OpenGLContext = WindowContext.CreateOpenGL();
             singleton.ConfigureGL();
-            
+
             // Set buffering mode
             WindowContext.ShouldSwapAutomatically = false;
 

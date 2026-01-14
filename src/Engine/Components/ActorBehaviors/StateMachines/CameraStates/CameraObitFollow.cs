@@ -11,19 +11,19 @@ namespace EntComponents.ActorBehavior.CameraStates
         public override void Process()
         {
             // Try to orbit player
-            Actor player = Actor.GetActor( PlayerActorBehavior.player_actor_id);
-            if(player == null) return;
+            Actor player = Actor.GetActor(PlayerActorBehavior.player_actor_id);
+            if (player == null) return;
 
             // From the center of the player
             Vector3 start_pos = player.Position + (Tools.Up * 0.2f); // halfway up actor, more or less.
-            
+
             // Camera movement
             Input input = (Input)Host.GetComponent(typeof(Input));
-            if(input != null)
+            if (input != null)
             {
                 camera_rotation_angle += input.CameraMove.X;
                 camera_pitch_angle += input.CameraMove.Y;
-                camera_pitch_angle = Math.Clamp(camera_pitch_angle,2f,4.50f);
+                camera_pitch_angle = Math.Clamp(camera_pitch_angle, 2f, 4.50f);
             }
 
             // Get our desired location, then check if we're blocked by a wall
@@ -33,7 +33,7 @@ namespace EntComponents.ActorBehavior.CameraStates
             // Push against walls
             Vector3 goal_pos = start_pos + want_offset;
             Collider.RaycastHit? hit = Collider.DoRaycastNearest(start_pos, want_offset, Collider.mask_worldgeo);
-            if(hit != null)
+            if (hit != null)
             {
                 //goal_pos = hit.Value.HitPosition;
             }

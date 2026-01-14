@@ -23,7 +23,7 @@ namespace Assets
         private Assimp _assimp;
         private List<TextureData> _texturesLoaded = new List<TextureData>();
         public List<MeshData> Meshes { get; protected set; } = new List<MeshData>();
-        
+
         private unsafe void LoadModel(string path)
         {
             var scene = _assimp.ImportFile(path, (uint)PostProcessSteps.FixInFacingNormals | (uint)PostProcessSteps.CalculateTangentSpace | (uint)PostProcessSteps.FindInstances);
@@ -84,7 +84,7 @@ namespace Assets
                 else
                 {
                     // default vert color if none packed
-                    vertex.Color = new Vector4(1f,1f,1f,0f);
+                    vertex.Color = new Vector4(1f, 1f, 1f, 0f);
                 }
                 // texture coordinates
                 if (mesh->MTextureCoords[0] != null) // does the mesh contain texture coordinates
@@ -161,7 +161,7 @@ namespace Assets
         public List<string> GetMeshNames()
         {
             List<string> names = [];
-            foreach(MeshData mesh in Meshes)
+            foreach (MeshData mesh in Meshes)
             {
                 names.Add(mesh.MeshName);
             }
@@ -171,9 +171,9 @@ namespace Assets
         public int GetMeshIndex(string mesh_name)
         {
             int index = 0;
-            foreach(MeshData mesh in Meshes)
+            foreach (MeshData mesh in Meshes)
             {
-                if(mesh_name == mesh.MeshName)
+                if (mesh_name == mesh.MeshName)
                 {
                     return index;
                 }
@@ -185,7 +185,7 @@ namespace Assets
         public void DebugMeshNames()
         {
             int index = 0;
-            foreach(string name in GetMeshNames())
+            foreach (string name in GetMeshNames())
             {
                 Console.WriteLine("mesh index [" + index + "] -> " + name);
                 index++;
