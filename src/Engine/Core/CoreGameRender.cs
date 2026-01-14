@@ -11,7 +11,7 @@ namespace Engine
     {
         public static GL OpenGLContext { get; private set; }
 
-        public static bool draw_collisions = false;
+        public static bool draw_collisions = true;
 
         /// <summary>
         /// Number of frames per second for rendering.

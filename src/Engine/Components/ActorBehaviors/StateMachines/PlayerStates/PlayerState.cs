@@ -65,12 +65,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
             Collider.RaycastHit? velocity_hit = WallCollision(phys.Velocity, character_height, player_radius);
             velocity_hit ??= WallCollision(phys.Velocity, wallcast_y_lower, player_radius); // secondary check
             if (velocity_hit == null) return;
-            
-            // Push velocity back out of the wall
-            Vector3 desired_velocity = phys.Velocity;
-            desired_velocity.Y = 0f;
-            phys.Velocity -= Vector3.Normalize(desired_velocity) * (desired_velocity.Length() - velocity_hit.Value.Distance);
-            Console.WriteLine(phys.Velocity);
+            phys.Velocity = new Vector3(0f, phys.Velocity.Y, 0f);
         }
 
         protected float FloorSlipFactor(Vector3 normal)
