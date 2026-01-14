@@ -15,7 +15,7 @@ namespace EntComponents.ActorBehavior.CameraStates
             if (player == null) return;
 
             // From the center of the player
-            Vector3 start_pos = player.Position + (Tools.Up * 0.2f); // halfway up actor, more or less.
+            Vector3 start_pos = player.Position + (Tools.Up * 0.6f); // halfway up actor, more or less.
 
             // Camera movement
             Input input = (Input)Host.GetComponent(typeof(Input));
@@ -28,14 +28,9 @@ namespace EntComponents.ActorBehavior.CameraStates
             Vector3 want_offset = Vector3.Transform(Tools.Forward, aim_rotation) * distance_from_player;
 
             // Push against walls
-            Collider.RaycastHit? hit = Collider.DoRaycastNearest(start_pos, want_offset, Collider.mask_worldgeo);
-            if (hit != null)
-            {
-                want_offset = Vector3.Normalize(want_offset) * hit.Value.Distance * 0.99f;
-            }
-
-            // Move to the new position
             Host.Position = start_pos + want_offset;
+            Collider.RaycastHit? hit = Collider.DoRaycastNearest(start_pos, want_offset, Collider.mask_worldgeo);
+            if (hit != null) Host.Position = hit.Value.HitPosition;
             Host.Rotation = Tools.LookAt(Host.Position, start_pos);
         }
     }

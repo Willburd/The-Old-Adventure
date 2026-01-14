@@ -42,12 +42,13 @@ namespace EntComponents.ActorBehavior.PlayerStates
 
             // Get direction of movement based on the camera
             Vector3 move_dir = Vector3.Transform(input.Move, CameraRotationToPlayer());
+            float move_intensity = move_dir.Length();
             if (move_dir.Length() > 0f)
             {
                 // Rotate us toward our destination and move
                 Quaternion goal_rotation = Tools.FlatRotation(move_dir);
                 Host.Rotation = Tools.FlatRotation(Quaternion.Lerp(Host.Rotation, goal_rotation, ground_turnrate)); // Ensure we don't skew our angle
-                phys.Velocity = Tools.Accelerate(phys.Velocity, Vector3.Transform(Tools.Forward, Host.Rotation) * air_acceleration, ground_run_maxspeed);
+                phys.Velocity = Tools.Accelerate(phys.Velocity, Vector3.Transform(Tools.Forward * move_intensity, Host.Rotation) * ground_acceleration, ground_run_maxspeed);
             }
 
             // Process walls and ceilings

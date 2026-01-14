@@ -13,6 +13,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
         protected const float ground_run_maxspeed = 0.1f;
 
         // Air
+        protected const float air_turnrate = 0.8f;
         protected const float air_acceleration = 0.018f;
         protected const float air_friction = 0.004f;
         protected const float air_maxspeed = 0.08f;
@@ -53,14 +54,13 @@ namespace EntComponents.ActorBehavior.PlayerStates
 
         private Collider.RaycastHit? WallCollision(Vector3 velocity, float height, float radius)
         {
-            Vector3 moving_vector = velocity;
-            moving_vector.Y = 0f; // Flatten it
-            moving_vector = Vector3.Normalize(moving_vector);
+            velocity.Y = 0f; // Flatten it
+            velocity = Vector3.Normalize(velocity);
 
-            Collider.RaycastHit? hit = Collider.DoRaycastNearest(Host.Position + (Tools.Up * height), moving_vector * radius, Collider.mask_worldgeo);
+            Collider.RaycastHit? hit = Collider.DoRaycastNearest(Host.Position + (Tools.Up * height), velocity * radius, Collider.mask_worldgeo);
             if (hit != null && !hit.Value.IsFloor)
             {
-                Host.Position = hit.Value.HitPosition + (Tools.Down * height) + (moving_vector * -radius);
+                Host.Position = hit.Value.HitPosition + (velocity * -radius) + (Tools.Down * height);
                 return hit;
             }
             return null;
@@ -92,15 +92,28 @@ namespace EntComponents.ActorBehavior.PlayerStates
 
         protected Collider.RaycastHit? StandardProcessWalls(PhysicsBody phys, float player_radius, float height)
         {
-            // Check upper Wallblocking
-            Collider.RaycastHit? velocity_hit = WallCollision(phys.Velocity, height, player_radius);
-            velocity_hit ??= WallCollision(phys.Velocity, wallcast_y_lower, player_radius); // secondary check
-            if (velocity_hit != null)
+            // Check all walls around us in all directions, ensure we are not intruding into them
+            Collider.RaycastHit? nearest_hit = null;
+            for (int i = 0; i < 360; i += 45)
             {
-                phys.Velocity = new Vector3(0f, phys.Velocity.Y, 0f);
-                return velocity_hit;
+                // Check upper Wallblocking
+                Vector3 ray_dir = Vector3.Transform(Tools.Forward, Quaternion.CreateFromAxisAngle(Tools.Up, i));
+                Collider.RaycastHit? upper_hit = WallCollision(ray_dir, height - wallcast_y_lower, player_radius);
+                Collider.RaycastHit? lower_hit = WallCollision(ray_dir, wallcast_y_lower, player_radius); // secondary check
+                
+                // Check for furthest hit on upper and lower (we want to always eject as much as we possibly can from a wall)
+                Collider.RaycastHit? considered_hit = null;
+                if (lower_hit != null && !lower_hit.Value.IsFloor && lower_hit.Value.Distance > upper_hit?.Distance) considered_hit = lower_hit;
+                if (upper_hit != null && !upper_hit.Value.IsFloor && upper_hit.Value.Distance > lower_hit?.Distance) considered_hit = upper_hit;
+                if (considered_hit != null && considered_hit.Value.Distance > nearest_hit?.Distance) nearest_hit = considered_hit;
             }
-            return null;
+            // Finally apply pushout on the worst offender
+            if (nearest_hit != null)
+            {
+                Host.Position -= Vector3.Normalize(nearest_hit.Value.Direction) * nearest_hit.Value.Distance;
+                phys.Velocity = new Vector3(0f, phys.Velocity.Y, 0f);
+            }
+            return nearest_hit;
         }
 
         protected Collider.RaycastHit? StandardProcessCeilings(PhysicsBody phys, float height)
