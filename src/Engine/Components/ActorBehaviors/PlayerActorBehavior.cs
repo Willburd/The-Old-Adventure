@@ -22,6 +22,7 @@ namespace EntComponents.ActorBehavior
             current_state?.End(new_state);
             new_state?.Start(current_state);
             current_state = new_state;
+            Console.WriteLine(current_state.GetType());
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
