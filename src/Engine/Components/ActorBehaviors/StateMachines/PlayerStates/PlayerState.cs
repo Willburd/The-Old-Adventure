@@ -12,6 +12,10 @@ namespace EntComponents.ActorBehavior.PlayerStates
         protected const float ground_friction = 0.009f;
         protected const float ground_run_maxspeed = 0.1f;
 
+        protected const float air_acceleration = 0.018f;
+        protected const float air_friction = 0.004f;
+        protected const float air_maxspeed = 0.08f;
+        
         // Slipping
         protected const float slip_threshold = 0.03f;
         protected const float slip_acceleration = 0.056f;

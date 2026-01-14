@@ -14,7 +14,6 @@ namespace EntComponents.ActorBehavior.PlayerStates
             phys.FlatFriction = ground_friction * 0.5f;
         }
 
-
         public override void Process()
         {
             Input input = (Input)Host.GetComponent(typeof(Input));
@@ -26,8 +25,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
             Collider.RaycastHit? hit = FloorCollision();
             if (hit == null)
             {
-                // TODO - Enter falling state
-
+                Player.SetPlayerState(new Falling(Player));
                 return;
             }
 
@@ -44,7 +42,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
             // TODO - Get material properties to decide slip threshold
 
             // End slip
-            if (slip < 0.03f)
+            if (slip < slip_threshold)
             {
                 Player.SetPlayerState(new Grounded(Player));
                 return;

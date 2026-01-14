@@ -1,17 +1,16 @@
-
 using Engine;
 using Engine.ColliderShapes;
 using System.Numerics;
 
 namespace EntComponents.ActorBehavior.PlayerStates
 {
-    public class Grounded(PlayerActorBehavior owner) : PlayerState(owner)
+    public class Falling(PlayerActorBehavior owner) : PlayerState(owner)
     {
         public override void Start(BehaviorStateMachine? previous_state)
         {
             PhysicsBody phys = (PhysicsBody)GetComponent(typeof(PhysicsBody));
             phys.HasGravity = true;
-            phys.FlatFriction = ground_friction;
+            phys.FlatFriction = air_friction;
         }
 
         public override void Process()
@@ -23,24 +22,12 @@ namespace EntComponents.ActorBehavior.PlayerStates
 
             // Check for floor
             Collider.RaycastHit? hit = FloorCollision();
-            if (hit == null)
+            if (hit != null)
             {
-                Player.SetPlayerState(new Falling(Player));
-                return;
-            }
-
-            // Snap to floor
-            Host.Position = new Vector3(hit.Value.HitPosition.X, hit.Value.HitPosition.Y, hit.Value.HitPosition.Z) + new Vector3(0f, -ground_snap_distance, 0f);
-            phys.Velocity = new Vector3(phys.Velocity.X, 0f, phys.Velocity.Z);
-
-            // Slide down hills
-            float slip = FloorSlipFactor(hit.Value.Normal);
-
-            // TODO - Get material properties to decide slip threshold
-
-            if (slip >= slip_threshold)
-            {
-                Player.SetPlayerState(new Slipping(Player));
+                // Snap to floor
+                Host.Position = new Vector3(hit.Value.HitPosition.X, hit.Value.HitPosition.Y, hit.Value.HitPosition.Z) + new Vector3(0f, -ground_snap_distance, 0f);
+                phys.Velocity = new Vector3(phys.Velocity.X, 0f, phys.Velocity.Z);
+                Player.SetPlayerState(new Grounded(Player));
                 return;
             }
 
@@ -51,7 +38,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
                 // Rotate us toward our destination and move
                 Quaternion goal_rotation = Tools.FlatRotation(move_dir);
                 Host.Rotation = Tools.FlatRotation(Quaternion.Lerp(Host.Rotation, goal_rotation, ground_turnrate)); // Ensure we don't skew our angle
-                phys.Velocity = Tools.Accelerate(phys.Velocity, Vector3.Transform(Tools.Forward, Host.Rotation) * air_acceleration, ground_run_maxspeed);
+                phys.Velocity = Tools.Accelerate(phys.Velocity, Vector3.Transform(Tools.Forward, Host.Rotation) * ground_acceleration, air_maxspeed);
             }
 
             // Process walls

@@ -1,7 +1,6 @@
 using Engine;
 using Silk.NET.Input;
 using Assets;
-using Silk.NET.GLFW;
 
 namespace EntComponents.ActorBehavior
 {
