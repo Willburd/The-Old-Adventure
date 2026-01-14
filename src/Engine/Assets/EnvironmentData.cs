@@ -41,7 +41,7 @@ namespace Assets
             AmbientLight = ambient_light;
 
             SkyboxMaterial = skybox_mat;
-            SkyboxTexture = SkyboxMaterial.Textures[0];
+            SkyboxTexture = SkyboxMaterial?.Textures[0];
         }
         
         public EnvironmentData(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light)

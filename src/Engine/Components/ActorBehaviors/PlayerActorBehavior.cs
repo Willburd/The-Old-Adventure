@@ -91,7 +91,7 @@ namespace EntComponents.ActorBehavior
             return 1;
         }
 
-        protected override uint HandleCollisions(List<Collider.Collision> collisions)
+        protected override uint HandleCollisions(List<Collider.Collision>? collisions)
         {
             return 1;
         }
