@@ -127,5 +127,11 @@ namespace Engine
             target *= new Vector3(1f, 0f, 1f);
             return LookAt(current, target);
         }
+
+        public static Quaternion GetFlatRotation(Vector3 dirvec)
+        {
+            if (dirvec.X == 0 && dirvec.Y == 0) return Quaternion.Identity;
+            return LookAtLockedZ(Vector3.Zero, dirvec);
+        }
     }
 }

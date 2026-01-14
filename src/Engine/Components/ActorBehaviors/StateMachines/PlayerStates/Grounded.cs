@@ -10,7 +10,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
         {
             PhysicsBody phys = (PhysicsBody)GetComponent(typeof(PhysicsBody));
             phys.HasGravity = true;
-            phys.Friction = new Vector3(ground_friction, 0f, ground_friction);
+            phys.FlatFriction = ground_friction;
         }
 
         public override void Process()
@@ -39,12 +39,8 @@ namespace EntComponents.ActorBehavior.PlayerStates
             // Movement
             if (input != null)
             {
-                // Rotation
-                Vector3 move_dir = input.Move;
-                Host.Rotation *=  Quaternion.CreateFromAxisAngle(Tools.Up, move_dir.X * -0.1f);
-                // Movement
-                move_dir.X = 0f;
-                phys.Velocity = Tools.Accelerate(phys.Velocity, Vector3.Transform(move_dir, Host.Rotation) * ground_acceleration, ground_run_maxspeed);
+                Vector3 move_dir = Vector3.Transform(input.Move, CameraRotationToPlayer());
+                phys.Velocity = Tools.Accelerate(phys.Velocity, move_dir * ground_acceleration, ground_run_maxspeed);
             }
         }
     }

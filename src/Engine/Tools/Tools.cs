@@ -43,7 +43,17 @@ namespace Engine
 
         public static Vector3 Decelerate(Vector3 org, float decel)
         {
-            return new Vector3(Decelerate(org.X, decel), Decelerate(org.Y, decel), Decelerate(org.Z, decel));
+            if (org.Length() == 0) return org;
+            Vector3 org_dir = Vector3.Normalize(org);
+            float magnitude = org.Length();
+            return org_dir * Decelerate(magnitude, decel);
+        }
+
+        public static Vector3 DecelerateFlat(Vector3 org, float decel)
+        {
+            Vector3 fix_dir = Decelerate(org, decel);
+            fix_dir.Y = org.Y;
+            return fix_dir;
         }
 
         public static Vector3 Decelerate(Vector3 org, Vector3 decel)
@@ -53,12 +63,10 @@ namespace Engine
 
         public static Vector3 Accelerate(Vector3 org, Vector3 accel, float max_speed)
         {
-            return new Vector3(Accelerate(org.X, accel.X, max_speed), Accelerate(org.Y, accel.Y, max_speed), Accelerate(org.Z, accel.Z, max_speed));
-        }
-
-        public static Vector3 Accelerate(Vector3 org, Vector3 accel, Vector3 max_speed)
-        {
-            return new Vector3(Accelerate(org.X, accel.X, max_speed.X), Accelerate(org.Y, accel.Y, max_speed.Y), Accelerate(org.Z, accel.Z, max_speed.Z));
+            Vector3 new_vec = org + accel;
+            if (new_vec.Length() < org.Length()) return new_vec; // Results in a slower vec, allow it
+            if (new_vec.Length() < max_speed) return new_vec; // Less than max, allow it
+            return org; // At limit
         }
     }
 }
