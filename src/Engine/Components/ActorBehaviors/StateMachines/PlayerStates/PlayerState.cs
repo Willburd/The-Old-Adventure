@@ -12,6 +12,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
         protected const float ground_friction = 0.009f;
         protected const float ground_run_maxspeed = 0.1f;
 
+        // Air
         protected const float air_acceleration = 0.018f;
         protected const float air_friction = 0.004f;
         protected const float air_maxspeed = 0.08f;
@@ -33,7 +34,6 @@ namespace EntComponents.ActorBehavior.PlayerStates
                 return (PlayerActorBehavior)Owner;
             }
         }
-
 
         protected Quaternion CameraRotationToPlayer()
         {
