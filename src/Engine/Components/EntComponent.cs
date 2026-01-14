@@ -109,12 +109,12 @@ namespace EntComponents
                 /////////////////////////////////////////////////////////
                 // Input handlers
                 /////////////////////////////////////////////////////////
-                case Core.Signals.key_pressed:
+                case Core.Signals.input_pressed:
                     if(!ActiveUpdate) return 0;
-                    return HandleKeyPressed((Key)args[0]);
-                case Core.Signals.key_released:
+                    return HandlePressed((Key?)args[0], (ButtonName?)args[1]);
+                case Core.Signals.input_released:
                     if(!ActiveUpdate) return 0;
-                    return HandleKeyReleased((Key)args[0]);
+                    return HandleReleased((Key?)args[0], (ButtonName?)args[1]);
 
                 /////////////////////////////////////////////////////////
                 // Collision handling
@@ -195,7 +195,7 @@ namespace EntComponents
         /// <summary>
         /// Used to respond to input key pressed
         /// </summary>
-        protected virtual uint HandleKeyPressed(Key key)
+        protected virtual uint HandlePressed(Key? key, ButtonName? button)
         {
             return 0;
         }
@@ -203,7 +203,7 @@ namespace EntComponents
         /// <summary>
         /// Used to respond to input key release
         /// </summary>
-        protected virtual uint HandleKeyReleased(Key key)
+        protected virtual uint HandleReleased(Key? key, ButtonName? button)
         {
             return 0;
         }

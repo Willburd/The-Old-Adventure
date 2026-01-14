@@ -195,7 +195,7 @@ namespace Engine
         /// <summary>
         /// Sends signal to all components attached to the entity. Responds with a uint bitflag of information related to the signal. How that is used is entirely dependant on the signal.
         /// </summary>
-        public uint SendSignal(Core.Signals signal, params object[] args)
+        public uint SendSignal(Core.Signals signal, params object?[] args)
         {
             if(!IsInitilized) return 0; // Nope, we don't do anything with this until we are initilized!
             if(!linked_signals.TryGetValue(signal, out List<EntComponent>? signal_list)) return 0;
@@ -207,7 +207,7 @@ namespace Engine
             return return_flags;
         }
 
-        public static void SendGlobalSignal(Core.Signals signal, params object[] args)
+        public static void SendGlobalSignal(Core.Signals signal, params object?[] args)
         {
             foreach(Entity ent in EntityList)
             {

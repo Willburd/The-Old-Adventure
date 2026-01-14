@@ -12,7 +12,7 @@ namespace EntComponents.ActorBehavior
         
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.create, Core.Signals.editor_update, Core.Signals.key_pressed, Core.Signals.key_released];
+            return [Core.Signals.create, Core.Signals.editor_update, Core.Signals.input_pressed, Core.Signals.input_released];
         }
 
         protected override uint HandleCreate()
@@ -34,20 +34,20 @@ namespace EntComponents.ActorBehavior
             {
                 // Movement
                 float camera_speed = 0.1f;
-                Host.Position += Vector3.Transform(input.MoveInput * camera_speed, Host.Location.Rotation);
+                Host.Position += Vector3.Transform(input.Move * camera_speed, Host.Location.Rotation);
                 float rotate_speed = 0.02f;
                 Host.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Forward, input.CameraRoll * rotate_speed);
 
                 // Mouse movement
-                Host.Rotation *= Quaternion.CreateFromAxisAngle( Vector3.Transform(Tools.Up, Quaternion.Inverse(Host.Rotation)), input.CameraInput.X * InputHandler.mouse_sensitivity);
-                Host.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraInput.Y * InputHandler.mouse_sensitivity);
+                Host.Rotation *= Quaternion.CreateFromAxisAngle( Vector3.Transform(Tools.Up, Quaternion.Inverse(Host.Rotation)), input.CameraMove.X);
+                Host.Rotation *= Quaternion.CreateFromAxisAngle( Tools.Right, input.CameraMove.Y);
             }
             return 1;
         }
 
-        protected override uint HandleKeyPressed(Key key)
+        protected override uint HandlePressed(Key? key, ButtonName? button)
         {
-            if(key == InputHandler.input_key_cancel)
+            if(key == InputHandler.KeyIDConfirm || button == InputHandler.ButtonIDConfirm)
             {
                 // Raycast testing
                 Collider? col = (Collider?)Host.GetComponent(typeof(Collider));
@@ -62,7 +62,7 @@ namespace EntComponents.ActorBehavior
             return 0;
         }
 
-        protected override uint HandleKeyReleased(Key key)
+        protected override uint HandleReleased(Key? key, ButtonName? button)
         {
             return 1;
         }

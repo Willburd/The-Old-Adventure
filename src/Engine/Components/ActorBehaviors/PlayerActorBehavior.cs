@@ -29,7 +29,7 @@ namespace EntComponents.ActorBehavior
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.update, Core.Signals.key_pressed, Core.Signals.key_released, Core.Signals.collision];
+            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.update, Core.Signals.input_pressed, Core.Signals.input_released, Core.Signals.collision];
         }
 
         protected override uint HandleAssetLoad()
@@ -77,17 +77,16 @@ namespace EntComponents.ActorBehavior
             return 1;
         }
 
-        protected override uint HandleKeyPressed(Key key)
+        protected override uint HandlePressed(Key? key, ButtonName? button)
         {
-            if(key == InputHandler.input_key_cancel)
+            if(key == InputHandler.KeyIDCancel)
             {
 
                 return 1;
             }
             return 0;
         }
-
-        protected override uint HandleKeyReleased(Key key)
+        protected override uint HandleReleased(Key? key, ButtonName? button)
         {
             return 1;
         }

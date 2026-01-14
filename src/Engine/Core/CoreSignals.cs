@@ -41,8 +41,8 @@ namespace Engine
             raycast,                // (Collider.Raycast, List<ref Collider.RaycastHit>) : Check for raycast line intersection with colliders
 
             // Input
-            key_pressed,            // (Key key) : Fired from Input components with the key that was pressed
-            key_released,           // (Key key) : Fired from Input components with the key that was released
+            input_pressed,            // (Key, ButtonName) : Fired from Input components with the key that was pressed
+            input_released,           // (Key, ButtonName) : Fired from Input components with the key that was released
 
             // Global signals
             global_fadeout_begin,     // () : Called when a fadeout begins.
@@ -51,8 +51,8 @@ namespace Engine
             global_room_loaded,       // (Room loaded) : Called when a room loads. Handles room start events.
             global_cutscene_begin,    // (Cutscene begin) : Called when a cutscene begins.
             global_cutscene_end,      // (Cutscene begin) : Called when a cutscene ends
-            global_key_pressed,       // (Key key) : Fired from the input handler when a key is pressed
-            global_key_released,      // (Key key) : Fired from the input handler when a key is released
+            global_input_pressed,       // (Key key) : Fired from the input handler when a key is pressed
+            global_input_released,      // (Key key) : Fired from the input handler when a key is released
             global_all_collisions,    // (List<Collider.Collision>) : Called at the end of collision resolution. Sends a list of all collisions that frame for all colliders
             global_all_triggers,      // (List<Collider.Collision>) : Called at the end of collision resolution. Sends a list of all triggers that frame for all trigger volumes
             global_camera_activated,  // (Camera active_camera) : When a camera becomes the active camera

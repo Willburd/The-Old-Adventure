@@ -17,29 +17,34 @@ namespace EntComponents.ActorBehavior.PlayerStates
         {
             Input? input = (Input?)Host.GetComponent(typeof(Input));
             PhysicsBody? phys = (PhysicsBody?)GetComponent(typeof(PhysicsBody));
+
+            // Check for floor
+            bool on_ground = false;
             Collider.RaycastHit? hit = Collider.DoRaycastNearest(Host.Position + Tools.Up, Tools.Down * (1f + ground_snap_threshold), Collider.mask_worldgeo);
             if(hit != null && phys != null)
             {
                 // Snap to floor
-                Host.Position = new Vector3(Host.Position.X, hit.Value.HitPosition.Y, Host.Position.Z);
-                phys.HasGravity = false;
+                Host.Position = new Vector3(hit.Value.HitPosition.X, hit.Value.HitPosition.Y, hit.Value.HitPosition.Z) + new Vector3(0f,-ground_snap_threshold,0f);
                 phys.Velocity = new Vector3(phys.Velocity.X, 0f, phys.Velocity.Z);
-
-                // Movement
-                if(input != null)
-                {
-                    // Rotation
-                    Vector3 move_dir = input.MoveInput;
-                    Host.Rotation *= Tools.CreateFromAxisAngle(Tools.Up, move_dir.X * -0.1f);
-                    // Movement
-                    move_dir.X = 0f;
-                    phys.Velocity = Tools.Accelerate(phys.Velocity, Vector3.Transform(move_dir, Host.Rotation) * ground_acceleration, ground_run_maxspeed);
-                }
+                phys.HasGravity = false;
+                on_ground = true;
             }
             else
             {
                 // Gravity
                 phys?.HasGravity = true;
+                on_ground = false;
+            }
+
+            // Movement
+            if(input != null)
+            {
+                // Rotation
+                Vector3 move_dir = input.Move;
+                Host.Rotation *= Tools.CreateFromAxisAngle(Tools.Up, move_dir.X * -0.1f);
+                // Movement
+                move_dir.X = 0f;
+                phys?.Velocity = Tools.Accelerate(phys.Velocity, Vector3.Transform(move_dir, Host.Rotation) * ground_acceleration, ground_run_maxspeed);
             }
         }
     }

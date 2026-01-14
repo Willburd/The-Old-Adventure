@@ -21,8 +21,8 @@ namespace EntComponents.ActorBehavior.CameraStates
             Input? input = (Input?)Host.GetComponent(typeof(Input));
             if(input != null)
             {
-                camera_rotation_angle += input.CameraInput.X * 0.0005f;
-                camera_pitch_angle += input.CameraInput.Y * 0.0005f;
+                camera_rotation_angle += input.CameraMove.X;
+                camera_pitch_angle += input.CameraMove.Y;
                 camera_pitch_angle = Math.Clamp(camera_pitch_angle,2f,4.50f);
             }
 
