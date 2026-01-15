@@ -28,7 +28,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
                 Player.SetPlayerState(new Falling(Player));
                 return;
             }
-            
+
             // Slide down hills
             float slip = FloorSlipFactor(floorhit.Value.Normal);
 

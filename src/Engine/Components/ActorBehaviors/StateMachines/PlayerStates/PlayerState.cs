@@ -17,12 +17,12 @@ namespace EntComponents.ActorBehavior.PlayerStates
         protected const float air_acceleration = 0.018f;
         protected const float air_friction = 0.004f;
         protected const float air_maxspeed = 0.08f;
-        
+
         // Slipping
         protected const float slip_threshold = 0.03f;
         protected const float slip_acceleration = 0.056f;
         protected const float slip_maxspeed = 0.15f;
-        
+
         // Collision raycasts
         protected const float ground_snap_distance = 0.09f; // Amount above the ground that the origin of the player will be
         protected const float wallcast_y_lower = 0.04f; // Beneath this point walls will be ignored (like steps on a staircase)
@@ -100,7 +100,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
                 Vector3 ray_dir = Vector3.Transform(Tools.Forward, Quaternion.CreateFromAxisAngle(Tools.Up, i));
                 Collider.RaycastHit? upper_hit = WallCollision(ray_dir, height, player_radius);
                 Collider.RaycastHit? lower_hit = WallCollision(ray_dir, wallcast_y_lower, player_radius); // secondary check
-                
+
                 // Check for furthest hit on upper and lower (we want to always eject as much as we possibly can from a wall)
                 Collider.RaycastHit? considered_hit = null;
                 if (lower_hit != null && !lower_hit.Value.IsFloor && lower_hit.Value.Distance > upper_hit?.Distance) considered_hit = lower_hit;

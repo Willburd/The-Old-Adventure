@@ -152,10 +152,10 @@ namespace Engine
             if (dirvec.X == 0 && dirvec.Z == 0) return Quaternion.Identity;
             return LookAtLockedZ(Vector3.Zero, dirvec);
         }
-        
+
         public static Quaternion FlatRotation(Quaternion source)
         {
-            return FlatRotation( Vector3.Transform(Forward, source));
+            return FlatRotation(Vector3.Transform(Forward, source));
         }
     }
 }

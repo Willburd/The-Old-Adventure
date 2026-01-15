@@ -14,7 +14,7 @@ namespace EntComponents
 
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.update,Core.Signals.post_update];
+            return [Core.Signals.update, Core.Signals.post_update];
         }
 
         protected override uint HandleUpdate()

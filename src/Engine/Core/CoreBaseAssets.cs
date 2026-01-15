@@ -56,10 +56,10 @@ namespace Engine
             // Debug models
             AssetLoader.ModelAssetLoad("no_model", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
             // Collider visualization
-            collision_model_point       = AssetLoader.ModelAssetLoad("cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
-            collision_model_sphere      = AssetLoader.ModelAssetLoad("col_sphere", AssetLoader.AssetDirectoryEngine + "/Models/col_sphere.fbx", AssetLoader.AssetSource.engine);
-            collision_model_cylinder    = AssetLoader.ModelAssetLoad("col_cylinder", AssetLoader.AssetDirectoryEngine + "/Models/col_cylinder.fbx", AssetLoader.AssetSource.engine);
-            sprite2d_model              = AssetLoader.ModelAssetLoad("sprite2d", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
+            collision_model_point = AssetLoader.ModelAssetLoad("cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
+            collision_model_sphere = AssetLoader.ModelAssetLoad("col_sphere", AssetLoader.AssetDirectoryEngine + "/Models/col_sphere.fbx", AssetLoader.AssetSource.engine);
+            collision_model_cylinder = AssetLoader.ModelAssetLoad("col_cylinder", AssetLoader.AssetDirectoryEngine + "/Models/col_cylinder.fbx", AssetLoader.AssetSource.engine);
+            sprite2d_model = AssetLoader.ModelAssetLoad("sprite2d", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
             // Misc
             AssetLoader.ModelAssetLoad("cube_map", AssetLoader.AssetDirectoryEngine + "/Models/cube_map.fbx", AssetLoader.AssetSource.engine);
 

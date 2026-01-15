@@ -82,7 +82,7 @@ namespace Engine
             // GLTF format
             OpenGLContext.FrontFace(FrontFaceDirection.Ccw);
         }
-        
+
         /// <summary>
         /// Create framebuffers for complex rendering tasks and down/upsampling.
         /// </summary>
@@ -344,7 +344,7 @@ namespace Engine
 
             // Set the blending mode
             mat_data.UseBlendMode();
-            
+
             // Each mesh can use a different material, and that also means shader!
             ShaderData shader = mat_data.Shader;
             shader.Use();
@@ -352,7 +352,7 @@ namespace Engine
             {
                 shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
             }
-            
+
             // Bind textures to texunits
             int tex_unit_id = 0;
             foreach (TextureData tex in mat_data.Textures)
@@ -370,7 +370,7 @@ namespace Engine
             // Draw mesh
             OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
         }
-        
+
         public static void RenderSprite(FrameBufferContainer fbo, List<ShaderData.Uniform> vertex_uniforms)
         {
             // Bind the VBOs
@@ -387,7 +387,7 @@ namespace Engine
             {
                 shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
             }
-            
+
             // Bind textures to texunits
             fbo.BindTexture(0);
 

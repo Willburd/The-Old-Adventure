@@ -56,7 +56,7 @@ namespace Engine
         {
             return Vector3.Normalize(end - start);
         }
-        
+
         public static Vector3 FlatDirVector(Vector3 start, Vector3 end)
         {
             Vector3 vec = Vector3.Normalize(end - start);
