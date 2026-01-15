@@ -24,10 +24,11 @@ namespace EntComponents.ActorBehavior
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.create, Core.Signals.update];
+            return [Core.Signals.create, Core.Signals.post_update];
         }
 
-        protected override uint HandleUpdate()
+        // Camera prefers late update, to ensure we have the latest player position at render
+        protected override uint HandlePostUpdate()
         {
             // Change state depending on gameplay
 
