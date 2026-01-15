@@ -13,6 +13,20 @@ namespace Engine
 
         public static bool draw_collisions = false;
 
+        /// <summary>
+        /// If the internal game framebuffer will match the window's size, or if it will use the fixed InternalRenderResolutionHeight to calculate it's size.
+        /// </summary>
+        public static bool FramebufferMatchesWindowSize = false;
+
+        /// <summary>
+        /// Height in pixels of the internal render resolution. For downscaled pixely rendering of older-era themed games.
+        /// </summary>
+        public static uint InternalRenderResolutionHeight { get; protected set; } = 144;
+
+        /// <summary>
+        /// Framebuffer object used to render the game. It is rendered to the window's buffer and stretched to fit in order to down or upsample the game view.
+        /// Intentionally uses a fixed pixel height with a dynamic width to keep hud elements from changing scale. A purely style choice to match older era games.
+        /// </summary>
         public static Rendering.FrameBufferContainer FrameBuffer_Game { get; protected set; }
 
         /// <summary>
@@ -66,10 +80,16 @@ namespace Engine
 
             // GLTF format
             OpenGLContext.FrontFace(FrontFaceDirection.Ccw);
-
-            // Create framebuffers
-            uint render_window_size = 144;
-            FrameBuffer_Game = new Rendering.FrameBufferContainer(GetAspectWidth(render_window_size), render_window_size);
+        }
+        
+        /// <summary>
+        /// Create framebuffers for complex rendering tasks and down/upsampling.
+        /// </summary>
+        public virtual void CreateFrameBuffers()
+        {
+            uint render_size = InternalRenderResolutionHeight;
+            if (FramebufferMatchesWindowSize) render_size = DisplayHeight;
+            FrameBuffer_Game = new Rendering.FrameBufferContainer(GetAspectWidth(render_size), render_size);
         }
 
         /// <summary>

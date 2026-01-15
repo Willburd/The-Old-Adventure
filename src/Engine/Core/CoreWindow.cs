@@ -35,6 +35,7 @@ namespace Engine
             // Get the openGL context from the window
             OpenGLContext = WindowContext.CreateOpenGL();
             singleton.ConfigureGL();
+            singleton.CreateFrameBuffers();
 
             // Set buffering mode
             WindowContext.ShouldSwapAutomatically = false;
@@ -56,6 +57,11 @@ namespace Engine
             float ratio = (float)size.X / (float)size.Y;
             DisplayHeight = (uint)size.Y;
             DisplayAspectRatio = ratio;
+
+            // Resize the game FBO height, but resize to match aspect.
+            uint render_size = InternalRenderResolutionHeight;
+            if (FramebufferMatchesWindowSize) render_size = DisplayHeight;
+            FrameBuffer_Game.Resize(GetAspectWidth(render_size), render_size);
         }
 
         /// <summary>
