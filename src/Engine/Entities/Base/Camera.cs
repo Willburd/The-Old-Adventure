@@ -5,12 +5,10 @@ namespace Engine
     public class Camera : Actor
     {
         public static float default_fov = 45f;
-        public static float default_aspect = 1.66666667f;
         public static float near_clip = 0.01f;
         public static float far_clip = 1000f;
 
         public float FieldOfView { get; set; } = default_fov;
-        public float AspectRatio { get; set; } = default_aspect;
 
 
         private static readonly List<Camera> all_cameras = [];
@@ -98,7 +96,7 @@ namespace Engine
 
         public static Matrix4x4 GetCurrentProjectionMatrix()
         {
-            if (world_active_cam == null) return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(1f), default_aspect, near_clip, far_clip);
+            if (world_active_cam == null) return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(1f), Core.DisplayAspectRatio, near_clip, far_clip);
             return world_active_cam.GetProjectionMatrix();
         }
 
@@ -118,7 +116,7 @@ namespace Engine
 
         public Matrix4x4 GetProjectionMatrix()
         {
-            return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(FieldOfView), AspectRatio, near_clip, far_clip);
+            return Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(FieldOfView), Core.DisplayAspectRatio, near_clip, far_clip);
         }
     }
 }

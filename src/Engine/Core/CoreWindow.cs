@@ -1,8 +1,7 @@
 using Silk.NET.Input;
 using Silk.NET.Windowing;
 using Silk.NET.OpenGL;
-using System.Numerics;
-using EntComponents;
+using Silk.NET.Maths;
 
 namespace Engine
 {
@@ -50,6 +49,13 @@ namespace Engine
 
             // Finalize setup with gamespecific postinit.
             singleton.OnInit();
+        }
+
+        private static void HandleWindowResize(Vector2D<int> size)
+        {
+            float ratio = (float)size.X / (float)size.Y;
+            DisplayAspectRatio = ratio;
+            OpenGLContext.Viewport(0, 0, (uint)DisplayWidth(size.Y), (uint)size.Y);
         }
 
         /// <summary>
