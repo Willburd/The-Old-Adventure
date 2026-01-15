@@ -98,7 +98,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
             {
                 // Check upper Wallblocking
                 Vector3 ray_dir = Vector3.Transform(Tools.Forward, Quaternion.CreateFromAxisAngle(Tools.Up, i));
-                Collider.RaycastHit? upper_hit = WallCollision(ray_dir, height - wallcast_y_lower, player_radius);
+                Collider.RaycastHit? upper_hit = WallCollision(ray_dir, height, player_radius);
                 Collider.RaycastHit? lower_hit = WallCollision(ray_dir, wallcast_y_lower, player_radius); // secondary check
                 
                 // Check for furthest hit on upper and lower (we want to always eject as much as we possibly can from a wall)
