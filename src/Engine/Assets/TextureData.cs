@@ -75,7 +75,7 @@ namespace Assets
             _gl.GenerateMipmap(TexTarget);
         }
 
-        public void Bind(int texture_unit = 0)
+        public static TextureUnit IntToUnit(int texture_unit)
         {
             // No this can't just be casted from an int, they're all offsets stored in an enum.
             var textureSlot = texture_unit switch
@@ -113,7 +113,12 @@ namespace Assets
                 31 => TextureUnit.Texture31,
                 _ => TextureUnit.Texture0,
             };
-            _gl.ActiveTexture(textureSlot);
+            return textureSlot;
+        }
+
+        public void Bind(int texture_unit = 0)
+        {
+            _gl.ActiveTexture(IntToUnit(texture_unit));
             _gl.BindTexture(TexTarget, _handle);
         }
 
