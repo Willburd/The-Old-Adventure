@@ -13,6 +13,8 @@ namespace Engine
 
         public static bool draw_collisions = false;
 
+        public static Rendering.FrameBufferContainer FrameBuffer_Game { get; protected set; }
+
         /// <summary>
         /// Number of frames per second for rendering.
         /// </summary>
@@ -64,6 +66,10 @@ namespace Engine
 
             // GLTF format
             OpenGLContext.FrontFace(FrontFaceDirection.Ccw);
+
+            // Create framebuffers
+            uint render_window_size = 144;
+            FrameBuffer_Game = new Rendering.FrameBufferContainer(GetAspectWidth(render_window_size), render_window_size);
         }
 
         /// <summary>

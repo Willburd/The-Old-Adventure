@@ -54,7 +54,7 @@ namespace Engine
         private static void HandleWindowResize(Vector2D<int> size)
         {
             float ratio = (float)size.X / (float)size.Y;
-            DisplayHeight = size.Y;
+            DisplayHeight = (uint)size.Y;
             DisplayAspectRatio = ratio;
         }
 

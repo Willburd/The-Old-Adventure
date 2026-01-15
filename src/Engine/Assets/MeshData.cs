@@ -4,7 +4,6 @@
 using System.Diagnostics;
 using Silk.NET.OpenGL;
 using Rendering;
-using System.Numerics;
 
 namespace Assets
 {
