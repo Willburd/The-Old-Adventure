@@ -10,7 +10,8 @@ namespace Engine.ColliderShapes
 
         public override Collider.RaycastHit? InRay(Collider.Raycast ray)
         {
-            Vim.Math3d.Ray test_ray = new(new Vim.Math3d.Vector3(ray.start_vector.X, ray.start_vector.Y, ray.start_vector.Z), new Vim.Math3d.Vector3(ray.direction.X, ray.direction.Y, ray.direction.Z));
+            Vector3 normal_ray = Vector3.Normalize(ray.direction);
+            Vim.Math3d.Ray test_ray = new(new Vim.Math3d.Vector3(ray.start_vector.X, ray.start_vector.Y, ray.start_vector.Z), new Vim.Math3d.Vector3(normal_ray.X, normal_ray.Y, normal_ray.Z));
 
             float? distance = test_ray.Intersects(our_triangle);
             if (distance != null && distance <= ray.direction.Length())

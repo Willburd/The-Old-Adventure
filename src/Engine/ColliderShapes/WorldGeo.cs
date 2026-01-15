@@ -18,7 +18,8 @@ namespace Engine.ColliderShapes
 
         public override Collider.RaycastHit? InRay(Collider.Raycast ray)
         {
-            Vim.Math3d.Ray check_ray = new(new Vim.Math3d.Vector3(ray.start_vector.X - ColHost.OffsetPos.X, ray.start_vector.Y - ColHost.OffsetPos.Y, ray.start_vector.Z - ColHost.OffsetPos.Z), new Vim.Math3d.Vector3(ray.direction.X, ray.direction.Y, ray.direction.Z));
+            Vector3 normal_ray = Vector3.Normalize(ray.direction);
+            Vim.Math3d.Ray check_ray = new(new Vim.Math3d.Vector3(ray.start_vector.X - ColHost.OffsetPos.X, ray.start_vector.Y - ColHost.OffsetPos.Y, ray.start_vector.Z - ColHost.OffsetPos.Z), new Vim.Math3d.Vector3(normal_ray.X, normal_ray.Y, normal_ray.Z));
 
             foreach (var tri in our_mesh.CollisionTriangles)
             {
