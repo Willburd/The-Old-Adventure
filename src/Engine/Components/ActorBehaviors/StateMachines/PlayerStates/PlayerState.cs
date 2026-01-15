@@ -110,9 +110,8 @@ namespace EntComponents.ActorBehavior.PlayerStates
             // Finally apply pushout on the worst offender
             if (nearest_hit != null)
             {
-                Host.Position -= Vector3.Normalize(nearest_hit.Value.Direction) * nearest_hit.Value.Distance;
+                Host.Position -= nearest_hit.Value.Direction;
                 phys.Velocity = new Vector3(0f, phys.Velocity.Y, 0f);
-                Console.WriteLine(nearest_hit?.Distance);
             }
             return nearest_hit;
         }

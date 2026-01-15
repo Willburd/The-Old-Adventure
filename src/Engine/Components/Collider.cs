@@ -120,6 +120,14 @@ namespace EntComponents
                     return Vector3.Lerp(StartPos, StartPos + Direction, perc);
                 }
             }
+            public readonly Vector3 HitInterpolated(float percent)
+            {
+                return Vector3.Lerp(StartPos, StartPos + Direction, percent);
+            }
+            public readonly Vector3 NormalizedDirection()
+            {
+                return Vector3.Normalize(Direction);
+            }
             public float HitPercent
             {
                 get
