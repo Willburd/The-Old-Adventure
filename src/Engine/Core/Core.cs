@@ -18,11 +18,14 @@ namespace Engine
             }
         }
 
-        public const int default_display_height = 800;
         public static float DisplayAspectRatio = 1.333333f;
-        public static int DisplayWidth(int height)
+        public static int DisplayHeight { get; set; } = 800;
+        public static int DisplayWidth
         {
-            return (int)(height * DisplayAspectRatio);
+            get
+            {
+                return (int)(DisplayHeight * DisplayAspectRatio);
+            }
         }
 
 #pragma warning disable CS8618 // I don't care if you're upset the static constructor doesn't set it. We're doing it on instantilize.
@@ -31,7 +34,7 @@ namespace Engine
             // Prepare window
             WindowOptions options = WindowOptions.Default with
             {
-                Size = new Vector2D<int>(DisplayWidth(default_display_height), default_display_height),
+                Size = new Vector2D<int>(DisplayWidth, DisplayHeight),
                 Title = AdventureTitle
             };
 

@@ -90,6 +90,9 @@ namespace Engine
         /// </summary>
         private void RenderTick(double tick_delta)
         {
+            OpenGLContext.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            OpenGLContext.Viewport(0, 0, (uint)DisplayWidth, (uint)DisplayHeight);
+
             // Clear screen
             List<ShaderData.Uniform> vertex_uniforms = [];
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

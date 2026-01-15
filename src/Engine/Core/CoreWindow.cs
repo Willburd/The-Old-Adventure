@@ -54,8 +54,8 @@ namespace Engine
         private static void HandleWindowResize(Vector2D<int> size)
         {
             float ratio = (float)size.X / (float)size.Y;
+            DisplayHeight = size.Y;
             DisplayAspectRatio = ratio;
-            OpenGLContext.Viewport(0, 0, (uint)DisplayWidth(size.Y), (uint)size.Y);
         }
 
         /// <summary>
