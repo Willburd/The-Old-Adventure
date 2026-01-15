@@ -1,6 +1,7 @@
 using Assets;
 using Engine;
 using Silk.NET.OpenGL;
+using System.Numerics;
 
 namespace Rendering
 {
@@ -102,6 +103,16 @@ namespace Rendering
         {
             Core.OpenGLContext.ActiveTexture(TextureData.IntToUnit(texture_unit));
             Core.OpenGLContext.BindTexture(TextureTarget.Texture2D, _tex);
+        }
+
+        public void Render(double tick_delta)
+        {
+            List<ShaderData.Uniform> vertex_uniforms = [];
+            vertex_uniforms.Add(new("uTransform", Matrix4x4.Identity));
+            vertex_uniforms.Add(new("uProjection", Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(45f), Core.DisplayAspectRatio, 0.0001f, 1000f)));
+            vertex_uniforms.Add(new("uView", Matrix4x4.CreateFromQuaternion(Quaternion.Identity) * Matrix4x4.CreateTranslation(Tools.Forward)));
+
+            Core.RenderSprite(Core.sprite2d_material, vertex_uniforms);
         }
 
         public uint Handle()

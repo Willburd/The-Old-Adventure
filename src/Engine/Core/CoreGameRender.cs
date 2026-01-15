@@ -118,6 +118,7 @@ namespace Engine
         private void RenderTick(double tick_delta)
         {
             // Clear screen
+            //FrameBuffer_Game.BindFrameBuffer();
             List<ShaderData.Uniform> vertex_uniforms = [];
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -189,6 +190,12 @@ namespace Engine
                     draw.SendSignal(Signals.hud_render, tick_delta);
                 }
             }
+
+
+            // Render buffer
+            FrameBufferContainer.BindDefaultFrameBuffer();
+            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            FrameBuffer_Game.Render(tick_delta);
         }
         public const int max_lights = 16; // Must match in shader
 

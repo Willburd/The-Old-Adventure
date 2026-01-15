@@ -10,10 +10,12 @@ uniform mat4 uProjection;
 
 out vec2 TexCoords;
 out vec3 Normal;
+out vec4 Color;
 
 void main()
 {
     gl_Position = uProjection * uView * uTransform * vec4(vPosition, 1.0);
     TexCoords = vUv;
     Normal = vNormal;
+    Color = vColor;
 }
