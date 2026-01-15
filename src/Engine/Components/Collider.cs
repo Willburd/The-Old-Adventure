@@ -116,7 +116,7 @@ namespace EntComponents
             {
                 get
                 {
-                    float perc = Distance / Direction.Length();
+                    float perc = Distance / RayLength;
                     return Vector3.Lerp(StartPos, StartPos + Direction, perc);
                 }
             }
@@ -124,7 +124,14 @@ namespace EntComponents
             {
                 get
                 {
-                    return Distance / Direction.Length();
+                    return Distance / RayLength;
+                }
+            }
+            public float RayLength
+            {
+                get
+                {
+                    return Vector3.Distance(Vector3.Zero, Direction);
                 }
             }
             public bool IsFloor

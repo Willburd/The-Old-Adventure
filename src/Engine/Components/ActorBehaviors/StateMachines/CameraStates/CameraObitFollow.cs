@@ -33,11 +33,11 @@ namespace EntComponents.ActorBehavior.CameraStates
             if (hit != null)
             {
                 end_pos = hit.Value.HitPosition;
-                Console.WriteLine("a" + hit.Value.HitPercent);
+                Console.WriteLine(hit.Value.HitPercent);
             }
             else
             {
-                Console.WriteLine("full " + Vector3.Distance(start_pos, end_pos));
+                Console.WriteLine("1");
             }
 
             // Smooth pan
