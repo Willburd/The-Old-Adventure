@@ -4,6 +4,7 @@ using Silk.NET.Windowing;
 using System.Drawing;
 using System.Numerics;
 using EntComponents;
+using Rendering;
 
 namespace Engine
 {
@@ -294,8 +295,8 @@ namespace Engine
             // Check for collision drawing
             if (mesh.RawName == "col.001")
             {
-                if (!Core.draw_collisions) return;
-                mat_data = Core.collision_draw_material; // Use our collision shader
+                if (!draw_collisions) return;
+                mat_data = collision_draw_material; // Use our collision shader
             }
 
             // Bind the VBOs
@@ -327,7 +328,77 @@ namespace Engine
             }
 
             // Draw mesh
-            Core.OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+            OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+        }
+
+        public static void RenderSprite(List<ShaderData.Uniform> vertex_uniforms)
+        {
+            RenderSprite(sprite2d_material, vertex_uniforms);
+        }
+
+        public static void RenderSprite(MaterialData mat_data, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            // Bind the VBOs
+            MeshData mesh = sprite2d_model.Meshes[0];
+            mesh.Bind();
+
+            // Set the blending mode
+            mat_data.UseBlendMode();
+            
+            // Each mesh can use a different material, and that also means shader!
+            ShaderData shader = mat_data.Shader;
+            shader.Use();
+            foreach (ShaderData.Uniform vertuni in vertex_uniforms)
+            {
+                shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
+            }
+            
+            // Bind textures to texunits
+            int tex_unit_id = 0;
+            foreach (TextureData tex in mat_data.Textures)
+            {
+                tex.Bind(tex_unit_id);
+                tex_unit_id++;
+            }
+
+            // Apply shader uniforms
+            foreach (ShaderData.Uniform matuni in mat_data.Uniforms)
+            {
+                shader.SetUniform(matuni.key, matuni.value, matuni.count);
+            }
+
+            // Draw mesh
+            OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+        }
+        
+        public static void RenderSprite(FrameBufferContainer fbo, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            // Bind the VBOs
+            MeshData mesh = sprite2d_model.Meshes[0];
+            mesh.Bind();
+
+            // Set the blending mode
+            OpenGLContext.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+            // Each mesh can use a different material, and that also means shader!
+            ShaderData shader = sprite2d_material.Shader;
+            shader.Use();
+            foreach (ShaderData.Uniform vertuni in vertex_uniforms)
+            {
+                shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
+            }
+            
+            // Bind textures to texunits
+            fbo.BindTexture(0);
+
+            // Apply shader uniforms
+            foreach (ShaderData.Uniform matuni in sprite2d_material.Uniforms)
+            {
+                shader.SetUniform(matuni.key, matuni.value, matuni.count);
+            }
+
+            // Draw mesh
+            OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
         }
     }
 }

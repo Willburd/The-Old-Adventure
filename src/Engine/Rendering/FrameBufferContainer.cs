@@ -114,6 +114,11 @@ namespace Rendering
             return _tex;
         }
 
+        public bool IsValid()
+        {
+            return _handle > 0 && _tex > 0 && _depthbuffer > 0;
+        }
+
         public void Dispose()
         {
             GL gl = Core.OpenGLContext;

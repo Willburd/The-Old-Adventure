@@ -9,10 +9,13 @@ namespace Engine
         public static MaterialData trigger_draw_material;
         public static MaterialData actor_collision_draw_material;
 
+        public static ModelData sprite2d_model;
         public static ModelData collision_model_point;
         public static ModelData collision_model_sphere;
         public static ModelData collision_model_cylinder;
         public static ModelData collision_model_cube;
+
+        public static MaterialData sprite2d_material;
 
         private void LoadBaseAssets()
         {
@@ -26,7 +29,7 @@ namespace Engine
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Textures
-            AssetLoader.TextureAssetLoad("no_tex", AssetLoader.AssetDirectoryEngine + "/Textures/no_texture.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+            TextureData no_texture = AssetLoader.TextureAssetLoad("no_tex", AssetLoader.AssetDirectoryEngine + "/Textures/no_texture.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             TextureData nomat_texture = AssetLoader.TextureAssetLoad("no_mat", AssetLoader.AssetDirectoryEngine + "/Textures/no_material.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             TextureData example_texture = AssetLoader.TextureAssetLoad("example", AssetLoader.AssetDirectoryEngine + "/Textures/example.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             TextureData skybox_tex_dawn = AssetLoader.TextureAssetLoad("standard_skybox_dawn", AssetLoader.AssetDirectoryEngine + "/Textures/skybox_dawn.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
@@ -42,6 +45,7 @@ namespace Engine
             AssetLoader.MaterialAssetLoad("debug_normals", new([], [], shader_debugnormals), AssetLoader.AssetSource.engine);
             AssetLoader.MaterialAssetLoad("no_mat", new([nomat_texture], [new("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
             AssetLoader.MaterialAssetLoad("example", new([example_texture], [new("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
+            sprite2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([no_texture], [new("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
             collision_draw_material = AssetLoader.MaterialAssetLoad("debug_col", new([], [new("uColorSet", new Vector4(0.6f, 0.8f, 0f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
             trigger_draw_material = AssetLoader.MaterialAssetLoad("debug_trigger", new([], [new("uColorSet", new Vector4(0f, 0.2f, 0.9f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine);
             actor_collision_draw_material = AssetLoader.MaterialAssetLoad("debug_actor_col", new([], [new("uColorSet", new Vector4(0.9f, 0.6f, 0f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
@@ -52,9 +56,10 @@ namespace Engine
             // Debug models
             AssetLoader.ModelAssetLoad("no_model", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
             // Collider visualization
-            collision_model_point = AssetLoader.ModelAssetLoad("cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
-            collision_model_sphere = AssetLoader.ModelAssetLoad("col_sphere", AssetLoader.AssetDirectoryEngine + "/Models/col_sphere.fbx", AssetLoader.AssetSource.engine);
-            collision_model_cylinder = AssetLoader.ModelAssetLoad("col_cylinder", AssetLoader.AssetDirectoryEngine + "/Models/col_cylinder.fbx", AssetLoader.AssetSource.engine);
+            collision_model_point       = AssetLoader.ModelAssetLoad("cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
+            collision_model_sphere      = AssetLoader.ModelAssetLoad("col_sphere", AssetLoader.AssetDirectoryEngine + "/Models/col_sphere.fbx", AssetLoader.AssetSource.engine);
+            collision_model_cylinder    = AssetLoader.ModelAssetLoad("col_cylinder", AssetLoader.AssetDirectoryEngine + "/Models/col_cylinder.fbx", AssetLoader.AssetSource.engine);
+            sprite2d_model              = AssetLoader.ModelAssetLoad("sprite2d", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
             // Misc
             AssetLoader.ModelAssetLoad("cube_map", AssetLoader.AssetDirectoryEngine + "/Models/cube_map.fbx", AssetLoader.AssetSource.engine);
 
