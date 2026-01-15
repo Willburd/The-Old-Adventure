@@ -112,7 +112,7 @@ namespace EntComponents
             public Vector3 Normal { get; private set; } = normal;
             public Collider HitCollider { get; private set; } = hit_col;
             public Vim.Math3d.Triangle? Triangle { get; private set; } = hit_triangle;
-            public Vector3 HitPosition
+            public readonly Vector3 HitPosition
             {
                 get
                 {
@@ -122,41 +122,41 @@ namespace EntComponents
             }
             public readonly Vector3 HitInterpolated(float percent)
             {
-                return Vector3.Lerp(StartPos, StartPos + Direction, percent);
+                return Vector3.Lerp(StartPos, HitPosition, percent);
             }
             public readonly Vector3 NormalizedDirection()
             {
                 return Vector3.Normalize(Direction);
             }
-            public float HitPercent
+            public readonly float HitPercent
             {
                 get
                 {
                     return Distance / RayLength;
                 }
             }
-            public float RayLength
+            public readonly float RayLength
             {
                 get
                 {
                     return Vector3.Distance(Vector3.Zero, Direction);
                 }
             }
-            public bool IsFloor
+            public readonly bool IsFloor
             {
                 get
                 {
                     return Normal.Y > WorldGeometryCol.wall_y_threshold;
                 }
             }
-            public bool IsCeil
+            public readonly bool IsCeil
             {
                 get
                 {
                     return Normal.Y < -WorldGeometryCol.wall_y_threshold;
                 }
             }
-            public bool IsWall
+            public readonly bool IsWall
             {
                 get
                 {
