@@ -99,9 +99,9 @@ namespace Rendering
         /// <summary>
         /// Bind the buffer's texture to a vertex unit so that it can be rendered by a shader onto a mesh.
         /// </summary>
-        public void BindTexture(int texture_unit = 0)
+        public void BindTexture()
         {
-            Core.OpenGLContext.ActiveTexture(TextureData.IntToUnit(texture_unit));
+            Core.OpenGLContext.ActiveTexture(TextureData.IntToUnit(0));
             Core.OpenGLContext.BindTexture(TextureTarget.Texture2D, _tex);
         }
 
@@ -111,8 +111,7 @@ namespace Rendering
             vertex_uniforms.Add(new("uTransform", Matrix4x4.Identity));
             vertex_uniforms.Add(new("uProjection", Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(45f), Core.DisplayAspectRatio, 0.0001f, 1000f)));
             vertex_uniforms.Add(new("uView", Matrix4x4.CreateFromQuaternion(Quaternion.Identity) * Matrix4x4.CreateTranslation(Tools.Forward)));
-
-            Core.RenderSprite(Core.sprite2d_material, vertex_uniforms);
+            Core.RenderSprite(this, vertex_uniforms);
         }
 
         public uint Handle()

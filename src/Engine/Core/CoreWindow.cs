@@ -62,6 +62,7 @@ namespace Engine
             uint render_size = InternalRenderResolutionHeight;
             if (InternalRenderScale > 0f) render_size = (uint)(DisplayHeight * InternalRenderScale);
             FrameBuffer_Game.Resize(GetAspectWidth(render_size), render_size);
+            RequestRender = true;
         }
 
         /// <summary>
