@@ -60,7 +60,7 @@ namespace Engine
 
             // Resize the game FBO height, but resize to match aspect.
             uint render_size = InternalRenderResolutionHeight;
-            if (FramebufferMatchesWindowSize) render_size = DisplayHeight;
+            if (InternalRenderScale > 0f) render_size = (uint)(DisplayHeight * InternalRenderScale);
             FrameBuffer_Game.Resize(GetAspectWidth(render_size), render_size);
         }
 

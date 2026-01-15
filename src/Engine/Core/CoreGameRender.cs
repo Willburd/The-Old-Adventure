@@ -14,12 +14,12 @@ namespace Engine
         public static bool draw_collisions = false;
 
         /// <summary>
-        /// If the internal game framebuffer will match the window's size, or if it will use the fixed InternalRenderResolutionHeight to calculate it's size.
+        /// If set larger than 0f, will resize the game FBO to match the window's size at that scale. Otherwise if 0, it will used the fixed height in InternalRenderResolutionHeight. Set to 1f to match window resolution.
         /// </summary>
-        public static bool FramebufferMatchesWindowSize = false;
+        public static float InternalRenderScale = 0f;
 
         /// <summary>
-        /// Height in pixels of the internal render resolution. For downscaled pixely rendering of older-era themed games.
+        /// Height in pixels of the internal render resolution. For downscaled pixely rendering of older-era themed games. Only used it InternalRenderScale is 0f.
         /// </summary>
         public static uint InternalRenderResolutionHeight { get; protected set; } = 144;
 
@@ -88,7 +88,7 @@ namespace Engine
         public virtual void CreateFrameBuffers()
         {
             uint render_size = InternalRenderResolutionHeight;
-            if (FramebufferMatchesWindowSize) render_size = DisplayHeight;
+            if (InternalRenderScale > 0f) render_size = (uint)(DisplayHeight * InternalRenderScale);
             FrameBuffer_Game = new Rendering.FrameBufferContainer(GetAspectWidth(render_size), render_size);
         }
 
