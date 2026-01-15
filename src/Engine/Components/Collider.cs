@@ -104,19 +104,27 @@ namespace EntComponents
             public uint collision_mask = collision_mask;
         }
 
-        public struct RaycastHit(Raycast ray, Collider hit_col, float dist, Vector3 normal)
+        public struct RaycastHit(Raycast ray, Collider hit_col, float dist, Vector3 normal, Vim.Math3d.Triangle? hit_triangle)
         {
             public Vector3 StartPos { get; private set; } = ray.start_vector;
             public Vector3 Direction { get; private set; } = ray.direction;
             public float Distance { get; private set; } = dist;
             public Vector3 Normal { get; private set; } = normal;
             public Collider HitCollider { get; private set; } = hit_col;
+            public Vim.Math3d.Triangle? Triangle { get; private set; } = hit_triangle;
             public Vector3 HitPosition
             {
                 get
                 {
                     float perc = Distance / Direction.Length();
                     return Vector3.Lerp(StartPos, StartPos + Direction, perc);
+                }
+            }
+            public float HitPercent
+            {
+                get
+                {
+                    return Distance / Direction.Length();
                 }
             }
             public bool IsFloor

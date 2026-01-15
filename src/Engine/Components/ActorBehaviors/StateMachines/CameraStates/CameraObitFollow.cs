@@ -30,7 +30,15 @@ namespace EntComponents.ActorBehavior.CameraStates
             // Push against walls
             Vector3 end_pos = start_pos + want_offset;
             Collider.RaycastHit? hit = Collider.DoRaycastNearest(start_pos, want_offset, Collider.mask_worldgeo);
-            if (hit != null) end_pos = hit.Value.HitPosition;
+            if (hit != null)
+            {
+                end_pos = hit.Value.HitPosition;
+                Console.WriteLine("a" + hit.Value.HitPercent);
+            }
+            else
+            {
+                Console.WriteLine("full " + Vector3.Distance(start_pos, end_pos));
+            }
 
             // Smooth pan
             Host.Position = Vector3.Lerp(Host.Position, end_pos, 0.96f);

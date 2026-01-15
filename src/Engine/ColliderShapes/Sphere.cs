@@ -41,7 +41,7 @@ namespace Engine.ColliderShapes
 
             if (distance != null && distance <= ray.direction.Length())
             {
-                return new Collider.RaycastHit(ray, ColHost, (float)distance, Tools.DirVector(ColHost.OffsetPos, ray.start_vector + (Vector3.Normalize(ray.direction) * (float)distance)));
+                return new Collider.RaycastHit(ray, ColHost, (float)distance, Tools.DirVector(ColHost.OffsetPos, ray.start_vector + (Vector3.Normalize(ray.direction) * (float)distance)), null);
             }
             return null;
         }

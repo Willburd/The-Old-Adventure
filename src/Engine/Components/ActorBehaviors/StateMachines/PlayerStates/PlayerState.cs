@@ -131,7 +131,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
 
         protected float FloorSlipFactor(Vector3 normal)
         {
-            if(normal.Y > WorldGeometryCol.wall_y_threshold)
+            if (normal.Y > WorldGeometryCol.wall_y_threshold)
             {
                 // Floor
                 return 1f - normal.Y;
