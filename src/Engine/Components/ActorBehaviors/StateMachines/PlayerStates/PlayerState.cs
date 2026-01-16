@@ -25,7 +25,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
 
         // Collision raycasts
         protected const float ground_snap_distance = 0.09f; // Amount above the ground that the origin of the player will be
-        protected const float wallcast_y_lower = 0.04f; // Beneath this point walls will be ignored (like steps on a staircase)
+        protected const float wallcast_y_lower = 0.1f; // Beneath this point walls will be ignored (like steps on a staircase)
 
         protected PlayerActorBehavior Player
         {

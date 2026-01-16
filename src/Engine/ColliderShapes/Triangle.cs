@@ -14,9 +14,10 @@ namespace Engine.ColliderShapes
             Vim.Math3d.Ray test_ray = new(new Vim.Math3d.Vector3(ray.start_vector.X, ray.start_vector.Y, ray.start_vector.Z), new Vim.Math3d.Vector3(normal_ray.X, normal_ray.Y, normal_ray.Z));
 
             float? distance = test_ray.Intersects(our_triangle);
-            if (distance != null && distance <= ray.direction.Length())
+            Vector3 normal = new(our_triangle.Normal.X, our_triangle.Normal.Y, our_triangle.Normal.Z);
+            if (distance != null && distance <= ray.direction.Length() && Vector3.Dot(ray.direction, normal) < 0)
             {
-                return new Collider.RaycastHit(ray, ColHost, (float)distance, new Vector3(our_triangle.Normal.X, our_triangle.Normal.Y, our_triangle.Normal.Z), our_triangle);
+                return new Collider.RaycastHit(ray, ColHost, (float)distance, normal, our_triangle);
             }
             return null;
         }
