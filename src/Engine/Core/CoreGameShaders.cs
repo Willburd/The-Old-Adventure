@@ -19,7 +19,7 @@ namespace Engine
         /// <summary>
         /// Height in pixels of the internal render resolution. For downscaled pixely rendering of older-era themed games. Only used it InternalRenderScale is 0f.
         /// </summary>
-        public static uint InternalRenderResolutionHeight { get; protected set; } = 144;
+        public static uint InternalRenderResolutionHeight { get; protected set; } = 240;
 
         /// <summary>
         /// Framebuffer object used to render the game. It is rendered to the window's buffer and stretched to fit in order to down or upsample the game view.

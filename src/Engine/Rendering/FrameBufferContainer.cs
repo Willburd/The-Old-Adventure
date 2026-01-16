@@ -10,7 +10,7 @@ namespace Rendering
         /// <summary>
         /// Binds the openGL context to the window's framebuffer, the quick and easy way to return to drawing to the main window. 
         /// </summary>
-        public static void BindDefaultFrameBuffer()
+        public static void ResetFrameBuffer()
         {
             // Return to window's buffer
             Core.OpenGLContext.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
@@ -44,9 +44,10 @@ namespace Rendering
             Width = wid;
             Height = high;
 
-            // Clear texture on resize
+            // Bind a new texture with the new size
             if (_tex > 0) gl.DeleteTexture(_tex);
             _tex = gl.GenTexture();
+            Core.OpenGLContext.BindTexture(TextureTarget.Texture2D, _tex);
             gl.TexImage2D(
                 TextureTarget.Texture2D,
                 0,
@@ -73,7 +74,7 @@ namespace Rendering
             // Depth buffer by default
             if (_depthbuffer > 0) gl.DeleteRenderbuffer(_depthbuffer);
             _depthbuffer = gl.GenRenderbuffer();
-            gl.BindRenderbuffer(RenderbufferTarget.Renderbuffer, _depthbuffer);
+            Core.OpenGLContext.BindRenderbuffer(RenderbufferTarget.Renderbuffer, _depthbuffer);
             gl.RenderbufferStorage(
                 RenderbufferTarget.Renderbuffer,
                 InternalFormat.Depth24Stencil8,
@@ -102,9 +103,9 @@ namespace Rendering
         /// <summary>
         /// Bind the buffer's texture to a vertex unit so that it can be rendered by a shader onto a mesh.
         /// </summary>
-        public void BindTexture()
+        public void BindTexture(int texture_unit = 0)
         {
-            Core.OpenGLContext.ActiveTexture(TextureData.IntToUnit(0));
+            Core.OpenGLContext.ActiveTexture(TextureData.IntToUnit(texture_unit));
             Core.OpenGLContext.BindTexture(TextureTarget.Texture2D, _tex);
         }
 
@@ -120,11 +121,6 @@ namespace Rendering
         public uint Handle()
         {
             return _handle;
-        }
-
-        public uint Texture()
-        {
-            return _tex;
         }
 
         public bool IsValid()

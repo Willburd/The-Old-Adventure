@@ -91,8 +91,7 @@ namespace Engine
         private void RenderTick(double tick_delta)
         {
             // Clear screen
-            FrameBufferContainer.BindDefaultFrameBuffer();
-            List<ShaderData.Uniform> vertex_uniforms = [];
+            FrameBuffer_Game.BindFrameBuffer();
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Draw radius
@@ -104,6 +103,7 @@ namespace Engine
             if (Camera.WorldCamera != null) camera_vector = Vector3.Transform(Tools.Forward, Camera.WorldCamera.Rotation);
 
             // Assemble a list in order of priority.
+            List<ShaderData.Uniform> vertex_uniforms = [];
             SortedList<uint, List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
             ApplyPrerenderEnvironmentUniforms(vertex_uniforms, tick_delta);
             OnPreRenderTick();
@@ -163,6 +163,11 @@ namespace Engine
                     draw.SendSignal(Signals.hud_render, tick_delta);
                 }
             }
+
+
+            FrameBufferContainer.ResetFrameBuffer();
+            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            FrameBuffer_Game.Render(tick_delta);
         }
 
 
