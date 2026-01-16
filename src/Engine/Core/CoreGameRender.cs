@@ -67,16 +67,6 @@ namespace Engine
         }
 
         /// <summary>
-        /// Create framebuffers for complex rendering tasks and down/upsampling.
-        /// </summary>
-        public virtual void CreateFrameBuffers()
-        {
-            uint render_size = InternalRenderResolutionHeight;
-            if (InternalRenderScale > 0f) render_size = (uint)(DisplayHeight * InternalRenderScale);
-            FrameBuffer_Game = new Rendering.FrameBufferContainer(GetAspectWidth(render_size), render_size);
-        }
-
-        /// <summary>
         /// Handles rendering the game at the desired interval, called by the window itself.
         /// </summary>
         private static void HandleWindowRender(double deltaTime)
@@ -101,7 +91,7 @@ namespace Engine
         private void RenderTick(double tick_delta)
         {
             // Clear screen
-            FrameBuffer_Game.BindFrameBuffer();
+            FrameBufferContainer.BindDefaultFrameBuffer();
             List<ShaderData.Uniform> vertex_uniforms = [];
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -173,12 +163,6 @@ namespace Engine
                     draw.SendSignal(Signals.hud_render, tick_delta);
                 }
             }
-
-
-            // Render buffer
-            FrameBufferContainer.BindDefaultFrameBuffer();
-            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            FrameBuffer_Game.Render(tick_delta);
         }
 
 

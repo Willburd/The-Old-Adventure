@@ -14,6 +14,7 @@ namespace Rendering
         {
             // Return to window's buffer
             Core.OpenGLContext.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            Core.OpenGLContext.Viewport(0, 0, Core.DisplayWidth, Core.DisplayHeight);
         }
 
         // openGL context handles
@@ -37,7 +38,9 @@ namespace Rendering
         /// </summary>
         public unsafe void Resize(uint wid, uint high)
         {
+            // Bind for configuration
             GL gl = Core.OpenGLContext;
+            Core.OpenGLContext.BindFramebuffer(FramebufferTarget.Framebuffer, _handle);
             Width = wid;
             Height = high;
 

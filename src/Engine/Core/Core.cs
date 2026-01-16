@@ -29,7 +29,7 @@ namespace Engine
         }
         public static uint GetAspectWidth(uint height)
         {
-            return (uint)(DisplayHeight * DisplayAspectRatio);
+            return (uint)(height * DisplayAspectRatio);
         }
 
 #pragma warning disable CS8618 // I don't care if you're upset the static constructor doesn't set it. We're doing it on instantilize.

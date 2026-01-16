@@ -1,6 +1,4 @@
 using Assets;
-using Silk.NET.OpenGL;
-using Silk.NET.Windowing;
 using System.Drawing;
 using System.Numerics;
 using EntComponents;
@@ -28,6 +26,16 @@ namespace Engine
         /// Intentionally uses a fixed pixel height with a dynamic width to keep hud elements from changing scale. A purely style choice to match older era games.
         /// </summary>
         public static Rendering.FrameBufferContainer FrameBuffer_Game { get; protected set; }
+
+        /// <summary>
+        /// Create framebuffers for complex rendering tasks and down/upsampling.
+        /// </summary>
+        public virtual void CreateFrameBuffers()
+        {
+            uint render_size = InternalRenderResolutionHeight;
+            if (InternalRenderScale > 0f) render_size = (uint)(DisplayHeight * InternalRenderScale);
+            FrameBuffer_Game = new Rendering.FrameBufferContainer(GetAspectWidth(render_size), render_size);
+        }
 
         /// <summary>
         /// Construct vertex shader uniforms for light data.
@@ -107,6 +115,9 @@ namespace Engine
             ApplyVertexUniforms(vertex_uniforms, light_pos, light_col, light_count, fog_color, fog_distance);
         }
 
+        /// <summary>
+        /// Assemble vertex uniforms in a proper format for shaders
+        /// </summary>
         private static void ApplyVertexUniforms(List<ShaderData.Uniform> vertex_uniforms, Vector4[] light_pos_array, Vector4[] light_color_array, int light_count, Vector4 fog_color, float fog_distance)
         {
             vertex_uniforms.Add(new("uLightPositions", light_pos_array));
