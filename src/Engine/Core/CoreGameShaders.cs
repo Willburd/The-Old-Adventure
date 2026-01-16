@@ -21,11 +21,28 @@ namespace Engine
         /// </summary>
         public static uint InternalRenderResolutionHeight { get; protected set; } = 480;
 
-        /// <summary>
-        /// Framebuffer object used to render the game. It is rendered to the window's buffer and stretched to fit in order to down or upsample the game view.
-        /// Intentionally uses a fixed pixel height with a dynamic width to keep hud elements from changing scale. A purely style choice to match older era games.
-        /// </summary>
-        public static Rendering.FrameBufferContainer FrameBuffer_Game { get; protected set; }
+
+        public static FrameBufferContainer FrameBuffer_Pre { get; protected set; }
+        public static FrameBufferContainer FrameBuffer_Main { get; protected set; }
+        public static FrameBufferContainer FrameBuffer_Post { get; protected set; }
+        public static FrameBufferContainer FrameBuffer_Hud { get; protected set; }
+
+
+        private static float internal_sprite_render_depth_offset = 0f; // With each sprite rendered, the depth will decrease, layering the next render atop the previous, unless a depth is specified in the argument
+        public static float SpriteRenderDepthOffset
+        {
+            get
+            {
+                float org_depth = internal_sprite_render_depth_offset;
+                internal_sprite_render_depth_offset += 0.0001f;
+                return org_depth;
+            }
+            
+            set
+            {
+                internal_sprite_render_depth_offset = value;
+            }
+        }
 
         /// <summary>
         /// Create framebuffers for complex rendering tasks and down/upsampling.
@@ -34,7 +51,10 @@ namespace Engine
         {
             uint render_size = InternalRenderResolutionHeight;
             if (InternalRenderScale > 0f) render_size = (uint)(DisplayHeight * InternalRenderScale);
-            FrameBuffer_Game = new Rendering.FrameBufferContainer(GetAspectWidth(render_size), render_size);
+            FrameBuffer_Pre = new FrameBufferContainer(GetAspectWidth(render_size), render_size);
+            FrameBuffer_Main = new FrameBufferContainer(GetAspectWidth(render_size), render_size);
+            FrameBuffer_Post = new FrameBufferContainer(GetAspectWidth(render_size), render_size);
+            FrameBuffer_Hud = new FrameBufferContainer(GetAspectWidth(render_size), render_size);
         }
 
         /// <summary>

@@ -48,9 +48,6 @@ namespace Engine
         /// </summary>
         public virtual void ConfigureGL()
         {
-            // Default draw control
-            OpenGLContext.ClearColor(Color.CornflowerBlue);
-
             // Depth control
             OpenGLContext.Enable(EnableCap.DepthTest);
             OpenGLContext.DepthFunc(DepthFunction.Less);
@@ -91,8 +88,9 @@ namespace Engine
         private void RenderTick(double tick_delta)
         {
             // Clear screen
-            FrameBuffer_Game.BindFrameBuffer();
-            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            FrameBuffer_Pre.BindFrameBuffer();
+            OpenGLContext.ClearColor(Color.FromKnownColor(KnownColor.Transparent));
+            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
             // Draw radius
             Vector3 world_load_position = Vector3.Zero;
@@ -130,7 +128,9 @@ namespace Engine
             }
 
             // Primary rendering
-            OpenGLContext.Clear(ClearBufferMask.DepthBufferBit);
+            FrameBuffer_Main.BindFrameBuffer();
+            OpenGLContext.ClearColor(Color.FromKnownColor(KnownColor.Transparent));
+            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
             vertex_uniforms.Clear();
             ApplyEnvironmentUniforms(vertex_uniforms, tick_delta);
             OnRenderTick();
@@ -143,7 +143,9 @@ namespace Engine
             }
 
             // Late rendering
-            OpenGLContext.Clear(ClearBufferMask.DepthBufferBit);
+            FrameBuffer_Post.BindFrameBuffer();
+            OpenGLContext.ClearColor(Color.FromKnownColor(KnownColor.Transparent));
+            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
             OnPostRenderTick();
             foreach ((uint key, List<Entity> draw_list) in render_queue)
             {
@@ -154,7 +156,9 @@ namespace Engine
             }
 
             // Hud rendering
-            OpenGLContext.Clear(ClearBufferMask.DepthBufferBit);
+            FrameBuffer_Hud.BindFrameBuffer();
+            OpenGLContext.ClearColor(Color.FromKnownColor(KnownColor.Transparent));
+            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
             OnRenderHudTick();
             foreach ((uint key, List<Entity> draw_list) in render_queue)
             {
@@ -164,10 +168,15 @@ namespace Engine
                 }
             }
 
-
+            // Combine final render pass
             FrameBufferContainer.ResetFrameBuffer();
-            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            FrameBuffer_Game.Render(tick_delta);
+            OpenGLContext.ClearColor(Color.FromKnownColor(KnownColor.Transparent));
+            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
+            FrameBuffer_Pre.Render(tick_delta, 0f);
+            FrameBuffer_Main.Render(tick_delta);
+            FrameBuffer_Post.Render(tick_delta);
+            FrameBuffer_Hud.Render(tick_delta);
         }
 
 
