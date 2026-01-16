@@ -116,7 +116,7 @@ namespace Engine
                 // Check the entity for a render priority. We only draw if we have one, as that means we have a component that wants to draw!
                 uint priority = check.SendSignal(Signals.render_priority, tick_delta);
                 if (priority == 0) continue; // Not visible if no component responds.
-                
+
                 // Use distance as part of the priority calculation. This helps rendering transparent objects
                 priority = Math.Clamp(priority, 0, 32);
                 uint priority_band = 10000000;

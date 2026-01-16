@@ -78,7 +78,7 @@ namespace Assets
                 // colors
                 if (mesh->MColors[0] != null)
                 {
-                    vertex.Color = new Vector3(mesh->MColors[0][i].X,mesh->MColors[0][i].Y,mesh->MColors[0][i].Z);
+                    vertex.Color = new Vector3(mesh->MColors[0][i].X, mesh->MColors[0][i].Y, mesh->MColors[0][i].Z);
                 }
                 else
                 {

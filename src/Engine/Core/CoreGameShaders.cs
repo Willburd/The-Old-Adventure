@@ -10,7 +10,7 @@ namespace Engine
     {
         public const int max_lights = 16; // Must match in shader
         public static bool draw_collisions = false;
-        
+
         /// <summary>
         /// If set larger than 0f, will resize the game FBO to match the window's size at that scale. Otherwise if 0, it will used the fixed height in InternalRenderResolutionHeight. Set to 1f to match window resolution.
         /// </summary>
@@ -37,7 +37,7 @@ namespace Engine
                 internal_sprite_render_depth_offset += 0.0001f;
                 return org_depth;
             }
-            
+
             set
             {
                 internal_sprite_render_depth_offset = value;
