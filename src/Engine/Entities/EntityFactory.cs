@@ -1,16 +1,10 @@
 using System.Diagnostics;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Engine
 {
-    public class EntityFactory
+    public static class EntityFactory
     {
-        /// <summary>
-        /// Override during OnPreInit() with your own subtype if your adventure requires an extended EntityFactory(). It likely does!
-        /// </summary>
-        public static EntityFactory entity_Factory = new EntityFactory();
-
         public static void InitLibrary()
         {
             ParseJson(AssetLoader.AssetDirectoryEngine + "/Entities.json", AssetLoader.AssetSource.engine);
@@ -59,7 +53,9 @@ namespace Engine
             Actor actor = new(initial_location, id, actual_key, room_link);
             foreach (string component_key in entity_library[actual_key])
             {
-                entity_Factory.ProduceComponents(actor, actual_key, component_key);
+                Type type = Type.GetType("EntComponents." + component_key);
+                Debug.Assert(type != null, "A non existant component typekey was added to a " + actual_key + " during json decode, are you missing a namespace?: " + component_key);
+                Activator.CreateInstance(type, [actor]);
             }
 
             if (pre_count < 200 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 200) Console.WriteLine("WARNING: Excessive entity count, 200 ents.");
@@ -67,16 +63,6 @@ namespace Engine
             if (pre_count < 1000 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 1000) Console.WriteLine("!!!!!!!!!!!!!!WARNING: Extreme entity count, 1000 ents!!!!!!!!!!!!!!");
             if (pre_count < 2000 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 2000) Console.WriteLine("!!!!!!!!!!!!!!WARNING: Extreme entity count, 2000 ents!!!!!!!!!!!!!!");
             return actor;
-        }
-
-        /// <summary>
-        /// Attaches components to entities.
-        /// </summary>
-        protected virtual EntComponents.EntComponent? ProduceComponents(Entity ent, string asset_key, string component_key)
-        {
-            Type type = Type.GetType("EntComponents." + component_key);
-            Debug.Assert(type != null, "A non existant component typekey was added to a " + asset_key + " during json decode, are you missing a namespace?: " + component_key);
-            return (EntComponents.EntComponent?)Activator.CreateInstance(type, [ent]);
         }
     }
 }

@@ -21,8 +21,7 @@ namespace TestAdventure
 
         public override void OnPreInit()
         {
-            // Sets engine to use our entity factory and all the entities we've made unique to our adventure.
-            EntityFactory.entity_Factory = new TestAdventureEntityFactory();
+            
         }
 
         public override void OnInit()
