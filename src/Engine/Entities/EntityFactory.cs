@@ -53,8 +53,7 @@ namespace Engine
             Actor actor = new(initial_location, id, actual_key, room_link);
             foreach (string component_key in entity_library[actual_key])
             {
-                Type type = Type.GetType("EntComponents." + component_key);
-                Debug.Assert(type != null, "A non existant component typekey was added to a " + actual_key + " during json decode, are you missing a namespace?: " + component_key);
+                Type type = Type.GetType("EntComponents." + component_key) ?? throw new ApplicationException("A non existant component typekey was added to a " + actual_key + " during json decode, are you missing a namespace?: " + component_key);
                 Activator.CreateInstance(type, [actor]);
             }
             ErrorThreshold(pre_count, 500, "!!WARNING: Extreme entity count, 500 ents!!");
