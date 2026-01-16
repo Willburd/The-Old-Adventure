@@ -1,7 +1,7 @@
 #version 330 core
 in vec2 TexCoords;
 in vec3 Normal;
-in vec4 Color;
+in vec3 Color;
 in vec4 Light;
 
 uniform sampler2D uTexture0;
@@ -12,13 +12,13 @@ void main()
 {
     FragColor = texture(uTexture0, TexCoords);
     if(FragColor.a < 1.0) discard; // Alpha clip on texture
-    if(Color.rgba == vec4(1.0,1.0,1.0,1.0) || Color.rgba == vec4(0.0,0.0,0.0,1.0)) 
+    if(Color.rgb == vec3(1.0,1.0,1.0)) 
     {
-        // Don't bother with lights, these are either pits, caves, or cave exits
-        FragColor = Color.rgba;
+        // Don't bother with lights, these are either pits, caves, etc
+        FragColor = vec4(Color.rgb, 1.0);
         return;
     }
-    FragColor = vec4(mix(FragColor.rgb, Color.rgb, Color.a), FragColor.a);
+    FragColor.rgb *= Color;
     FragColor *= Light;
     if(FragColor.a < 0.001) discard;
 }

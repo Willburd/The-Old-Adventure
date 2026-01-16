@@ -78,13 +78,12 @@ namespace Assets
                 // colors
                 if (mesh->MColors[0] != null)
                 {
-                    Vector4 colorvert = mesh->MColors[0][i];
-                    vertex.Color = colorvert;
+                    vertex.Color = new Vector3(mesh->MColors[0][i].X,mesh->MColors[0][i].Y,mesh->MColors[0][i].Z);
                 }
                 else
                 {
                     // default vert color if none packed
-                    vertex.Color = new Vector4(1f, 1f, 1f, 0f);
+                    vertex.Color = new Vector3(1f, 1f, 1f);
                 }
                 // texture coordinates
                 if (mesh->MTextureCoords[0] != null) // does the mesh contain texture coordinates
@@ -133,7 +132,6 @@ namespace Assets
                 vertices.Add(vertex.Color.X);
                 vertices.Add(vertex.Color.Y);
                 vertices.Add(vertex.Color.Z);
-                vertices.Add(vertex.Color.W);
             }
 
             return vertices.ToArray();

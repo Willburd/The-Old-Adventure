@@ -9,7 +9,7 @@ namespace Rendering
     {
         public Vector3 Position;
         public Vector3 Normal;
-        public Vector4 Color;
+        public Vector3 Color;
         public Vector3 Tangent;
         public Vector2 TexCoords;
         public Vector3 Bitangent;

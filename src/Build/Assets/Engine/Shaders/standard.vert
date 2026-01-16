@@ -3,7 +3,7 @@
 layout (location = 0) in vec3 vPosition;
 layout (location = 1) in vec2 vUv;
 layout (location = 2) in vec3 vNormal;
-layout (location = 3) in vec4 vColor;
+layout (location = 3) in vec3 vColor;
 
 uniform mat4 uTransform;
 uniform mat4 uView;
@@ -18,7 +18,7 @@ uniform float uFogDistance;
 
 out vec2 TexCoords;
 out vec3 Normal;
-out vec4 Color;
+out vec3 Color;
 out vec4 Light;
 
 vec3 solve_lights()
@@ -55,6 +55,6 @@ void main()
     float dist = distance(vec4(0.0), gl_Position);
     float dist_perc = clamp(dist / uFogDistance, 0.0, 1.0);
 
-    Color = mix(vColor, uFogColor, pow(dist_perc, 3));
+    Color = mix(vColor, uFogColor.rgb, pow(dist_perc, 3));
     Light = vec4(solve_lights(), 1.0 - pow(dist_perc, 100));
 }
