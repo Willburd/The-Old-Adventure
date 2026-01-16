@@ -10,9 +10,13 @@ out vec4 FragColor;
 
 void main()
 {
-    float center_dist = pow(clamp(distance(vec2(0.5,0.5), vec2(TexCoords.x,TexCoords.y)) * 2.3, 0.0, 1.0), 3.0);
+    float center_dist = pow(clamp(distance(vec2(0.5,0.5), vec2(TexCoords.x,TexCoords.y)) * 2.3, 0.0, 1.0), 7.0);
     
-    vec4 fire_blend = texture(uTexture0, TexCoords + vec2(0.0, -GameTick * 0.02));
-    fire_blend.r *= clamp(1.0 - TexCoords.y, 0.0, 1.0) * (1.0 - fire_blend.r); // fade toward top
-    FragColor = vec4(uFireColor.rgb, fire_blend.r * (1.0 - center_dist));
+    vec4 fire_blend = texture(uTexture0, (TexCoords + vec2(0.0, -GameTick * 0.04)) * vec2(2f, 1.5f));
+    float burn_radius = fire_blend.r * (1.0 - center_dist);
+
+    FragColor = vec4(uFireColor.rgb, burn_radius);
+    FragColor.a -= TexCoords.y * 2.5; // fade toward top
+    FragColor.a += fire_blend.r * burn_radius * 0.5;
+    FragColor = clamp(FragColor, 0.0, 1.0);
 }

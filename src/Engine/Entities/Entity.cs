@@ -294,7 +294,7 @@ namespace Engine
 
         public Matrix4x4 GetInterpolatedViewMatrix(double tick_delta)
         {
-            return Matrix4x4.Identity * Matrix4x4.CreateFromQuaternion(GetInterpolatedRotation(tick_delta)) * Matrix4x4.CreateScale(GetInterpolatedScale(tick_delta)) * Matrix4x4.CreateTranslation(GetInterpolatedPosition(tick_delta));
+            return Matrix4x4.Identity * Matrix4x4.CreateScale(GetInterpolatedScale(tick_delta)) * Matrix4x4.CreateFromQuaternion(GetInterpolatedRotation(tick_delta)) * Matrix4x4.CreateTranslation(GetInterpolatedPosition(tick_delta));
         }
     }
 }

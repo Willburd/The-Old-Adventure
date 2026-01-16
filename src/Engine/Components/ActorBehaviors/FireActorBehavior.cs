@@ -26,7 +26,7 @@ namespace EntComponents.ActorBehavior
             Host.Scale = new Vector3(0.5f, 1f, 1f);
 
             Light light = (Light)Host.GetComponent(typeof(Light));
-            light.SetData(FireColor, 7f);
+            light.SetData(FireColor, 12f);
 
             return 1;
         }
@@ -34,7 +34,7 @@ namespace EntComponents.ActorBehavior
         protected override uint HandleUpdate()
         {
             // If we don't have a decay timer, than we don't decay!
-            if (DecayTimer == 0) return 0; 
+            if (DecayTimer == 0) return 0;
             if (DecayTimer > 1)
             {
                 DecayTimer--;
