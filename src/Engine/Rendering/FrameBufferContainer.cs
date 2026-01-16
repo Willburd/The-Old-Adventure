@@ -112,7 +112,7 @@ namespace Rendering
         public void Render(double tick_delta)
         {
             List<ShaderData.Uniform> vertex_uniforms = [];
-            vertex_uniforms.Add(new("uTransform", Matrix4x4.Identity));
+            vertex_uniforms.Add(new("uTransform", Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(Core.DisplayAspectRatio, 1f, 1f))));
             vertex_uniforms.Add(new("uProjection", Matrix4x4.CreatePerspectiveFieldOfView(Tools.DegreesToRadians(45f), Core.DisplayAspectRatio, 0.0001f, 1000f)));
             vertex_uniforms.Add(new("uView", Matrix4x4.CreateFromQuaternion(Quaternion.Identity) * Matrix4x4.CreateTranslation(Tools.Forward)));
             Core.RenderSprite(this, vertex_uniforms);
