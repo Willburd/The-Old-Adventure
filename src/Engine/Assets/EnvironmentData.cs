@@ -9,7 +9,7 @@ namespace Assets
     {
         public Room? Host { get; protected set; }
         public float FogDistance { get; protected set; }
-        public Vector4 FogColor { get; protected set; }
+        public Vector3 FogColor { get; protected set; }
         public Vector4 AmbientLight { get; protected set; }
         public MaterialData? SkyboxMaterial { get; protected set; }
         public TextureData? SkyboxTexture { get; protected set; }
@@ -18,7 +18,7 @@ namespace Assets
 
         protected Skybox? skybox_model = null;
 
-        public EnvironmentData(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light, TextureData skybox_tex)
+        public EnvironmentData(string asset_key, Vector3 fog_col, float fog_dist, Vector4 ambient_light, TextureData skybox_tex)
         {
             AssetKey = asset_key;
             Host = null;
@@ -31,7 +31,7 @@ namespace Assets
             SkyboxMaterial = AssetLoader.MaterialAssetLoad("testroom_skybox", new([SkyboxTexture], [new("uTexture0", 0)], AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine)));
         }
 
-        public EnvironmentData(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light, MaterialData skybox_mat)
+        public EnvironmentData(string asset_key, Vector3 fog_col, float fog_dist, Vector4 ambient_light, MaterialData skybox_mat)
         {
             AssetKey = asset_key;
             Host = null;
@@ -44,7 +44,7 @@ namespace Assets
             SkyboxTexture = SkyboxMaterial.Textures[0];
         }
 
-        public EnvironmentData(string asset_key, Vector4 fog_col, float fog_dist, Vector4 ambient_light)
+        public EnvironmentData(string asset_key, Vector3 fog_col, float fog_dist, Vector4 ambient_light)
         {
             AssetKey = asset_key;
             Host = null;

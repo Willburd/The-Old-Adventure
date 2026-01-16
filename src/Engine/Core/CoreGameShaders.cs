@@ -66,7 +66,7 @@ namespace Engine
             Vector4[] light_col = new Vector4[max_lights];
             light_pos[0] = new(0f, 0f, 0f, float.PositiveInfinity);
             light_col[0] = new(1f, 1f, 1f, 1f);
-            ApplyVertexUniforms(vertex_uniforms, light_pos, light_col, 1, Vector4.Zero, float.PositiveInfinity);
+            ApplyVertexUniforms(vertex_uniforms, light_pos, light_col, 1, Vector3.Zero, float.PositiveInfinity);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Engine
 
             // Environment
             float fog_distance = 1000f;
-            Vector4 fog_color = Tools.ColorToVector(Color.CornflowerBlue);
+            Vector3 fog_color = Tools.ColorToVector(Color.CornflowerBlue);
             light_pos[0] = new(0f, 0f, 0f, float.PositiveInfinity);
             if (Room.loaded_rooms.Count == 0)
             {
@@ -99,7 +99,7 @@ namespace Engine
                 // Multiple environments are blended together
                 Vector3 camera_pos = (Camera.WorldCamera?.Position) ?? new Vector3();
                 Vector4 blended_environment_light = new();
-                Vector4 blended_environment_fog = new();
+                Vector3 blended_environment_fog = new();
                 float blended_environment_fog_distance = 0f;
                 float total_distance = 0f;
                 foreach (Room room in Room.loaded_rooms)
@@ -138,7 +138,7 @@ namespace Engine
         /// <summary>
         /// Assemble vertex uniforms in a proper format for shaders
         /// </summary>
-        private static void ApplyVertexUniforms(List<ShaderData.Uniform> vertex_uniforms, Vector4[] light_pos_array, Vector4[] light_color_array, int light_count, Vector4 fog_color, float fog_distance)
+        private static void ApplyVertexUniforms(List<ShaderData.Uniform> vertex_uniforms, Vector4[] light_pos_array, Vector4[] light_color_array, int light_count, Vector3 fog_color, float fog_distance)
         {
             vertex_uniforms.Add(new("uLightPositions", light_pos_array));
             vertex_uniforms.Add(new("uLightColors", light_color_array));

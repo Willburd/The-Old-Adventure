@@ -18,7 +18,7 @@ void main()
         FragColor = vec4(Color.rgb, 1.0);
         return;
     }
-    FragColor.rgb *= Color;
+    FragColor = vec4(FragColor.rgb * Color.rgb, FragColor.a);
     FragColor *= Light;
     if(FragColor.a < 0.001) discard;
 }

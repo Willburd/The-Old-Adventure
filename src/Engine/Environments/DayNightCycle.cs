@@ -7,7 +7,7 @@ namespace Environments
 {
     public class DayNightCycle : EnvironmentData
     {
-        public DayNightCycle(string asset_key, EnvironmentData env_dawn, EnvironmentData env_day, EnvironmentData env_dusk, EnvironmentData env_night, EnvironmentData env_rainday, EnvironmentData env_rainnight) : base(asset_key, Vector4.Zero, 0f, Vector4.Zero)
+        public DayNightCycle(string asset_key, EnvironmentData env_dawn, EnvironmentData env_day, EnvironmentData env_dusk, EnvironmentData env_night, EnvironmentData env_rainday, EnvironmentData env_rainnight) : base(asset_key, Vector3.Zero, 0f, Vector4.Zero)
         {
             dawn = env_dawn;
             day = env_day;
@@ -82,10 +82,10 @@ namespace Environments
             FogDistance = float.Lerp(FogDistance, float.Lerp(night.FogDistance, rainnight.FogDistance, rain_intensity), night_intensity);
             FogDistance = float.Lerp(FogDistance, float.Lerp(dawn.FogDistance, rainday.FogDistance, rain_intensity), dawn_intensity);
 
-            FogColor = Vector4.Lerp(day.FogColor, rainday.FogColor, rain_intensity);
-            FogColor = Vector4.Lerp(FogColor, Vector4.Lerp(dusk.FogColor, rainday.FogColor, rain_intensity), dusk_intensity);
-            FogColor = Vector4.Lerp(FogColor, Vector4.Lerp(night.FogColor, rainnight.FogColor, rain_intensity), night_intensity);
-            FogColor = Vector4.Lerp(FogColor, Vector4.Lerp(dawn.FogColor, rainday.FogColor, rain_intensity), dawn_intensity);
+            FogColor = Vector3.Lerp(day.FogColor, rainday.FogColor, rain_intensity);
+            FogColor = Vector3.Lerp(FogColor, Vector3.Lerp(dusk.FogColor, rainday.FogColor, rain_intensity), dusk_intensity);
+            FogColor = Vector3.Lerp(FogColor, Vector3.Lerp(night.FogColor, rainnight.FogColor, rain_intensity), night_intensity);
+            FogColor = Vector3.Lerp(FogColor, Vector3.Lerp(dawn.FogColor, rainday.FogColor, rain_intensity), dawn_intensity);
 
             AmbientLight = Vector4.Lerp(day.AmbientLight, rainday.AmbientLight, rain_intensity);
             AmbientLight = Vector4.Lerp(AmbientLight, Vector4.Lerp(dusk.AmbientLight, rainday.AmbientLight, rain_intensity), dusk_intensity);
