@@ -89,7 +89,7 @@ namespace Engine
         {
             // Clear screen
             FrameBuffer_Pre.BindFrameBuffer();
-            OpenGLContext.ClearColor(Color.FromKnownColor(KnownColor.Transparent));
+            OpenGLContext.ClearColor(Color.Transparent);
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
             // Draw radius
@@ -129,7 +129,7 @@ namespace Engine
 
             // Primary rendering
             FrameBuffer_Main.BindFrameBuffer();
-            OpenGLContext.ClearColor(Color.FromKnownColor(KnownColor.Transparent));
+            OpenGLContext.ClearColor(Color.Transparent);
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
             vertex_uniforms.Clear();
             ApplyEnvironmentUniforms(vertex_uniforms, tick_delta);
@@ -144,7 +144,7 @@ namespace Engine
 
             // Late rendering
             FrameBuffer_Post.BindFrameBuffer();
-            OpenGLContext.ClearColor(Color.FromKnownColor(KnownColor.Transparent));
+            OpenGLContext.ClearColor(Color.Transparent);
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
             OnPostRenderTick();
             foreach ((uint key, List<Entity> draw_list) in render_queue)
@@ -157,7 +157,7 @@ namespace Engine
 
             // Hud rendering
             FrameBuffer_Hud.BindFrameBuffer();
-            OpenGLContext.ClearColor(Color.FromKnownColor(KnownColor.Transparent));
+            OpenGLContext.ClearColor(Color.Transparent);
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
             OnRenderHudTick();
             foreach ((uint key, List<Entity> draw_list) in render_queue)
@@ -170,7 +170,7 @@ namespace Engine
 
             // Combine final render pass
             FrameBufferContainer.ResetFrameBuffer();
-            OpenGLContext.ClearColor(Color.FromKnownColor(KnownColor.Transparent));
+            OpenGLContext.ClearColor(Color.CornflowerBlue);
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
             FrameBuffer_Pre.Render(tick_delta, 0f);
