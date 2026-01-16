@@ -116,10 +116,18 @@ namespace Engine
                 // Check the entity for a render priority. We only draw if we have one, as that means we have a component that wants to draw!
                 uint priority = check.SendSignal(Signals.render_priority, tick_delta);
                 if (priority == 0) continue; // Not visible if no component responds.
+                
+                // Use distance as part of the priority calculation. This helps rendering transparent objects
+                priority = Math.Clamp(priority, 0, 32);
+                uint priority_band = 10000000;
+                priority *= priority_band; // Expand the bounds to make it easier to use camera distance for depth sorting
+                priority_band += priority_band; // Allow lower priorities...
+                float cam_dist = Math.Clamp(Vector3.Distance(check.Position, world_load_position) * 10, 0, priority_band);
+                priority -= (uint)cam_dist;
 
                 // Check vis culling
                 float dist = Vector3.Distance(world_load_position, check.Position);
-                if (dist > world_load_radius) continue;
+                if (dist > world_unload_radius) continue;
                 if (dist > check.MinimumRenderDistance)
                 {
                     float dot_prod = Vector3.Dot(Tools.DirVector(check.Position, world_load_position), camera_vector);

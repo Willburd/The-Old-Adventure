@@ -29,7 +29,7 @@ namespace Engine
         /// <summary>
         /// Distance from the camera that entities will be considered disabled, even if their enabled flag is true.
         /// </summary>
-        public const float world_load_radius = 150f;
+        public const float world_unload_radius = 100f;
 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ namespace Engine
                     if (ent.RoomEnabled())
                     {
                         ent.SnapTransform(); // Update the previous location transform
-                        if (Vector3.Distance(world_load_position, ent.Position) <= world_load_radius) active_entities.Add(ent);
+                        if (Vector3.Distance(world_load_position, ent.Position) <= world_unload_radius) active_entities.Add(ent);
                     }
                 }));
                 if (thread_batch.Count >= BatchSize) AwaitCurrentBatch(thread_batch);

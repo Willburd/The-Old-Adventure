@@ -42,9 +42,10 @@ namespace EntComponents.ActorBehavior
 
         protected override uint HandleUpdate()
         {
-            if (Camera.WorldCamera != null)
+            Actor find_player = Actor.GetActor(PlayerActorBehavior.player_actor_id);
+            if (find_player != null)
             {
-                Host.Rotation = Tools.LookAt(Host.Position, Camera.WorldCamera.Position);
+                Host.Rotation = Tools.LookAt(Host.Position, find_player.Position);
             }
             return 1;
         }

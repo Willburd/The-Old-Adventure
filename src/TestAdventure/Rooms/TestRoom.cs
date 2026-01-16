@@ -45,6 +45,13 @@ namespace TestAdventure
 
             // Default actors
             EntityFactory.CreateActor( PlayerActorBehavior.player_actor_id, "actor_player", new Transform( new Vector3(0f,0f,5f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
+
+            /*
+            for(int i = 0; i < 600; i++)
+            {
+                EntityFactory.CreateActor( "pointer_" + i, "actor_pointer", new Transform( new Vector3( Tools.RandRange(-100,100),Tools.RandRange(-10,10),Tools.RandRange(-100,100)), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
+            }
+            */
         }
 
         public override void LoadExits()
