@@ -66,8 +66,8 @@ namespace Assets
 
         private void SetParameters()
         {
-            _gl.TexParameter(TexTarget, TextureParameterName.TextureWrapS, (int)GLEnum.ClampToEdge);
-            _gl.TexParameter(TexTarget, TextureParameterName.TextureWrapT, (int)GLEnum.ClampToEdge);
+            _gl.TexParameter(TexTarget, TextureParameterName.TextureWrapS, (int)GLEnum.TextureWrapS);
+            _gl.TexParameter(TexTarget, TextureParameterName.TextureWrapT, (int)GLEnum.TextureWrapT);
             _gl.TexParameter(TexTarget, TextureParameterName.TextureMinFilter, (int)GLEnum.LinearMipmapLinear);
             _gl.TexParameter(TexTarget, TextureParameterName.TextureMagFilter, (int)GLEnum.Linear);
             _gl.TexParameter(TexTarget, TextureParameterName.TextureBaseLevel, 0);

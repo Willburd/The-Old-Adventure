@@ -10,7 +10,7 @@ namespace EntComponents
     public class WorldRender(Entity host_entity) : EntComponent(host_entity)
     {
         public bool Visible { get; set; } = true;
-        protected uint Priority { get; set; } = 1;
+        public uint Priority { get; set; } = 20;
         protected ModelData? model;
         protected List<MaterialData> materials = [];
 

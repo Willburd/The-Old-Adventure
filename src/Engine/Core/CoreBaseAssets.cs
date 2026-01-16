@@ -58,7 +58,7 @@ namespace Engine
             actor_collision_draw_material = AssetLoader.MaterialAssetLoad("debug_actor_col", new([], [new("uColorSet", new Vector4(0.9f, 0.6f, 0f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
             // effects
             sprite2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([no_texture], [new("uTexture0", 0)], shader_unshaded), AssetLoader.AssetSource.engine);
-            AssetLoader.MaterialAssetLoad("fire", new([fire_tex], [new("uTexture0", 0), new("uFireColor", new Vector3(1.0f, 0.2f, 0.1f))], shader_fire), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("fire", new([fire_tex], [new("uTexture0", 0), new("uFireColor", new Vector4(1.0f, 0.55f, 0.0f, 1.0f))], shader_fire), AssetLoader.AssetSource.engine);
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Models: FBX, 0.01 scale, Z forward, Y Up

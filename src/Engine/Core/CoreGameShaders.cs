@@ -145,7 +145,7 @@ namespace Engine
             vertex_uniforms.Add(new("uLightCount", light_count)); // Number of lights, not max lights
             vertex_uniforms.Add(new("uFogColor", fog_color));
             vertex_uniforms.Add(new("uFogDistance", fog_distance));
-            vertex_uniforms.Add(new("uGameTick", Core.ElapsedGameTicks + tick_delta));
+            vertex_uniforms.Add(new("uGameTick", ElapsedGameTicks + (float)tick_delta));
         }
     }
 }

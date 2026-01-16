@@ -20,7 +20,7 @@ namespace EntComponents
             // Face the camera directly
             Vector3 camera_pos = Vector3.Zero;
             if (Camera.WorldCamera != null) camera_pos = Camera.WorldCamera.Position;
-            Host.Rotation = Tools.LookAtLockedZ(Host.Position, camera_pos);
+            Host.Rotation = Tools.LookAtLockedZ(camera_pos, Host.Position);
             return 1;
         }
     }

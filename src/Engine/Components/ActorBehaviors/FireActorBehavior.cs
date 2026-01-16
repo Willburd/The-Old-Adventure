@@ -6,6 +6,7 @@ namespace EntComponents.ActorBehavior
     public class FireActorBehavior(Entity host_entity) : EntComponent(host_entity)
     {
         public int DecayTimer { get; set; } = 0;
+        public Vector4 FireColor { get; set; } = new Vector4(1f, 1f, 1f, 1f);
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
@@ -20,10 +21,12 @@ namespace EntComponents.ActorBehavior
         protected override uint HandleAssetLoad()
         {
             BillboardRender render = (BillboardRender)Host.GetComponent(typeof(BillboardRender));
-            render.SetMaterial(AssetLoader.MaterialAssetGet("fire"));
+            render.SetMaterial(AssetLoader.MaterialAssetGet("fire", AssetLoader.AssetSource.engine));
+            render.Priority += 5;
+            Host.Scale = new Vector3(0.5f, 1f, 1f);
 
             Light light = (Light)Host.GetComponent(typeof(Light));
-            light.SetData(new Vector4(1f, 1f, 1f, 1f), 7f);
+            light.SetData(FireColor, 7f);
 
             return 1;
         }
