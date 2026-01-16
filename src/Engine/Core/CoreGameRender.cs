@@ -87,10 +87,13 @@ namespace Engine
         /// </summary>
         private void RenderTick(double tick_delta)
         {
-            // Clear screen
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            // Clear screen and create camera draw frustrum
+            ////////////////////////////////////////////////////////////////////////////////////////////
             FrameBuffer_Pre.BindFrameBuffer();
             OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            Core.SpriteRenderDepthOffset = 0;
 
             // Draw radius
             Vector3 world_load_position = Vector3.Zero;
@@ -100,11 +103,14 @@ namespace Engine
             Vector3 camera_vector = Tools.Forward;
             if (Camera.WorldCamera != null) camera_vector = Vector3.Transform(Tools.Forward, Camera.WorldCamera.Rotation);
 
-            // Assemble a list in order of priority.
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            // Pre rendering
+            ////////////////////////////////////////////////////////////////////////////////////////////
             List<ShaderData.Uniform> vertex_uniforms = [];
             SortedList<uint, List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
             ApplyPrerenderEnvironmentUniforms(vertex_uniforms, tick_delta);
             OnPreRenderTick();
+            // Assemble a list in order of priority.
             foreach (Entity check in Entity.EntityList)
             {
                 // Check the entity for a render priority. We only draw if we have one, as that means we have a component that wants to draw!
@@ -127,12 +133,18 @@ namespace Engine
                 render_queue[priority].Add(check);
             }
 
+            ////////////////////////////////////////////////////////////////////////////////////////////
             // Primary rendering
+            ////////////////////////////////////////////////////////////////////////////////////////////
             FrameBuffer_Main.BindFrameBuffer();
             OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            Core.SpriteRenderDepthOffset = 0;
+
+            // Apply environment
             vertex_uniforms.Clear();
             ApplyEnvironmentUniforms(vertex_uniforms, tick_delta);
+
             OnRenderTick();
             foreach ((uint key, List<Entity> draw_list) in render_queue)
             {
@@ -142,10 +154,14 @@ namespace Engine
                 }
             }
 
+            ////////////////////////////////////////////////////////////////////////////////////////////
             // Late rendering
+            ////////////////////////////////////////////////////////////////////////////////////////////
             FrameBuffer_Post.BindFrameBuffer();
             OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            Core.SpriteRenderDepthOffset = 0;
+
             OnPostRenderTick();
             foreach ((uint key, List<Entity> draw_list) in render_queue)
             {
@@ -155,10 +171,14 @@ namespace Engine
                 }
             }
 
+            ////////////////////////////////////////////////////////////////////////////////////////////
             // Hud rendering
+            ////////////////////////////////////////////////////////////////////////////////////////////
             FrameBuffer_Hud.BindFrameBuffer();
             OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            Core.SpriteRenderDepthOffset = 0;
+
             OnRenderHudTick();
             foreach ((uint key, List<Entity> draw_list) in render_queue)
             {
@@ -168,12 +188,16 @@ namespace Engine
                 }
             }
 
+            ////////////////////////////////////////////////////////////////////////////////////////////
             // Combine final render pass
+            ////////////////////////////////////////////////////////////////////////////////////////////
             FrameBufferContainer.ResetFrameBuffer();
             OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
-            FrameBuffer_Pre.Render(tick_delta, 0f);
+            // Finally render all buffers atop eachother
+            Core.SpriteRenderDepthOffset = 0;
+            FrameBuffer_Pre.Render(tick_delta);
             FrameBuffer_Main.Render(tick_delta);
             FrameBuffer_Post.Render(tick_delta);
             FrameBuffer_Hud.Render(tick_delta);
