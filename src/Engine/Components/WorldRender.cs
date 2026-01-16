@@ -20,6 +20,12 @@ namespace EntComponents
             ApplyMaterial(default_material, model.Meshes.Count);
         }
 
+        public void SetMaterial(MaterialData apply_mat)
+        {
+            if (model == null) return;
+            ApplyMaterial(apply_mat);
+        }
+
         public void SetMaterial(MaterialData apply_mat, int mesh_index)
         {
             if (model == null) return;
@@ -57,6 +63,7 @@ namespace EntComponents
         private void ApplyMaterial(MaterialData apply_mat, int mesh_count = 1)
         {
             if (model == null) return;
+            materials = [];
             for (int i = 0; i < mesh_count; i++)
             {
                 materials.Add(apply_mat);

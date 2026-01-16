@@ -1,5 +1,6 @@
 #version 330 core
 in vec2 TexCoords;
+in float GameTick;
 
 out vec4 FragColor;
 

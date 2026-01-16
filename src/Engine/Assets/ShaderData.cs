@@ -169,7 +169,7 @@ namespace Assets
             string infoLog = _gl.GetShaderInfoLog(handle);
             if (!string.IsNullOrWhiteSpace(infoLog))
             {
-                throw new Exception($"Error compiling shader of type {type}, failed with error {infoLog}");
+                throw new Exception($"Error compiling shader of type {type} with path {path}, failed with error {infoLog}");
             }
 
             return handle;

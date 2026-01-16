@@ -21,5 +21,10 @@
         "Animator": {},
         "Input": {},
         "ActorBehavior.PlayerActorBehavior": {}
+    },
+    "actor_effectfire": {
+        "BillboardRender": {},
+        "Light": {},
+        "ActorBehavior.FireActorBehavior": {}
     }
 }

@@ -66,7 +66,7 @@ namespace Engine
             Vector4[] light_col = new Vector4[max_lights];
             light_pos[0] = new(0f, 0f, 0f, float.PositiveInfinity);
             light_col[0] = new(1f, 1f, 1f, 1f);
-            ApplyVertexUniforms(vertex_uniforms, light_pos, light_col, 1, Vector3.Zero, float.PositiveInfinity);
+            ApplyVertexUniforms(tick_delta, vertex_uniforms, light_pos, light_col, 1, Vector3.Zero, float.PositiveInfinity);
         }
 
         /// <summary>
@@ -132,19 +132,20 @@ namespace Engine
             }
 
             // Assemble uniforms
-            ApplyVertexUniforms(vertex_uniforms, light_pos, light_col, light_count, fog_color, fog_distance);
+            ApplyVertexUniforms(tick_delta, vertex_uniforms, light_pos, light_col, light_count, fog_color, fog_distance);
         }
 
         /// <summary>
         /// Assemble vertex uniforms in a proper format for shaders
         /// </summary>
-        private static void ApplyVertexUniforms(List<ShaderData.Uniform> vertex_uniforms, Vector4[] light_pos_array, Vector4[] light_color_array, int light_count, Vector3 fog_color, float fog_distance)
+        private static void ApplyVertexUniforms(double tick_delta, List<ShaderData.Uniform> vertex_uniforms, Vector4[] light_pos_array, Vector4[] light_color_array, int light_count, Vector3 fog_color, float fog_distance)
         {
             vertex_uniforms.Add(new("uLightPositions", light_pos_array));
             vertex_uniforms.Add(new("uLightColors", light_color_array));
             vertex_uniforms.Add(new("uLightCount", light_count)); // Number of lights, not max lights
             vertex_uniforms.Add(new("uFogColor", fog_color));
             vertex_uniforms.Add(new("uFogDistance", fog_distance));
+            vertex_uniforms.Add(new("uGameTick", Core.ElapsedGameTicks + tick_delta));
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Numerics;
 using EntComponents;
 using Assets;
+using Engine.ColliderShapes;
 
 namespace Engine
 {
@@ -40,15 +41,25 @@ namespace Engine
             }
             loaded_rooms.Add(this);
             // All scenes implicitly have these
-            new WorldRender(this);
-            new Collider(this);
+            WorldRender renderer = new WorldRender(this);
+            Collider terrain_collider = new Collider(this);
             // Setup room
             LoadAssets();
             LoadActors();
             LoadExits();
+            Console.WriteLine("-------> Room Loaded : " + room_id);
+            // Environment
             Environment?.ApplyEnvironment(this);
             MinimumRenderDistance = float.PositiveInfinity; // Do not hide room geometry
-            Console.WriteLine("-------> Room Loaded : " + GetType());
+            // Collision from render mesh
+            MeshData? mesh = renderer.GetMeshByName("col.001");
+            if (mesh != null)
+            {
+                terrain_collider.SetShape(new ColliderShapes.WorldGeometryCol(mesh));
+                terrain_collider.CollisionMask = Collider.mask_worldgeo;
+                Console.WriteLine("-------> Collision mesh created : " + (terrain_collider.CollisionShape as WorldGeometryCol).MeshTriCount() + " tris");
+            }
+            // Console.WriteLine("-------> Pathfinding mesh created : " + room_id); // TODO 
             Console.WriteLine("-----------------------------------------------------");
         }
 

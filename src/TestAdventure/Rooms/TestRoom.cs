@@ -37,21 +37,13 @@ namespace TestAdventure
             terrain_collider.SetShape(new Engine.ColliderShapes.WorldGeometryCol(renderer.GetMeshByName("col.001")));
             terrain_collider.CollisionMask = Collider.mask_worldgeo;
 
-            Light glow_test = new Light(this);
-            glow_test.SetData(new Vector4(1f, 1f, 1f, 1f), 12f, new Vector3(4f, 2f, 8f));
-
-            // Move camera
-            Camera.WorldCamera.Position = new Vector3(0f, 0.5f, 1f);
-
             // Default actors
             EntityFactory.CreateActor(PlayerActorBehavior.player_actor_id, "actor_player", new Transform(new Vector3(0f, 0f, 5f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
 
-            /*
-            for(int i = 0; i < 600; i++)
+            for(int i = 0; i < 20; i++)
             {
-                EntityFactory.CreateActor( "pointer_" + i, "actor_pointer", new Transform( new Vector3( Tools.RandRange(-100,100),Tools.RandRange(-10,10),Tools.RandRange(-100,100)), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
+                EntityFactory.CreateActor( "fire_" + i, "actor_effectfire", new Transform( new Vector3( Tools.RandRange(-10, 10), Tools.RandRange(0, 10), Tools.RandRange(-10, 10)), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
             }
-            */
         }
 
         public override void LoadExits()

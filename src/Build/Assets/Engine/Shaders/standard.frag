@@ -3,6 +3,7 @@ in vec2 TexCoords;
 in vec3 Normal;
 in vec3 Color;
 in vec4 Light;
+in float GameTick;
 
 uniform sampler2D uTexture0;
 

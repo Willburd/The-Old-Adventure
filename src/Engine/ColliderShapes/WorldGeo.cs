@@ -16,6 +16,11 @@ namespace Engine.ColliderShapes
         }
         MeshData our_mesh;
 
+        public int MeshTriCount()
+        {
+            return our_mesh.CollisionTriangles.Count;
+        }
+
         public override Collider.RaycastHit? InRay(Collider.Raycast ray)
         {
             Vector3 normal_ray = Vector3.Normalize(ray.direction);

@@ -7,10 +7,12 @@ layout (location = 3) in vec3 vColor;
 uniform mat4 uTransform;
 uniform mat4 uView;
 uniform mat4 uProjection;
+uniform float uGameTick;
 
 out vec2 TexCoords;
 out vec3 Normal;
 out vec3 Color;
+out float GameTick;
 
 void main()
 {
@@ -18,4 +20,5 @@ void main()
     TexCoords = vUv;
     Normal = vNormal;
     Color = vColor;
+    GameTick = uGameTick;
 }

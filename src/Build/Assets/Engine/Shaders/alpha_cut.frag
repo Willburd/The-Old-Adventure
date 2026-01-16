@@ -1,5 +1,6 @@
 #version 330 core
 in vec2 TexCoords;
+in float GameTick;
 
 uniform sampler2D uTexture0;
 

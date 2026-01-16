@@ -1,4 +1,5 @@
 #version 330 core
+in float GameTick;
 
 uniform vec4 uColorSet;
 

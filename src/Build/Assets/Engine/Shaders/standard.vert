@@ -16,10 +16,13 @@ uniform int uLightCount;
 uniform vec4 uFogColor;
 uniform float uFogDistance;
 
+uniform float uGameTick;
+
 out vec2 TexCoords;
 out vec3 Normal;
 out vec3 Color;
 out vec4 Light;
+out float GameTick;
 
 vec3 solve_lights()
 {
@@ -57,4 +60,5 @@ void main()
 
     Color = clamp(mix(vColor, uFogColor.rgb, pow(dist_perc, 3)), 0.0, 1.0);
     Light = vec4(solve_lights(), 1.0 - pow(dist_perc, 100));
+    GameTick = uGameTick;
 }
