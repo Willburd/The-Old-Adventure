@@ -57,12 +57,18 @@ namespace Engine
                 Debug.Assert(type != null, "A non existant component typekey was added to a " + actual_key + " during json decode, are you missing a namespace?: " + component_key);
                 Activator.CreateInstance(type, [actor]);
             }
-
-            if (pre_count < 200 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 200) Console.WriteLine("WARNING: Excessive entity count, 200 ents.");
-            if (pre_count < 300 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 300) Console.WriteLine("!!!!!WARNING: Extreme entity count, 300 ents!!!!!");
-            if (pre_count < 1000 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 1000) Console.WriteLine("!!!!!!!!!!!!!!WARNING: Extreme entity count, 1000 ents!!!!!!!!!!!!!!");
-            if (pre_count < 2000 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 2000) Console.WriteLine("!!!!!!!!!!!!!!WARNING: Extreme entity count, 2000 ents!!!!!!!!!!!!!!");
+            ErrorThreshold(pre_count, 500, "!!WARNING: Extreme entity count, 500 ents!!");
+            ErrorThreshold(pre_count, 1000, "!!!!!!!WARNING: Extreme entity count, 1000 ents!!!!!!!");
+            ErrorThreshold(pre_count, 2000, "!!!!!!!!!!!!!!WARNING: Extreme entity count, 2000 ents!!!!!!!!!!!!!!");
             return actor;
+        }
+
+        /// <summary>
+        /// Give a warning for excessive entity counts.
+        /// </summary>
+        private static void ErrorThreshold(int pre_count, int warn_at_count, string message)
+        {
+            if (pre_count < warn_at_count && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= warn_at_count) Console.WriteLine(message);
         }
     }
 }
