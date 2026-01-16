@@ -1,18 +1,18 @@
 {
     "actor_cube": {
         "WorldRender": {},
-        "CubeActorBehavior": {}
+        "ActorBehavior.CubeActorBehavior": {}
     },
     "actor_pointer": {
         "WorldRender": {},
-        "PointerActorBehavior": {}
+        "ActorBehavior.PointerActorBehavior": {}
     },
     "actor_bird": {
         "WorldRender": {},
         "TriggerVolume": {},
         "PhysicsBody": {},
         "Animator": {},
-        "FlyAwayBirdActorBehavior": {}
+        "ActorBehavior.FlyAwayBirdActorBehavior": {}
     },
     "actor_player": {
         "WorldRender": {},
@@ -20,6 +20,6 @@
         "PhysicsBody": {},
         "Animator": {},
         "Input": {},
-        "PlayerActorBehavior": {}
+        "ActorBehavior.PlayerActorBehavior": {}
     }
 }

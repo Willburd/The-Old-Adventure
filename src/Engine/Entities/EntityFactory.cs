@@ -63,72 +63,20 @@ namespace Engine
             }
 
             if (pre_count < 200 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 200) Console.WriteLine("WARNING: Excessive entity count, 200 ents.");
-            if (pre_count < 300 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 300) Console.WriteLine("WARNING: Extreme entity count, 300 ents.");
+            if (pre_count < 300 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 300) Console.WriteLine("!!!!!WARNING: Extreme entity count, 300 ents!!!!!");
+            if (pre_count < 1000 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 1000) Console.WriteLine("!!!!!!!!!!!!!!WARNING: Extreme entity count, 1000 ents!!!!!!!!!!!!!!");
+            if (pre_count < 2000 && (Entity.UninitEntityList.Count + Entity.EntityList.Count) >= 2000) Console.WriteLine("!!!!!!!!!!!!!!WARNING: Extreme entity count, 2000 ents!!!!!!!!!!!!!!");
             return actor;
         }
 
         /// <summary>
         /// Attaches components to entities.
         /// </summary>
-        protected virtual EntComponents.EntComponent ProduceComponents(Entity ent, string asset_key, string component_key)
+        protected virtual EntComponents.EntComponent? ProduceComponents(Entity ent, string asset_key, string component_key)
         {
-            switch (component_key)
-            {
-                default:
-                    Debug.Assert(false, "A non existant component typekey was added to a " + asset_key + " during json decode: " + component_key);
-                    return null;
-
-                ///////////////////////////////////////////////////
-                // Base
-                ///////////////////////////////////////////////////
-                case "Collider":
-                    return new EntComponents.Collider(ent);
-
-                case "TriggerVolume":
-                    return new EntComponents.TriggerVolume(ent);
-
-                case "WorldRender":
-                    return new EntComponents.WorldRender(ent);
-
-                case "PhysicsBody":
-                    return new EntComponents.PhysicsBody(ent);
-
-                case "Animator":
-                    return new EntComponents.Animator(ent);
-
-                case "Light":
-                    return new EntComponents.Light(ent);
-
-                case "Input":
-                    return new EntComponents.Input(ent);
-
-                case "Rotates":
-                    return new EntComponents.Rotates(ent);
-
-                ///////////////////////////////////////////////////
-                // Cameras
-                ///////////////////////////////////////////////////
-                case "PlayerCameraBehavior":
-                    return new EntComponents.ActorBehavior.PlayerCameraBehavior(ent);
-
-                case "EditorCameraBehavior":
-                    return new EntComponents.ActorBehavior.EditorCameraBehavior(ent);
-
-                ///////////////////////////////////////////////////
-                // Behaviors
-                ///////////////////////////////////////////////////
-                case "PlayerActorBehavior":
-                    return new EntComponents.ActorBehavior.PlayerActorBehavior(ent);
-
-                case "CubeActorBehavior":
-                    return new EntComponents.ActorBehavior.CubeActorBehavior(ent);
-
-                case "PointerActorBehavior":
-                    return new EntComponents.ActorBehavior.PointerActorBehavior(ent);
-
-                case "FlyAwayBirdActorBehavior":
-                    return new EntComponents.ActorBehavior.FlyAwayBirdActorBehavior(ent);
-            }
+            Type type = Type.GetType("EntComponents." + component_key);
+            Debug.Assert(type != null, "A non existant component typekey was added to a " + asset_key + " during json decode, are you missing a namespace?: " + component_key);
+            return (EntComponents.EntComponent?)Activator.CreateInstance(type, [ent]);
         }
     }
 }
