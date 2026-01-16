@@ -4,7 +4,7 @@ namespace Engine
     {
         protected override EntComponents.EntComponent ProduceComponents(Entity ent, string entity_key, string component_key)
         {
-            switch(component_key)
+            switch (component_key)
             {
                 default:
                     return base.ProduceComponents(ent, entity_key, component_key);
@@ -12,15 +12,15 @@ namespace Engine
                 ///////////////////////////////////////////////////
                 // Actor behaviors
                 ///////////////////////////////////////////////////
-                
+
                 case "TestActorBehavior":
                     return new EntComponents.ActorBehavior.TestActorBehavior(ent);
 
-                ///////////////////////////////////////////////////
-                // Room behaviors
-                ///////////////////////////////////////////////////
+                    ///////////////////////////////////////////////////
+                    // Room behaviors
+                    ///////////////////////////////////////////////////
 
-            }            
+            }
         }
     }
 }
