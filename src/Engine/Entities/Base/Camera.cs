@@ -17,7 +17,7 @@ namespace Engine
             all_cameras.Add(this);
             IsActive = is_active;
         }
-        protected override void OnCleanup()
+        public override void OnCleanup()
         {
             all_cameras.Remove(this);
         }

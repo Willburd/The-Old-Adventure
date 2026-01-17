@@ -19,16 +19,18 @@ namespace EntComponents
             Host = host_entity;
             if (!all_components.ContainsKey(GetType())) all_components.Add(GetType(), []);
             all_components[GetType()].Add(this);
-            Host.AddComponent(this);
+            Host._InternalAddComponent(this);
             RegisterSignals();
         }
 
-        ~EntComponent()
+        /// <summary>
+        /// Performs component removal from the global list, as well as calls the virtual destroy action. Should not be manually called, called by Entity.RemoveComponent()
+        /// </summary>
+        public void InternalDestroyComponent()
         {
             OnDestroy();
             UnregisterSignals();
             all_components[GetType()].Remove(this);
-            Host.RemoveComponent(this);
         }
 
         /// <summary>

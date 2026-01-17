@@ -43,7 +43,7 @@ namespace Engine
             OwnerRoom = null;
         }
 
-        protected override void OnCleanup()
+        public override void OnCleanup()
         {
             UnlinkRoom();
         }

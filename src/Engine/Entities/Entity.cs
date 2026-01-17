@@ -82,36 +82,18 @@ namespace Engine
         /// </summary>
         public void Destroy()
         {
-            Enabled = false;
             if (!DestructingEntities.Contains(this))
             {
                 DestructingEntities.Add(this);
                 SendSignal(Core.Signals.destroy);
-                foreach (EntComponent component in GetAllComponents())
-                {
-                    RemoveComponent(component);
-                }
-                // Debug info
-                if (GetType() == typeof(Actor))
-                {
-                    // Show our linked room
-                    Actor us_as_actor = (Actor)this;
-                    Console.WriteLine("EntityDestroy-X (" + EntityID + ")[" + us_as_actor.OwnerRoom?.EntityID + "] : " + AssetKey);
-                }
-                else
-                {
-                    // Just delete info
-                    Console.WriteLine("EntityDestroy-X (" + EntityID + ") : " + AssetKey);
-                }
-                // finish up
-                OnCleanup();
             }
+            Enabled = false;
         }
 
         /// <summary>
         /// Called at the end of Destroy, handles any special cleanup an entity type does.
         /// </summary>
-        protected virtual void OnCleanup() { }
+        public virtual void OnCleanup() { }
 
         public float MinimumRenderDistance { get; set; } = 8f;
 
@@ -125,7 +107,7 @@ namespace Engine
         /// <summary>
         /// Adds a component to the entity. Do not call directly, called by EntComponent constructor. You only need to instantiate the component, and provide the entity as it's target.
         /// </summary>
-        public EntComponent AddComponent(EntComponent component)
+        public EntComponent _InternalAddComponent(EntComponent component)
         {
             if (!attached_components.ContainsKey(component.GetType())) attached_components.Add(component.GetType(), []);
             attached_components[component.GetType()].Add(component);
@@ -135,8 +117,9 @@ namespace Engine
         /// <summary>
         /// Removes a component from an entity. Do not call directly, called by EntComponent destructor.
         /// </summary>
-        public void RemoveComponent(EntComponent component)
+        public void InternalRemoveComponent(EntComponent component)
         {
+            component.InternalDestroyComponent();
             attached_components[component.GetType()].Remove(component);
         }
 

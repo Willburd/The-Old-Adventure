@@ -43,7 +43,11 @@ namespace EntComponents.ActorBehavior
             // Shrink and then destroy
             if (Host.Scale.Length() > 0.01f)
             {
-                Host.Scale *= 0.92f;
+                float light_scale_rate = 0.92f;
+                Host.Scale *= light_scale_rate;
+                Light light = (Light)Host.GetComponent(typeof(Light));
+                light.Radius *= light_scale_rate;
+                Host.Position += Tools.Down * 0.025f * Host.Scale.Length(); // Needs to offset scaling
                 return 1;
             }
             Host.Scale *= 0f;

@@ -91,7 +91,7 @@ namespace Engine
         public virtual void OnRoomDisabledUpdate() { }
 
 
-        protected override void OnCleanup()
+        public override void OnCleanup()
         {
             Console.WriteLine("-----------------------------------------------------");
             Console.WriteLine("-------> Room unloading : " + GetType());

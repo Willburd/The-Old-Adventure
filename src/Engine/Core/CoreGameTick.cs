@@ -232,6 +232,8 @@ namespace Engine
                     thread_batch.Add(Task.Run(() =>
                     {
                         if (ent == null) return; // TODO - Discover the desync
+
+                        // Remove from processing
                         if (!ent.IsInitilized)
                         {
                             Entity.UninitEntityList.Remove(ent);
@@ -241,6 +243,25 @@ namespace Engine
                             Entity.EntityList.Remove(ent);
                             Entity.EntityLookupList.Remove(ent.EntityID);
                         }
+                        // Remove component parts
+                        foreach (EntComponent component in ent.GetAllComponents())
+                        {
+                            ent.InternalRemoveComponent(component);
+                        }
+                        // Debug info
+                        if (ent.GetType() == typeof(Actor))
+                        {
+                            // Show our linked room
+                            Actor us_as_actor = (Actor)ent;
+                            Console.WriteLine("EntityDestroy-X (" + ent.EntityID + ")[" + us_as_actor.OwnerRoom?.EntityID + "] : " + ent.AssetKey);
+                        }
+                        else
+                        {
+                            // Just delete info
+                            Console.WriteLine("EntityDestroy-X (" + ent.EntityID + ") : " + ent.AssetKey);
+                        }
+                        // finish up
+                        ent.OnCleanup();
                     }));
                     if (thread_batch.Count >= BatchSize) AwaitCurrentBatch(thread_batch);
                 }
