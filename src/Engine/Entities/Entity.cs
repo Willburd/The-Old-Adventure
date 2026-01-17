@@ -71,6 +71,9 @@ namespace Engine
             AssetKey = entity_asset_key;
             SetTransform(initial_location);
             UniqueSeed = (int)Tools.RandRange(0, 99999999);
+
+            // Start transform
+            starttransform = new(initial_location.Position, initial_location.Rotation, initial_location.Scale);
         }
 
 
@@ -224,6 +227,7 @@ namespace Engine
 
         protected readonly Transform transform = new();
         protected readonly Transform last_transform = new();
+        protected readonly Transform starttransform = new();
 
         public Transform Location
         {
@@ -248,6 +252,10 @@ namespace Engine
             get { return transform.Scale; }
             set { transform.Scale = value; }
         }
+
+        public Vector3 StartPosition { get { return starttransform.Position; } }
+        public Quaternion StartRotation { get { return starttransform.Rotation; } }
+        public Vector3 StartScale { get { return starttransform.Scale; } }
 
         /// <summary>
         /// Sets the last position of the transform to the current position. Preventing the renderer from interpolating the object from one position to another over long distances, such as teleporting.

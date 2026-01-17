@@ -2,6 +2,7 @@ using System.Numerics;
 using Engine;
 using EntComponents;
 using Assets;
+using EntComponents.ActorBehavior;
 
 namespace Environments
 {
@@ -38,7 +39,7 @@ namespace Environments
         {
             // Set room
             Host = host_room;
-            skybox_model = new Skybox(Host);
+            skybox_model = new SkyboxActorBehavior(Host);
             skybox_model.SetModel(AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), multiblend_skybox_mat);
         }
 

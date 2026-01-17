@@ -256,7 +256,7 @@ namespace Engine
             }
 
             // Finish up by telling the next frame if we held the key or not
-            input_handler.InputStateUpdate();
+            InputHandler.InputStateUpdate();
         }
     }
 }
