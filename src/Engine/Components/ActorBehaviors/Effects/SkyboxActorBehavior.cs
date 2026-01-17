@@ -2,12 +2,12 @@ using System.Numerics;
 using Engine;
 using Assets;
 
-namespace EntComponents
+namespace EntComponents.ActorBehavior
 {
     /// <summary>
     /// Entity Component that prerenders a skybox model
     /// </summary>
-    public class Skybox(Entity host_entity) : WorldRender(host_entity)
+    public class SkyboxActorBehavior(Entity host_entity) : WorldRender(host_entity)
     {
         public float sky_rotation_rate = 0.0002f;
         protected float sky_rotation = 0f;

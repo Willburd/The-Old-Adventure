@@ -40,9 +40,11 @@ namespace TestAdventure
             // Default actors
             EntityFactory.CreateActor(PlayerActorBehavior.player_actor_id, "actor_player", new Transform(new Vector3(0f, 0f, 5f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
 
-            for(int i = 0; i < 20; i++)
+            for (int i = 0; i < 20; i++)
             {
-                EntityFactory.CreateActor( "fire_" + i, "actor_effectfire", new Transform( new Vector3( Tools.RandRange(-10, 10), Tools.RandRange(0, 10), Tools.RandRange(-10, 10)), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
+                Actor fire = EntityFactory.CreateActor("fire_" + i, "actor_effectfire", new Transform( new Vector3( Tools.RandRange(-10, 10), Tools.RandRange(0, 10), Tools.RandRange(-10, 10)), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
+                FireActorBehavior fire_behavior = (FireActorBehavior)fire.GetComponent(typeof(FireActorBehavior));
+                fire_behavior.DecayTimer = (int)Tools.RandRange(600, 900);
             }
         }
 

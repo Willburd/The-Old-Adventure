@@ -2,6 +2,7 @@ using EntComponents;
 using System.Numerics;
 using Engine;
 using Assets;
+using EntComponents.ActorBehavior;
 
 namespace Assets
 {
@@ -16,7 +17,7 @@ namespace Assets
 
         public string AssetKey { get; private set; }
 
-        protected Skybox? skybox_model = null;
+        protected SkyboxActorBehavior? skybox_model = null;
 
         public EnvironmentData(string asset_key, Vector3 fog_col, float fog_dist, Vector4 ambient_light, TextureData skybox_tex)
         {
@@ -62,7 +63,7 @@ namespace Assets
         {
             // Set room
             Host = host_room;
-            skybox_model = new Skybox(Host);
+            skybox_model = new SkyboxActorBehavior(Host);
             skybox_model.SetModel(AssetLoader.ModelAssetGet("cube_map", AssetLoader.AssetSource.engine), SkyboxMaterial);
             return;
         }
