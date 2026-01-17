@@ -81,12 +81,6 @@ namespace Engine
             // We never want to overrun our task pool, otherwise we'll hit the dreaded 0.5 second reschedual in a gametick.
         }
 
-        /// <summary>
-        /// Override during OnInit() with your own subtype if your adventure requires an extended InputHandler()
-        /// </summary>
-        protected static InputHandler input_handler = new InputHandler();
-
-
         // Threading batch control
         public static int BatchSize { get; private set; }
 

@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace Engine
 {
-    public partial class InputHandler
+    public static partial class InputHandler
     {
         private static Dictionary<Key, bool> previous_input_state = [];
         private static Dictionary<Key, bool> input_state = [];
@@ -231,7 +231,7 @@ namespace Engine
         /// <summary>
         /// Updates the previously held key state. Do not use externally.
         /// </summary>
-        public void InputStateUpdate()
+        public static void InputStateUpdate()
         {
             // Updates the previous state at the end of the frame
             foreach ((Key key, bool state) in input_state)
@@ -249,7 +249,7 @@ namespace Engine
         /// <summary>
         /// Updates the mouse position each frame based on the current raw mouse, but has it's own delta and old position vars to compensate.
         /// </summary>
-        private void MouseUpdate()
+        private static void MouseUpdate()
         {
             MousePos = Core.RawMousePos;
             MouseDelta = MousePos - OldMousePos;
