@@ -2,6 +2,7 @@
 in vec2 TexCoords;
 in vec3 Normal;
 in float GameTick;
+flat in int UniqueID;
 
 out vec4 FragColor;
 

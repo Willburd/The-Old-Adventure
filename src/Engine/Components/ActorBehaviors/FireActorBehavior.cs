@@ -23,7 +23,7 @@ namespace EntComponents.ActorBehavior
             BillboardRender render = (BillboardRender)Host.GetComponent(typeof(BillboardRender));
             render.SetMaterial(AssetLoader.MaterialAssetGet("fire", AssetLoader.AssetSource.engine));
             render.Priority += 5;
-            Host.Scale = new Vector3(0.5f, 1f, 1f);
+            Host.Scale = new Vector3(0.5f, 1.25f, 1.25f);
 
             Light light = (Light)Host.GetComponent(typeof(Light));
             light.SetData(FireColor, 12f);

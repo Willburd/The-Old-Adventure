@@ -8,11 +8,13 @@ uniform mat4 uTransform;
 uniform mat4 uView;
 uniform mat4 uProjection;
 uniform float uGameTick;
+uniform int uUniqueID;
 
 out vec2 TexCoords;
 out vec3 Normal;
 out vec3 Color;
 out float GameTick;
+flat out int UniqueID;
 
 void main()
 {
@@ -21,4 +23,5 @@ void main()
     Normal = vNormal;
     Color = vColor;
     GameTick = uGameTick;
+    UniqueID = uUniqueID;
 }

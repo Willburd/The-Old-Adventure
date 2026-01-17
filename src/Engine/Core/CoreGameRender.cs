@@ -135,7 +135,9 @@ namespace Engine
                 }
 
                 // perform prerender while we're here.
-                check.SendSignal(Signals.pre_render, tick_delta, vertex_uniforms);
+                List<ShaderData.Uniform> unique_vuniforms = [.. vertex_uniforms];
+                unique_vuniforms.Add(new("uUniqueID", check.UniqueSeed));
+                check.SendSignal(Signals.pre_render, tick_delta, unique_vuniforms);
                 // Add to queue for all of the following render loops, instead of checking every entity for each one! We only store the ones that replied with a draw priority!
                 if (!render_queue.ContainsKey(priority)) render_queue.Add(priority, []);
                 render_queue[priority].Add(check);
@@ -158,7 +160,9 @@ namespace Engine
             {
                 foreach (Entity draw in draw_list)
                 {
-                    draw.SendSignal(Signals.render, tick_delta, vertex_uniforms);
+                    List<ShaderData.Uniform> unique_vuniforms = [.. vertex_uniforms];
+                    unique_vuniforms.Add(new("uUniqueID", draw.UniqueSeed));
+                    draw.SendSignal(Signals.render, tick_delta, unique_vuniforms);
                 }
             }
 
@@ -175,7 +179,9 @@ namespace Engine
             {
                 foreach (Entity draw in draw_list)
                 {
-                    draw.SendSignal(Signals.post_render, tick_delta);
+                    List<ShaderData.Uniform> unique_vuniforms = [.. vertex_uniforms];
+                    unique_vuniforms.Add(new("uUniqueID", draw.UniqueSeed));
+                    draw.SendSignal(Signals.post_render, tick_delta, unique_vuniforms);
                 }
             }
 
@@ -192,7 +198,9 @@ namespace Engine
             {
                 foreach (Entity draw in draw_list)
                 {
-                    draw.SendSignal(Signals.hud_render, tick_delta);
+                    List<ShaderData.Uniform> unique_vuniforms = [.. vertex_uniforms];
+                    unique_vuniforms.Add(new("uUniqueID", draw.UniqueSeed));
+                    draw.SendSignal(Signals.hud_render, tick_delta, unique_vuniforms);
                 }
             }
 

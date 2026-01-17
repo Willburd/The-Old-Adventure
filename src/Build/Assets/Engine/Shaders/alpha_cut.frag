@@ -1,6 +1,7 @@
 #version 330 core
 in vec2 TexCoords;
 in float GameTick;
+flat in int UniqueID;
 
 uniform sampler2D uTexture0;
 

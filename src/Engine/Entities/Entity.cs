@@ -42,6 +42,8 @@ namespace Engine
         private bool initilized = false;
         public bool IsInitilized { get { return initilized; } }
 
+        public int UniqueSeed { get; private set; }
+
         public void OnInit()
         {
             initilized = true;
@@ -68,6 +70,7 @@ namespace Engine
             EntityID = entity_id;
             AssetKey = entity_asset_key;
             SetTransform(initial_location);
+            UniqueSeed = (int)Tools.RandRange(0, 99999999);
         }
 
 
