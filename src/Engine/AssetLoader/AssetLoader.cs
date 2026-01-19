@@ -140,7 +140,7 @@ namespace Engine
         /// <summary>
         /// Loads a texture asset from disk into the asset library, asset key is the same as the file name
         /// </summary>
-        public static TextureData TextureAssetLoad(string file_path, Silk.NET.OpenGL.TextureTarget tex_target, AssetSource source = AssetSource.adventure)
+        public static TextureData TextureAssetLoad(string file_path, Silk.NET.OpenGL.TextureTarget tex_target = Silk.NET.OpenGL.TextureTarget.Texture2D, AssetSource source = AssetSource.adventure)
         {
             return TextureAssetLoad(Path.GetFileNameWithoutExtension(file_path), file_path, tex_target, source);
         }
@@ -148,7 +148,7 @@ namespace Engine
         /// <summary>
         /// Loads a texture asset from disk into the asset library, with a specific asset key
         /// </summary>
-        public static TextureData TextureAssetLoad(string asset_key, string file_path, Silk.NET.OpenGL.TextureTarget tex_target, AssetSource source = AssetSource.adventure)
+        public static TextureData TextureAssetLoad(string asset_key, string file_path, Silk.NET.OpenGL.TextureTarget tex_target = Silk.NET.OpenGL.TextureTarget.Texture2D, AssetSource source = AssetSource.adventure)
         {
             file_path = source == AssetSource.engine ? AssetDirectoryEngine + "/Textures/" + file_path : AssetDirectoryAdventure + "/Textures/" + file_path;
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.textures, asset_key, source);

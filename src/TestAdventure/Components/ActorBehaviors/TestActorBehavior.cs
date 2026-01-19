@@ -21,8 +21,8 @@ namespace EntComponents.ActorBehavior
             ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
 
             // Textures
-            TextureData sign_wood = AssetLoader.TextureAssetLoad("sign_wood.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
-            TextureData sign_face = AssetLoader.TextureAssetLoad("sign_face.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
+            TextureData sign_wood = AssetLoader.TextureAssetLoad("sign_wood.png");
+            TextureData sign_face = AssetLoader.TextureAssetLoad("sign_face.png");
 
             // Materials
             AssetLoader.MaterialAssetLoad("sign_wood", new([sign_wood], [new("uTexture0", 0)], standard_shader));
