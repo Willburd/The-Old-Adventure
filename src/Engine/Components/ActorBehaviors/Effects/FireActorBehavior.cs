@@ -21,7 +21,7 @@ namespace EntComponents.ActorBehavior
         protected override uint HandleAssetLoad()
         {
             BillboardRender render = (BillboardRender)Host.GetComponent(typeof(BillboardRender));
-            render.SetMaterial(AssetLoader.MaterialAssetGet("fire", AssetLoader.AssetSource.engine));
+            render.SetMaterial(AssetLoader.MaterialAssetGet("fire_scroll", AssetLoader.AssetSource.engine));
             render.Priority += 5;
             Host.Scale = new Vector3(0.5f, 1.25f, 1.25f);
 

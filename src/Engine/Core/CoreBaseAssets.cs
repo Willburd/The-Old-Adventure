@@ -28,23 +28,23 @@ namespace Engine
             // skybox
             AssetLoader.ShaderAssetLoad("skybox_daynight_multiblend", AssetLoader.AssetDirectoryEngine + "/Shaders/unshaded.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/skybox_multiblend.frag", AssetLoader.AssetSource.engine);
             // effects
-            ShaderData shader_fire = AssetLoader.ShaderAssetLoad("fire", AssetLoader.AssetDirectoryEngine + "/Shaders/unshaded.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/fire.frag", AssetLoader.AssetSource.engine);
+            ShaderData shader_fire = AssetLoader.ShaderAssetLoad("fire_scroll", AssetLoader.AssetDirectoryEngine + "/Shaders/unshaded.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/fire.frag", AssetLoader.AssetSource.engine);
             
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Textures
-            TextureData no_texture = AssetLoader.TextureAssetLoad("no_tex", AssetLoader.AssetDirectoryEngine + "/Textures/no_texture.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
-            TextureData nomat_texture = AssetLoader.TextureAssetLoad("no_mat", AssetLoader.AssetDirectoryEngine + "/Textures/no_material.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
-            TextureData example_texture = AssetLoader.TextureAssetLoad("example", AssetLoader.AssetDirectoryEngine + "/Textures/example.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+            TextureData no_texture = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/no_texture.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+            TextureData nomat_texture = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/no_material.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+            TextureData example_texture = AssetLoader.TextureAssetLoad( AssetLoader.AssetDirectoryEngine + "/Textures/example.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             // skybox
-            TextureData skybox_tex_dawn = AssetLoader.TextureAssetLoad("standard_skybox_dawn", AssetLoader.AssetDirectoryEngine + "/Textures/skybox_dawn.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
-            TextureData skybox_tex_day = AssetLoader.TextureAssetLoad("standard_skybox_day", AssetLoader.AssetDirectoryEngine + "/Textures/skybox_day.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
-            TextureData skybox_tex_dusk = AssetLoader.TextureAssetLoad("standard_skybox_dusk", AssetLoader.AssetDirectoryEngine + "/Textures/skybox_dusk.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
-            TextureData skybox_tex_night = AssetLoader.TextureAssetLoad("standard_skybox_night", AssetLoader.AssetDirectoryEngine + "/Textures/skybox_night.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
-            TextureData skybox_tex_dayrain = AssetLoader.TextureAssetLoad("standard_skybox_rainday", AssetLoader.AssetDirectoryEngine + "/Textures/skybox_dayrain.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
-            TextureData skybox_tex_nightrain = AssetLoader.TextureAssetLoad("standard_skybox_rainnight", AssetLoader.AssetDirectoryEngine + "/Textures/skybox_nightrain.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
+            TextureData skybox_tex_dawn = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_dawn.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
+            TextureData skybox_tex_day = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_day.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
+            TextureData skybox_tex_dusk = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_dusk.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
+            TextureData skybox_tex_night = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_night.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
+            TextureData skybox_tex_dayrain = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_dayrain.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
+            TextureData skybox_tex_nightrain = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_nightrain.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
             // effects
-            TextureData fire_tex = AssetLoader.TextureAssetLoad("fire", AssetLoader.AssetDirectoryEngine + "/Textures/fire_scroll.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
+            TextureData fire_tex = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/fire_scroll.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,21 +56,22 @@ namespace Engine
             collision_draw_material = AssetLoader.MaterialAssetLoad("debug_col", new([], [new("uColorSet", new Vector4(0.6f, 0.8f, 0f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
             trigger_draw_material = AssetLoader.MaterialAssetLoad("debug_trigger", new([], [new("uColorSet", new Vector4(0f, 0.2f, 0.9f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine);
             actor_collision_draw_material = AssetLoader.MaterialAssetLoad("debug_actor_col", new([], [new("uColorSet", new Vector4(0.9f, 0.6f, 0f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
+            AssetLoader.ModelAssetLoad(AssetLoader.AssetDirectoryEngine + "/Models/pointer.fbx", AssetLoader.AssetSource.engine);
             // effects
             sprite2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([no_texture], [new("uTexture0", 0)], shader_unshaded), AssetLoader.AssetSource.engine);
-            AssetLoader.MaterialAssetLoad("fire", new([fire_tex], [new("uTexture0", 0), new("uFireColor", new Vector4(1.0f, 0.55f, 0.0f, 1.0f))], shader_fire), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("fire_scroll", new([fire_tex], [new("uTexture0", 0), new("uFireColor", new Vector4(1.0f, 0.55f, 0.0f, 1.0f))], shader_fire), AssetLoader.AssetSource.engine);
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Models: FBX, 0.01 scale, Z forward, Y Up
             // Debug models
             AssetLoader.ModelAssetLoad("no_model", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
             // Collider visualization
-            collision_model_point = AssetLoader.ModelAssetLoad("cube", AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
-            collision_model_sphere = AssetLoader.ModelAssetLoad("col_sphere", AssetLoader.AssetDirectoryEngine + "/Models/col_sphere.fbx", AssetLoader.AssetSource.engine);
-            collision_model_cylinder = AssetLoader.ModelAssetLoad("col_cylinder", AssetLoader.AssetDirectoryEngine + "/Models/col_cylinder.fbx", AssetLoader.AssetSource.engine);
-            sprite2d_model = AssetLoader.ModelAssetLoad("sprite2d", AssetLoader.AssetDirectoryEngine + "/Models/sprite2d.fbx", AssetLoader.AssetSource.engine);
+            collision_model_point = AssetLoader.ModelAssetLoad(AssetLoader.AssetDirectoryEngine + "/Models/cube.fbx", AssetLoader.AssetSource.engine);
+            collision_model_sphere = AssetLoader.ModelAssetLoad(AssetLoader.AssetDirectoryEngine + "/Models/col_sphere.fbx", AssetLoader.AssetSource.engine);
+            collision_model_cylinder = AssetLoader.ModelAssetLoad(AssetLoader.AssetDirectoryEngine + "/Models/col_cylinder.fbx", AssetLoader.AssetSource.engine);
+            sprite2d_model = AssetLoader.ModelAssetLoad(AssetLoader.AssetDirectoryEngine + "/Models/sprite2d.fbx", AssetLoader.AssetSource.engine);
             // Misc
-            AssetLoader.ModelAssetLoad("cube_map", AssetLoader.AssetDirectoryEngine + "/Models/cube_map.fbx", AssetLoader.AssetSource.engine);
+            AssetLoader.ModelAssetLoad(AssetLoader.AssetDirectoryEngine + "/Models/cube_map.fbx", AssetLoader.AssetSource.engine);
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

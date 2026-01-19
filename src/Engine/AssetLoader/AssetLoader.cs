@@ -108,7 +108,15 @@ namespace Engine
         }
 
         /// <summary>
-        /// Loads a 3d Model asset from disk into the asset library
+        /// Loads a 3d Model asset from disk into the asset library, asset key is the same as the file name
+        /// </summary>
+        public static ModelData ModelAssetLoad(string file_path, AssetSource source = AssetSource.adventure)
+        {
+            return ModelAssetLoad(Path.GetFileNameWithoutExtension(file_path), file_path, source);
+        }
+
+        /// <summary>
+        /// Loads a 3d Model asset from disk into the asset library, with a specific asset key
         /// </summary>
         public static ModelData ModelAssetLoad(string asset_key, string file_path, AssetSource source = AssetSource.adventure)
         {
@@ -126,7 +134,15 @@ namespace Engine
         }
 
         /// <summary>
-        /// Loads a texture asset from disk into the asset library
+        /// Loads a texture asset from disk into the asset library, asset key is the same as the file name
+        /// </summary>
+        public static TextureData TextureAssetLoad(string file_path, Silk.NET.OpenGL.TextureTarget tex_target, AssetSource source = AssetSource.adventure)
+        {
+            return TextureAssetLoad(Path.GetFileNameWithoutExtension(file_path), file_path, tex_target, source);
+        }
+
+        /// <summary>
+        /// Loads a texture asset from disk into the asset library, with a specific asset key
         /// </summary>
         public static TextureData TextureAssetLoad(string asset_key, string file_path, Silk.NET.OpenGL.TextureTarget tex_target, AssetSource source = AssetSource.adventure)
         {

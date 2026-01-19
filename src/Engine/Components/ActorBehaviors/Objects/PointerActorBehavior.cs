@@ -16,18 +16,6 @@ namespace EntComponents.ActorBehavior
 
         protected override uint HandleAssetLoad()
         {
-            // Shaders
-            ShaderData standard_shader = AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine);
-
-            // Textures
-            TextureData example_tex = AssetLoader.TextureAssetLoad("example", AssetLoader.AssetDirectoryEngine + "/Textures/example.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
-
-            // Materials
-            AssetLoader.MaterialAssetLoad("example", new([example_tex], [new("uTexture0", 0)], standard_shader), AssetLoader.AssetSource.engine);
-
-            // Model
-            AssetLoader.ModelAssetLoad("test_pointer", AssetLoader.AssetDirectoryEngine + "/Models/pointer.fbx", AssetLoader.AssetSource.engine);
-
             return 1;
         }
 
@@ -35,7 +23,7 @@ namespace EntComponents.ActorBehavior
         {
             // Set the render's model and materials
             WorldRender renderer = (WorldRender)Host.GetComponent(typeof(WorldRender));
-            renderer.SetModel(AssetLoader.ModelAssetGet("test_pointer", AssetLoader.AssetSource.engine), AssetLoader.MaterialAssetGet("example", AssetLoader.AssetSource.engine));
+            renderer.SetModel(AssetLoader.ModelAssetGet("pointer", AssetLoader.AssetSource.engine), AssetLoader.MaterialAssetGet("example", AssetLoader.AssetSource.engine));
 
             return 1;
         }
