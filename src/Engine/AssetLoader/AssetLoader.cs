@@ -93,8 +93,9 @@ namespace Engine
         /// </summary>
         public static ShaderData ShaderAssetLoad(string asset_key, string vertext_path, string frag_path, AssetSource source = AssetSource.adventure)
         {
-            vertext_path = (source == AssetSource.engine) ? AssetDirectoryEngine + vertext_path : AssetDirectoryAdventure + vertext_path;
-            frag_path = (source == AssetSource.engine) ? AssetDirectoryEngine + frag_path : AssetDirectoryAdventure + frag_path;
+            vertext_path = (source == AssetSource.engine) ? AssetDirectoryEngine + "/Shaders/" + vertext_path : AssetDirectoryAdventure + "/Shaders/" + vertext_path;
+            frag_path = (source == AssetSource.engine) ? AssetDirectoryEngine + "/Shaders/" + frag_path : AssetDirectoryAdventure + "/Shaders/" + frag_path;
+
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.shader, asset_key, source);
             if (asset_library.TryGetValue(get_key, out LoadedAsset? value)) return (ShaderData)value.Data;
             // Check if exists
@@ -122,7 +123,7 @@ namespace Engine
         /// </summary>
         public static ModelData ModelAssetLoad(string asset_key, string file_path, AssetSource source = AssetSource.adventure)
         {
-            file_path = source == AssetSource.engine ? AssetDirectoryEngine + file_path : AssetDirectoryAdventure + file_path;
+            file_path = source == AssetSource.engine ? AssetDirectoryEngine + "/Models/" + file_path : AssetDirectoryAdventure + "/Models/" + file_path;
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.model, asset_key, source);
             if (asset_library.TryGetValue(get_key, out LoadedAsset? value)) return (ModelData)value.Data;
             // Check if exists
@@ -149,7 +150,7 @@ namespace Engine
         /// </summary>
         public static TextureData TextureAssetLoad(string asset_key, string file_path, Silk.NET.OpenGL.TextureTarget tex_target, AssetSource source = AssetSource.adventure)
         {
-            file_path = source == AssetSource.engine ? AssetDirectoryEngine + file_path : AssetDirectoryAdventure + file_path;
+            file_path = source == AssetSource.engine ? AssetDirectoryEngine + "/Textures/" + file_path : AssetDirectoryAdventure + "/Textures/" + file_path;
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.textures, asset_key, source);
             if (asset_library.TryGetValue(get_key, out LoadedAsset? value)) return (TextureData)value.Data;
             // Check if exists

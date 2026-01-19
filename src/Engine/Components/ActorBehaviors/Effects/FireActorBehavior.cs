@@ -22,10 +22,10 @@ namespace EntComponents.ActorBehavior
         protected override uint HandleAssetLoad()
         {
             // Shaders
-            ShaderData shader_fire = AssetLoader.ShaderAssetLoad("fire_scroll", "/Shaders/unshaded.vert", "/Shaders/fire.frag", AssetLoader.AssetSource.engine);
+            ShaderData shader_fire = AssetLoader.ShaderAssetLoad("fire_scroll", "unshaded.vert", "fire.frag", AssetLoader.AssetSource.engine);
             
             // Textures
-            TextureData fire_tex = AssetLoader.TextureAssetLoad("/Textures/Effects/fire_scroll.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+            TextureData fire_tex = AssetLoader.TextureAssetLoad("Effects/fire_scroll.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
 
             // Materials
             AssetLoader.MaterialAssetLoad("fire_scroll", new([fire_tex], [new("uTexture0", 0), new("uFireColor", new Vector4(1.0f, 0.55f, 0.0f, 1.0f))], shader_fire), AssetLoader.AssetSource.engine);
