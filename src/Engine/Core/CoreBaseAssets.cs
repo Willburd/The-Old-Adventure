@@ -50,7 +50,7 @@ namespace Engine
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Materials
             AssetLoader.MaterialAssetLoad("debug_normals", new([], [], shader_debugnormals), AssetLoader.AssetSource.engine);
-            AssetLoader.MaterialAssetLoad("no_mat", new([nomat_texture], [new("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("no_material", new([nomat_texture], [new("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
             AssetLoader.MaterialAssetLoad("example", new([example_texture], [new("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
             // debugging
             collision_draw_material = AssetLoader.MaterialAssetLoad("debug_col", new([], [new("uColorSet", new Vector4(0.6f, 0.8f, 0f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons

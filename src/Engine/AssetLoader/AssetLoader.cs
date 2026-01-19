@@ -154,7 +154,7 @@ namespace Engine
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X BAD TEXTURE, FILE DOES NOT EXIST : " + file_path);
                 Console.WriteLine("=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=X=");
-                return (TextureData)LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.textures, "no_tex", AssetSource.engine)).Data;
+                return (TextureData)LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.textures, "no_texture", AssetSource.engine)).Data;
             }
             return (TextureData)InvokeAsset(get_key, new AssetTexture(get_key, file_path, tex_target));
         }
@@ -245,7 +245,7 @@ namespace Engine
         public static TextureData TextureAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
             LoadedAsset ast = LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.textures, asset_key, source));
-            ast ??= LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.textures, "no_tex", AssetSource.engine));
+            ast ??= LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.textures, "no_texture", AssetSource.engine));
             Debug.Assert(ast.CheckType(LoadedAsset.AssetType.textures));
             return (TextureData)ast.Data;
         }
@@ -256,7 +256,7 @@ namespace Engine
         public static MaterialData MaterialAssetGet(string asset_key, AssetSource source = AssetSource.adventure)
         {
             LoadedAsset ast = LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.material, asset_key, source));
-            ast ??= LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.material, "no_mat", AssetSource.engine));
+            ast ??= LocateAsset(AssetLoader.AssetKey(LoadedAsset.AssetType.material, "no_material", AssetSource.engine));
             Debug.Assert(ast.CheckType(LoadedAsset.AssetType.material));
             return (MaterialData)ast.Data;
         }
