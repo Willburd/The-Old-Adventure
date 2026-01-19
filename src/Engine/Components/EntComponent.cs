@@ -11,6 +11,13 @@ namespace EntComponents
         private static readonly Dictionary<Type, List<EntComponent>> all_components = [];
 
         public Entity Host { get; }
+        public Actor Actor
+        {
+            get
+            {
+                return (Actor)Host;
+            }
+        }
 
         public bool ActiveUpdate { get; set; } = true;
 

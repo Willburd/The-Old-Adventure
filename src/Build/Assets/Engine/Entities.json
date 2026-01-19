@@ -14,6 +14,10 @@
         "Animator": {},
         "ActorBehavior.FlyAwayBirdActorBehavior": {}
     },
+    "room_exit": {
+        "TriggerVolume": {},
+        "ActorBehavior.RoomExitBehavior": {}
+    },
     "actor_player": {
         "WorldRender": {},
         "Collider": {},

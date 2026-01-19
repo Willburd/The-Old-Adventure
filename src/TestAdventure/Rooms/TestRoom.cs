@@ -44,8 +44,7 @@ namespace TestAdventure
             {
                 Actor fire = EntityFactory.CreateActor("fire_" + i, "actor_effectfire", new Transform( new Vector3( Tools.RandRange(-10, 10), Tools.RandRange(0, 10), Tools.RandRange(-10, 10)), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
                 FireActorBehavior fire_behavior = (FireActorBehavior)fire.GetComponent(typeof(FireActorBehavior));
-                fire_behavior.DecayTimer = (int)Tools.RandRange(400, 590);
-                // new LevitatingBob(fire);
+                new LevitatingBob(fire);
             }
         }
 

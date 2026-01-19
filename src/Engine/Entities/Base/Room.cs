@@ -64,6 +64,7 @@ namespace Engine
         }
 
         public readonly List<Type> exit_list = [];
+        
 
         /// <summary>
         /// Loads assets for the room itself, such as textures, materials, and even setting the room's render model.
@@ -90,6 +91,14 @@ namespace Engine
         /// </summary>
         public virtual void OnRoomDisabledUpdate() { }
 
+        /// <summary>
+        /// Called when a player actor enters a roomexit, allows special handling for certain room types. Default behavior waits for room transition, unloads the current room, and loads the new room. Returns true if the function has handled the exit.
+        /// </summary>
+        public virtual bool OnUseExit(int exit_index)
+        {
+            Type destination_room_type = exit_list[exit_index];
+            return true;
+        }
 
         public override void OnCleanup()
         {
