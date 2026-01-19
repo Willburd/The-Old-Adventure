@@ -124,6 +124,21 @@ namespace Rendering
             Core.RenderSprite(this, vertex_uniforms);
         }
 
+        public void Render(FrameBufferContainer to_buffer, double tick_delta)
+        {
+            to_buffer.BindFrameBuffer();
+            Core.OpenGLContext.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            Render(tick_delta);
+        }
+        
+        public void Clear()
+        {
+            BindFrameBuffer();
+            Core.OpenGLContext.ClearColor(System.Drawing.Color.FromArgb(0, 0, 0, 0));
+            Core.OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            Core.SpriteRenderDepthOffset = 0;
+        }
+
         public uint Handle()
         {
             return _handle;

@@ -90,10 +90,7 @@ namespace Engine
             ////////////////////////////////////////////////////////////////////////////////////////////
             // Clear screen and create camera draw frustrum
             ////////////////////////////////////////////////////////////////////////////////////////////
-            FrameBuffer_Pre.BindFrameBuffer();
-            OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
-            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-            Core.SpriteRenderDepthOffset = 0;
+            FrameBuffer_Main.Clear();
 
             // Draw radius
             Vector3 world_load_position = Vector3.Zero;
@@ -106,6 +103,8 @@ namespace Engine
             ////////////////////////////////////////////////////////////////////////////////////////////
             // Pre rendering
             ////////////////////////////////////////////////////////////////////////////////////////////
+            FrameBuffer_CurrentLayer.Clear();
+
             List<ShaderData.Uniform> vertex_uniforms = [];
             SortedList<uint, List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
             ApplyPrerenderEnvironmentUniforms(vertex_uniforms, tick_delta);
@@ -143,13 +142,11 @@ namespace Engine
                 render_queue[priority].Add(check);
             }
 
+            FrameBuffer_CurrentLayer.Render(FrameBuffer_Main, tick_delta);
             ////////////////////////////////////////////////////////////////////////////////////////////
             // Primary rendering
             ////////////////////////////////////////////////////////////////////////////////////////////
-            FrameBuffer_Main.BindFrameBuffer();
-            OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
-            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-            Core.SpriteRenderDepthOffset = 0;
+            FrameBuffer_CurrentLayer.Clear();
 
             // Apply environment
             vertex_uniforms.Clear();
@@ -166,13 +163,11 @@ namespace Engine
                 }
             }
 
+            FrameBuffer_CurrentLayer.Render(FrameBuffer_Main, tick_delta);
             ////////////////////////////////////////////////////////////////////////////////////////////
             // Late rendering
             ////////////////////////////////////////////////////////////////////////////////////////////
-            FrameBuffer_Post.BindFrameBuffer();
-            OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
-            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-            Core.SpriteRenderDepthOffset = 0;
+            FrameBuffer_CurrentLayer.Clear();
 
             OnPostRenderTick();
             foreach ((uint key, List<Entity> draw_list) in render_queue)
@@ -185,13 +180,11 @@ namespace Engine
                 }
             }
 
+            FrameBuffer_CurrentLayer.Render(FrameBuffer_Main, tick_delta);
             ////////////////////////////////////////////////////////////////////////////////////////////
             // Hud rendering
             ////////////////////////////////////////////////////////////////////////////////////////////
-            FrameBuffer_Hud.BindFrameBuffer();
-            OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
-            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-            Core.SpriteRenderDepthOffset = 0;
+            FrameBuffer_CurrentLayer.Clear();
 
             OnRenderHudTick();
             foreach ((uint key, List<Entity> draw_list) in render_queue)
@@ -204,19 +197,17 @@ namespace Engine
                 }
             }
 
+            FrameBuffer_CurrentLayer.Render(FrameBuffer_Main, tick_delta);
             ////////////////////////////////////////////////////////////////////////////////////////////
-            // Combine final render pass
+            // Render the frame
             ////////////////////////////////////////////////////////////////////////////////////////////
             FrameBufferContainer.ResetFrameBuffer();
             OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            Core.SpriteRenderDepthOffset = 0;
 
             // Finally render all buffers atop eachother
-            Core.SpriteRenderDepthOffset = 0;
-            FrameBuffer_Pre.Render(tick_delta);
             FrameBuffer_Main.Render(tick_delta);
-            FrameBuffer_Post.Render(tick_delta);
-            FrameBuffer_Hud.Render(tick_delta);
         }
 
 

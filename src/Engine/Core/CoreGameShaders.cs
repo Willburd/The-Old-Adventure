@@ -22,10 +22,8 @@ namespace Engine
         public static uint InternalRenderResolutionHeight { get; protected set; } = 240;
 
 
-        public static FrameBufferContainer FrameBuffer_Pre { get; protected set; }
+        public static FrameBufferContainer FrameBuffer_CurrentLayer { get; protected set; }
         public static FrameBufferContainer FrameBuffer_Main { get; protected set; }
-        public static FrameBufferContainer FrameBuffer_Post { get; protected set; }
-        public static FrameBufferContainer FrameBuffer_Hud { get; protected set; }
 
 
         private static float internal_sprite_render_depth_offset = 0f; // With each sprite rendered, the depth will decrease, layering the next render atop the previous, unless a depth is specified in the argument
@@ -51,10 +49,8 @@ namespace Engine
         {
             uint render_size = InternalRenderResolutionHeight;
             if (InternalRenderScale > 0f) render_size = (uint)(DisplayHeight * InternalRenderScale);
-            FrameBuffer_Pre = new FrameBufferContainer(GetAspectWidth(render_size), render_size);
+            FrameBuffer_CurrentLayer = new FrameBufferContainer(GetAspectWidth(render_size), render_size);
             FrameBuffer_Main = new FrameBufferContainer(GetAspectWidth(render_size), render_size);
-            FrameBuffer_Post = new FrameBufferContainer(GetAspectWidth(render_size), render_size);
-            FrameBuffer_Hud = new FrameBufferContainer(GetAspectWidth(render_size), render_size);
         }
 
         /// <summary>
