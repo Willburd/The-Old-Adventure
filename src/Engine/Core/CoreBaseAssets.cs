@@ -33,9 +33,9 @@ namespace Engine
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Textures
-            TextureData no_texture = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/no_texture.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
-            TextureData nomat_texture = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/no_material.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
-            TextureData example_texture = AssetLoader.TextureAssetLoad( AssetLoader.AssetDirectoryEngine + "/Textures/example.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+            TextureData no_texture = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Error/no_texture.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+            TextureData nomat_texture = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Error/no_material.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+            TextureData example_texture = AssetLoader.TextureAssetLoad( AssetLoader.AssetDirectoryEngine + "/Textures/Objects/example.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             // skybox
             TextureData skybox_tex_dawn = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_dawn.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
             TextureData skybox_tex_day = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_day.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
@@ -44,7 +44,7 @@ namespace Engine
             TextureData skybox_tex_dayrain = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_dayrain.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
             TextureData skybox_tex_nightrain = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_nightrain.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
             // effects
-            TextureData fire_tex = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/fire_scroll.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
+            TextureData fire_tex = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Effects/fire_scroll.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
