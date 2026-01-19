@@ -93,8 +93,10 @@ namespace Engine
         /// </summary>
         public static ShaderData ShaderAssetLoad(string asset_key, string vertext_path, string frag_path, AssetSource source = AssetSource.adventure)
         {
+            vertext_path = (source == AssetSource.engine) ? AssetDirectoryEngine + vertext_path : AssetDirectoryAdventure + vertext_path;
+            frag_path = (source == AssetSource.engine) ? AssetDirectoryEngine + frag_path : AssetDirectoryAdventure + frag_path;
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.shader, asset_key, source);
-            if (asset_library.ContainsKey(get_key)) return (ShaderData)asset_library[get_key].Data;
+            if (asset_library.TryGetValue(get_key, out LoadedAsset? value)) return (ShaderData)value.Data;
             // Check if exists
             if (!File.Exists(vertext_path) || !File.Exists(frag_path))
             {
@@ -120,8 +122,9 @@ namespace Engine
         /// </summary>
         public static ModelData ModelAssetLoad(string asset_key, string file_path, AssetSource source = AssetSource.adventure)
         {
+            file_path = source == AssetSource.engine ? AssetDirectoryEngine + file_path : AssetDirectoryAdventure + file_path;
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.model, asset_key, source);
-            if (asset_library.ContainsKey(get_key)) return (ModelData)asset_library[get_key].Data;
+            if (asset_library.TryGetValue(get_key, out LoadedAsset? value)) return (ModelData)value.Data;
             // Check if exists
             if (!File.Exists(file_path))
             {
@@ -146,8 +149,9 @@ namespace Engine
         /// </summary>
         public static TextureData TextureAssetLoad(string asset_key, string file_path, Silk.NET.OpenGL.TextureTarget tex_target, AssetSource source = AssetSource.adventure)
         {
+            file_path = source == AssetSource.engine ? AssetDirectoryEngine + file_path : AssetDirectoryAdventure + file_path;
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.textures, asset_key, source);
-            if (asset_library.ContainsKey(get_key)) return (TextureData)asset_library[get_key].Data;
+            if (asset_library.TryGetValue(get_key, out LoadedAsset? value)) return (TextureData)value.Data;
             // Check if exists
             if (!File.Exists(file_path))
             {
@@ -165,7 +169,7 @@ namespace Engine
         public static MaterialData MaterialAssetLoad(string asset_key, MaterialData new_material, AssetSource source = AssetSource.adventure)
         {
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.material, asset_key, source);
-            if (asset_library.ContainsKey(get_key)) return (MaterialData)asset_library[get_key].Data;
+            if (asset_library.TryGetValue(get_key, out LoadedAsset? value)) return (MaterialData)value.Data;
             return (MaterialData)InvokeAsset(get_key, new AssetMaterial(get_key, new_material));
         }
 
@@ -175,7 +179,7 @@ namespace Engine
         public static EnvironmentData EnvironmentAssetLoad(EnvironmentData new_environment, AssetSource source = AssetSource.adventure)
         {
             string get_key = AssetLoader.AssetKey(LoadedAsset.AssetType.environment, new_environment.AssetKey, source);
-            if (asset_library.ContainsKey(get_key)) return (EnvironmentData)asset_library[get_key].Data;
+            if (asset_library.TryGetValue(get_key, out LoadedAsset? value)) return (EnvironmentData)value.Data;
             return (EnvironmentData)InvokeAsset(get_key, new AssetEnvironment(get_key, new_environment));
         }
 
