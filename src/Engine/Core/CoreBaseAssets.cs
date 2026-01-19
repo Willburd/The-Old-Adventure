@@ -27,9 +27,6 @@ namespace Engine
             ShaderData shader_debugcol = AssetLoader.ShaderAssetLoad("debug_col", AssetLoader.AssetDirectoryEngine + "/Shaders/unshaded.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/debug_walls.frag", AssetLoader.AssetSource.engine);
             // skybox
             AssetLoader.ShaderAssetLoad("skybox_daynight_multiblend", AssetLoader.AssetDirectoryEngine + "/Shaders/unshaded.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/skybox_multiblend.frag", AssetLoader.AssetSource.engine);
-            // effects
-            ShaderData shader_fire = AssetLoader.ShaderAssetLoad("fire_scroll", AssetLoader.AssetDirectoryEngine + "/Shaders/unshaded.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/fire.frag", AssetLoader.AssetSource.engine);
-            
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Textures
@@ -43,9 +40,6 @@ namespace Engine
             TextureData skybox_tex_night = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_night.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
             TextureData skybox_tex_dayrain = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_dayrain.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
             TextureData skybox_tex_nightrain = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Skybox/standard_skybox_nightrain.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
-            // effects
-            TextureData fire_tex = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Effects/fire_scroll.png", Silk.NET.OpenGL.TextureTarget.Texture2D);
-
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Materials
@@ -59,8 +53,7 @@ namespace Engine
             AssetLoader.ModelAssetLoad(AssetLoader.AssetDirectoryEngine + "/Models/pointer.fbx", AssetLoader.AssetSource.engine);
             // effects
             sprite2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([no_texture], [new("uTexture0", 0)], shader_unshaded), AssetLoader.AssetSource.engine);
-            AssetLoader.MaterialAssetLoad("fire_scroll", new([fire_tex], [new("uTexture0", 0), new("uFireColor", new Vector4(1.0f, 0.55f, 0.0f, 1.0f))], shader_fire), AssetLoader.AssetSource.engine);
-
+            
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Models: FBX, 0.01 scale, Z forward, Y Up
             // Debug models

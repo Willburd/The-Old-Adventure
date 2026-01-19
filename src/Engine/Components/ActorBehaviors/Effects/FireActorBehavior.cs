@@ -1,5 +1,6 @@
 using Engine;
 using System.Numerics;
+using Assets;
 
 namespace EntComponents.ActorBehavior
 {
@@ -20,6 +21,16 @@ namespace EntComponents.ActorBehavior
 
         protected override uint HandleAssetLoad()
         {
+            // Shaders
+            ShaderData shader_fire = AssetLoader.ShaderAssetLoad("fire_scroll", AssetLoader.AssetDirectoryEngine + "/Shaders/unshaded.vert", AssetLoader.AssetDirectoryEngine + "/Shaders/fire.frag", AssetLoader.AssetSource.engine);
+            
+            // Textures
+            TextureData fire_tex = AssetLoader.TextureAssetLoad(AssetLoader.AssetDirectoryEngine + "/Textures/Effects/fire_scroll.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+
+            // Materials
+            AssetLoader.MaterialAssetLoad("fire_scroll", new([fire_tex], [new("uTexture0", 0), new("uFireColor", new Vector4(1.0f, 0.55f, 0.0f, 1.0f))], shader_fire), AssetLoader.AssetSource.engine);
+
+            // Models
             BillboardRender render = (BillboardRender)Host.GetComponent(typeof(BillboardRender));
             render.SetMaterial(AssetLoader.MaterialAssetGet("fire_scroll", AssetLoader.AssetSource.engine));
             render.Priority += 5;
