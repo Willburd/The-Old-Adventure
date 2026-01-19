@@ -5,17 +5,23 @@ namespace Engine
 {
     public partial class Core
     {
-        public static MaterialData collision_draw_material;
-        public static MaterialData trigger_draw_material;
-        public static MaterialData actor_collision_draw_material;
-
+        // 2D rendering
         public static ModelData sprite2d_model;
+        public static ModelData quad2d_model;
+
+        // 2D materials
+        public static MaterialData sprite2d_material;
+
+        // Collision models
         public static ModelData collision_model_point;
         public static ModelData collision_model_sphere;
         public static ModelData collision_model_cylinder;
         public static ModelData collision_model_cube;
 
-        public static MaterialData sprite2d_material;
+        // Collision materials
+        public static MaterialData collision_draw_material;
+        public static MaterialData trigger_draw_material;
+        public static MaterialData actor_collision_draw_material;
 
         private void LoadBaseAssets()
         {
@@ -63,6 +69,7 @@ namespace Engine
             collision_model_sphere = AssetLoader.ModelAssetLoad("col_sphere.fbx", AssetLoader.AssetSource.engine);
             collision_model_cylinder = AssetLoader.ModelAssetLoad("col_cylinder.fbx", AssetLoader.AssetSource.engine);
             sprite2d_model = AssetLoader.ModelAssetLoad("sprite2d.fbx", AssetLoader.AssetSource.engine);
+            quad2d_model = AssetLoader.ModelAssetLoad("quad2d.fbx", AssetLoader.AssetSource.engine);
             // Misc
             AssetLoader.ModelAssetLoad("cube_map.fbx", AssetLoader.AssetSource.engine);
 
