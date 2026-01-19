@@ -5,8 +5,7 @@ using System.Diagnostics;
 using Engine;
 using Silk.NET.Assimp;
 using Silk.NET.OpenGL;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
+using ImageMagick;
 
 namespace Assets
 {
@@ -31,20 +30,12 @@ namespace Assets
 
             Debug.Assert(System.IO.File.Exists(path), "Texture Assets file does not exist : " + path);
 
-            using (var img = Image.Load<Rgba32>(path))
+            using (var img = new MagickImage(path, MagickFormat.Png))
             {
                 _gl.TexImage2D(TexTarget, 0, InternalFormat.Rgba8, (uint)img.Width, (uint)img.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, null);
-                img.ProcessPixelRows(accessor =>
-                {
-                    for (int y = 0; y < accessor.Height; y++)
-                    {
-                        fixed (void* data = accessor.GetRowSpan(y))
-                        {
-                            // Flip texture on import. Because there is literally no stanrdards in 3D software, GL uses bottom left, d3d uses top left.
-                            _gl.TexSubImage2D(TexTarget, 0, 0, (accessor.Height - 1) - y, (uint)accessor.Width, 1, PixelFormat.Rgba, PixelType.UnsignedByte, data);
-                        }
-                    }
-                });
+                img.Flip();
+                byte[] data = img.ToByteArray(MagickFormat.Rgba);
+                _gl.TexSubImage2D(TexTarget, 0, 0, 0, img.Width, img.Height, GLEnum.Rgba, GLEnum.UnsignedByte, data);
             }
 
             SetParameters();
