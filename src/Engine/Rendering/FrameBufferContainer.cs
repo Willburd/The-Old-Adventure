@@ -22,8 +22,6 @@ namespace Rendering
         private uint _tex;
         private uint _depthbuffer;
 
-        public Vector2 Offset { get; set; } = Vector2.Zero;
-
         // Size of the texture and buffer in pixels
         public uint Width { get; private set; }
         public uint Height { get; private set; }
@@ -115,20 +113,33 @@ namespace Rendering
             Core.OpenGLContext.BindTexture(TextureTarget.Texture2D, _tex);
         }
 
-        public void Render(double tick_delta)
+        public void Render(double tick_delta, Vector2 offset, Vector2 cut_pos, Vector2 cut_size)
         {
             List<ShaderData.Uniform> vertex_uniforms = [];
-            vertex_uniforms.Add(new("uTransform", Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(1f, 1f, 1f)) * Matrix4x4.CreateTranslation(new Vector3(Offset.X, Offset.Y, Core.SpriteRenderDepthOffset))));
-            vertex_uniforms.Add(new("uProjection", Matrix4x4.CreateOrthographic(1, 1, 0.0001f, 1000f)));
+            vertex_uniforms.Add(new("uTransform", Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(1f, 1f, 1f)) * Matrix4x4.CreateTranslation(new Vector3(offset.X, offset.Y, Core.SpriteRenderDepthOffset))));
+            vertex_uniforms.Add(new("uProjection", Matrix4x4.CreateOrthographic(1, 1, 0.0001f, 10000f)));
             vertex_uniforms.Add(new("uView", Matrix4x4.CreateFromQuaternion(Quaternion.Identity) * Matrix4x4.CreateTranslation(Tools.Forward)));
+            vertex_uniforms.Add(new("uSpritePos", cut_pos));
+            vertex_uniforms.Add(new("uSpriteSize", cut_size));
             Core.RenderSprite(this, vertex_uniforms);
+        }
+
+        public void Render(double tick_delta)
+        {
+            Render(tick_delta, Vector2.Zero, Vector2.Zero, Vector2.One);
+        }
+
+        public void Render(FrameBufferContainer to_buffer, double tick_delta, Vector2 offset, Vector2 cut_pos, Vector2 cut_size)
+        {
+            to_buffer.BindFrameBuffer();
+            Core.OpenGLContext.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            Core.SpriteRenderDepthOffset = 0;
+            Render(tick_delta, offset, cut_pos, cut_size);
         }
 
         public void Render(FrameBufferContainer to_buffer, double tick_delta)
         {
-            to_buffer.BindFrameBuffer();
-            Core.OpenGLContext.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-            Render(tick_delta);
+            Render(to_buffer, tick_delta, Vector2.Zero, Vector2.Zero, Vector2.One);
         }
         
         public void Clear()

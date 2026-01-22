@@ -1,6 +1,7 @@
 ﻿using Silk.NET.Maths;
 using Silk.NET.Windowing;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace Engine
 {
@@ -32,6 +33,16 @@ namespace Engine
             return (uint)(height * DisplayAspectRatio);
         }
 
+        /// <summary>
+        /// Used to convert string characters to font atlas UV positions
+        /// </summary>
+        static Dictionary<char, Vector2> decode = [];
+
+        /// <summary>
+        /// Character sequence that matches the font atlas
+        /// </summary>
+        const string seq = " ☺☻♥♦♣♠•◘○◙♂♀♪♫☼►◄↕‼¶§▬↨↑↓→←∟↔▲▼ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{¦}~⌂ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜ¢£¥₧ƒáíóúñÑªº¿⌐¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■□";
+
 #pragma warning disable CS8618 // I don't care if you're upset the static constructor doesn't set it. We're doing it on instantilize.
         static Core()
         {
@@ -49,6 +60,13 @@ namespace Engine
             WindowContext.Render += HandleWindowRender;
             WindowContext.Closing += HandleWindowClosing;
             WindowContext.Resize += HandleWindowResize;
+            
+            // Setup text render data
+            int tex_col_count = 16;
+            for (int index = 0; index < seq.Length; index++)
+            {
+                decode.Add(seq[index], new((float)index % tex_col_count / tex_col_count, MathF.Floor(index / tex_col_count) / tex_col_count));
+            }
         }
 #pragma warning restore CS8618
 

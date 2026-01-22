@@ -3,7 +3,6 @@ using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
 using System.Drawing;
 using System.Numerics;
-using EntComponents;
 using Rendering;
 
 namespace Engine
@@ -197,6 +196,9 @@ namespace Engine
                 }
             }
 
+            RenderText("A", new Vector2(0f, 0f), 128, 18f, 20f);
+
+
             FrameBuffer_CurrentLayer.Render(FrameBuffer_Main, tick_delta);
             ////////////////////////////////////////////////////////////////////////////////////////////
             // Render the frame
@@ -205,8 +207,6 @@ namespace Engine
             OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
             OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
             Core.SpriteRenderDepthOffset = 0;
-
-            // Finally render all buffers atop eachother
             FrameBuffer_Main.Render(tick_delta);
         }
 
@@ -265,11 +265,6 @@ namespace Engine
 
             // Draw mesh
             OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
-        }
-
-        public static void RenderSprite(List<ShaderData.Uniform> vertex_uniforms)
-        {
-            RenderSprite(sprite2d_material, vertex_uniforms);
         }
 
         public static void RenderSprite(MaterialData mat_data, List<ShaderData.Uniform> vertex_uniforms)
@@ -335,6 +330,60 @@ namespace Engine
 
             // Draw mesh
             OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+        }
+
+        public static void RenderText(string text, Vector2 start_offset, float max_width, float spacing, float line_height)
+        {
+            // Bind the VBOs
+            MeshData mesh = quad2d_model.Meshes[0];
+            mesh.Bind();
+
+            // Set the blending mode
+            OpenGLContext.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+            // Each mesh can use a different material, and that also means shader!
+            ShaderData shader = sprite2d_material.Shader;
+            shader.Use();
+
+            // Bind textures to texunits
+            text2d_material.Textures[0].Bind(0);
+
+            // Apply shader uniforms
+            foreach (ShaderData.Uniform matuni in sprite2d_material.Uniforms)
+            {
+                shader.SetUniform(matuni.key, matuni.value, matuni.count);
+            }
+
+            // Step through string drawing
+            float draw_wid = 0f;
+            float y_offset = 0f;
+            for (int index = 0; index < text.Length; index++)
+            {
+                // Check to see what our draw position is, and if the next should go down a line.
+                Vector2 draw_pos = start_offset + new Vector2(draw_wid, y_offset);
+                draw_wid += spacing;
+                if (draw_wid >= max_width)
+                {
+                    draw_wid = 0f;
+                    y_offset += line_height;
+                }
+                // Setup shader for each glyph
+                List<ShaderData.Uniform> vertex_uniforms = [];
+                vertex_uniforms.Add(new("uTransform", Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(1f, 1f, 1f)) * Matrix4x4.CreateTranslation(new Vector3(draw_pos.X, draw_pos.Y, Core.SpriteRenderDepthOffset))));
+                vertex_uniforms.Add(new("uProjection", Matrix4x4.CreateOrthographic(1, 1, 0.0001f, 10000f)));
+                vertex_uniforms.Add(new("uView", Matrix4x4.CreateFromQuaternion(Quaternion.Identity) * Matrix4x4.CreateTranslation(Tools.Forward)));
+                // Set the subcoord of the sprite
+                int tex_col_count = 16;
+                vertex_uniforms.Add(new("uSpritePos", decode[text[index]]));
+                vertex_uniforms.Add(new("uSpriteSize", new Vector2(1f / tex_col_count, 1f / tex_col_count)));
+                foreach (ShaderData.Uniform vertuni in vertex_uniforms)
+                {
+                    shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
+                }
+                // Draw text glyph
+                OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+                Core.SpriteRenderDepthOffset++;
+            }
         }
     }
 }

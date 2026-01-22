@@ -11,6 +11,8 @@ namespace Engine
 
         // 2D materials
         public static MaterialData sprite2d_material;
+        public static MaterialData text2d_material;
+        
 
         // Collision models
         public static ModelData collision_model_point;
@@ -31,6 +33,8 @@ namespace Engine
             ShaderData shader_unshaded = AssetLoader.ShaderAssetLoad("standard_unshaded", "unshaded.vert", "unshaded.frag", AssetLoader.AssetSource.engine);
             ShaderData shader_debugnormals = AssetLoader.ShaderAssetLoad("debug_normals", "unshaded.vert", "debug_normal.frag", AssetLoader.AssetSource.engine);
             ShaderData shader_debugcol = AssetLoader.ShaderAssetLoad("debug_col", "unshaded.vert", "debug_walls.frag", AssetLoader.AssetSource.engine);
+            ShaderData shader_sprite2d = AssetLoader.ShaderAssetLoad("sprite2d", "sprite2d.vert", "unshaded.frag", AssetLoader.AssetSource.engine);
+
             // skybox
             AssetLoader.ShaderAssetLoad("skybox_daynight_multiblend", "unshaded.vert", "skybox_multiblend.frag", AssetLoader.AssetSource.engine);
 
@@ -39,6 +43,8 @@ namespace Engine
             TextureData no_texture = AssetLoader.TextureAssetLoad("Error/no_texture.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             TextureData nomat_texture = AssetLoader.TextureAssetLoad("Error/no_material.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             TextureData example_texture = AssetLoader.TextureAssetLoad("Objects/example.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+            TextureData standard_font = AssetLoader.TextureAssetLoad("standard_font.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+
             // skybox
             TextureData skybox_tex_dawn = AssetLoader.TextureAssetLoad("Skybox/standard_skybox_dawn.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             TextureData skybox_tex_day = AssetLoader.TextureAssetLoad("Skybox/standard_skybox_day.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
@@ -58,8 +64,9 @@ namespace Engine
             actor_collision_draw_material = AssetLoader.MaterialAssetLoad("debug_actor_col", new([], [new("uColorSet", new Vector4(0.9f, 0.6f, 0f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
             AssetLoader.ModelAssetLoad("pointer.fbx", AssetLoader.AssetSource.engine);
             // effects
-            sprite2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([no_texture], [new("uTexture0", 0)], shader_unshaded), AssetLoader.AssetSource.engine);
-            
+            sprite2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([no_texture], [new("uTexture0", 0)], shader_sprite2d), AssetLoader.AssetSource.engine);
+            text2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([standard_font], [new("uTexture0", 0)], shader_sprite2d), AssetLoader.AssetSource.engine);
+
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Models: FBX, 0.01 scale, Z forward, Y Up
             // Debug models
