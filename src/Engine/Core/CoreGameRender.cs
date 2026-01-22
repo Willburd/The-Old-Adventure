@@ -196,7 +196,7 @@ namespace Engine
                 }
             }
 
-            RenderText("A", new Vector2(0f, 0f), 128, 18f, 20f);
+            RenderText("ABCDEFGHI", new Vector2(0f, 0f), 2000f, 1f, 1f);
 
 
             FrameBuffer_CurrentLayer.Render(FrameBuffer_Main, tick_delta);
@@ -369,12 +369,15 @@ namespace Engine
                 }
                 // Setup shader for each glyph
                 List<ShaderData.Uniform> vertex_uniforms = [];
-                vertex_uniforms.Add(new("uTransform", Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(1f, 1f, 1f)) * Matrix4x4.CreateTranslation(new Vector3(draw_pos.X, draw_pos.Y, Core.SpriteRenderDepthOffset))));
+                float scale = 0.1f;
+                vertex_uniforms.Add(new("uTransform", Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(scale, scale, 1f)) * Matrix4x4.CreateTranslation(new Vector3(draw_pos.X * scale, draw_pos.Y * scale, Core.SpriteRenderDepthOffset))));
                 vertex_uniforms.Add(new("uProjection", Matrix4x4.CreateOrthographic(1, 1, 0.0001f, 10000f)));
                 vertex_uniforms.Add(new("uView", Matrix4x4.CreateFromQuaternion(Quaternion.Identity) * Matrix4x4.CreateTranslation(Tools.Forward)));
                 // Set the subcoord of the sprite
                 int tex_col_count = 16;
-                vertex_uniforms.Add(new("uSpritePos", decode[text[index]]));
+                char id = text[index];
+                Vector2 decode_pos = decode[id];
+                vertex_uniforms.Add(new("uSpritePos", decode_pos));
                 vertex_uniforms.Add(new("uSpriteSize", new Vector2(1f / tex_col_count, 1f / tex_col_count)));
                 foreach (ShaderData.Uniform vertuni in vertex_uniforms)
                 {

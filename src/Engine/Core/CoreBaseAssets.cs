@@ -65,7 +65,7 @@ namespace Engine
             AssetLoader.ModelAssetLoad("pointer.fbx", AssetLoader.AssetSource.engine);
             // effects
             sprite2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([no_texture], [new("uTexture0", 0)], shader_sprite2d), AssetLoader.AssetSource.engine);
-            text2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([standard_font], [new("uTexture0", 0)], shader_sprite2d), AssetLoader.AssetSource.engine);
+            text2d_material = AssetLoader.MaterialAssetLoad("text2d", new([standard_font], [new("uTexture0", 0)], shader_sprite2d), AssetLoader.AssetSource.engine);
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Models: FBX, 0.01 scale, Z forward, Y Up
