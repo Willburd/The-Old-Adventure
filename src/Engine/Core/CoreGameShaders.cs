@@ -24,6 +24,7 @@ namespace Engine
 
         public static FrameBufferContainer FrameBuffer_CurrentLayer { get; protected set; }
         public static FrameBufferContainer FrameBuffer_Main { get; protected set; }
+        public static TextBufferContainer FrameBuffer_Text { get; protected set; }
 
 
         private static float internal_sprite_render_depth_offset = 0f; // With each sprite rendered, the depth will decrease, layering the next render atop the previous, unless a depth is specified in the argument
@@ -51,6 +52,7 @@ namespace Engine
             if (InternalRenderScale > 0f) render_size = (uint)(DisplayHeight * InternalRenderScale);
             FrameBuffer_CurrentLayer = new FrameBufferContainer(GetAspectWidth(render_size), render_size);
             FrameBuffer_Main = new FrameBufferContainer(GetAspectWidth(render_size), render_size);
+            FrameBuffer_Text = new TextBufferContainer(1024, 1024); // Fixed size buffer, rendered in sections
         }
 
         /// <summary>
