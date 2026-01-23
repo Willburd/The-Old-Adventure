@@ -74,14 +74,22 @@ namespace Engine
             List<Entity> active_entities = [];
             List<Room> initing_rooms = [];
             // Cannot thread this due to asset loading file handle maximums
-            foreach (Entity ent in Entity.UninitEntityList)
+            while(Entity.UninitEntityList.Count > 0)
             {
-                ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
-                if (ent.GetType() == typeof(Room)) initing_rooms.Add((Room)ent);
-                Entity.EntityList.Add(ent);
-                Entity.EntityLookupList.Add(ent.EntityID, ent);
+                List<Entity> uninit_batch = [.. Entity.UninitEntityList];
+                Entity.UninitEntityList.Clear();
+                foreach (Entity ent in uninit_batch)
+                {
+                    ent.OnInit(); // Actually setup entites, needed for create and asset loading signals.
+                    if (ent.GetType().IsSubclassOf(typeof(Room)))
+                    {
+                        (ent as Room).RoomInit();
+                        initing_rooms.Add((Room)ent);
+                    }
+                    Entity.EntityList.Add(ent);
+                    Entity.EntityLookupList.Add(ent.EntityID, ent);
+                }
             }
-            Entity.UninitEntityList.Clear();
 
             /////////////////////////////////////////////////
             // Preprocessing
@@ -254,7 +262,7 @@ namespace Engine
                         ent.RemoveComponent(component);
                     }
                     // Debug info
-                    if (ent.GetType() == typeof(Actor))
+                    if (ent.GetType().IsSubclassOf(typeof(Actor)))
                     {
                         // Show our linked room
                         Actor us_as_actor = (Actor)ent;

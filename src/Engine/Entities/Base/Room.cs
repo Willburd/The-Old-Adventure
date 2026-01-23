@@ -29,33 +29,39 @@ namespace Engine
 
         public Room(string room_id, EntranceType entrance_used) : base(Transform.Identity, room_id, "Engine::Room")
         {
+            // Specific entrance controls what happens when we enter
+            EntranceUsed = entrance_used;
+        }
+
+        public void RoomInit()
+        {
             Console.WriteLine("=====================================================");
             Console.WriteLine("=======> Room Loading : " + GetType());
+            // All scenes implicitly have these
             if (Core.EditorMode)
             {
                 // Meant for debugging scenes
-                new EditorCamera(new Transform(new Vector3(0f, 0f, 0f)), room_id + "_editorcam", true, this);
+                new EditorCamera(new Transform(new Vector3(0f, 0f, 0f)), EntityID + "_editorcam", true, this);
             }
             else
             {
                 // standard camera
-                new PlayerCamera(new Transform(new Vector3(0f, 0f, 0f)), room_id + "_cam", true, this);
+                new PlayerCamera(new Transform(new Vector3(0f, 0f, 0f)), EntityID + "_cam", true, this);
             }
-            loaded_rooms.Add(this);
-            // All scenes implicitly have these
             WorldRender renderer = new WorldRender(this);
             Collider terrain_collider = new Collider(this);
-            // Specific entrance controls what happens when we enter
-            EntranceUsed = entrance_used;
+
             // Setup room
             LoadAssets();
             LoadActors();
             LoadExits();
             LoadPlayer(EntranceUsed);
-            Console.WriteLine("-------> Room Loaded : " + room_id);
+            Console.WriteLine("-------> Room Loaded : " + EntityID);
+
             // Environment
             Environment?.ApplyEnvironment(this);
             MinimumRenderDistance = float.PositiveInfinity; // Do not hide room geometry
+
             // Collision from render mesh
             MeshData? mesh = renderer.GetMeshByName("col.001");
             if (mesh != null)
@@ -65,7 +71,9 @@ namespace Engine
                 Console.WriteLine("-------> Collision mesh created : " + (terrain_collider.CollisionShape as WorldGeometryCol).MeshTriCount() + " tris");
             }
             // Console.WriteLine("-------> Pathfinding mesh created : " + room_id); // TODO 
+
             Console.WriteLine("-----------------------------------------------------");
+            loaded_rooms.Add(this);
         }
 
         public EntranceType EntranceUsed { get; private set; }
