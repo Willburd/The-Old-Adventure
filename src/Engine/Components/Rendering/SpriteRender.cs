@@ -16,7 +16,7 @@ namespace EntComponents
             materials = [Core.sprite2d_material];
         }
 
-        public override uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected override uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             CreateBaseUniforms3D(Host.GetInterpolatedViewMatrix(tick_delta), tick_delta, vertex_uniforms);
             vertex_uniforms.Add(new("uSpritePos", CutoutPosition));

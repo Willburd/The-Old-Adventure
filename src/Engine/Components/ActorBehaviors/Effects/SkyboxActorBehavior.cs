@@ -53,7 +53,7 @@ namespace EntComponents.ActorBehavior
             return base.ReceiveSignal(signal, args);
         }
 
-        public override uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected override uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             if (model == null) return 0;
             if (Camera.WorldCamera == null) return 0;

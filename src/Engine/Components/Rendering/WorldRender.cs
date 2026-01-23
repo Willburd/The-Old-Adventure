@@ -123,7 +123,7 @@ namespace EntComponents
         /// <summary>
         /// PreRender function run if the component is Visible.
         /// </summary>
-        public virtual uint HandlePreRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandlePreRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             return 0;
         }
@@ -131,7 +131,7 @@ namespace EntComponents
         /// <summary>
         /// PreRender function run if the component is NOT Visible.
         /// </summary>
-        public virtual uint HandlePreRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandlePreRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             return 0;
         }
@@ -139,7 +139,7 @@ namespace EntComponents
         /// <summary>
         /// Render function run if the component is Visible.
         /// </summary>
-        public virtual uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             Debug.Assert(model?.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
 
@@ -151,7 +151,7 @@ namespace EntComponents
         /// <summary>
         /// Render function run if the component is NOT Visible. Mostly used for long distance LoDs.
         /// </summary>
-        public virtual uint HandleRenderDisabled(double delta_time, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandleRenderDisabled(double delta_time, List<ShaderData.Uniform> vertex_uniforms)
         {
             return 1;
         }
@@ -159,7 +159,7 @@ namespace EntComponents
         /// <summary>
         /// Post function run if the component is Visible.
         /// </summary>
-        public virtual uint HandlePostRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandlePostRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             return 0;
         }
@@ -167,7 +167,7 @@ namespace EntComponents
         /// <summary>
         /// Post function run if the component is NOT Visible.
         /// </summary>
-        public virtual uint HandlePostRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandlePostRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             return 0;
         }
@@ -175,7 +175,7 @@ namespace EntComponents
         /// <summary>
         /// Hud function run if the component is Visible.
         /// </summary>
-        public virtual uint HandleHudRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandleHudRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             return 0;
         }
@@ -183,11 +183,47 @@ namespace EntComponents
         /// <summary>
         /// HudRender function run if the component is NOT Visible.
         /// </summary>
-        public virtual uint HandleHudRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandleHudRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             return 0;
         }
 
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Hud alignment helpers
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public static Vector3 HudTopLeft()
+        {
+            return new Vector3(-0.5f, 0.5f, 0f) * new Vector3(Core.DisplayAspectRatio, 1f, 1f);
+        }
+
+        public static Vector3 HudTopRight()
+        {
+            return new Vector3(0.5f, 0.5f, 0f) * new Vector3(Core.DisplayAspectRatio, 1f, 1f);
+        }
+
+        public static Vector3 HudBottomLeft()
+        {
+            return new Vector3(-0.5f, -0.5f, 0f) * new Vector3(Core.DisplayAspectRatio, 1f, 1f);
+        }
+
+        public static Vector3 HudBottomRight()
+        {
+            return new Vector3(0.5f, -0.5f, 0f) * new Vector3(Core.DisplayAspectRatio, 1f, 1f);
+        }
+
+        public static Vector3 HudCenter()
+        {
+            return Vector3.Zero;
+        }
+        
+        public static Vector3 HudLerp(float hor, float ver)
+        {
+            Vector3 pos = Vector3.Lerp(HudTopLeft(), HudTopRight(), hor);
+            pos.Y = Vector3.Lerp(HudBottomLeft(), HudTopLeft(), ver).Y;
+            return pos;
+        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Default uniform shader setup
@@ -216,11 +252,11 @@ namespace EntComponents
         /// <summary>
         /// 2D sprite offset and scale uniforms. Allows cutout sections of a texture atlas to be used.
         /// </summary>
-        public static void CreateSprite2DUniforms(Vector2 cutout_pos, Vector2 cutout_size, Vector3 draw_pos, List<ShaderData.Uniform> vertex_uniforms)
+        public static void CreateSprite2DUniforms(Vector2 cutout_pos, Vector2 cutout_size, Vector3 draw_pos, Vector3 draw_scale, List<ShaderData.Uniform> vertex_uniforms)
         {
             vertex_uniforms.Add(new("uSpritePos", cutout_pos));
             vertex_uniforms.Add(new("uSpriteSize", cutout_size));
-            vertex_uniforms.Add(new("uDrawOffset", Matrix4x4.CreateTranslation(draw_pos)));
+            vertex_uniforms.Add(new("uDrawOffset", Matrix4x4.CreateScale(draw_scale) * Matrix4x4.CreateTranslation(draw_pos)));
         }
     }
 }
