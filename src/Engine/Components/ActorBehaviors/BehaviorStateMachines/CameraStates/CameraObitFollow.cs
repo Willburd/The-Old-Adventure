@@ -11,7 +11,7 @@ namespace EntComponents.ActorBehavior.CameraStates
         public override void Process()
         {
             // Try to orbit player
-            Actor player = Actor.GetActor(PlayerActorBehavior.player_actor_id);
+            Actor player = Actor.GetPlayer();
             if (player == null) return;
 
             // From the center of the player

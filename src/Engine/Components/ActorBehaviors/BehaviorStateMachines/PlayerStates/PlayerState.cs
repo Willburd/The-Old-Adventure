@@ -41,6 +41,15 @@ namespace EntComponents.ActorBehavior.PlayerStates
             return Tools.FlatRotation(Tools.DirVector(campos, Host.Position));
         }
 
+        protected Vector3 CameraRelativeMoveDirection()
+        {
+            Input input = (Input)Host.GetComponent(typeof(Input));
+            // Cutscenes ignore camera move
+            if (Cutscenes.Cutscene.Current != null) return input.Move;
+            // Camera based movement input
+            return Vector3.Transform(input.Move, CameraRotationToPlayer());
+        }
+
         private Collider.RaycastHit? FloorCollision()
         {
             Collider.RaycastHit? hit = Collider.DoRaycastNearest(Host.Position + Tools.Up, Tools.Down * (1f + ground_snap_distance), Collider.mask_worldgeo);

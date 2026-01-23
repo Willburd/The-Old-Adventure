@@ -6,7 +6,7 @@ using EntComponents.ActorBehavior;
 
 namespace TestAdventure
 {
-    public class TestRoom(string room_id, Room.EntranceType entrance_used) : Room(room_id, entrance_used)
+    public class TestRoom(Room.EntranceType entrance_used) : Room("room_test", entrance_used)
     {
         public override void LoadAssets()
         {

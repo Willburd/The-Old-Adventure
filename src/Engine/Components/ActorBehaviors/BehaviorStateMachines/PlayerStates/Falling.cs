@@ -15,7 +15,6 @@ namespace EntComponents.ActorBehavior.PlayerStates
 
         public override void Process()
         {
-            Input input = (Input)Host.GetComponent(typeof(Input));
             PhysicsBody phys = (PhysicsBody)GetComponent(typeof(PhysicsBody));
             Collider col = (Collider)GetComponent(typeof(Collider));
             float player_radius = ((CylinderCol)col.CollisionShape).radius;
@@ -28,7 +27,7 @@ namespace EntComponents.ActorBehavior.PlayerStates
             }
 
             // Get direction of movement based on the camera
-            Vector3 move_dir = Vector3.Transform(input.Move, CameraRotationToPlayer());
+            Vector3 move_dir = CameraRelativeMoveDirection();
             float move_intensity = move_dir.Length();
             if (move_dir.Length() > 0f)
             {

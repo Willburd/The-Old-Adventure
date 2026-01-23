@@ -3,6 +3,7 @@ using EntComponents;
 using Assets;
 using Engine.ColliderShapes;
 using EntComponents.ActorBehavior;
+using EntComponents.Cutscenes;
 
 namespace Engine
 {
@@ -125,10 +126,15 @@ namespace Engine
         /// <summary>
         /// Called when a player actor enters a roomexit, allows special handling for certain room types. Default behavior waits for room transition, unloads the current room, and loads the new room. Returns true if the function has handled the exit.
         /// </summary>
-        public virtual bool OnUseExit(RoomExit exit_destination)
+        public virtual bool OnUseExit(RoomExit exit_destination, Entity exit_entity)
         {
             Console.WriteLine("Exit triggered " + exit_destination.room_goal + " : " + exit_destination.destination);
-
+            CutsceneExitRoom exit_scene = new(this)
+            {
+                GoalPos = exit_entity.Position,
+                ExitData = exit_destination
+            };
+            new FadeoutActorBehavior(this);
             return true;
         }
 

@@ -230,48 +230,43 @@ namespace Engine
             /////////////////////////////////////////////////
             // Entity destruction
             /////////////////////////////////////////////////
-            while (Entity.DestructingEntities.Count > 0) // If an entity destroys other entities on its destruction then we must process those too.
+            // Requires the main thread for GL context to be able to dispose
+            // Repeats until all entities are cleaned up, as one entity Destroy() may call another!
+            while (Entity.DestructingEntities.Count > 0)
             {
-                AwaitCurrentBatch(thread_batch);
-                List<Entity> current_destructing_batch = [.. Entity.DestructingEntities];
-                Entity.DestructingEntities.Clear(); // Clear out for the next batch if any subdestructions happen
-                foreach (Entity ent in current_destructing_batch) // can't edit the current batch so we must repeatedly copy our list each batch
+                List<Entity> destroy_batch = [.. Entity.DestructingEntities];
+                Entity.DestructingEntities.Clear();
+                foreach (Entity ent in destroy_batch)
                 {
-                    thread_batch.Add(Task.Run(() =>
+                    // Remove from processing
+                    if (!ent.IsInitilized)
                     {
-                        if (ent == null) return; // TODO - Discover the desync
-
-                        // Remove from processing
-                        if (!ent.IsInitilized)
-                        {
-                            Entity.UninitEntityList.Remove(ent);
-                        }
-                        else
-                        {
-                            Entity.EntityList.Remove(ent);
-                            Entity.EntityLookupList.Remove(ent.EntityID);
-                        }
-                        // Remove component parts
-                        foreach (EntComponent component in ent.GetAllComponents())
-                        {
-                            ent.InternalRemoveComponent(component);
-                        }
-                        // Debug info
-                        if (ent.GetType() == typeof(Actor))
-                        {
-                            // Show our linked room
-                            Actor us_as_actor = (Actor)ent;
-                            Console.WriteLine("EntityDestroy-X (" + ent.EntityID + ")[" + us_as_actor.OwnerRoom?.EntityID + "] : " + ent.AssetKey);
-                        }
-                        else
-                        {
-                            // Just delete info
-                            Console.WriteLine("EntityDestroy-X (" + ent.EntityID + ") : " + ent.AssetKey);
-                        }
-                        // finish up
-                        ent.OnCleanup();
-                    }));
-                    if (thread_batch.Count >= BatchSize) AwaitCurrentBatch(thread_batch);
+                        Entity.UninitEntityList.Remove(ent);
+                    }
+                    else
+                    {
+                        Entity.EntityList.Remove(ent);
+                        Entity.EntityLookupList.Remove(ent.EntityID);
+                    }
+                    // Remove component parts
+                    foreach (EntComponent component in ent.GetAllComponents())
+                    {
+                        ent.RemoveComponent(component);
+                    }
+                    // Debug info
+                    if (ent.GetType() == typeof(Actor))
+                    {
+                        // Show our linked room
+                        Actor us_as_actor = (Actor)ent;
+                        Console.WriteLine("EntityDestroy-X (" + ent.EntityID + ")[" + us_as_actor.OwnerRoom?.EntityID + "] : " + ent.AssetKey);
+                    }
+                    else
+                    {
+                        // Just delete info
+                        Console.WriteLine("EntityDestroy-X (" + ent.EntityID + ") : " + ent.AssetKey);
+                    }
+                    // finish up
+                    ent.OnCleanup();
                 }
             }
 

@@ -40,10 +40,11 @@ namespace EntComponents
             held
         }
 
-        public Vector3 Move
+        public virtual Vector3 Move
         {
             get
             {
+                if (Cutscenes.Cutscene.Current != null && Cutscenes.Cutscene.Current.BlockInput()) return Cutscenes.Cutscene.Current.Move();
                 if (!ActiveUpdate) return Vector3.Zero;
                 Vector3 dir = Vector3.Zero;
                 Vector2 pad_move = InputHandler.GamepadMove;
@@ -62,6 +63,7 @@ namespace EntComponents
         {
             get
             {
+                if (Cutscenes.Cutscene.Current != null && Cutscenes.Cutscene.Current.BlockInput()) return Vector2.Zero;
                 if (!ActiveUpdate) return Vector2.Zero;
                 Vector2 pad_move = InputHandler.GamepadCamera * InputHandler.GamepadCameraSensitivity;
                 if (pad_move.Length() > 0.02f) return pad_move;
@@ -73,6 +75,7 @@ namespace EntComponents
         {
             get
             {
+                if (Cutscenes.Cutscene.Current != null && Cutscenes.Cutscene.Current.BlockInput()) return 0f;
                 if (!ActiveUpdate) return 0f;
                 float roll = 0f;
                 if (InputHandler.KeyHeld(InputHandler.KeyIDEditorRotateCW)) roll += 1f;
@@ -83,6 +86,7 @@ namespace EntComponents
 
         public bool Confirm(CheckState state)
         {
+            if (Cutscenes.Cutscene.Current != null && Cutscenes.Cutscene.Current.BlockInput()) return false;
             if (!ActiveUpdate) return false;
             if (state == CheckState.pressed) return InputHandler.KeyPressed(InputHandler.KeyIDConfirm) || InputHandler.ButtonPressed(InputHandler.ButtonIDConfirm);
             if (state == CheckState.released) return InputHandler.KeyReleased(InputHandler.KeyIDConfirm) || InputHandler.ButtonReleased(InputHandler.ButtonIDConfirm);
@@ -92,6 +96,7 @@ namespace EntComponents
 
         public bool Cancel(CheckState state)
         {
+            if (Cutscenes.Cutscene.Current != null && Cutscenes.Cutscene.Current.BlockInput()) return false;
             if (!ActiveUpdate) return false;
             if (state == CheckState.pressed) return InputHandler.KeyPressed(InputHandler.KeyIDCancel) || InputHandler.ButtonPressed(InputHandler.ButtonIDCancel);
             if (state == CheckState.released) return InputHandler.KeyReleased(InputHandler.KeyIDCancel) || InputHandler.ButtonReleased(InputHandler.ButtonIDCancel);
@@ -101,6 +106,7 @@ namespace EntComponents
 
         public bool Exit(CheckState state)
         {
+            if (Cutscenes.Cutscene.Current != null && Cutscenes.Cutscene.Current.BlockInput()) return false;
             if (!ActiveUpdate) return false;
             if (state == CheckState.pressed) return InputHandler.KeyPressed(InputHandler.KeyIDExit);
             if (state == CheckState.released) return InputHandler.KeyReleased(InputHandler.KeyIDExit);

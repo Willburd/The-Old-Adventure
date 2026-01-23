@@ -30,7 +30,7 @@ namespace EntComponents.ActorBehavior
 
         protected override uint HandleUpdate()
         {
-            Actor find_player = Actor.GetActor(PlayerActorBehavior.player_actor_id);
+            Actor find_player = Actor.GetPlayer();
             if (find_player != null)
             {
                 Host.Rotation = Tools.LookAt(Host.Position, find_player.Position);

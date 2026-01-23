@@ -64,7 +64,7 @@ namespace EntComponents.ActorBehavior
             // For building rooms
             if (debug_mode)
             {
-                Actor player = Actor.GetActor(PlayerActorBehavior.player_actor_id);
+                Actor player = Actor.GetPlayer();
                 Core.RenderText2D(player.DebugInfo(), HudBottomLeft() + new Vector3(0f, 0.1f, 0f), Vector3.One * 0.05f, new Vector3(1f, 1f, 1f), vertex_uniforms);
             }
             return 1;

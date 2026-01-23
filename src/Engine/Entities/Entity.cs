@@ -113,14 +113,32 @@ namespace Engine
             attached_components[component.GetType()].Add(component);
             return component;
         }
+        
+        /// <summary>
+        /// Removes the first component of a specific type from an entity.
+        /// </summary>
+        public void RemoveComponentOfType(Type component_type)
+        {
+            EntComponent? component = GetComponent(component_type);
+            if (component != null) RemoveComponent(component);
+        }
 
         /// <summary>
-        /// Removes a component from an entity. Do not call directly, called by EntComponent destructor.
+        /// Removes a component from an entity.
         /// </summary>
-        public void InternalRemoveComponent(EntComponent component)
+        public void RemoveComponent(EntComponent component)
         {
             component.InternalDestroyComponent();
             attached_components[component.GetType()].Remove(component);
+        }
+
+        /// <summary>
+        /// Removes all components of a specific type from an entity.
+        /// </summary>
+        public void RemoveAllComponentsOfType(Type component_type)
+        {
+            List<EntComponent> comp_list = GetComponentList(component_type);
+            foreach (EntComponent comp in comp_list) RemoveComponent(comp);
         }
 
         /// <summary>

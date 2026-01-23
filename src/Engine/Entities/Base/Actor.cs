@@ -1,3 +1,5 @@
+using EntComponents.ActorBehavior;
+
 namespace Engine
 {
     public class Actor : Entity
@@ -22,6 +24,14 @@ namespace Engine
             }
             if (!EntityLookupList.TryGetValue(entity_key, out Entity? globalactor)) return null;
             return (Actor)globalactor;
+        }
+        
+        /// <summary>
+        /// Gets a loaded actor by its entity key. 
+        /// </summary>
+        public static Actor? GetPlayer()
+        {
+            return GetActor(PlayerActorBehavior.player_actor_id);
         }
 
         public override bool RoomEnabled()
