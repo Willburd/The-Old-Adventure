@@ -26,7 +26,7 @@ namespace Engine
         public List<Actor> ActorList { get; private set; } = [];
         public Dictionary<string, Actor> ActorLookupList { get; private set; } = [];
 
-        public Room(string room_id) : base(Transform.Identity, room_id, "Engine::Room")
+        public Room(string room_id, EntranceType entrance_used) : base(Transform.Identity, room_id, "Engine::Room")
         {
             Console.WriteLine("=====================================================");
             Console.WriteLine("=======> Room Loading : " + GetType());
@@ -44,10 +44,13 @@ namespace Engine
             // All scenes implicitly have these
             WorldRender renderer = new WorldRender(this);
             Collider terrain_collider = new Collider(this);
+            // Specific entrance controls what happens when we enter
+            EntranceUsed = entrance_used;
             // Setup room
             LoadAssets();
             LoadActors();
             LoadExits();
+            LoadPlayer(EntranceUsed);
             Console.WriteLine("-------> Room Loaded : " + room_id);
             // Environment
             Environment?.ApplyEnvironment(this);
@@ -64,16 +67,27 @@ namespace Engine
             Console.WriteLine("-----------------------------------------------------");
         }
 
-        public readonly List<Type> exit_list = [];
+        public EntranceType EntranceUsed { get; private set; }
 
-        public void CreateExitTrigger(string exit_name, int use_index, Vector3 position, Vector2 size)
+        /// <summary>
+        /// Helper for spawning a room exit trigger.
+        /// </summary>
+        public void CreateExitTrigger(string exit_name, int use_index, Vector3 position, Vector2 size, RoomExit exit_destination)
         {
             Actor exit = EntityFactory.CreateActor(exit_name, "room_exit", new Transform(position, Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
             RoomExitBehavior behavior = (RoomExitBehavior)exit.GetComponent(typeof(RoomExitBehavior));
             behavior.ExitID = use_index;
             behavior.Size = size;
+            behavior.ExitDestination = exit_destination;
         }
         
+        /// <summary>
+        /// Helper for spawning a player.
+        /// </summary>
+        public void CreatePlayer(Vector3 position, Quaternion rotation)
+        {
+            EntityFactory.CreateActor(PlayerActorBehavior.player_actor_id, "actor_player", new Transform(position, rotation, Vector3.One), this, AssetLoader.AssetSource.engine);
+        }
 
         /// <summary>
         /// Loads assets for the room itself, such as textures, materials, and even setting the room's render model.
@@ -81,14 +95,22 @@ namespace Engine
         public virtual void LoadAssets() { }
 
         /// <summary>
-        /// Called setup, used to spawn actors based on the current game's story information, time of day, or other logic.
+        /// Called during setup, used to spawn actors based on the current game's story information, time of day, or other logic.
         /// </summary>
         public virtual void LoadActors() { }
 
         /// <summary>
-        /// Called setup, used to assign exit_list types to spawn when that particular exit is used. Can also be used to spawn exit actors.
+        /// Called during setup, used to assign exit_list types to spawn when that particular exit is used. Can also be used to spawn exit actors.
         /// </summary>
         public virtual void LoadExits() { }
+
+        /// <summary>
+        /// Called during setup, used to spawn a player or cutscene when a specific entrance is used.
+        /// </summary>
+        public virtual void LoadPlayer(EntranceType entrance_used)
+        {
+            EntityFactory.CreateActor(PlayerActorBehavior.player_actor_id, "actor_player", new Transform(new Vector3(0f, 0f, 0f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
+        }
 
         /// <summary>
         /// Called during the update loop, when the room is Enabled
@@ -103,10 +125,10 @@ namespace Engine
         /// <summary>
         /// Called when a player actor enters a roomexit, allows special handling for certain room types. Default behavior waits for room transition, unloads the current room, and loads the new room. Returns true if the function has handled the exit.
         /// </summary>
-        public virtual bool OnUseExit(int exit_index)
+        public virtual bool OnUseExit(RoomExit exit_destination)
         {
-            Console.WriteLine("Exit triggered: " + exit_index);
-            Type destination_room_type = exit_list[exit_index];
+            Console.WriteLine("Exit triggered " + exit_destination.room_goal + " : " + exit_destination.destination);
+
             return true;
         }
 
@@ -135,6 +157,123 @@ namespace Engine
             loaded_rooms.Remove(this);
             Console.WriteLine("=======X Room Unloaded : " + GetType());
             Console.WriteLine("=====================================================");
+        }
+
+
+        public struct RoomExit(Type roomtype_goal, EntranceType room_entrance)
+        {
+            public Type room_goal = roomtype_goal;
+            public EntranceType destination = room_entrance;
+        }
+
+
+        /// <summary>
+        /// Enum of generic room entrances, use these instead of magic numbers to avoid conflicts. Should contain enough variety and common entrance types for most scenes.
+        /// </summary>
+        public enum EntranceType
+        {
+            error,
+            titlescreen,
+            menu,
+            newgame,
+            death,
+            reset,
+            failure,
+            pit_respawn,
+
+            pathA,
+            pathB,
+            pathC,
+            pathD,
+
+            caveA,
+            caveB,
+            caveC,
+            caveD,
+
+            riverA,
+            riverB,
+            riverC,
+            riverD,
+
+            northA,
+            northB,
+            northC,
+            northD,
+
+            southA,
+            southB,
+            southC,
+            southD,
+
+            eastA,
+            eastB,
+            eastC,
+            eastD,
+
+            westA,
+            westB,
+            westC,
+            westD,
+
+            tunnelA,
+            tunnelB,
+            tunnelC,
+            tunnelD,
+
+            holeA,
+            holeB,
+            holeC,
+            holeD,
+
+            pitA,
+            pitB,
+            pitC,
+            pitD,
+
+            bossA,
+            bossB,
+            bossC,
+            bossD,
+
+            questA,
+            questB,
+            questC,
+            questD,
+
+            warpA,
+            warpB,
+            warpc,
+            warpD,
+
+            minigameA,
+            minigameB,
+            minigameC,
+            minigameD,
+            minigameE,
+            minigameF,
+            minigameG,
+            minigameH,
+
+            cutsceneA,
+            cutsceneB,
+            cutsceneC,
+            cutsceneD,
+            cutsceneE,
+            cutsceneF,
+            cutsceneG,
+            cutsceneH,
+
+            cutsceneEndA,
+            cutsceneEndB,
+            cutsceneEndC,
+            cutsceneEndD,
+            cutsceneEndE,
+            cutsceneEndF,
+            cutsceneEndG,
+            cutsceneEndH,
+
+            debug = 1000
         }
     }
 }

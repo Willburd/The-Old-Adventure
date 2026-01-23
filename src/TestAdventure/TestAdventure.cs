@@ -27,7 +27,7 @@ namespace TestAdventure
         public override void OnInit()
         {
             // Start up initial room
-            new TestRoom("room_testing");
+            new TestRoom("room_testing", Room.EntranceType.debug);
         }
 
         public override void OnNewGame()

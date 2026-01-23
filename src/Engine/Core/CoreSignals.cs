@@ -45,7 +45,7 @@ namespace Engine
             input_released,           // (Key, ButtonName) : Fired from Input components with the key that was released
 
             // Global signals
-            global_room_exit_trigger, // () : Called when a room trigger requests to exit a room
+            global_room_exit_trigger, // (Room.RoomExit) : Called when a room trigger requests to exit a room
             global_fadeout_begin,     // () : Called when a fadeout begins.
             global_room_unloaded,     // (Room unloading) : Called when a room unloads. Used for special cases where we only want to do an action on room unload and not just Destroy()
             global_fadein_end,        // () : Called when a fadein ends.

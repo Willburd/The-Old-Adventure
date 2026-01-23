@@ -238,7 +238,7 @@ namespace Engine
 
         public string DebugInfo()
         {
-            return $"{Math.Truncate(Position.X)}:{Math.Truncate(Position.Y)}:{Math.Truncate(Position.Z)}; {Tools.ToDegrees(Rotation)}";
+            return $"{Math.Truncate(Position.X * 100f) / 100f}:{Math.Truncate(Position.Y * 100f) / 100f}:{Math.Truncate(Position.Z * 100f) / 100f}; {Tools.ToDegrees(Rotation)}";
         }
 
         public Vector3 StartPosition { get { return starttransform.Position; } }

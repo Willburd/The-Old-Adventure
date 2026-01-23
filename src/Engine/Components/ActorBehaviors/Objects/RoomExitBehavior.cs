@@ -23,6 +23,8 @@ namespace EntComponents.ActorBehavior
             }
         }
 
+        public Room.RoomExit ExitDestination { get; set; }
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,8 +39,8 @@ namespace EntComponents.ActorBehavior
             Entity colliding = new_collision.Host;
             if (colliding.EntityID == PlayerActorBehavior.player_actor_id)
             {
-                Entity.SendGlobalSignal(Core.Signals.global_room_exit_trigger);
-                if (Actor.OwnerRoom.OnUseExit(ExitID)) return 1;
+                Entity.SendGlobalSignal(Core.Signals.global_room_exit_trigger, ExitDestination);
+                if (Actor.OwnerRoom.OnUseExit(ExitDestination)) return 1;
             }
             return 0;
         }

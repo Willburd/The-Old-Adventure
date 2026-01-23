@@ -6,7 +6,7 @@ using EntComponents.ActorBehavior;
 
 namespace TestAdventure
 {
-    public class TestRoom(string room_id) : Room(room_id)
+    public class TestRoom(string room_id, Room.EntranceType entrance_used) : Room(room_id, entrance_used)
     {
         public override void LoadAssets()
         {
@@ -38,8 +38,6 @@ namespace TestAdventure
             terrain_collider.CollisionMask = Collider.mask_worldgeo;
 
             // Default actors
-            EntityFactory.CreateActor(PlayerActorBehavior.player_actor_id, "actor_player", new Transform(new Vector3(0f, 0f, 5f), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
-
             for (int i = 0; i < 20; i++)
             {
                 Actor fire = EntityFactory.CreateActor("fire_" + i, "actor_effectfire", new Transform( new Vector3( Tools.RandRange(-10, 10), Tools.RandRange(0, 10), Tools.RandRange(-10, 10)), Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
@@ -50,9 +48,22 @@ namespace TestAdventure
 
         public override void LoadExits()
         {
-            exit_list.Add(typeof(TestRoom)); // 0
+            CreateExitTrigger("exit_cave", 0, new Vector3(-2f, -1f, 36f), new(2f, 13f), new(typeof(TestRoom), EntranceType.caveA));
+        }
 
-            CreateExitTrigger("exit_cave", 0, new Vector3(-2f, -1f, 36f), new(2f, 13f));
+        public override void LoadPlayer(EntranceType entrance_used)
+        {
+            switch (entrance_used)
+            {
+                default:
+                case EntranceType.caveA:
+                    CreatePlayer(new Vector3(-0.45f, -1.28f, 21.8f), Quaternion.Identity);
+                    break;
+
+                case EntranceType.debug:
+                    CreatePlayer(new Vector3(0f, 0f, 5f), Quaternion.Identity);
+                    break;
+            }
         }
 
         public override void OnRoomUpdate()
