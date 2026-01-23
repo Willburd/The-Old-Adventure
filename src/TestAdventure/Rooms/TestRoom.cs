@@ -50,7 +50,9 @@ namespace TestAdventure
 
         public override void LoadExits()
         {
-            exit_list.Add(typeof(TestRoom));
+            exit_list.Add(typeof(TestRoom)); // 0
+
+            CreateExitTrigger("exit_cave", 0, new Vector3(-2f, -1f, 36f), new(2f, 13f));
         }
 
         public override void OnRoomUpdate()

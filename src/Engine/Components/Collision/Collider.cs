@@ -269,10 +269,12 @@ namespace EntComponents
                     if (!col.IsTrigger())
                     {
                         Host.SendSignal(Core.Signals.collision_start, col);
+                        col.Host.SendSignal(Core.Signals.collision_start, this);
                     }
                     else
                     {
                         Host.SendSignal(Core.Signals.trigger_start, col);
+                        col.Host.SendSignal(Core.Signals.trigger_start, this);
                     }
                 }
                 else if (colliders_ended.Contains(col.our_collider_index))
@@ -280,10 +282,12 @@ namespace EntComponents
                     if (!col.IsTrigger())
                     {
                         Host.SendSignal(Core.Signals.collision_end, col);
+                        col.Host.SendSignal(Core.Signals.collision_end, this);
                     }
                     else
                     {
                         Host.SendSignal(Core.Signals.trigger_end, col);
+                        col.Host.SendSignal(Core.Signals.trigger_end, this);
                     }
                 }
             }

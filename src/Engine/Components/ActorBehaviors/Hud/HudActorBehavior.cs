@@ -1,7 +1,6 @@
 using System.Numerics;
 using Engine;
 using Assets;
-using Silk.NET.GLFW;
 
 namespace EntComponents.ActorBehavior
 {
@@ -74,7 +73,7 @@ namespace EntComponents.ActorBehavior
         private void DrawHealth(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             Vector3 topleft = HudTopLeft();
-            
+
             float heart_scale = 0.06f;
             float heart_gap = 0.055f;
             float heart_pulse = MathF.Sin((float)Core.RenderPreciseGameTick(tick_delta) / 30f) * 0.004f;

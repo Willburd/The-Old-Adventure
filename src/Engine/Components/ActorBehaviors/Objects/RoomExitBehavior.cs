@@ -18,6 +18,7 @@ namespace EntComponents.ActorBehavior
             set
             {
                 TriggerVolume trigger = (TriggerVolume)Host.GetComponent(typeof(TriggerVolume));
+                trigger.CollisionMask = Collider.mask_player;
                 trigger.SetShape(new Engine.ColliderShapes.CylinderCol(value.X, value.Y));
             }
         }
@@ -28,7 +29,7 @@ namespace EntComponents.ActorBehavior
 
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.collision_start];
+            return [Core.Signals.trigger_start];
         }
 
         protected override uint HandleTriggerStart(Collider new_collision)

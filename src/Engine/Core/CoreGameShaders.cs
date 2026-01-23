@@ -9,7 +9,7 @@ namespace Engine
     public partial class Core
     {
         public const int max_lights = 16; // Must match in shader
-        public static bool draw_collisions = false;
+        public static bool draw_collisions = true;
 
         /// <summary>
         /// If set larger than 0f, will resize the game FBO to match the window's size at that scale. Otherwise if 0, it will used the fixed height in InternalRenderResolutionHeight. Set to 1f to match window resolution.

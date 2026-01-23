@@ -2,6 +2,7 @@ using System.Numerics;
 using EntComponents;
 using Assets;
 using Engine.ColliderShapes;
+using EntComponents.ActorBehavior;
 
 namespace Engine
 {
@@ -64,6 +65,14 @@ namespace Engine
         }
 
         public readonly List<Type> exit_list = [];
+
+        public void CreateExitTrigger(string exit_name, int use_index, Vector3 position, Vector2 size)
+        {
+            Actor exit = EntityFactory.CreateActor(exit_name, "room_exit", new Transform(position, Quaternion.Identity, Vector3.One), this, AssetLoader.AssetSource.engine);
+            RoomExitBehavior behavior = (RoomExitBehavior)exit.GetComponent(typeof(RoomExitBehavior));
+            behavior.ExitID = use_index;
+            behavior.Size = size;
+        }
         
 
         /// <summary>
@@ -96,6 +105,7 @@ namespace Engine
         /// </summary>
         public virtual bool OnUseExit(int exit_index)
         {
+            Console.WriteLine("Exit triggered: " + exit_index);
             Type destination_room_type = exit_list[exit_index];
             return true;
         }
