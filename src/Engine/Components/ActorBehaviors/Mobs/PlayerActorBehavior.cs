@@ -68,8 +68,6 @@ namespace EntComponents.ActorBehavior
             // Player handling
             SetPlayerState(new PlayerStates.Grounded(this));
 
-            new Debuging.DebugPlayer(Host);
-
             return 1;
         }
 

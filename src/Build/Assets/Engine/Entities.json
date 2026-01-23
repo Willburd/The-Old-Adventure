@@ -24,7 +24,8 @@
         "PhysicsBody": {},
         "Animator": {},
         "Input": {},
-        "ActorBehavior.PlayerActorBehavior": {}
+        "ActorBehavior.PlayerActorBehavior": {},
+        "ActorBehavior.HudActorBehavior": {}
     },
     "actor_effectfire": {
         "BillboardRender": {},

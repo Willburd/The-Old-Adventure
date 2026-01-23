@@ -225,6 +225,16 @@ namespace EntComponents
             return pos;
         }
 
+        public static Vector3 HudUnit()
+        {
+            return new Vector3(Core.DisplayAspectRatio, 1f, 1f) * 0.1f;
+        }
+
+        public static Vector3 HudScale()
+        {
+            return new Vector3(Core.DisplayAspectRatio, 1f, 1f);
+        }
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Default uniform shader setup
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,11 +262,12 @@ namespace EntComponents
         /// <summary>
         /// 2D sprite offset and scale uniforms. Allows cutout sections of a texture atlas to be used.
         /// </summary>
-        public static void CreateSprite2DUniforms(Vector2 cutout_pos, Vector2 cutout_size, Vector3 draw_pos, Vector3 draw_scale, List<ShaderData.Uniform> vertex_uniforms)
+        public static void CreateSprite2DUniforms(Vector2 cutout_pos, Vector2 cutout_size, Vector3 draw_pos, Vector3 draw_scale, Vector3 draw_color, List<ShaderData.Uniform> vertex_uniforms)
         {
             vertex_uniforms.Add(new("uSpritePos", cutout_pos));
             vertex_uniforms.Add(new("uSpriteSize", cutout_size));
-            vertex_uniforms.Add(new("uDrawOffset", Matrix4x4.CreateScale(draw_scale) * Matrix4x4.CreateTranslation(draw_pos)));
+            vertex_uniforms.Add(new("uDrawOffset", Matrix4x4.CreateScale(draw_scale) * Matrix4x4.CreateTranslation(draw_pos + new Vector3(0f, 0f, Core.SpriteRenderDepthOffset))));
+            vertex_uniforms.Add(new("uDrawColor", draw_color));
         }
     }
 }
