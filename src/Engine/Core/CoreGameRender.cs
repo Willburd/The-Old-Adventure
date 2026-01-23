@@ -355,6 +355,12 @@ namespace Engine
             Core.SpriteRenderDepthOffset++;
         }
 
+
+        public static void RenderText2D(string text, Vector3 draw_offset, Vector3 draw_scale, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            RenderText2D(text, draw_offset, draw_scale, 0.46f, 0.6f, vertex_uniforms);
+        }
+
         public static void RenderText2D(string text, Vector3 draw_offset, Vector3 draw_scale, float spacing, float line_height, List<ShaderData.Uniform> vertex_uniforms)
         {
             // Set position
