@@ -34,8 +34,8 @@ namespace TestAdventure
         {
             // Setup the initial savestate
             Savestate.ResetState();
-            Savestate.SetValue(Savestate.player_max_health, 4 * 3);
-            Savestate.SetValue(Savestate.player_health, 7);
+            Savestate.SetValue(Savestate.player_max_health, 4 * 20);
+            Savestate.SetValue(Savestate.player_health, 4 * 3);
         }
 
         public override void OnGameTick()

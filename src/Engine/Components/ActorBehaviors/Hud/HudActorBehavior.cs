@@ -68,14 +68,16 @@ namespace EntComponents.ActorBehavior
             Core.RenderSprite(AssetLoader.MaterialAssetGet("hud_button", AssetLoader.AssetSource.engine), topright + new Vector3(-0.13f, -0.16f, 0f), Vector3.One * 0.1f, new Vector3(0.2f, 0.6f, 1f), vertex_uniforms);
             //Core.RenderText2D($"This is a test\nof the hud\nrender system.", HudLerp(0.5f + MathF.Cos(0) * 0.5f, 0.5f + MathF.Sin(0) * 0.5f), Vector3.One * 0.1f, vertex_uniforms);
 
-            float heart_scale = 0.07f;
+            float heart_scale = 0.06f;
+            float heart_gap = 0.055f;
             float heart_pulse = MathF.Sin((float)Core.RenderPreciseGameTick(tick_delta) / 30f) * 0.004f;
+            
             int health_index = 0;
             int max_health = Savestate.GetValue(Savestate.player_max_health);
             int current_health = Savestate.GetValue(Savestate.player_health);
             while (max_health > 0)
             {
-                Vector3 heart_pos = new(0.06f * health_index, 0f, 0f);
+                Vector3 heart_pos = new(heart_gap * (health_index % 10), -heart_gap * MathF.Floor(health_index / 10), 0f);
                 if (current_health > 4)
                 {
                     Core.RenderSprite(AssetLoader.MaterialAssetGet("hud_heart_full", AssetLoader.AssetSource.engine), topleft + new Vector3(0.04f, -0.04f, 0f) + heart_pos, Vector3.One * heart_scale, new Vector3(1f, 1f, 1f), vertex_uniforms);
