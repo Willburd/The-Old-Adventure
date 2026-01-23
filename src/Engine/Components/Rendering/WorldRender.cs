@@ -90,7 +90,11 @@ namespace EntComponents
                     return Priority;
 
                 case Core.Signals.pre_render:
-                    return HandlePreRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    if (Host.RoomEnabled())
+                    {
+                        return HandlePreRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    }
+                    return HandlePreRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
 
                 case Core.Signals.render:
                     if (Host.RoomEnabled())
@@ -100,7 +104,11 @@ namespace EntComponents
                     return HandleRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
                     
                 case Core.Signals.post_render:
-                    return HandlePostRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    if (Host.RoomEnabled())
+                    {
+                        HandlePostRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    }
+                    return HandlePostRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
 
                 case Core.Signals.hud_render:
                     if (Host.RoomEnabled())
@@ -116,6 +124,14 @@ namespace EntComponents
         /// PreRender function run if the component is Visible.
         /// </summary>
         public virtual uint HandlePreRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            return 0;
+        }
+        
+        /// <summary>
+        /// PreRender function run if the component is NOT Visible.
+        /// </summary>
+        public virtual uint HandlePreRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             return 0;
         }
@@ -149,6 +165,14 @@ namespace EntComponents
         }
 
         /// <summary>
+        /// Post function run if the component is NOT Visible.
+        /// </summary>
+        public virtual uint HandlePostRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            return 0;
+        }
+
+        /// <summary>
         /// Hud function run if the component is Visible.
         /// </summary>
         public virtual uint HandleHudRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
@@ -165,7 +189,13 @@ namespace EntComponents
         }
 
 
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Default uniform shader setup
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// 3D camera projection uniforms.
+        /// </summary>
         public static void CreateBaseUniforms3D(Matrix4x4 transform, double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             vertex_uniforms.Add(new("uTransform", transform));
@@ -173,6 +203,9 @@ namespace EntComponents
             vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
         }
 
+        /// <summary>
+        /// 2D hud uniforms.
+        /// </summary>
         public static void CreateBaseUniforms2D(Matrix4x4 transform, List<ShaderData.Uniform> vertex_uniforms)
         {
             vertex_uniforms.Add(new("uTransform", transform));
@@ -180,6 +213,9 @@ namespace EntComponents
             vertex_uniforms.Add(new("uView", Matrix4x4.CreateFromQuaternion(Quaternion.Identity) * Matrix4x4.CreateTranslation(Tools.Forward)));
         }
 
+        /// <summary>
+        /// 2D sprite offset and scale uniforms. Allows cutout sections of a texture atlas to be used.
+        /// </summary>
         public static void CreateSprite2DUniforms(Vector2 cutout_pos, Vector2 cutout_size, Vector3 draw_pos, List<ShaderData.Uniform> vertex_uniforms)
         {
             vertex_uniforms.Add(new("uSpritePos", cutout_pos));
