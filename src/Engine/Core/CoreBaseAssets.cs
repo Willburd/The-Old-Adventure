@@ -34,6 +34,7 @@ namespace Engine
             ShaderData shader_debugnormals = AssetLoader.ShaderAssetLoad("debug_normals", "unshaded.vert", "debug_normal.frag", AssetLoader.AssetSource.engine);
             ShaderData shader_debugcol = AssetLoader.ShaderAssetLoad("debug_col", "unshaded.vert", "debug_walls.frag", AssetLoader.AssetSource.engine);
             ShaderData shader_sprite2d = AssetLoader.ShaderAssetLoad("sprite2d", "sprite2d.vert", "unshaded.frag", AssetLoader.AssetSource.engine);
+            ShaderData shader_text2d = AssetLoader.ShaderAssetLoad("text2d", "sprite2d.vert", "text2d.frag", AssetLoader.AssetSource.engine);
 
             // skybox
             AssetLoader.ShaderAssetLoad("skybox_daynight_multiblend", "unshaded.vert", "skybox_multiblend.frag", AssetLoader.AssetSource.engine);
@@ -65,7 +66,7 @@ namespace Engine
             AssetLoader.ModelAssetLoad("pointer.fbx", AssetLoader.AssetSource.engine);
             // effects
             sprite2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([no_texture], [new("uTexture0", 0)], shader_sprite2d), AssetLoader.AssetSource.engine);
-            text2d_material = AssetLoader.MaterialAssetLoad("text2d", new([standard_font], [new("uTexture0", 0)], shader_sprite2d), AssetLoader.AssetSource.engine);
+            text2d_material = AssetLoader.MaterialAssetLoad("text2d", new([standard_font], [new("uTexture0", 0)], shader_text2d), AssetLoader.AssetSource.engine);
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Models: FBX, 0.01 scale, Z forward, Y Up

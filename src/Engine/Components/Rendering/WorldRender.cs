@@ -88,14 +88,35 @@ namespace EntComponents
                     if (!Visible) return 0; // Do not add us to render queue
                     return Priority;
 
+                case Core.Signals.pre_render:
+                    return HandlePreRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+
                 case Core.Signals.render:
                     if (Host.RoomEnabled())
                     {
                         return HandleRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
                     }
                     return HandleRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    
+                case Core.Signals.post_render:
+                    return HandlePostRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+
+                case Core.Signals.hud_render:
+                    if (Host.RoomEnabled())
+                    {
+                        return HandleHudRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    }
+                    return HandleHudRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
             }
             return base.ReceiveSignal(signal, args);
+        }
+
+        /// <summary>
+        /// PreRender function run if the component is Visible.
+        /// </summary>
+        public virtual uint HandlePreRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            return 0;
         }
 
         /// <summary>
@@ -118,6 +139,30 @@ namespace EntComponents
         public virtual uint HandleRenderDisabled(double delta_time, List<ShaderData.Uniform> vertex_uniforms)
         {
             return 1;
+        }
+
+        /// <summary>
+        /// Post function run if the component is Visible.
+        /// </summary>
+        public virtual uint HandlePostRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// Hud function run if the component is Visible.
+        /// </summary>
+        public virtual uint HandleHudRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// HudRender function run if the component is NOT Visible.
+        /// </summary>
+        public virtual uint HandleHudRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            return 0;
         }
     }
 }

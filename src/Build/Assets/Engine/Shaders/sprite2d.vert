@@ -12,6 +12,7 @@ uniform int uUniqueID;
 
 uniform vec2 uSpritePos;
 uniform vec2 uSpriteSize;
+uniform mat4 uDrawOffset;
 
 out vec2 TexCoords;
 out vec3 Normal;
@@ -21,7 +22,7 @@ flat out int UniqueID;
 
 void main()
 {
-    gl_Position = uProjection * uView * uTransform * vec4(vPosition, 1.0);
+    gl_Position = uProjection * uView * uTransform * uDrawOffset * vec4(vPosition, 1.0);
     TexCoords = vec2(uSpritePos.x + mix(0.0, uSpriteSize.x, vUv.x), uSpritePos.y + mix(0.0, uSpriteSize.y, vUv.y));
     Normal = vNormal;
     Color = vColor;

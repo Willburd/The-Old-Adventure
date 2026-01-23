@@ -29,7 +29,7 @@ namespace EntComponents.ActorBehavior
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public override List<Core.Signals> PrepareSignals()
         {
-            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.update, Core.Signals.input_pressed, Core.Signals.input_released, Core.Signals.collision];
+            return [Core.Signals.load_assets, Core.Signals.create, Core.Signals.update, Core.Signals.input_pressed, Core.Signals.input_released, Core.Signals.collision, Core.Signals.hud_render];
         }
 
         protected override uint HandleAssetLoad()
@@ -67,6 +67,8 @@ namespace EntComponents.ActorBehavior
 
             // Player handling
             SetPlayerState(new PlayerStates.Grounded(this));
+
+            new Debuging.DebugPlayer(Host);
 
             return 1;
         }

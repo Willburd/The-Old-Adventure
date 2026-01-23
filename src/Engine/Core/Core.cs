@@ -65,7 +65,7 @@ namespace Engine
             int tex_col_count = 16;
             for (int index = 0; index < seq.Length; index++)
             {
-                decode.Add(seq[index], new((float)index % tex_col_count / tex_col_count, MathF.Floor(index / tex_col_count) / tex_col_count));
+                decode.Add(seq[index], new((float)index % tex_col_count / tex_col_count, 1f - (MathF.Floor(index / tex_col_count) / tex_col_count) - (1f / tex_col_count)));
             }
         }
 #pragma warning restore CS8618
