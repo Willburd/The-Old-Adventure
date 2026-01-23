@@ -1,6 +1,7 @@
 using Engine;
 using Assets;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace EntComponents
 {
@@ -125,10 +126,8 @@ namespace EntComponents
         public virtual uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             Debug.Assert(model?.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
-            // position uniforms
-            vertex_uniforms.Add(new("uTransform", Host.GetInterpolatedViewMatrix(tick_delta)));
-            vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
-            vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
+
+            CreateBaseUniforms3D(Host.GetInterpolatedViewMatrix(tick_delta), tick_delta, vertex_uniforms);
             Core.RenderModel(model, materials, vertex_uniforms);
             return 1;
         }
@@ -163,6 +162,22 @@ namespace EntComponents
         public virtual uint HandleHudRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
             return 0;
+        }
+
+
+
+        public static void CreateBaseUniforms3D(Matrix4x4 transform, double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            vertex_uniforms.Add(new("uTransform", transform));
+            vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
+            vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
+        }
+
+        public static void CreateBaseUniforms2D(Matrix4x4 transform, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            vertex_uniforms.Add(new("uTransform", transform));
+            vertex_uniforms.Add(new("uProjection", Matrix4x4.CreateOrthographic(1, 1, 0.0001f, 10000f)));
+            vertex_uniforms.Add(new("uView", Matrix4x4.CreateFromQuaternion(Quaternion.Identity) * Matrix4x4.CreateTranslation(Tools.Forward)));
         }
     }
 }

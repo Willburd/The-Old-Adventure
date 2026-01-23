@@ -18,11 +18,7 @@ namespace EntComponents
 
         public override uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
-            // position uniforms
-            vertex_uniforms.Add(new("uTransform", Host.GetInterpolatedViewMatrix(tick_delta)));
-            vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
-            vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
-            // Sprite drawing offsets
+            CreateBaseUniforms3D(Host.GetInterpolatedViewMatrix(tick_delta), tick_delta, vertex_uniforms);
             vertex_uniforms.Add(new("uSpritePos", CutoutPosition));
             vertex_uniforms.Add(new("uSpriteSize", CutoutSize));
             vertex_uniforms.Add(new("uDrawOffset", Matrix4x4.CreateTranslation(DrawOffset)));

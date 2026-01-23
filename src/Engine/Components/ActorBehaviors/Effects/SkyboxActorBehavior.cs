@@ -63,9 +63,7 @@ namespace EntComponents.ActorBehavior
             sky_matr *= Matrix4x4.CreateFromQuaternion(Quaternion.Inverse(GetInterpolatedSkyboxRotation(tick_delta)));
             sky_matr *= Matrix4x4.CreateTranslation(Camera.WorldCamera.GetInterpolatedPosition(tick_delta));
 
-            vertex_uniforms.Add(new("uTransform", sky_matr));
-            vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
-            vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
+            CreateBaseUniforms3D(sky_matr, tick_delta, vertex_uniforms);
             Core.RenderModel(model, materials, vertex_uniforms);
             return 1;
         }
