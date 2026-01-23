@@ -318,12 +318,21 @@ namespace Engine
             Core.SpriteRenderDepthOffset++;
         }
 
-        public static void RenderSprite(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, List<ShaderData.Uniform> vertex_uniforms)
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // FBO Rendering
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public static void RenderFBO(FrameBufferContainer fbo, List<ShaderData.Uniform> vertex_uniforms)
         {
-            RenderSprite(fbo, draw_offset, draw_scale, Vector2.Zero, Vector2.One, vertex_uniforms);
+            RenderFBO(fbo, Vector3.Zero, Vector3.One, Vector2.Zero, Vector2.One, vertex_uniforms);
         }
 
-        public static void RenderSprite(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, Vector2 cut_pos, Vector2 cut_size, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderFBO(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            RenderFBO(fbo, draw_offset, draw_scale, Vector2.Zero, Vector2.One, vertex_uniforms);
+        }
+
+        public static void RenderFBO(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, Vector2 cut_pos, Vector2 cut_size, List<ShaderData.Uniform> vertex_uniforms)
         {
             // Set position
             Vector3 set_scale = new Vector3(1f / Core.DisplayAspectRatio, 1f, 1f) * draw_scale;
