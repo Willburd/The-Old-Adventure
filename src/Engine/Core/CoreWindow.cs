@@ -50,6 +50,7 @@ namespace Engine
 
             // Finalize setup with gamespecific postinit.
             singleton.OnInit();
+            singleton.OnNewGame();
         }
 
         private static void HandleWindowResize(Vector2D<int> size)

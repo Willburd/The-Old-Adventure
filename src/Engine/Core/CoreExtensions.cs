@@ -19,6 +19,11 @@ namespace Engine
         public virtual void OnInit() { }
 
         /// <summary>
+        /// Virtual function for adventure specific gamestart code. Called when a file is created, as is expected to set the default starting savestate of the adventure.
+        /// </summary>
+        public virtual void OnNewGame() { }
+
+        /// <summary>
         /// Virtual function for adventure specific behaviors. Called at the start of MainLoopEnd(), to allow cleanup of adventure specific engine code.
         /// </summary>
         public virtual void OnEnd() { }

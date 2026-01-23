@@ -25,6 +25,14 @@ namespace Engine
         /// Number of game ticks since launch.
         /// </summary>
         public static long ElapsedGameTicks { get; private set; }
+        
+        /// <summary>
+        /// Number of game ticks since launch.
+        /// </summary>
+        public static double RenderPreciseGameTick(double tick_delta)
+        { 
+            return ElapsedGameTicks + (double)tick_delta;
+        }
 
         /// <summary>
         /// Distance from the camera that entities will be considered disabled, even if their enabled flag is true.

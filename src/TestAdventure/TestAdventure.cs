@@ -30,6 +30,14 @@ namespace TestAdventure
             new TestRoom("room_testing");
         }
 
+        public override void OnNewGame()
+        {
+            // Setup the initial savestate
+            Savestate.ResetState();
+            Savestate.SetValue(Savestate.player_max_health, 4 * 3);
+            Savestate.SetValue(Savestate.player_health, 7);
+        }
+
         public override void OnGameTick()
         {
             // Handle global tick events
