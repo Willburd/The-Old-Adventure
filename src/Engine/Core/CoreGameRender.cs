@@ -383,12 +383,11 @@ namespace Engine
 
             // Step through string drawing
             float draw_wid = 0f;
-            float y_offset = 0f;
+            float y_offset = -1f;
             for (int index = 0; index < text.Length; index++)
             {
                 // Check to see what our draw position is, and if the next should go down a line.
                 char id = text[index];
-                draw_wid += spacing;
                 if (id == '\n')
                 {
                     draw_wid = 0f;
@@ -406,6 +405,7 @@ namespace Engine
                 // Draw text glyph
                 OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
                 Core.SpriteRenderDepthOffset++;
+                draw_wid += spacing;
             }
         }
     }

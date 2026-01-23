@@ -18,7 +18,7 @@ namespace EntComponents.Debuging
 
         public override uint HandleHudRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
-            Core.RenderText2D($"Test sprite", new Vector3(0f, 0f, 0f), Vector3.One * 0.1f, 0.45f, 0.6f, vertex_uniforms);
+            Core.RenderText2D($"This is a test\nof the hud\nrender system.", new Vector3(0f, 0f, 0f), Vector3.One * 0.1f, 0.45f, 0.6f, vertex_uniforms);
 
             Core.RenderSprite(Core.sprite2d_material, new Vector3(0f, 0f, 0f), Vector3.One * 0.1f, vertex_uniforms);
 
