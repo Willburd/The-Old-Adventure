@@ -117,9 +117,7 @@ namespace Rendering
         public void Render(double tick_delta, Vector2 offset, Vector2 cut_pos, Vector2 cut_size)
         {
             List<ShaderData.Uniform> vertex_uniforms = [];
-            
-            WorldRender.CreateBaseUniforms2D(Matrix4x4.Identity * Matrix4x4.CreateScale(new Vector3(1f, 1f, 1f)) * Matrix4x4.CreateTranslation(new Vector3(offset.X, offset.Y, Core.SpriteRenderDepthOffset)), vertex_uniforms);
-            Core.RenderSprite(this, new Vector3(offset.X, offset.Y, 0f), vertex_uniforms);
+            Core.RenderSprite(this, new Vector3(offset.X, offset.Y, 0f), new Vector3(Core.DisplayAspectRatio, 1f, 1f), cut_pos, cut_size, vertex_uniforms);
         }
 
         public void Render(double tick_delta)

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Numerics;
 using Rendering;
 using EntComponents.ActorBehavior;
+using EntComponents;
 
 namespace Engine
 {
@@ -265,13 +266,17 @@ namespace Engine
             OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
         }
 
-        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector3 draw_scale, List<ShaderData.Uniform> vertex_uniforms)
         {
-            RenderSprite(mat_data, draw_offset, Vector2.Zero, Vector2.One, vertex_uniforms);
+            RenderSprite(mat_data, draw_offset, draw_scale, Vector2.Zero, Vector2.One, vertex_uniforms);
         }
 
-        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector2 cut_pos, Vector2 cut_size, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector3 draw_scale, Vector2 cut_pos, Vector2 cut_size, List<ShaderData.Uniform> vertex_uniforms)
         {
+            // Set position
+            Vector3 set_scale = new Vector3(1f / Core.DisplayAspectRatio, 1f, 1f) * draw_scale;
+            WorldRender.CreateBaseUniforms2D(Matrix4x4.CreateScale(set_scale), vertex_uniforms);
+
             // Bind the VBOs
             MeshData mesh = sprite2d_model.Meshes[0];
             mesh.Bind();
@@ -283,9 +288,7 @@ namespace Engine
             ShaderData shader = mat_data.Shader;
             shader.Use();
 
-            vertex_uniforms.Add(new("uSpritePos", cut_pos));
-            vertex_uniforms.Add(new("uSpriteSize", cut_size));
-            vertex_uniforms.Add(new("uDrawOffset", Matrix4x4.CreateTranslation(draw_offset)));
+            WorldRender.CreateSprite2DUniforms(cut_pos, cut_size, draw_offset, vertex_uniforms);
             foreach (ShaderData.Uniform vertuni in vertex_uniforms)
             {
                 shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
@@ -310,13 +313,17 @@ namespace Engine
             Core.SpriteRenderDepthOffset++;
         }
 
-        public static void RenderSprite(FrameBufferContainer fbo, Vector3 draw_offset, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderSprite(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, List<ShaderData.Uniform> vertex_uniforms)
         {
-            RenderSprite(fbo, draw_offset, Vector2.Zero, Vector2.One, vertex_uniforms);
+            RenderSprite(fbo, draw_offset, draw_scale, Vector2.Zero, Vector2.One, vertex_uniforms);
         }
 
-        public static void RenderSprite(FrameBufferContainer fbo, Vector3 draw_offset, Vector2 cut_pos, Vector2 cut_size, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderSprite(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, Vector2 cut_pos, Vector2 cut_size, List<ShaderData.Uniform> vertex_uniforms)
         {
+            // Set position
+            Vector3 set_scale = new Vector3(1f / Core.DisplayAspectRatio, 1f, 1f) * draw_scale;
+            WorldRender.CreateBaseUniforms2D(Matrix4x4.CreateScale(set_scale), vertex_uniforms);
+
             // Bind the VBOs
             MeshData mesh = sprite2d_model.Meshes[0];
             mesh.Bind();
@@ -328,9 +335,7 @@ namespace Engine
             ShaderData shader = sprite2d_material.Shader;
             shader.Use();
 
-            vertex_uniforms.Add(new("uSpritePos", cut_pos));
-            vertex_uniforms.Add(new("uSpriteSize", cut_size));
-            vertex_uniforms.Add(new("uDrawOffset", Matrix4x4.CreateTranslation(draw_offset)));
+            WorldRender.CreateSprite2DUniforms(cut_pos, cut_size, draw_offset, vertex_uniforms);
             foreach (ShaderData.Uniform vertuni in vertex_uniforms)
             {
                 shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
@@ -350,8 +355,12 @@ namespace Engine
             Core.SpriteRenderDepthOffset++;
         }
 
-        public static void RenderText2D(string text, Vector3 draw_offset, float spacing, float line_height, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderText2D(string text, Vector3 draw_offset, Vector3 draw_scale, float spacing, float line_height, List<ShaderData.Uniform> vertex_uniforms)
         {
+            // Set position
+            Vector3 set_scale = new Vector3(1f / Core.DisplayAspectRatio, 1f, 1f) * draw_scale;
+            WorldRender.CreateBaseUniforms2D(Matrix4x4.CreateScale(set_scale), vertex_uniforms);
+
             // Bind the VBOs
             MeshData mesh = quad2d_model.Meshes[0];
             mesh.Bind();
@@ -389,9 +398,7 @@ namespace Engine
                 // Set the subcoord of the sprite
                 int tex_col_count = 16;
                 Vector2 decode_pos = decode[id];
-                vertex_uniforms.Add(new("uSpritePos", decode_pos));
-                vertex_uniforms.Add(new("uSpriteSize", new Vector2(1f / tex_col_count, 1f / tex_col_count)));
-                vertex_uniforms.Add(new("uDrawOffset", Matrix4x4.CreateTranslation(draw_offset + new Vector3(draw_wid, y_offset, Core.SpriteRenderDepthOffset))));
+                WorldRender.CreateSprite2DUniforms(decode_pos, new Vector2(1f / tex_col_count, 1f / tex_col_count), draw_offset + new Vector3(draw_wid, y_offset, Core.SpriteRenderDepthOffset), vertex_uniforms);
                 foreach (ShaderData.Uniform vertuni in vertex_uniforms)
                 {
                     shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);

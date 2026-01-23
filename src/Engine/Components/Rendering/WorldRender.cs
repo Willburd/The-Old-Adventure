@@ -179,5 +179,12 @@ namespace EntComponents
             vertex_uniforms.Add(new("uProjection", Matrix4x4.CreateOrthographic(1, 1, 0.0001f, 10000f)));
             vertex_uniforms.Add(new("uView", Matrix4x4.CreateFromQuaternion(Quaternion.Identity) * Matrix4x4.CreateTranslation(Tools.Forward)));
         }
+
+        public static void CreateSprite2DUniforms(Vector2 cutout_pos, Vector2 cutout_size, Vector3 draw_pos, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            vertex_uniforms.Add(new("uSpritePos", cutout_pos));
+            vertex_uniforms.Add(new("uSpriteSize", cutout_size));
+            vertex_uniforms.Add(new("uDrawOffset", Matrix4x4.CreateTranslation(draw_pos)));
+        }
     }
 }
