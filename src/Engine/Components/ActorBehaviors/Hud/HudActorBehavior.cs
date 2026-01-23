@@ -1,6 +1,7 @@
 using System.Numerics;
 using Engine;
 using Assets;
+using Silk.NET.GLFW;
 
 namespace EntComponents.ActorBehavior
 {
@@ -9,6 +10,7 @@ namespace EntComponents.ActorBehavior
     /// </summary>
     public class HudActorBehavior(Entity host_entity) : WorldRender(host_entity)
     {
+        public static bool debug_mode = true;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Signal handling
@@ -57,17 +59,22 @@ namespace EntComponents.ActorBehavior
 
         protected override uint HandleHudRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
         {
-            Vector3 unit = HudUnit();
-            Vector3 topright = HudTopRight();
+            DrawItemButtons(tick_delta, vertex_uniforms);
+            DrawHealth(tick_delta, vertex_uniforms);
+
+            // For building rooms
+            if (debug_mode)
+            {
+                Actor player = Actor.GetActor(PlayerActorBehavior.player_actor_id);
+                Core.RenderText2D(player.DebugInfo(), HudBottomLeft() + new Vector3(0f, 0.1f, 0f), Vector3.One * 0.05f, new Vector3(1f, 1f, 1f), vertex_uniforms);
+            }
+            return 1;
+        }
+
+        private void DrawHealth(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        {
             Vector3 topleft = HudTopLeft();
-
-            Core.RenderSprite(AssetLoader.MaterialAssetGet("hud_button", AssetLoader.AssetSource.engine), topright + new Vector3(-0.05f, -0.11f, 0f), Vector3.One * 0.086f, new Vector3(1f, 1f, 0f), vertex_uniforms);
-            Core.RenderSprite(AssetLoader.MaterialAssetGet("hud_button", AssetLoader.AssetSource.engine), topright + new Vector3(-0.13f, -0.06f, 0f), Vector3.One * 0.086f, new Vector3(1f, 1f, 0f), vertex_uniforms);
-            Core.RenderSprite(AssetLoader.MaterialAssetGet("hud_button", AssetLoader.AssetSource.engine), topright + new Vector3(-0.21f, -0.11f, 0f), Vector3.One * 0.086f, new Vector3(1f, 1f, 0f), vertex_uniforms);
-
-            Core.RenderSprite(AssetLoader.MaterialAssetGet("hud_button", AssetLoader.AssetSource.engine), topright + new Vector3(-0.13f, -0.16f, 0f), Vector3.One * 0.1f, new Vector3(0.2f, 0.6f, 1f), vertex_uniforms);
-            //Core.RenderText2D($"This is a test\nof the hud\nrender system.", HudLerp(0.5f + MathF.Cos(0) * 0.5f, 0.5f + MathF.Sin(0) * 0.5f), Vector3.One * 0.1f, vertex_uniforms);
-
+            
             float heart_scale = 0.06f;
             float heart_gap = 0.055f;
             float heart_pulse = MathF.Sin((float)Core.RenderPreciseGameTick(tick_delta) / 30f) * 0.004f;
@@ -113,10 +120,17 @@ namespace EntComponents.ActorBehavior
                 current_health -= 4;
                 health_index++;
             }
+        }
 
+        private void DrawItemButtons(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        {
+            Vector3 topright = HudTopRight();
 
-            
-            return 1;
+            Core.RenderSprite(AssetLoader.MaterialAssetGet("hud_button", AssetLoader.AssetSource.engine), topright + new Vector3(-0.05f, -0.11f, 0f), Vector3.One * 0.086f, new Vector3(1f, 1f, 0f), vertex_uniforms);
+            Core.RenderSprite(AssetLoader.MaterialAssetGet("hud_button", AssetLoader.AssetSource.engine), topright + new Vector3(-0.13f, -0.06f, 0f), Vector3.One * 0.086f, new Vector3(1f, 1f, 0f), vertex_uniforms);
+            Core.RenderSprite(AssetLoader.MaterialAssetGet("hud_button", AssetLoader.AssetSource.engine), topright + new Vector3(-0.21f, -0.11f, 0f), Vector3.One * 0.086f, new Vector3(1f, 1f, 0f), vertex_uniforms);
+
+            Core.RenderSprite(AssetLoader.MaterialAssetGet("hud_button", AssetLoader.AssetSource.engine), topright + new Vector3(-0.13f, -0.16f, 0f), Vector3.One * 0.1f, new Vector3(0.2f, 0.6f, 1f), vertex_uniforms);
         }
     }
 }

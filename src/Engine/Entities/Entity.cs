@@ -236,6 +236,11 @@ namespace Engine
             set { transform.Scale = value; }
         }
 
+        public string DebugInfo()
+        {
+            return $"{Math.Truncate(Position.X)}:{Math.Truncate(Position.Y)}:{Math.Truncate(Position.Z)}; {Tools.ToDegrees(Rotation)}";
+        }
+
         public Vector3 StartPosition { get { return starttransform.Position; } }
         public Quaternion StartRotation { get { return starttransform.Rotation; } }
         public Vector3 StartScale { get { return starttransform.Scale; } }
