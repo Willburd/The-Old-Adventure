@@ -24,7 +24,7 @@ namespace EntComponents.Debuging
             return 1;
         }
 
-        protected override uint HandleHudRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected override uint HandleHudRender(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
 
             Core.RenderSprite(Core.sprite2d_material, HudBottomLeft(), Vector3.One * 0.2f, Vector3.One, vertex_uniforms);

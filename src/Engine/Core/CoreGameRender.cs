@@ -106,7 +106,7 @@ namespace Engine
             ////////////////////////////////////////////////////////////////////////////////////////////
             FrameBuffer_CurrentLayer.Clear();
 
-            List<ShaderData.Uniform> vertex_uniforms = [];
+            Dictionary<string, object> vertex_uniforms = [];
             SortedList<uint, List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
             ApplyPrerenderEnvironmentUniforms(vertex_uniforms, tick_delta);
             OnPreRenderTick();
@@ -135,8 +135,10 @@ namespace Engine
                 }
 
                 // perform prerender while we're here.
-                List<ShaderData.Uniform> unique_vuniforms = [.. vertex_uniforms];
-                unique_vuniforms.Add(new("uUniqueID", check.UniqueSeed));
+                Dictionary<string, object> unique_vuniforms = new(vertex_uniforms)
+                {
+                    { "uUniqueID", check.UniqueSeed }
+                };
                 check.SendSignal(Signals.pre_render, tick_delta, unique_vuniforms);
                 // Add to queue for all of the following render loops, instead of checking every entity for each one! We only store the ones that replied with a draw priority!
                 if (!render_queue.ContainsKey(priority)) render_queue.Add(priority, []);
@@ -158,8 +160,10 @@ namespace Engine
             {
                 foreach (Entity draw in draw_list)
                 {
-                    List<ShaderData.Uniform> unique_vuniforms = [.. vertex_uniforms];
-                    unique_vuniforms.Add(new("uUniqueID", draw.UniqueSeed));
+                    Dictionary<string, object> unique_vuniforms = new(vertex_uniforms)
+                    {
+                        { "uUniqueID", draw.UniqueSeed }
+                    };
                     draw.SendSignal(Signals.render, tick_delta, unique_vuniforms);
                 }
             }
@@ -175,8 +179,10 @@ namespace Engine
             {
                 foreach (Entity draw in draw_list)
                 {
-                    List<ShaderData.Uniform> unique_vuniforms = [.. vertex_uniforms];
-                    unique_vuniforms.Add(new("uUniqueID", draw.UniqueSeed));
+                    Dictionary<string, object> unique_vuniforms = new(vertex_uniforms)
+                    {
+                        { "uUniqueID", draw.UniqueSeed }
+                    };
                     draw.SendSignal(Signals.post_render, tick_delta, unique_vuniforms);
                 }
             }
@@ -192,8 +198,10 @@ namespace Engine
             {
                 foreach (Entity draw in draw_list)
                 {
-                    List<ShaderData.Uniform> unique_vuniforms = [.. vertex_uniforms];
-                    unique_vuniforms.Add(new("uUniqueID", draw.UniqueSeed));
+                    Dictionary<string, object> unique_vuniforms = new(vertex_uniforms)
+                    {
+                        { "uUniqueID", draw.UniqueSeed }
+                    };
                     draw.SendSignal(Signals.hud_render, tick_delta, unique_vuniforms);
                 }
             }
@@ -214,7 +222,7 @@ namespace Engine
         // Asset Rendering
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public static void RenderModel(ModelData model, List<MaterialData> materials, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderModel(ModelData model, List<MaterialData> materials, Dictionary<string, object> vertex_uniforms)
         {
             // Render each mesh!
             int mesh_index = 0;
@@ -225,7 +233,7 @@ namespace Engine
             }
         }
 
-        public static void RenderMesh(MeshData mesh, MaterialData mat_data, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderMesh(MeshData mesh, MaterialData mat_data, Dictionary<string, object> vertex_uniforms)
         {
             // Check for collision drawing
             if (mesh.RawName == "col.001")
@@ -243,9 +251,9 @@ namespace Engine
             // Each mesh can use a different material, and that also means shader!
             ShaderData shader = mat_data.Shader;
             shader.Use();
-            foreach (ShaderData.Uniform vertuni in vertex_uniforms)
+            foreach (KeyValuePair<string, object> vertuni in vertex_uniforms)
             {
-                shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
+                shader.SetUniform(vertuni.Key, vertuni.Value);
             }
 
             // Bind textures to texunits
@@ -257,9 +265,9 @@ namespace Engine
             }
 
             // Apply shader uniforms
-            foreach (ShaderData.Uniform matuni in mat_data.Uniforms)
+            foreach (KeyValuePair<string, object> matuni in mat_data.Uniforms)
             {
-                shader.SetUniform(matuni.key, matuni.value, matuni.count);
+                shader.SetUniform(matuni.Key, matuni.Value);
             }
 
             // Draw mesh
@@ -271,27 +279,27 @@ namespace Engine
         // Sprite Rendering
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public static void RenderSprite(MaterialData mat_data, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderSprite(MaterialData mat_data, Dictionary<string, object> vertex_uniforms)
         {
             RenderSprite(mat_data, Vector3.Zero, Vector3.One, Vector2.Zero, Vector2.One, Vector3.One, vertex_uniforms);
         }
 
-        public static void RenderSprite(MaterialData mat_data, Vector3 color_blend, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderSprite(MaterialData mat_data, Vector3 color_blend, Dictionary<string, object> vertex_uniforms)
         {
             RenderSprite(mat_data, Vector3.Zero, Vector3.One, Vector2.Zero, Vector2.One, color_blend, vertex_uniforms);
         }
 
-        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector3 color_blend, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector3 color_blend, Dictionary<string, object> vertex_uniforms)
         {
             RenderSprite(mat_data, draw_offset, Vector3.One, Vector2.Zero, Vector2.One, color_blend, vertex_uniforms);
         }
 
-        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector3 draw_scale, Vector3 color_blend, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector3 draw_scale, Vector3 color_blend, Dictionary<string, object> vertex_uniforms)
         {
             RenderSprite(mat_data, draw_offset, draw_scale, Vector2.Zero, Vector2.One, color_blend, vertex_uniforms);
         }
 
-        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector3 draw_scale, Vector2 cut_pos, Vector2 cut_size, Vector3 color_blend, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector3 draw_scale, Vector2 cut_pos, Vector2 cut_size, Vector3 color_blend, Dictionary<string, object> vertex_uniforms)
         {
             // Set position
             Vector3 set_scale = new(1f / Core.DisplayAspectRatio, 1f, 1f);
@@ -309,9 +317,9 @@ namespace Engine
             shader.Use();
 
             WorldRender.CreateSprite2DUniforms(cut_pos, cut_size, draw_offset, draw_scale, color_blend, vertex_uniforms);
-            foreach (ShaderData.Uniform vertuni in vertex_uniforms)
+            foreach (KeyValuePair<string, object> vertuni in vertex_uniforms)
             {
-                shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
+                shader.SetUniform(vertuni.Key, vertuni.Value);
             }
 
             // Bind textures to texunits
@@ -323,9 +331,9 @@ namespace Engine
             }
 
             // Apply shader uniforms
-            foreach (ShaderData.Uniform matuni in mat_data.Uniforms)
+            foreach (KeyValuePair<string, object> matuni in mat_data.Uniforms)
             {
-                shader.SetUniform(matuni.key, matuni.value, matuni.count);
+                shader.SetUniform(matuni.Key, matuni.Value);
             }
 
             // Draw mesh
@@ -337,22 +345,22 @@ namespace Engine
         // FBO Rendering
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public static void RenderFBO(FrameBufferContainer fbo, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderFBO(FrameBufferContainer fbo, Dictionary<string, object> vertex_uniforms)
         {
             RenderFBO(fbo, Vector3.Zero, Vector3.One, Vector2.Zero, Vector2.One, vertex_uniforms);
         }
 
-        public static void RenderFBO(FrameBufferContainer fbo, Vector3 draw_offset, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderFBO(FrameBufferContainer fbo, Vector3 draw_offset, Dictionary<string, object> vertex_uniforms)
         {
             RenderFBO(fbo, draw_offset, Vector3.One, Vector2.Zero, Vector2.One, vertex_uniforms);
         }
 
-        public static void RenderFBO(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderFBO(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, Dictionary<string, object> vertex_uniforms)
         {
             RenderFBO(fbo, draw_offset, draw_scale, Vector2.Zero, Vector2.One, vertex_uniforms);
         }
 
-        public static void RenderFBO(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, Vector2 cut_pos, Vector2 cut_size, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderFBO(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, Vector2 cut_pos, Vector2 cut_size, Dictionary<string, object> vertex_uniforms)
         {
             // Set position
             Vector3 set_scale = new(1f / Core.DisplayAspectRatio, 1f, 1f);
@@ -370,18 +378,18 @@ namespace Engine
             shader.Use();
 
             WorldRender.CreateSprite2DUniforms(cut_pos, cut_size, draw_offset, draw_scale, Vector3.One, vertex_uniforms);
-            foreach (ShaderData.Uniform vertuni in vertex_uniforms)
+            foreach (KeyValuePair<string, object> vertuni in vertex_uniforms)
             {
-                shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
+                shader.SetUniform(vertuni.Key, vertuni.Value);
             }
 
             // Bind textures to texunits
             fbo.BindTexture();
 
             // Apply shader uniforms
-            foreach (ShaderData.Uniform matuni in sprite2d_material.Uniforms)
+            foreach (KeyValuePair<string, object> matuni in sprite2d_material.Uniforms)
             {
-                shader.SetUniform(matuni.key, matuni.value, matuni.count);
+                shader.SetUniform(matuni.Key, matuni.Value);
             }
 
             // Draw mesh
@@ -394,12 +402,12 @@ namespace Engine
         // Text Rendering
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public static void RenderText2D(string text, Vector3 draw_offset, Vector3 draw_scale, Vector3 color_blend, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderText2D(string text, Vector3 draw_offset, Vector3 draw_scale, Vector3 color_blend, Dictionary<string, object> vertex_uniforms)
         {
             RenderText2D(text, draw_offset, draw_scale, color_blend, 0.46f, 0.6f, vertex_uniforms);
         }
 
-        public static void RenderText2D(string text, Vector3 draw_offset, Vector3 draw_scale, Vector3 color_blend, float spacing, float line_height, List<ShaderData.Uniform> vertex_uniforms)
+        public static void RenderText2D(string text, Vector3 draw_offset, Vector3 draw_scale, Vector3 color_blend, float spacing, float line_height, Dictionary<string, object> vertex_uniforms)
         {
             // Set position
             Vector3 set_scale = new Vector3(1f / Core.DisplayAspectRatio, 1f, 1f);
@@ -420,9 +428,9 @@ namespace Engine
             text2d_material.Textures[0].Bind(0);
 
             // Apply shader uniforms
-            foreach (ShaderData.Uniform matuni in text2d_material.Uniforms)
+            foreach (KeyValuePair<string, object> matuni in text2d_material.Uniforms)
             {
-                shader.SetUniform(matuni.key, matuni.value, matuni.count);
+                shader.SetUniform(matuni.Key, matuni.Value);
             }
 
             // Step through string drawing
@@ -442,9 +450,9 @@ namespace Engine
                 int tex_col_count = 16;
                 Vector2 decode_pos = decode[id];
                 WorldRender.CreateSprite2DUniforms(decode_pos, new Vector2(1f / tex_col_count, 1f / tex_col_count), draw_offset + (new Vector3(draw_wid, y_offset, Core.SpriteRenderDepthOffset) * draw_scale), draw_scale, color_blend, vertex_uniforms);
-                foreach (ShaderData.Uniform vertuni in vertex_uniforms)
+                foreach (KeyValuePair<string, object> vertuni in vertex_uniforms)
                 {
-                    shader.SetUniform(vertuni.key, vertuni.value, vertuni.count);
+                    shader.SetUniform(vertuni.Key, vertuni.Value);
                 }
                 // Draw text glyph
                 OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);

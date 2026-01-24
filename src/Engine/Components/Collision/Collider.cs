@@ -349,7 +349,7 @@ namespace EntComponents
 
                 case Core.Signals.render:
                     // Render our collider shape if debugging, same as above
-                    return DebugRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    return DebugRender((double)args[0], (Dictionary<string, object>)args[1]);
 
                 case Core.Signals.raycast:
                     // Check our collision vs the incoming ray
@@ -361,7 +361,7 @@ namespace EntComponents
         /// <summary>
         /// Render function run if the component is Visible.
         /// </summary>
-        public uint DebugRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        public uint DebugRender(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             MeshData? model = CollisionShape?.DrawModel();
             if (model == null || CollisionShape == null) return 0;

@@ -16,12 +16,12 @@ namespace EntComponents
             materials = [Core.sprite2d_material];
         }
 
-        protected override uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected override uint HandleRender(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             CreateBaseUniforms3D(Host.GetInterpolatedViewMatrix(tick_delta), tick_delta, vertex_uniforms);
-            vertex_uniforms.Add(new("uSpritePos", CutoutPosition));
-            vertex_uniforms.Add(new("uSpriteSize", CutoutSize));
-            vertex_uniforms.Add(new("uDrawOffset", Matrix4x4.CreateTranslation(DrawOffset)));
+            vertex_uniforms.Add("uSpritePos", CutoutPosition);
+            vertex_uniforms.Add("uSpriteSize", CutoutSize);
+            vertex_uniforms.Add("uDrawOffset", Matrix4x4.CreateTranslation(DrawOffset));
             Core.RenderModel(model, materials, vertex_uniforms);
             return 1;
         }

@@ -1,3 +1,4 @@
+using System.Numerics;
 using Assets;
 using Engine;
 
@@ -31,10 +32,12 @@ namespace EntComponents.ActorBehavior
             return 1;
         }
 
-        protected override uint HandleHudRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected override uint HandleHudRender(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
-            
-
+            Vector3 fade_color = Vector3.Zero;
+            MaterialData fade_mat = AssetLoader.MaterialAssetGet("fade", AssetLoader.AssetSource.engine);
+            fade_mat.Uniforms["uFade"] = Math.Clamp(fade_progress, 0f, 1f);
+            Core.RenderSprite(fade_mat, HudCenter(), new Vector3(Core.DisplayAspectRatio, 1f, 1f), fade_color, vertex_uniforms);
             return 1;
         }
     }

@@ -29,7 +29,7 @@ namespace Assets
             AmbientLight = ambient_light;
 
             SkyboxTexture = skybox_tex;
-            SkyboxMaterial = AssetLoader.MaterialAssetLoad("testroom_skybox", new([SkyboxTexture], [new("uTexture0", 0)], AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine)));
+            SkyboxMaterial = AssetLoader.MaterialAssetLoad("testroom_skybox", new([SkyboxTexture], new() { { "uTexture0", 0 } }, AssetLoader.ShaderAssetGet("standard", AssetLoader.AssetSource.engine)));
         }
 
         public EnvironmentData(string asset_key, Vector3 fog_col, float fog_dist, Vector4 ambient_light, MaterialData skybox_mat)

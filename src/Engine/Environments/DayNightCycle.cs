@@ -20,7 +20,7 @@ namespace Environments
             // Multiblend skybox behavior
             multiblend_skybox_mat = AssetLoader.MaterialAssetLoad(asset_key
                                                                 , new([dawn.SkyboxTexture, day.SkyboxTexture, dusk.SkyboxTexture, night.SkyboxTexture, rainday.SkyboxTexture, rainnight.SkyboxTexture]
-                                                                , [new("uTextureDawn", 0), new("uTextureDay", 1), new("uTextureDusk", 2), new("uTextureNight", 3), new("uTextureDayRain", 4), new("uTextureNightRain", 5), new("uDuskPerc", cycle), new("uNightPerc", cycle), new("uDawnPerc", cycle), new("uRainPerc", rain_intensity)]
+                                                                , new() { { "uTextureDawn", 0 }, { "uTextureDay", 1 }, { "uTextureDusk", 2 }, { "uTextureNight", 3 }, { "uTextureDayRain", 4 }, { "uTextureNightRain", 5 }, { "uDuskPerc", cycle }, { "uNightPerc", cycle }, { "uDawnPerc", cycle }, { "uRainPerc", rain_intensity } }
                                                                 , AssetLoader.ShaderAssetGet("skybox_daynight_multiblend", AssetLoader.AssetSource.engine)));
         }
 
@@ -53,30 +53,10 @@ namespace Environments
 
             MaterialData skymat = skybox_model.GetMaterial(0);
             if (skymat == null) return;
-            for (int i = 0; i < skymat.Uniforms.Count; i++)
-            {
-                ShaderData.Uniform uniform = skymat.Uniforms[i];
-                switch (uniform.key)
-                {
-                    case "uDuskPerc":
-                        uniform.value = dusk_intensity;
-                        break;
-
-                    case "uNightPerc":
-                        uniform.value = night_intensity;
-                        break;
-
-                    case "uDawnPerc":
-                        uniform.value = dawn_intensity;
-                        break;
-
-                    case "uRainPerc":
-                        uniform.value = rain_intensity;
-                        break;
-                }
-                // reassign
-                skymat.Uniforms[i] = uniform;
-            }
+            skymat.Uniforms["uDuskPerc"] = dusk_intensity;
+            skymat.Uniforms["uNightPerc"] = night_intensity;
+            skymat.Uniforms["uDawnPerc"] = dawn_intensity;
+            skymat.Uniforms["uRainPerc"] = rain_intensity;
 
             FogDistance = float.Lerp(day.FogDistance, rainday.FogDistance, rain_intensity);
             FogDistance = float.Lerp(FogDistance, float.Lerp(dusk.FogDistance, rainday.FogDistance, rain_intensity), dusk_intensity);

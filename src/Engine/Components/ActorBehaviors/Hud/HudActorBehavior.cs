@@ -34,12 +34,12 @@ namespace EntComponents.ActorBehavior
             TextureData heart_full_texture = AssetLoader.TextureAssetLoad("Hud/HealthFull.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
 
             // Materials
-            AssetLoader.MaterialAssetLoad("hud_button", new([button_texture], [new("uTexture0", 0)], shader_sprite), AssetLoader.AssetSource.engine);
-            AssetLoader.MaterialAssetLoad("hud_heart_backing", new([heart_empty_texture], [new("uTexture0", 0)], shader_sprite), AssetLoader.AssetSource.engine);
-            AssetLoader.MaterialAssetLoad("hud_heart_quarter", new([heart_quarter_texture], [new("uTexture0", 0)], shader_sprite), AssetLoader.AssetSource.engine);
-            AssetLoader.MaterialAssetLoad("hud_heart_half", new([heart_half_texture], [new("uTexture0", 0)], shader_sprite), AssetLoader.AssetSource.engine);
-            AssetLoader.MaterialAssetLoad("hud_heart_three_quarters", new([heart_three_quarters_texture], [new("uTexture0", 0)], shader_sprite), AssetLoader.AssetSource.engine);
-            AssetLoader.MaterialAssetLoad("hud_heart_full", new([heart_full_texture], [new("uTexture0", 0)], shader_sprite), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("hud_button", new([button_texture], new() { { "uTexture0", 0 } }, shader_sprite), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("hud_heart_backing", new([heart_empty_texture], new() { { "uTexture0", 0 } }, shader_sprite), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("hud_heart_quarter", new([heart_quarter_texture], new() { { "uTexture0", 0 } }, shader_sprite), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("hud_heart_half", new([heart_half_texture], new() { { "uTexture0", 0 } }, shader_sprite), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("hud_heart_three_quarters", new([heart_three_quarters_texture], new() { { "uTexture0", 0 } }, shader_sprite), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("hud_heart_full", new([heart_full_texture], new() { { "uTexture0", 0 } }, shader_sprite), AssetLoader.AssetSource.engine);
 
             return 1;
         }
@@ -56,7 +56,7 @@ namespace EntComponents.ActorBehavior
             return 1;
         }
 
-        protected override uint HandleHudRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected override uint HandleHudRender(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             DrawItemButtons(tick_delta, vertex_uniforms);
             DrawHealth(tick_delta, vertex_uniforms);
@@ -70,7 +70,7 @@ namespace EntComponents.ActorBehavior
             return 1;
         }
 
-        private void DrawHealth(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        private void DrawHealth(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             Vector3 topleft = HudTopLeft();
 
@@ -121,7 +121,7 @@ namespace EntComponents.ActorBehavior
             }
         }
 
-        private void DrawItemButtons(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        private void DrawItemButtons(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             Vector3 topright = HudTopRight();
 

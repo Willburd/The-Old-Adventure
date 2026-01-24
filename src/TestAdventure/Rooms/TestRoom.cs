@@ -17,7 +17,7 @@ namespace TestAdventure
             TextureData terrain_tex = AssetLoader.TextureAssetLoad("testroom_terrain", "sign_wood.png");
 
             // Materials
-            AssetLoader.MaterialAssetLoad("testroom_terrain", new([terrain_tex], [new("uTexture0", 0)], standard_shader));
+            AssetLoader.MaterialAssetLoad("testroom_terrain", new([terrain_tex], new() { { "uTexture0", 0 } }, standard_shader));
 
             // Models
             AssetLoader.ModelAssetLoad("testroom_terrain", "test_room.fbx");

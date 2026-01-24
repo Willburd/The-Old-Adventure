@@ -45,14 +45,7 @@ namespace Assets
             return _gl.IsProgram(_handle);
         }
 
-        public struct Uniform(string key, object value, uint count = 1)
-        {
-            public string key = key;
-            public object value = value;
-            public uint count = count;
-        }
-
-        public unsafe void SetUniform(string name, object value, uint count)
+        public unsafe void SetUniform(string name, object value)
         {
             int location = _gl.GetUniformLocation(_handle, name);
             if (location == -1) return;
@@ -98,7 +91,7 @@ namespace Assets
             if (value.GetType() == typeof(Matrix4x4))
             {
                 Matrix4x4 mat_data = (Matrix4x4)value;
-                _gl.UniformMatrix4(location, count, false, (float*)&mat_data);
+                _gl.UniformMatrix4(location, 1, false, (float*)&mat_data);
                 return;
             }
 

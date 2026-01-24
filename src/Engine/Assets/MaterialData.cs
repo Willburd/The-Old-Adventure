@@ -5,7 +5,7 @@ namespace Assets
 {
     public class MaterialData : IDisposable
     {
-        public MaterialData(List<TextureData> textures_data, List<ShaderData.Uniform> mat_unitform_data, ShaderData shader, BlendingFactor blend_src = BlendingFactor.SrcAlpha, BlendingFactor blend_dest = BlendingFactor.OneMinusSrcAlpha)
+        public MaterialData(List<TextureData> textures_data, Dictionary<string, object> mat_unitform_data, ShaderData shader, BlendingFactor blend_src = BlendingFactor.SrcAlpha, BlendingFactor blend_dest = BlendingFactor.OneMinusSrcAlpha)
         {
             render_shader = shader;
             uniforms = mat_unitform_data;
@@ -15,7 +15,7 @@ namespace Assets
         }
 
         private readonly ShaderData render_shader;
-        private List<ShaderData.Uniform> uniforms;
+        private Dictionary<string, object> uniforms;
         private List<TextureData> textures;
 
         public BlendingFactor BlendingSource { get; private set; }
@@ -34,7 +34,7 @@ namespace Assets
             return Shader.IsValid();
         }
 
-        public List<ShaderData.Uniform> Uniforms
+        public Dictionary<string, object> Uniforms
         {
             get
             {

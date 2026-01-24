@@ -41,9 +41,9 @@ namespace EntComponents.ActorBehavior
                 case Core.Signals.pre_render:
                     if (Host.RoomEnabled())
                     {
-                        return HandleRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                        return HandleRender((double)args[0], (Dictionary<string, object>)args[1]);
                     }
-                    return HandleRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    return HandleRenderDisabled((double)args[0], (Dictionary<string, object>)args[1]);
 
                 case Core.Signals.update:
                     previous_sky_rotation = sky_rotation;
@@ -53,7 +53,7 @@ namespace EntComponents.ActorBehavior
             return base.ReceiveSignal(signal, args);
         }
 
-        protected override uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected override uint HandleRender(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             if (model == null) return 0;
             if (Camera.WorldCamera == null) return 0;

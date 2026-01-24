@@ -116,7 +116,7 @@ namespace Rendering
 
         public void Render(double tick_delta, Vector2 offset, Vector2 cut_pos, Vector2 cut_size)
         {
-            List<ShaderData.Uniform> vertex_uniforms = [];
+            Dictionary<string, object> vertex_uniforms = [];
             Core.RenderFBO(this, new Vector3(offset.X, offset.Y, 0f), new Vector3(Core.DisplayAspectRatio, 1f, 1f), cut_pos, cut_size, vertex_uniforms);
         }
 

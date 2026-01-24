@@ -35,6 +35,7 @@ namespace Engine
             ShaderData shader_debugcol = AssetLoader.ShaderAssetLoad("debug_col", "unshaded.vert", "debug_walls.frag", AssetLoader.AssetSource.engine);
             ShaderData shader_sprite2d = AssetLoader.ShaderAssetLoad("sprite2d", "sprite2d.vert", "unshaded.frag", AssetLoader.AssetSource.engine);
             ShaderData shader_text2d = AssetLoader.ShaderAssetLoad("text2d", "sprite2d.vert", "text2d.frag", AssetLoader.AssetSource.engine);
+            ShaderData shader_fade = AssetLoader.ShaderAssetLoad("fadewhite", "sprite2d.vert", "fade.frag", AssetLoader.AssetSource.engine);
 
             // skybox
             AssetLoader.ShaderAssetLoad("skybox_daynight_multiblend", "unshaded.vert", "skybox_multiblend.frag", AssetLoader.AssetSource.engine);
@@ -43,6 +44,8 @@ namespace Engine
             // Textures
             TextureData no_texture = AssetLoader.TextureAssetLoad("Error/no_texture.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             TextureData nomat_texture = AssetLoader.TextureAssetLoad("Error/no_material.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+            TextureData white_texture = AssetLoader.TextureAssetLoad("Effects/white.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
+            TextureData black_texture = AssetLoader.TextureAssetLoad("Effects/black.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             TextureData example_texture = AssetLoader.TextureAssetLoad("Objects/example.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
             TextureData standard_font = AssetLoader.TextureAssetLoad("standard_font.png", Silk.NET.OpenGL.TextureTarget.Texture2D, AssetLoader.AssetSource.engine);
 
@@ -57,16 +60,19 @@ namespace Engine
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Materials
             AssetLoader.MaterialAssetLoad("debug_normals", new([], [], shader_debugnormals), AssetLoader.AssetSource.engine);
-            AssetLoader.MaterialAssetLoad("no_material", new([nomat_texture], [new("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
-            AssetLoader.MaterialAssetLoad("example", new([example_texture], [new("uTexture0", 0)], shader_standard), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("no_material", new([nomat_texture], new() { { "uTexture0", 0 } }, shader_standard), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("example", new([example_texture], new() { { "uTexture0", 0 } }, shader_standard), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("simple_white", new([white_texture], new() { { "uTexture0", 0 } }, shader_standard), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("simple_black", new([black_texture], new() { { "uTexture0", 0 } }, shader_standard), AssetLoader.AssetSource.engine);
+            AssetLoader.MaterialAssetLoad("fade", new([], new() { { "uFade", 0f } }, shader_fade), AssetLoader.AssetSource.engine);
             // debugging
-            collision_draw_material = AssetLoader.MaterialAssetLoad("debug_col", new([], [new("uColorSet", new Vector4(0.6f, 0.8f, 0f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
-            trigger_draw_material = AssetLoader.MaterialAssetLoad("debug_trigger", new([], [new("uColorSet", new Vector4(0f, 0.2f, 0.9f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine);
-            actor_collision_draw_material = AssetLoader.MaterialAssetLoad("debug_actor_col", new([], [new("uColorSet", new Vector4(0.9f, 0.6f, 0f, 1f))], shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
+            collision_draw_material = AssetLoader.MaterialAssetLoad("debug_col", new([], new() { { "uColorSet", new Vector4(0.6f, 0.8f, 0f, 1f) } }, shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
+            trigger_draw_material = AssetLoader.MaterialAssetLoad("debug_trigger", new([], new() { { "uColorSet", new Vector4(0f, 0.2f, 0.9f, 1f) } }, shader_debugcol), AssetLoader.AssetSource.engine);
+            actor_collision_draw_material = AssetLoader.MaterialAssetLoad("debug_actor_col", new([], new() { { "uColorSet", new Vector4(0.9f, 0.6f, 0f, 1f) } }, shader_debugcol), AssetLoader.AssetSource.engine); // Cached in a static for rendering speed reasons
             AssetLoader.ModelAssetLoad("pointer.fbx", AssetLoader.AssetSource.engine);
             // effects
-            sprite2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([no_texture], [new("uTexture0", 0)], shader_sprite2d), AssetLoader.AssetSource.engine);
-            text2d_material = AssetLoader.MaterialAssetLoad("text2d", new([standard_font], [new("uTexture0", 0)], shader_text2d), AssetLoader.AssetSource.engine);
+            sprite2d_material = AssetLoader.MaterialAssetLoad("sprite2d", new([no_texture], new() { { "uTexture0", 0 } }, shader_sprite2d), AssetLoader.AssetSource.engine);
+            text2d_material = AssetLoader.MaterialAssetLoad("text2d", new([standard_font], new() { { "uTexture0", 0 } }, shader_text2d), AssetLoader.AssetSource.engine);
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Models: FBX, 0.01 scale, Z forward, Y Up

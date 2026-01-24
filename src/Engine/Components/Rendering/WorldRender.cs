@@ -92,30 +92,30 @@ namespace EntComponents
                 case Core.Signals.pre_render:
                     if (Host.RoomEnabled())
                     {
-                        return HandlePreRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                        return HandlePreRender((double)args[0], (Dictionary<string, object>)args[1]);
                     }
-                    return HandlePreRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    return HandlePreRenderDisabled((double)args[0], (Dictionary<string, object>)args[1]);
 
                 case Core.Signals.render:
                     if (Host.RoomEnabled())
                     {
-                        return HandleRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                        return HandleRender((double)args[0], (Dictionary<string, object>)args[1]);
                     }
-                    return HandleRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    return HandleRenderDisabled((double)args[0], (Dictionary<string, object>)args[1]);
                     
                 case Core.Signals.post_render:
                     if (Host.RoomEnabled())
                     {
-                        HandlePostRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                        HandlePostRender((double)args[0], (Dictionary<string, object>)args[1]);
                     }
-                    return HandlePostRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    return HandlePostRenderDisabled((double)args[0], (Dictionary<string, object>)args[1]);
 
                 case Core.Signals.hud_render:
                     if (Host.RoomEnabled())
                     {
-                        return HandleHudRender((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                        return HandleHudRender((double)args[0], (Dictionary<string, object>)args[1]);
                     }
-                    return HandleHudRenderDisabled((double)args[0], (List<ShaderData.Uniform>)args[1]);
+                    return HandleHudRenderDisabled((double)args[0], (Dictionary<string, object>)args[1]);
             }
             return base.ReceiveSignal(signal, args);
         }
@@ -123,7 +123,7 @@ namespace EntComponents
         /// <summary>
         /// PreRender function run if the component is Visible.
         /// </summary>
-        protected virtual uint HandlePreRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandlePreRender(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             return 0;
         }
@@ -131,7 +131,7 @@ namespace EntComponents
         /// <summary>
         /// PreRender function run if the component is NOT Visible.
         /// </summary>
-        protected virtual uint HandlePreRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandlePreRenderDisabled(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             return 0;
         }
@@ -139,7 +139,7 @@ namespace EntComponents
         /// <summary>
         /// Render function run if the component is Visible.
         /// </summary>
-        protected virtual uint HandleRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandleRender(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             Debug.Assert(model?.Meshes.Count == materials.Count, "Model rendering with mismatched material(" + materials.Count + ") to mesh(" + model.Meshes.Count + ") count, " + GetType()); // MUST be equal
 
@@ -151,7 +151,7 @@ namespace EntComponents
         /// <summary>
         /// Render function run if the component is NOT Visible. Mostly used for long distance LoDs.
         /// </summary>
-        protected virtual uint HandleRenderDisabled(double delta_time, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandleRenderDisabled(double delta_time, Dictionary<string, object> vertex_uniforms)
         {
             return 1;
         }
@@ -159,7 +159,7 @@ namespace EntComponents
         /// <summary>
         /// Post function run if the component is Visible.
         /// </summary>
-        protected virtual uint HandlePostRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandlePostRender(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             return 0;
         }
@@ -167,7 +167,7 @@ namespace EntComponents
         /// <summary>
         /// Post function run if the component is NOT Visible.
         /// </summary>
-        protected virtual uint HandlePostRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandlePostRenderDisabled(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             return 0;
         }
@@ -175,7 +175,7 @@ namespace EntComponents
         /// <summary>
         /// Hud function run if the component is Visible.
         /// </summary>
-        protected virtual uint HandleHudRender(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandleHudRender(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             return 0;
         }
@@ -183,7 +183,7 @@ namespace EntComponents
         /// <summary>
         /// HudRender function run if the component is NOT Visible.
         /// </summary>
-        protected virtual uint HandleHudRenderDisabled(double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        protected virtual uint HandleHudRenderDisabled(double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
             return 0;
         }
@@ -242,32 +242,32 @@ namespace EntComponents
         /// <summary>
         /// 3D camera projection uniforms.
         /// </summary>
-        public static void CreateBaseUniforms3D(Matrix4x4 transform, double tick_delta, List<ShaderData.Uniform> vertex_uniforms)
+        public static void CreateBaseUniforms3D(Matrix4x4 transform, double tick_delta, Dictionary<string, object> vertex_uniforms)
         {
-            vertex_uniforms.Add(new("uTransform", transform));
-            vertex_uniforms.Add(new("uView", Camera.GetCurrentInterpolatedViewMatrix(tick_delta)));
-            vertex_uniforms.Add(new("uProjection", Camera.GetCurrentProjectionMatrix()));
+            vertex_uniforms["uTransform"] = transform;
+            vertex_uniforms["uView"] = Camera.GetCurrentInterpolatedViewMatrix(tick_delta);
+            vertex_uniforms["uProjection"] = Camera.GetCurrentProjectionMatrix();
         }
 
         /// <summary>
         /// 2D hud uniforms.
         /// </summary>
-        public static void CreateBaseUniforms2D(Matrix4x4 transform, List<ShaderData.Uniform> vertex_uniforms)
+        public static void CreateBaseUniforms2D(Matrix4x4 transform, Dictionary<string, object> vertex_uniforms)
         {
-            vertex_uniforms.Add(new("uTransform", transform));
-            vertex_uniforms.Add(new("uProjection", Matrix4x4.CreateOrthographic(1, 1, 0.0001f, 10000f)));
-            vertex_uniforms.Add(new("uView", Matrix4x4.CreateFromQuaternion(Quaternion.Identity) * Matrix4x4.CreateTranslation(Tools.Forward)));
+            vertex_uniforms["uTransform"] = transform;
+            vertex_uniforms["uProjection"] = Matrix4x4.CreateOrthographic(1, 1, 0.0001f, 10000f);
+            vertex_uniforms["uView"] = Matrix4x4.CreateFromQuaternion(Quaternion.Identity) * Matrix4x4.CreateTranslation(Tools.Forward);
         }
 
         /// <summary>
         /// 2D sprite offset and scale uniforms. Allows cutout sections of a texture atlas to be used.
         /// </summary>
-        public static void CreateSprite2DUniforms(Vector2 cutout_pos, Vector2 cutout_size, Vector3 draw_pos, Vector3 draw_scale, Vector3 draw_color, List<ShaderData.Uniform> vertex_uniforms)
+        public static void CreateSprite2DUniforms(Vector2 cutout_pos, Vector2 cutout_size, Vector3 draw_pos, Vector3 draw_scale, Vector3 draw_color, Dictionary<string, object> vertex_uniforms)
         {
-            vertex_uniforms.Add(new("uSpritePos", cutout_pos));
-            vertex_uniforms.Add(new("uSpriteSize", cutout_size));
-            vertex_uniforms.Add(new("uDrawOffset", Matrix4x4.CreateScale(draw_scale) * Matrix4x4.CreateTranslation(draw_pos + new Vector3(0f, 0f, Core.SpriteRenderDepthOffset))));
-            vertex_uniforms.Add(new("uDrawColor", draw_color));
+            vertex_uniforms["uSpritePos"] = cutout_pos;
+            vertex_uniforms["uSpriteSize"] = cutout_size;
+            vertex_uniforms["uDrawOffset"] = Matrix4x4.CreateScale(draw_scale) * Matrix4x4.CreateTranslation(draw_pos + new Vector3(0f, 0f, Core.SpriteRenderDepthOffset));
+            vertex_uniforms["uDrawColor"] = draw_color;
         }
     }
 }
