@@ -205,7 +205,7 @@ namespace Engine
         public uint SendSignal(Core.Signals signal, params object?[] args)
         {
             if (!IsInitilized) return 0; // Nope, we don't do anything with this until we are initilized!
-            if (!linked_signals.TryGetValue(signal, out List<EntComponent> signal_list)) return 0;
+            if (!linked_signals.TryGetValue(signal, out List<EntComponent> signal_list) || signal_list.Count == 0) return 0;
             uint return_flags = 0;
             List<EntComponent> current_signal_comps = [.. signal_list];
             foreach (EntComponent comp in current_signal_comps)
