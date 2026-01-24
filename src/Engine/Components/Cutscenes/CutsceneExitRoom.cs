@@ -28,8 +28,10 @@ namespace EntComponents.Cutscenes
                     Host.Destroy();
                     Room new_room = (Room)Activator.CreateInstance(ExitData.Value.room_goal, [ExitData.Value.destination]);
                     ExitData = null;
-                    ActorBehavior.FadeInActorBehavior fade_in = new ActorBehavior.FadeInActorBehavior(new_room);
-                    fade_in.FadeColor = fade_out.FadeColor;
+                    ActorBehavior.FadeInActorBehavior fade_in = new(new_room)
+                    {
+                        FadeColor = fade_out.FadeColor
+                    };
                 }
             }
 
