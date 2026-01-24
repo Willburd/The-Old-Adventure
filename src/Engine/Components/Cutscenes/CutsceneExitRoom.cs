@@ -13,15 +13,17 @@ namespace EntComponents.Cutscenes
 
         protected override uint HandleUpdate()
         {
-            ActorBehavior.FadeoutActorBehavior fade = (ActorBehavior.FadeoutActorBehavior)Host.GetComponent(typeof(ActorBehavior.FadeoutActorBehavior));
-            if (fade.FadeComplete)
+            ActorBehavior.FadeoutActorBehavior fade_out = (ActorBehavior.FadeoutActorBehavior)Host.GetComponent(typeof(ActorBehavior.FadeoutActorBehavior));
+            if (fade_out.FadeComplete)
             {
                 // Trigger room transition
                 if (ExitData != null)
                 {
                     Host.Destroy();
-                    Activator.CreateInstance(ExitData.Value.room_goal, [ExitData.Value.destination]);
+                    Room new_room = (Room)Activator.CreateInstance(ExitData.Value.room_goal, [ExitData.Value.destination]);
                     ExitData = null;
+                    ActorBehavior.FadeInActorBehavior fade_in = new ActorBehavior.FadeInActorBehavior(new_room);
+                    fade_in.FadeColor = fade_out.FadeColor;
                 }
             }
 
