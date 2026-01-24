@@ -3,13 +3,19 @@ using System.Numerics;
 
 namespace EntComponents.Cutscenes
 {
-    public class CutsceneExitRoom(Entity host_entity) : Cutscene(host_entity)
+    public class CutsceneExitRoom : Cutscene
     {
         public Vector3 GoalPos { get; set; }
 
         private Vector3 dirvec = Vector3.Zero;
 
         public Room.RoomExit? ExitData = null;
+
+        public CutsceneExitRoom(Entity host_entity) : base(host_entity)
+        {
+            // Add a fade out so we have one for our fade in later
+            new ActorBehavior.FadeoutActorBehavior(host_entity);
+        }
 
         protected override uint HandleUpdate()
         {

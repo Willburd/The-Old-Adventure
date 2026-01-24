@@ -136,13 +136,13 @@ namespace Engine
         /// </summary>
         public virtual bool OnUseExit(RoomExit exit_destination, Entity exit_entity)
         {
+            if (!Cutscene.CanStartCutscene) return false; // can't exit, we're in a cutscene
             Console.WriteLine("Exit triggered " + exit_destination.room_goal + " : " + exit_destination.destination);
             CutsceneExitRoom exit_scene = new(this)
             {
                 GoalPos = exit_entity.Position,
                 ExitData = exit_destination
             };
-            new FadeoutActorBehavior(this);
             return true;
         }
 
