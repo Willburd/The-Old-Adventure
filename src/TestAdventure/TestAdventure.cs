@@ -1,4 +1,5 @@
 ﻿using Engine;
+using EntComponents.ActorBehavior;
 
 namespace TestAdventure
 {
@@ -27,7 +28,8 @@ namespace TestAdventure
         public override void OnInit()
         {
             // Start up initial room
-            new TestRoom(Room.EntranceType.debug);
+            Room first_room = new TestRoom(Room.EntranceType.debug);
+            new FadeInActorBehavior(first_room);
         }
 
         public override void OnNewGame()
