@@ -15,7 +15,7 @@ namespace Rendering
         public Vector3 Bitangent;
 
         public const int MAX_BONE_INFLUENCE = 4;
-        public int[] BoneIds;
+        public uint[] BoneIds;
         public float[] Weights;
     }
 }

@@ -6,6 +6,7 @@ using Silk.NET.OpenGL;
 using System.Numerics;
 using Rendering;
 using AssimpMesh = Silk.NET.Assimp.Mesh;
+using System.Diagnostics;
 
 namespace Assets
 {
@@ -23,6 +24,8 @@ namespace Assets
         private Assimp _assimp;
         private List<TextureData> _texturesLoaded = new List<TextureData>();
         public List<MeshData> Meshes { get; protected set; } = new List<MeshData>();
+        private readonly Dictionary<string, uint> bone_map = [];
+        private readonly List<BoneData> bones = [];
 
         private unsafe void LoadModel(string path)
         {
@@ -34,7 +37,14 @@ namespace Assets
                 throw new Exception(error);
             }
 
+            // Extract mesh
             ProcessNode(scene->MRootNode, scene);
+            
+            // Extract animations
+            for (var i = 0; i < scene->MNumAnimations; i++)
+            {
+                ProcessAnimations(scene->MAnimations[i], i);
+            }
         }
 
         private unsafe void ProcessNode(Node* node, Scene* scene)
@@ -42,7 +52,7 @@ namespace Assets
             for (var i = 0; i < node->MNumMeshes; i++)
             {
                 var mesh = scene->MMeshes[node->MMeshes[i]];
-                Meshes.Add(ProcessMesh(mesh, scene, mesh->MName, Meshes.Count));
+                Meshes.Add(ProcessMesh(mesh, mesh->MName, Meshes.Count));
             }
 
             for (var i = 0; i < node->MNumChildren; i++)
@@ -51,21 +61,21 @@ namespace Assets
             }
         }
 
-        private unsafe MeshData ProcessMesh(AssimpMesh* mesh, Scene* scene, string name, int index)
+        private unsafe MeshData ProcessMesh(AssimpMesh* mesh, string name, int index)
         {
             // data to fill
             List<Vertex> vertices = new List<Vertex>();
             List<uint> indices = new List<uint>();
-            List<Bone> bones = new List<Bone>();
 
             // walk through each of the mesh's vertices
             for (uint i = 0; i < mesh->MNumVertices; i++)
             {
-                Vertex vertex = new Vertex();
-                vertex.BoneIds = new int[Vertex.MAX_BONE_INFLUENCE];
-                vertex.Weights = new float[Vertex.MAX_BONE_INFLUENCE];
-
-                vertex.Position = mesh->MVertices[i];
+                Vertex vertex = new()
+                {
+                    BoneIds = new uint[Vertex.MAX_BONE_INFLUENCE],
+                    Weights = new float[Vertex.MAX_BONE_INFLUENCE],
+                    Position = mesh->MVertices[i]
+                };
 
                 // normals
                 if (mesh->MNormals != null)
@@ -111,13 +121,52 @@ namespace Assets
             {
                 for (uint b = 0; b < mesh->MNumBones; b++)
                 {
-                    bones.Add(mesh->MBones[b][0]);
+                    // Construct bone data
+                    Bone bone = mesh->MBones[b][0];
+                    bone_map[bone.MName] = (uint)bones.Count;
+                    bones.Add(new BoneData
+                    {
+                        Offset = bone.MOffsetMatrix,
+                        Name = bone.MName
+                    });
+
+                    // Attach weights
+                    for (uint w = 0; w < bone.MNumWeights; w++)
+                    {
+                        uint vertid = bone.MWeights[w].MVertexId;
+                        WeighVertexToBone(vertices[(int)vertid], bone.MWeights[w].MWeight, bone_map[bone.MName]);
+                    }
                 }
             }
 
             // return a mesh object created from the extracted mesh data
             var result = new MeshData(_gl, BuildVertices(vertices), BuildIndices(indices), name, index, this);
             return result;
+        }
+
+        private void WeighVertexToBone(Vertex vertex, float bone_weight, uint bone_id)
+        {
+            // Replace 0s first
+            for (int i = 0; i < Vertex.MAX_BONE_INFLUENCE; i++)
+            {
+                if (vertex.Weights[i] == 0)
+                {
+                    vertex.BoneIds[i] = bone_id;
+                    vertex.Weights[i] = bone_weight;
+                    return;
+                }
+            }
+
+            // Replace lower values
+            for (int i = 0; i < Vertex.MAX_BONE_INFLUENCE; i++)
+            {
+                if (vertex.Weights[i] < bone_weight)
+                {
+                    vertex.BoneIds[i] = bone_id;
+                    vertex.Weights[i] = bone_weight;
+                    return;
+                }
+            }
         }
 
         private float[] BuildVertices(List<Vertex> vertexCollection)
@@ -149,6 +198,11 @@ namespace Assets
         private uint[] BuildIndices(List<uint> indices)
         {
             return indices.ToArray();
+        }
+        
+        private unsafe void ProcessAnimations(Animation* anim, int index)
+        {
+            Console.WriteLine("[" + index + "] " + anim->MName);
         }
 
         public void Dispose()
@@ -187,6 +241,20 @@ namespace Assets
                 index++;
             }
             return -1;
+        }
+
+        public BoneData? GetBone(string key)
+        {
+            if (bone_map.Count == 0) return null;
+            if (!bone_map.TryGetValue(key, out uint bone_index)) return null;
+            return bones[(int)bone_index];
+        }
+
+        public BoneData? GetBone(int index)
+        {
+            if (bones.Count == 0) return null;
+            if (index < 0 || index >= bones.Count) return null;
+            return bones[index];
         }
 
         public void DebugMeshNames()
