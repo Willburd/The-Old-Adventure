@@ -26,6 +26,7 @@ namespace Assets
         public List<MeshData> Meshes { get; protected set; } = new List<MeshData>();
         private readonly Dictionary<string, uint> bone_map = [];
         private readonly List<BoneData> bones = [];
+        private readonly Dictionary<string, AnimationData> animations = [];
 
         private unsafe void LoadModel(string path)
         {
@@ -39,9 +40,9 @@ namespace Assets
 
             // Extract mesh
             ProcessNode(scene->MRootNode, scene);
-            
+
             // Extract animations
-            for (var i = 0; i < scene->MNumAnimations; i++)
+            for (uint i = 0; i < scene->MNumAnimations; i++)
             {
                 ProcessAnimations(scene->MAnimations[i], i);
             }
@@ -199,10 +200,14 @@ namespace Assets
         {
             return indices.ToArray();
         }
-        
-        private unsafe void ProcessAnimations(Animation* anim, int index)
+
+        private unsafe void ProcessAnimations(Animation* anim, uint index)
         {
-            Console.WriteLine("[" + index + "] " + anim->MName);
+            animations[anim->MName] = new()
+            {
+                Index = index,
+                Name = anim->MName
+            };
         }
 
         public void Dispose()
