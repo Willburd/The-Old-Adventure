@@ -21,6 +21,7 @@ namespace TestAdventure
 
             // Models
             AssetLoader.ModelAssetLoad("testroom_terrain", "test_room.fbx");
+            AssetLoader.ModelAssetLoad("testroom_terrain", "animation_test.fbx", AssetLoader.AssetSource.engine);
 
             // Environments
             Environment = AssetLoader.EnvironmentAssetGet("standard_daynight", AssetLoader.AssetSource.engine);

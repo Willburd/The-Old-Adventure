@@ -56,6 +56,7 @@ namespace Assets
             // data to fill
             List<Vertex> vertices = new List<Vertex>();
             List<uint> indices = new List<uint>();
+            List<Bone> bones = new List<Bone>();
 
             // walk through each of the mesh's vertices
             for (uint i = 0; i < mesh->MNumVertices; i++)
@@ -93,7 +94,6 @@ namespace Assets
                     Vector3 texcoord3 = mesh->MTextureCoords[0][i];
                     vertex.TexCoords = new Vector2(texcoord3.X, texcoord3.Y);
                 }
-
                 vertices.Add(vertex);
             }
 
@@ -104,6 +104,15 @@ namespace Assets
                 // retrieve all indices of the face and store them in the indices vector
                 for (uint j = 0; j < face.MNumIndices; j++)
                     indices.Add(face.MIndices[j]);
+            }
+
+            // Build skeleton
+            if (mesh->MBones != null)
+            {
+                for (uint b = 0; b < mesh->MNumBones; b++)
+                {
+                    bones.Add(mesh->MBones[b][0]);
+                }
             }
 
             // return a mesh object created from the extracted mesh data
