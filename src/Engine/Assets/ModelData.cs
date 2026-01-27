@@ -203,11 +203,29 @@ namespace Assets
 
         private unsafe void ProcessAnimations(Animation* anim, uint index)
         {
-            animations[anim->MName] = new()
+            AnimationData current_anim = new()
             {
                 Index = index,
-                Name = anim->MName
+                Name = anim->MName,
+
+                pos_frames = [],
+                rot_frames = [],
+                scl_frames = []
             };
+
+            for (int i = 0; i < 1; i++)
+            {
+                
+            }
+
+
+
+            animations[anim->MName] = current_anim;
+        }
+
+        private void RecursiveNodeBuild()
+        {
+            
         }
 
         public void Dispose()
