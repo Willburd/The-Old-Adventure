@@ -1,3 +1,16 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://b5gttriu42rm5"]
 
+[ext_resource type="Shader" uid="uid://l5grin8nlb1b" path="res://Shaders/Skybox.tres" id="1_wbfs6"]
+[ext_resource type="Texture2D" uid="uid://beh68v4yyb8m7" path="res://Textures/standard_skybox_dawn.png" id="2_08db5"]
+[ext_resource type="Texture2D" uid="uid://nwb4dibefumw" path="res://Textures/standard_skybox_day.png" id="2_lov8y"]
+[ext_resource type="Texture2D" uid="uid://0gq0b3rtstl" path="res://Textures/standard_skybox_night.png" id="3_08db5"]
+[ext_resource type="Texture2D" uid="uid://dmlslioy4ehqm" path="res://Textures/standard_skybox_dusk.png" id="4_4jj8m"]
+
 [resource]
+render_priority = 0
+shader = ExtResource("1_wbfs6")
+shader_parameter/SkyNight = ExtResource("3_08db5")
+shader_parameter/SkyDawn = ExtResource("2_08db5")
+shader_parameter/CycleProgression = 0.8350000396625
+shader_parameter/SkyDay = ExtResource("2_lov8y")
+shader_parameter/SkyDusk = ExtResource("4_4jj8m")
