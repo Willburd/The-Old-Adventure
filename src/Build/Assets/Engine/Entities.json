@@ -1,0 +1,35 @@
+{
+    "actor_cube": {
+        "WorldRender": {},
+        "ActorBehavior.CubeActorBehavior": {}
+    },
+    "actor_pointer": {
+        "WorldRender": {},
+        "ActorBehavior.PointerActorBehavior": {}
+    },
+    "actor_bird": {
+        "WorldRender": {},
+        "TriggerVolume": {},
+        "PhysicsBody": {},
+        "Animator": {},
+        "ActorBehavior.FlyAwayBirdActorBehavior": {}
+    },
+    "room_exit": {
+        "TriggerVolume": {},
+        "ActorBehavior.RoomExitBehavior": {}
+    },
+    "actor_player": {
+        "WorldRender": {},
+        "Collider": {},
+        "PhysicsBody": {},
+        "Animator": {},
+        "Input": {},
+        "ActorBehavior.PlayerActorBehavior": {},
+        "ActorBehavior.HudActorBehavior": {}
+    },
+    "actor_effectfire": {
+        "BillboardRender": {},
+        "Light": {},
+        "ActorBehavior.FireActorBehavior": {}
+    }
+}

@@ -1,0 +1,464 @@
+using Assets;
+using Silk.NET.OpenGL;
+using Silk.NET.Windowing;
+using System.Drawing;
+using System.Numerics;
+using Rendering;
+using EntComponents.ActorBehavior;
+using EntComponents;
+
+namespace Engine
+{
+    public partial class Core
+    {
+        public static GL OpenGLContext { get; private set; }
+
+        /// <summary>
+        /// Number of frames per second for rendering.
+        /// </summary>
+        private static double FPS { get; set; } = 60;
+
+        /// <summary>
+        /// The threshold needed for the delta_time accumulator to trigger a frame render.
+        /// </summary>
+        private static double FpsTickInterval { get { return 1.0 / FPS; } }
+        private static double game_fps_accumulator = 0;
+
+        /// <summary>
+        /// Skips delta_time check for rendering frames, forcing a frame to be renderer as soon as possible. Used when changing scenes for example.
+        /// </summary>
+        private static bool RequestRender { get; set; }
+
+        /// <summary>
+        /// Number of renderer frames since launch.
+        /// </summary>
+        public static long ElapsedGameFrames { get; private set; }
+
+        /// <summary>
+        /// Percent difference from the previous game tick, to the next gametick. Used to do "inbetween" frames during rendering. 
+        /// </summary>
+        public static double GameTickDelta { get { return game_tick_accumulator % GameTickInterval / GameTickInterval; } }
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Game Rendering
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Configures GL settings, can be overriden to replace or extend configuration for your own adventure.
+        /// </summary>
+        public virtual void ConfigureGL()
+        {
+            // Depth control
+            OpenGLContext.Enable(EnableCap.DepthTest);
+            OpenGLContext.DepthFunc(DepthFunction.Less);
+
+            // Blending
+            OpenGLContext.Enable(EnableCap.Blend);
+
+            // Backface culling
+            OpenGLContext.Enable(EnableCap.CullFace);
+            OpenGLContext.CullFace(GLEnum.Back);
+
+            // GLTF format
+            OpenGLContext.FrontFace(FrontFaceDirection.Ccw);
+        }
+
+        /// <summary>
+        /// Handles rendering the game at the desired interval, called by the window itself.
+        /// </summary>
+        private static void HandleWindowRender(double deltaTime)
+        {
+            if (shutting_down) return;
+
+            game_fps_accumulator += deltaTime;
+            if (game_fps_accumulator >= FpsTickInterval || RequestRender)
+            {
+                ElapsedGameFrames++;
+                // We're effectively lerping between the previous draw and the new draw based on how far the gametick has progressed
+                singleton.RenderTick(GameTickDelta);
+                game_fps_accumulator %= FpsTickInterval;
+                RequestRender = false;
+                WindowContext.SwapBuffers();
+            }
+        }
+
+        /// <summary>
+        /// Render tick, fired at the game's framerate. Sends a render signals to all entities depending on their enabled state.
+        /// </summary>
+        private void RenderTick(double tick_delta)
+        {
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            // Clear screen and create camera draw frustrum
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            FrameBuffer_Main.Clear();
+
+            // Draw radius
+            Vector3 world_load_position = Vector3.Zero;
+            if (Camera.WorldCamera != null) world_load_position = Camera.WorldCamera.Position;
+
+            float frustum_dot_product_limit = -0.35f; // Very generous
+            Vector3 camera_vector = Tools.Forward;
+            if (Camera.WorldCamera != null) camera_vector = Vector3.Transform(Tools.Forward, Camera.WorldCamera.Rotation);
+
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            // Pre rendering
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            FrameBuffer_CurrentLayer.Clear();
+
+            Dictionary<string, object> vertex_uniforms = [];
+            SortedList<uint, List<Entity>> render_queue = []; // Stores lists of entities in each priority, as their creaiton order is all that matters if they are in the same queue anyway
+            ApplyPrerenderEnvironmentUniforms(vertex_uniforms, tick_delta);
+            OnPreRenderTick();
+            // Assemble a list in order of priority.
+            foreach (Entity check in Entity.EntityList)
+            {
+                // Check the entity for a render priority. We only draw if we have one, as that means we have a component that wants to draw!
+                uint priority = check.SendSignal(Signals.render_priority, tick_delta);
+                if (priority == 0) continue; // Not visible if no component responds.
+
+                // Use distance as part of the priority calculation. This helps rendering transparent objects
+                priority = Math.Clamp(priority, 0, 32);
+                uint priority_band = 10000000;
+                priority *= priority_band; // Expand the bounds to make it easier to use camera distance for depth sorting
+                priority_band += priority_band; // Allow lower priorities...
+                float cam_dist = Math.Clamp(Vector3.Distance(check.Position, world_load_position) * 10, 0, priority_band);
+                priority -= (uint)cam_dist;
+
+                // Check vis culling
+                float dist = Vector3.Distance(world_load_position, check.Position);
+                if (dist > world_unload_radius) continue;
+                if (dist > check.MinimumRenderDistance)
+                {
+                    float dot_prod = Vector3.Dot(Tools.DirVector(check.Position, world_load_position), camera_vector);
+                    if (dot_prod >= frustum_dot_product_limit) continue; // Nothing behind us
+                }
+
+                // perform prerender while we're here.
+                Dictionary<string, object> unique_vuniforms = new(vertex_uniforms)
+                {
+                    { "uUniqueID", check.UniqueSeed }
+                };
+                check.SendSignal(Signals.pre_render, tick_delta, unique_vuniforms);
+                // Add to queue for all of the following render loops, instead of checking every entity for each one! We only store the ones that replied with a draw priority!
+                if (!render_queue.ContainsKey(priority)) render_queue.Add(priority, []);
+                render_queue[priority].Add(check);
+            }
+
+            FrameBuffer_CurrentLayer.Render(FrameBuffer_Main, tick_delta);
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            // Primary rendering
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            FrameBuffer_CurrentLayer.Clear();
+
+            // Apply environment
+            vertex_uniforms.Clear();
+            ApplyEnvironmentUniforms(vertex_uniforms, tick_delta);
+
+            OnRenderTick();
+            foreach ((uint key, List<Entity> draw_list) in render_queue)
+            {
+                foreach (Entity draw in draw_list)
+                {
+                    Dictionary<string, object> unique_vuniforms = new(vertex_uniforms)
+                    {
+                        { "uUniqueID", draw.UniqueSeed }
+                    };
+                    draw.SendSignal(Signals.render, tick_delta, unique_vuniforms);
+                }
+            }
+
+            FrameBuffer_CurrentLayer.Render(FrameBuffer_Main, tick_delta);
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            // Late rendering
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            FrameBuffer_CurrentLayer.Clear();
+
+            OnPostRenderTick();
+            foreach ((uint key, List<Entity> draw_list) in render_queue)
+            {
+                foreach (Entity draw in draw_list)
+                {
+                    Dictionary<string, object> unique_vuniforms = new(vertex_uniforms)
+                    {
+                        { "uUniqueID", draw.UniqueSeed }
+                    };
+                    draw.SendSignal(Signals.post_render, tick_delta, unique_vuniforms);
+                }
+            }
+
+            FrameBuffer_CurrentLayer.Render(FrameBuffer_Main, tick_delta);
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            // Hud rendering
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            FrameBuffer_CurrentLayer.Clear();
+
+            OnRenderHudTick();
+            foreach ((uint key, List<Entity> draw_list) in render_queue)
+            {
+                foreach (Entity draw in draw_list)
+                {
+                    Dictionary<string, object> unique_vuniforms = new(vertex_uniforms)
+                    {
+                        { "uUniqueID", draw.UniqueSeed }
+                    };
+                    draw.SendSignal(Signals.hud_render, tick_delta, unique_vuniforms);
+                }
+            }
+
+            FrameBuffer_CurrentLayer.Render(FrameBuffer_Main, tick_delta);
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            // Render the frame
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            FrameBufferContainer.ResetFrameBuffer();
+            OpenGLContext.ClearColor(Color.FromArgb(0, 0, 0, 0));
+            OpenGLContext.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            Core.SpriteRenderDepthOffset = 0;
+            FrameBuffer_Main.Render(tick_delta);
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Asset Rendering
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public static void RenderModel(ModelData model, List<MaterialData> materials, Dictionary<string, object> vertex_uniforms)
+        {
+            // Render each mesh!
+            int mesh_index = 0;
+            foreach (var mesh in model.Meshes)
+            {
+                RenderMesh(mesh, materials[mesh_index], vertex_uniforms);
+                mesh_index++;
+            }
+        }
+
+        public static void RenderMesh(MeshData mesh, MaterialData mat_data, Dictionary<string, object> vertex_uniforms)
+        {
+            // Check for collision drawing
+            if (mesh.RawName == "col.001")
+            {
+                if (!draw_collisions) return;
+                mat_data = collision_draw_material; // Use our collision shader
+            }
+
+            // Bind the VBOs
+            mesh.Bind();
+
+            // Set the blending mode
+            mat_data.UseBlendMode();
+
+            // Each mesh can use a different material, and that also means shader!
+            ShaderData shader = mat_data.Shader;
+            shader.Use();
+            foreach (KeyValuePair<string, object> vertuni in vertex_uniforms)
+            {
+                shader.SetUniform(vertuni.Key, vertuni.Value);
+            }
+
+            // Bind textures to texunits
+            int tex_unit_id = 0;
+            foreach (TextureData tex in mat_data.Textures)
+            {
+                tex.Bind(tex_unit_id);
+                tex_unit_id++;
+            }
+
+            // Apply shader uniforms
+            foreach (KeyValuePair<string, object> matuni in mat_data.Uniforms)
+            {
+                shader.SetUniform(matuni.Key, matuni.Value);
+            }
+
+            // Draw mesh
+            OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Sprite Rendering
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public static void RenderSprite(MaterialData mat_data, Dictionary<string, object> vertex_uniforms)
+        {
+            RenderSprite(mat_data, Vector3.Zero, Vector3.One, Vector2.Zero, Vector2.One, Vector3.One, vertex_uniforms);
+        }
+
+        public static void RenderSprite(MaterialData mat_data, Vector3 color_blend, Dictionary<string, object> vertex_uniforms)
+        {
+            RenderSprite(mat_data, Vector3.Zero, Vector3.One, Vector2.Zero, Vector2.One, color_blend, vertex_uniforms);
+        }
+
+        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector3 color_blend, Dictionary<string, object> vertex_uniforms)
+        {
+            RenderSprite(mat_data, draw_offset, Vector3.One, Vector2.Zero, Vector2.One, color_blend, vertex_uniforms);
+        }
+
+        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector3 draw_scale, Vector3 color_blend, Dictionary<string, object> vertex_uniforms)
+        {
+            RenderSprite(mat_data, draw_offset, draw_scale, Vector2.Zero, Vector2.One, color_blend, vertex_uniforms);
+        }
+
+        public static void RenderSprite(MaterialData mat_data, Vector3 draw_offset, Vector3 draw_scale, Vector2 cut_pos, Vector2 cut_size, Vector3 color_blend, Dictionary<string, object> vertex_uniforms)
+        {
+            // Set position
+            Vector3 set_scale = new(1f / Core.DisplayAspectRatio, 1f, 1f);
+            WorldRender.CreateBaseUniforms2D(Matrix4x4.CreateScale(set_scale), vertex_uniforms);
+
+            // Bind the VBOs
+            MeshData mesh = sprite2d_model.Meshes[0];
+            mesh.Bind();
+
+            // Set the blending mode
+            mat_data.UseBlendMode();
+
+            // Each mesh can use a different material, and that also means shader!
+            ShaderData shader = mat_data.Shader;
+            shader.Use();
+
+            WorldRender.CreateSprite2DUniforms(cut_pos, cut_size, draw_offset, draw_scale, color_blend, vertex_uniforms);
+            foreach (KeyValuePair<string, object> vertuni in vertex_uniforms)
+            {
+                shader.SetUniform(vertuni.Key, vertuni.Value);
+            }
+
+            // Bind textures to texunits
+            int tex_unit_id = 0;
+            foreach (TextureData tex in mat_data.Textures)
+            {
+                tex.Bind(tex_unit_id);
+                tex_unit_id++;
+            }
+
+            // Apply shader uniforms
+            foreach (KeyValuePair<string, object> matuni in mat_data.Uniforms)
+            {
+                shader.SetUniform(matuni.Key, matuni.Value);
+            }
+
+            // Draw mesh
+            OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+            Core.SpriteRenderDepthOffset++;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // FBO Rendering
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public static void RenderFBO(FrameBufferContainer fbo, Dictionary<string, object> vertex_uniforms)
+        {
+            RenderFBO(fbo, Vector3.Zero, Vector3.One, Vector2.Zero, Vector2.One, vertex_uniforms);
+        }
+
+        public static void RenderFBO(FrameBufferContainer fbo, Vector3 draw_offset, Dictionary<string, object> vertex_uniforms)
+        {
+            RenderFBO(fbo, draw_offset, Vector3.One, Vector2.Zero, Vector2.One, vertex_uniforms);
+        }
+
+        public static void RenderFBO(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, Dictionary<string, object> vertex_uniforms)
+        {
+            RenderFBO(fbo, draw_offset, draw_scale, Vector2.Zero, Vector2.One, vertex_uniforms);
+        }
+
+        public static void RenderFBO(FrameBufferContainer fbo, Vector3 draw_offset, Vector3 draw_scale, Vector2 cut_pos, Vector2 cut_size, Dictionary<string, object> vertex_uniforms)
+        {
+            // Set position
+            Vector3 set_scale = new(1f / Core.DisplayAspectRatio, 1f, 1f);
+            WorldRender.CreateBaseUniforms2D(Matrix4x4.CreateScale(set_scale), vertex_uniforms);
+
+            // Bind the VBOs
+            MeshData mesh = sprite2d_model.Meshes[0];
+            mesh.Bind();
+
+            // Set the blending mode
+            OpenGLContext.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+            // Each mesh can use a different material, and that also means shader!
+            ShaderData shader = sprite2d_material.Shader;
+            shader.Use();
+
+            WorldRender.CreateSprite2DUniforms(cut_pos, cut_size, draw_offset, draw_scale, Vector3.One, vertex_uniforms);
+            foreach (KeyValuePair<string, object> vertuni in vertex_uniforms)
+            {
+                shader.SetUniform(vertuni.Key, vertuni.Value);
+            }
+
+            // Bind textures to texunits
+            fbo.BindTexture();
+
+            // Apply shader uniforms
+            foreach (KeyValuePair<string, object> matuni in sprite2d_material.Uniforms)
+            {
+                shader.SetUniform(matuni.Key, matuni.Value);
+            }
+
+            // Draw mesh
+            OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+            Core.SpriteRenderDepthOffset++;
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Text Rendering
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public static void RenderText2D(string text, Vector3 draw_offset, Vector3 draw_scale, Vector3 color_blend, Dictionary<string, object> vertex_uniforms)
+        {
+            RenderText2D(text, draw_offset, draw_scale, color_blend, 0.46f, 0.6f, vertex_uniforms);
+        }
+
+        public static void RenderText2D(string text, Vector3 draw_offset, Vector3 draw_scale, Vector3 color_blend, float spacing, float line_height, Dictionary<string, object> vertex_uniforms)
+        {
+            // Set position
+            Vector3 set_scale = new Vector3(1f / Core.DisplayAspectRatio, 1f, 1f);
+            WorldRender.CreateBaseUniforms2D(Matrix4x4.CreateScale(set_scale), vertex_uniforms);
+
+            // Bind the VBOs
+            MeshData mesh = quad2d_model.Meshes[0];
+            mesh.Bind();
+
+            // Set the blending mode
+            OpenGLContext.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+            // Each mesh can use a different material, and that also means shader!
+            ShaderData shader = text2d_material.Shader;
+            shader.Use();
+
+            // Bind textures to texunits
+            text2d_material.Textures[0].Bind(0);
+
+            // Apply shader uniforms
+            foreach (KeyValuePair<string, object> matuni in text2d_material.Uniforms)
+            {
+                shader.SetUniform(matuni.Key, matuni.Value);
+            }
+
+            // Step through string drawing
+            float draw_wid = 0f;
+            float y_offset = -1f;
+            for (int index = 0; index < text.Length; index++)
+            {
+                // Check to see what our draw position is, and if the next should go down a line.
+                char id = text[index];
+                if (id == '\n')
+                {
+                    draw_wid = 0f;
+                    y_offset -= line_height;
+                    continue; // skip character draw
+                }
+                // Set the subcoord of the sprite
+                int tex_col_count = 16;
+                Vector2 decode_pos = decode[id];
+                WorldRender.CreateSprite2DUniforms(decode_pos, new Vector2(1f / tex_col_count, 1f / tex_col_count), draw_offset + (new Vector3(draw_wid, y_offset, Core.SpriteRenderDepthOffset) * draw_scale), draw_scale, color_blend, vertex_uniforms);
+                foreach (KeyValuePair<string, object> vertuni in vertex_uniforms)
+                {
+                    shader.SetUniform(vertuni.Key, vertuni.Value);
+                }
+                // Draw text glyph
+                OpenGLContext.DrawArrays(PrimitiveType.Triangles, 0, (uint)mesh.Indices.Length);
+                Core.SpriteRenderDepthOffset++;
+                draw_wid += spacing;
+            }
+        }
+    }
+}
