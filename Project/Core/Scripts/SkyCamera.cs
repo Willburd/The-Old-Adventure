@@ -3,9 +3,6 @@ using System;
 
 public partial class SkyCamera : Camera3D
 {
-	[Export]
-	public Camera3D WorldCamera { private set; get; }
-
 	public override void _Ready()
 	{
 		RenderingServer.FramePreDraw += () => SnapToWorldCamera();
@@ -17,6 +14,6 @@ public partial class SkyCamera : Camera3D
 	/// </summary>
 	private void SnapToWorldCamera()
 	{
-		Rotation = WorldCamera.Rotation;
+		Rotation = Game.WorldCamera.Rotation;
 	}
 }

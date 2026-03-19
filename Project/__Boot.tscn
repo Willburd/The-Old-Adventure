@@ -1,16 +1,14 @@
 [gd_scene format=3 uid="uid://1xxhj4tst8tj"]
 
-[ext_resource type="Environment" uid="uid://b1fvhf44qb41i" path="res://Core/Environments/Default.tres" id="1_gdcm2"]
+[ext_resource type="Script" uid="uid://cfbcv4gniswis" path="res://Core/Scripts/__Boot.cs" id="1_tjtiu"]
 [ext_resource type="Environment" uid="uid://v6btgohgyd4k" path="res://Core/Environments/PauseScreen.tres" id="2_iy6s0"]
 [ext_resource type="Script" uid="uid://bxrjc1on14lxj" path="res://Core/Scripts/SkyCamera.cs" id="2_tjtiu"]
-[ext_resource type="PackedScene" uid="uid://dm030bysmdnkm" path="res://Core/Prefabs/Cube.tscn" id="3_6ed8h"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_iy6s0"]
 
 [node name="Main" type="Node3D" unique_id=1812087155]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=16935470]
-environment = ExtResource("1_gdcm2")
+script = ExtResource("1_tjtiu")
+StartScenePath = "res://Core/Scenes/TestScene.tscn"
 
 [node name="RenderCamera" type="Camera3D" parent="." unique_id=656179604]
 cull_mask = 524288
@@ -50,10 +48,9 @@ handle_input_locally = false
 size = Vector2i(576, 324)
 render_target_update_mode = 4
 
-[node name="SkyCamera" type="Camera3D" parent="RenderCamera/RenderTexture/ScreenControl/SkyView/SkyPort" unique_id=1460964628 node_paths=PackedStringArray("WorldCamera")]
+[node name="SkyCamera" type="Camera3D" parent="RenderCamera/RenderTexture/ScreenControl/SkyView/SkyPort" unique_id=1460964628]
 cull_mask = 65536
 script = ExtResource("2_tjtiu")
-WorldCamera = NodePath("../../../WorldView/WorldPort/WorldCamera")
 
 [node name="WorldView" type="SubViewportContainer" parent="RenderCamera/RenderTexture/ScreenControl" unique_id=2049790011]
 texture_filter = 1
@@ -98,5 +95,4 @@ render_target_update_mode = 4
 cull_mask = 131072
 environment = ExtResource("2_iy6s0")
 
-[node name="Cube" parent="." unique_id=524756219 instance=ExtResource("3_6ed8h")]
-transform = Transform3D(0.65556395, -0.3719583, 0.657178, 0.49348652, 0.8697534, 0, -0.5715828, 0.32430848, 0.7537354, 1.2259263, -0.14033663, -4.221828)
+[node name="LoadedScenes" type="Node3D" parent="." unique_id=1833917936]
