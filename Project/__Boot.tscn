@@ -1,3 +1,74 @@
 [gd_scene format=3 uid="uid://1xxhj4tst8tj"]
 
-[node name="Boot" type="Node" unique_id=2030616297]
+[ext_resource type="Environment" uid="uid://b1fvhf44qb41i" path="res://Environments/Default.tres" id="1_gdcm2"]
+[ext_resource type="Environment" uid="uid://v6btgohgyd4k" path="res://Environments/PauseScreen.tres" id="2_iy6s0"]
+[ext_resource type="PackedScene" uid="uid://dm030bysmdnkm" path="res://Prefabs/Cube.tscn" id="3_6ed8h"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_iy6s0"]
+
+[node name="Main" type="Node3D" unique_id=1812087155]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=16935470]
+environment = ExtResource("1_gdcm2")
+
+[node name="RenderCamera" type="Camera3D" parent="." unique_id=656179604]
+cull_mask = 524288
+projection = 1
+current = true
+
+[node name="RenderTexture" type="TextureRect" parent="RenderCamera" unique_id=371820395]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CanvasTexture_iy6s0")
+
+[node name="ScreenControl" type="Control" parent="RenderCamera/RenderTexture" unique_id=1844934944]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WorldView" type="SubViewportContainer" parent="RenderCamera/RenderTexture/ScreenControl" unique_id=2049790011]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 2
+
+[node name="WorldPort" type="SubViewport" parent="RenderCamera/RenderTexture/ScreenControl/WorldView" unique_id=612911490]
+handle_input_locally = false
+size = Vector2i(576, 324)
+render_target_update_mode = 4
+
+[node name="WorldCamera" type="Camera3D" parent="RenderCamera/RenderTexture/ScreenControl/WorldView/WorldPort" unique_id=1389947943]
+cull_mask = 131071
+
+[node name="PauseView" type="SubViewportContainer" parent="RenderCamera/RenderTexture/ScreenControl" unique_id=1268530204]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 2
+
+[node name="PausePort" type="SubViewport" parent="RenderCamera/RenderTexture/ScreenControl/PauseView" unique_id=1005239000]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(576, 324)
+render_target_update_mode = 4
+
+[node name="PauseCamera" type="Camera3D" parent="RenderCamera/RenderTexture/ScreenControl/PauseView/PausePort" unique_id=1438838193]
+cull_mask = 131072
+environment = ExtResource("2_iy6s0")
+
+[node name="Cube" parent="." unique_id=524756219 instance=ExtResource("3_6ed8h")]
+transform = Transform3D(0.65556395, -0.3719583, 0.657178, 0.49348652, 0.8697534, 0, -0.5715828, 0.32430848, 0.7537354, 1.2259263, -0.14033663, -4.221828)
