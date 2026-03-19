@@ -11,12 +11,25 @@ config_version=5
 [application]
 
 config/name="The Old Adventure"
-config/features=PackedStringArray("4.6", "GL Compatibility")
+config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [dotnet]
 
 project/assembly_name="The Old Adventure"
+
+[importer_defaults]
+
+animation_library={
+&"animation/fps": 30.0,
+&"blender/materials/export_materials": 2,
+&"blender/materials/unpack_enabled": false,
+&"blender/meshes/colors": true,
+&"blender/meshes/export_bones_deforming_mesh_only": true,
+&"blender/meshes/skins": 1,
+&"blender/nodes/cameras": false,
+&"blender/nodes/punctual_lights": false
+}
 
 [physics]
 
@@ -24,6 +37,7 @@ project/assembly_name="The Old Adventure"
 
 [rendering]
 
+textures/canvas_textures/default_texture_repeat=1
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
