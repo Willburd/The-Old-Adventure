@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://1xxhj4tst8tj"]
 
-[ext_resource type="Environment" uid="uid://b1fvhf44qb41i" path="res://Environments/Default.tres" id="1_gdcm2"]
-[ext_resource type="Environment" uid="uid://v6btgohgyd4k" path="res://Environments/PauseScreen.tres" id="2_iy6s0"]
-[ext_resource type="PackedScene" uid="uid://dm030bysmdnkm" path="res://Prefabs/Cube.tscn" id="3_6ed8h"]
+[ext_resource type="Environment" uid="uid://b1fvhf44qb41i" path="res://Core/Environments/Default.tres" id="1_gdcm2"]
+[ext_resource type="Environment" uid="uid://v6btgohgyd4k" path="res://Core/Environments/PauseScreen.tres" id="2_iy6s0"]
+[ext_resource type="Script" uid="uid://bxrjc1on14lxj" path="res://Core/Scripts/SkyCamera.cs" id="2_tjtiu"]
+[ext_resource type="PackedScene" uid="uid://dm030bysmdnkm" path="res://Core/Prefabs/Cube.tscn" id="3_6ed8h"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_iy6s0"]
 
@@ -17,6 +18,8 @@ projection = 1
 current = true
 
 [node name="RenderTexture" type="TextureRect" parent="RenderCamera" unique_id=371820395]
+texture_filter = 1
+texture_repeat = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -32,7 +35,29 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="SkyView" type="SubViewportContainer" parent="RenderCamera/RenderTexture/ScreenControl" unique_id=2143334374]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 2
+
+[node name="SkyPort" type="SubViewport" parent="RenderCamera/RenderTexture/ScreenControl/SkyView" unique_id=1226463471]
+handle_input_locally = false
+size = Vector2i(576, 324)
+render_target_update_mode = 4
+
+[node name="SkyCamera" type="Camera3D" parent="RenderCamera/RenderTexture/ScreenControl/SkyView/SkyPort" unique_id=1460964628 node_paths=PackedStringArray("WorldCamera")]
+cull_mask = 65536
+script = ExtResource("2_tjtiu")
+WorldCamera = NodePath("../../../WorldView/WorldPort/WorldCamera")
+
 [node name="WorldView" type="SubViewportContainer" parent="RenderCamera/RenderTexture/ScreenControl" unique_id=2049790011]
+texture_filter = 1
+texture_repeat = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,6 +68,7 @@ stretch = true
 stretch_shrink = 2
 
 [node name="WorldPort" type="SubViewport" parent="RenderCamera/RenderTexture/ScreenControl/WorldView" unique_id=612911490]
+transparent_bg = true
 handle_input_locally = false
 size = Vector2i(576, 324)
 render_target_update_mode = 4
@@ -51,6 +77,8 @@ render_target_update_mode = 4
 cull_mask = 131071
 
 [node name="PauseView" type="SubViewportContainer" parent="RenderCamera/RenderTexture/ScreenControl" unique_id=1268530204]
+texture_filter = 1
+texture_repeat = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

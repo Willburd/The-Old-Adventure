@@ -35,6 +35,7 @@ animation_library={
 [layer_names]
 
 3d_render/layer_1="World"
+3d_render/layer_17="Skybox"
 3d_render/layer_18="Pause"
 3d_render/layer_19="Debug"
 3d_render/layer_20="FinalRender"
