@@ -4,4 +4,3 @@
 
 [resource]
 sky_material = ExtResource("1_mr1fc")
-radiance_size = 2
