@@ -8,7 +8,7 @@
 
 [node name="Main" type="Node3D" unique_id=1812087155]
 script = ExtResource("1_tjtiu")
-_start_scene_path = "res://Core/Scenes/TestScene.tscn"
+_start_scene_path = "res://Core/Scenes/ExampleScene.tscn"
 
 [node name="RenderCamera" type="Camera3D" parent="." unique_id=656179604]
 cull_mask = 524288
