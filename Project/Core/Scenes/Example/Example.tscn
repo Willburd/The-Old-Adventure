@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://jc6qa865yndb"]
 
-[ext_resource type="Script" uid="uid://co6urafaqmgba" path="res://Core/Scripts/Controllers/SceneController.cs" id="1_dyok7"]
+[ext_resource type="Script" uid="uid://b8m6qgoyv5n2j" path="res://Core/Scenes/Example/Example.cs" id="1_tv1ab"]
 [ext_resource type="Environment" uid="uid://b1fvhf44qb41i" path="res://Core/Environments/Default.tres" id="2_jk2u1"]
-[ext_resource type="PackedScene" uid="uid://by26recat6scy" path="res://Core/Prefabs/TestEntity.tscn" id="3_jk2u1"]
+[ext_resource type="PackedScene" uid="uid://by26recat6scy" path="res://Core/Prefabs/Entities/Test.tscn" id="3_jk2u1"]
 
 [node name="ExampleScene" type="Node3D" unique_id=1280371212]
-script = ExtResource("1_dyok7")
+script = ExtResource("1_tv1ab")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1907310117]
 environment = ExtResource("2_jk2u1")
@@ -19,5 +19,3 @@ transform = Transform3D(0.8253868, -0.29069185, 0.48397833, -0.122097775, 0.7450
 
 [node name="TestEntity" parent="Layers/Default" unique_id=1076345598 instance=ExtResource("3_jk2u1")]
 transform = Transform3D(0.3581226, -0.47385347, -0.80449426, 0.43117437, 0.848196, -0.3076559, 0.8281527, -0.23669887, 0.50807166, 2.3479333, 0, -4.126845)
-
-[node name="Entities" type="Node" parent="." unique_id=1733586817]

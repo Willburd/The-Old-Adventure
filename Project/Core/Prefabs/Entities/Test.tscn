@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://by26recat6scy"]
 
 [ext_resource type="Script" uid="uid://d0sjah4l5ha7" path="res://Core/Scripts/EntitySystem/Entity.cs" id="1_o0xtp"]
-[ext_resource type="Script" uid="uid://dexu8ftrhpwt6" path="res://Core/Scripts/Components/Rotates.cs" id="2_hsc2l"]
+[ext_resource type="Script" uid="uid://dexu8ftrhpwt6" path="res://Core/Scripts/Components/Generic/Rotates.cs" id="2_hsc2l"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_iy6s0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iy6s0"]
 
-[node name="TestEntity" type="Node3D" unique_id=1076345598]
+[node name="Test" type="Node3D" unique_id=1076345598]
 script = ExtResource("1_o0xtp")
 
 [node name="Rotates" type="Node" parent="." unique_id=1085649728]

@@ -2,12 +2,12 @@ using Godot;
 
 public partial class Entity : Node3D
 {
-	private SceneController _host_scene;
+	private GameScenes.SceneController _host_scene;
 	private bool _is_prefab = true;
 	private Vector3 _starting_position;
 	private Vector3 _starting_rotation;
 
-	public void Setup(SceneController host, Vector3 new_pos, Vector3 at_rotation)
+	public void Setup(GameScenes.SceneController host, Vector3 new_pos, Vector3 at_rotation)
 	{
 		_host_scene = host;
 		GlobalPosition = new_pos;
@@ -18,7 +18,7 @@ public partial class Entity : Node3D
 		_is_prefab = false;
 	}
 
-	public void Spawn(SceneController scene)
+	public void Spawn(GameScenes.SceneController scene)
 	{
 		Game.LoadEntityFromPath(SceneFilePath, scene, GlobalPosition, GlobalRotation);
 	}

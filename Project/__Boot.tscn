@@ -8,7 +8,7 @@
 
 [node name="Main" type="Node3D" unique_id=1812087155]
 script = ExtResource("1_tjtiu")
-_start_scene_path = "res://Core/Scenes/ExampleScene.tscn"
+_start_scene_path = "res://Core/Scenes/Example/Example.tscn"
 
 [node name="RenderCamera" type="Camera3D" parent="." unique_id=656179604]
 cull_mask = 524288
@@ -95,5 +95,3 @@ render_target_update_mode = 4
 [node name="PauseCamera" type="Camera3D" parent="RenderCamera/RenderTexture/ScreenControl/PauseView/PausePort" unique_id=1438838193]
 cull_mask = 131072
 environment = ExtResource("2_iy6s0")
-
-[node name="LoadedScenes" type="Node3D" parent="." unique_id=1833917936]
