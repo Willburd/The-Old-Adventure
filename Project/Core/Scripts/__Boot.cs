@@ -1,3 +1,4 @@
+using System.Linq;
 using Godot;
 
 /// <summary>
@@ -5,6 +6,16 @@ using Godot;
 /// </summary>
 public static class Game
 {
+	public enum States
+	{
+		active,
+		cutscene,
+		pause,
+		menu,
+		title,
+	}
+
+	static public States CurrentState = States.active;
 	static public Node3D Root;
 
 	static public Camera3D RenderCamera;
@@ -51,7 +62,7 @@ public static class Game
 	/// </summary>
 	public static void UnloadAllScenes()
 	{
-		foreach(Node3D node in LoadedScenesParent.GetChildren())
+		foreach(Node3D node in LoadedScenesParent.GetChildren().Cast<Node3D>())
 		{
 			GD.Print("Unloaded instance: " + node.Name);
 			node.Free();
@@ -67,7 +78,7 @@ public static class Game
 public partial class __Boot : Node3D
 {
 	[Export]
-	private string StartScenePath;
+	private string _start_scene_path;
 
 	public override void _Ready()
 	{
@@ -87,6 +98,6 @@ public partial class __Boot : Node3D
 		Game.LoadedScenesParent = FindChild("LoadedScenes", true) as Node3D;
 
 		// Load first scene
-		Game.LoadSceneFromPath(StartScenePath);
+		Game.LoadSceneFromPath(_start_scene_path);
 	}
 }

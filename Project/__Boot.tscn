@@ -2,16 +2,17 @@
 
 [ext_resource type="Script" uid="uid://cfbcv4gniswis" path="res://Core/Scripts/__Boot.cs" id="1_tjtiu"]
 [ext_resource type="Environment" uid="uid://v6btgohgyd4k" path="res://Core/Environments/PauseScreen.tres" id="2_iy6s0"]
-[ext_resource type="Script" uid="uid://bxrjc1on14lxj" path="res://Core/Scripts/SkyCamera.cs" id="2_tjtiu"]
+[ext_resource type="Script" uid="uid://bxrjc1on14lxj" path="res://Core/Scripts/Misc/SkyCamera.cs" id="2_tjtiu"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_iy6s0"]
 
 [node name="Main" type="Node3D" unique_id=1812087155]
 script = ExtResource("1_tjtiu")
-StartScenePath = "res://Core/Scenes/TestScene.tscn"
+_start_scene_path = "res://Core/Scenes/TestScene.tscn"
 
 [node name="RenderCamera" type="Camera3D" parent="." unique_id=656179604]
 cull_mask = 524288
+environment = ExtResource("2_iy6s0")
 projection = 1
 current = true
 
