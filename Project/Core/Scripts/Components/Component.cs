@@ -27,10 +27,25 @@ namespace EntComponents
 			OnEntityTick(delta);
 		}
 
+        // Don't inheret from this as a Component, use OnEntityPhysicsTick()
+        public override void _PhysicsProcess(double delta)
+        {
+			if(!EntityParent.CanTick()) return;
+			OnEntityPhysicsTick(delta);
+		}
+
 		/// <summary>
 		/// Fired on Process, but only if CanTick() allows it.
 		/// </summary>
 		public virtual void OnEntityTick(double delta)
+		{
+			
+		}
+
+		/// <summary>
+		/// Fired on PhysicsProcess, but only if CanTick() allows it.
+		/// </summary>
+		public virtual void OnEntityPhysicsTick(double delta)
 		{
 			
 		}
