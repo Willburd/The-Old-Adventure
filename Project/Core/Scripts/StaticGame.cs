@@ -27,6 +27,8 @@ public static class Game
 	static public Viewport WorldViewport;
 	static public Viewport SkyViewport;
 	static public Viewport PauseViewport;
+	
+	static public TextureRect ViewFade;
 
 	static public TextureRect RenderTexture;
 	static public Node LoadedScenesParent;
@@ -105,6 +107,11 @@ public static class Game
 			GD.Print("Unloaded instance: " + node.Name);
 			node.Free();
 		}
+	}
+
+	public static void SetFadeColor(Color goal_fade)
+	{
+		ViewFade.Modulate = goal_fade;
 	}
 
 	public static void Shutdown()

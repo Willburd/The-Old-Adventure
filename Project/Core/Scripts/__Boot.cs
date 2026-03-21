@@ -20,6 +20,7 @@ public partial class __Boot : Node3D
 		Game.PauseViewport = FindChild("PauseView", true) as Viewport;
 
 		Game.RenderTexture = FindChild("RenderTexture", true) as TextureRect;
+		Game.ViewFade = Game.RenderTexture.FindChild("ViewFade", false) as TextureRect;
 
 		// Create scene container
         Game.LoadedScenesParent = new Node
@@ -30,5 +31,6 @@ public partial class __Boot : Node3D
 
         // Load first scene
         Game.LoadSceneFromPath(_start_scene_path);
+		Game.SetFadeColor(new Color(1f,1f,1f,0f));
 	}
 }
