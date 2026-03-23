@@ -5,10 +5,13 @@
 [resource]
 background_mode = 2
 sky = ExtResource("1_ismkk")
+ambient_light_source = 3
+reflected_light_source = 2
 fog_enabled = true
 fog_mode = 1
-fog_light_color = Color(0.44943815, 0.557163, 0.71041274, 1)
+fog_light_color = Color(0.7473222, 0.9211978, 0.97252053, 1)
 fog_density = 1.0
 fog_sky_affect = 0.0
-fog_depth_curve = 5.464154
-fog_depth_end = 2000.0
+fog_depth_curve = 1.8024964
+fog_depth_begin = 0.0
+fog_depth_end = 159.8
