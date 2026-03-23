@@ -23,7 +23,7 @@ script = ExtResource("1_tv1ab")
 [node name="Default" type="Node" parent="Layers" unique_id=960763442]
 
 [node name="Player" parent="Layers/Default" unique_id=1452326567 instance=ExtResource("4_e0d0k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11021018, 9.188087, -7.250916)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11021018, 57.200275, -75.688194)
 
 [node name="Test" parent="Layers/Default" unique_id=1076345598 instance=ExtResource("3_jk2u1")]
 transform = Transform3D(0.2763536, -0.85661846, -0.43569884, 0.45882243, 0.5159504, -0.723379, 0.8444588, 0, 0.5356205, 2.1481953, 1.4868374, -5.063018)
