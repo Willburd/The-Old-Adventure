@@ -23,11 +23,6 @@ namespace StateMachines
             PlayerBehavior.PlayerParent.MoveAndSlide();
         }
 
-        public Vector3 GetGravity(double delta)
-        {
-            return (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity") * (float)delta;
-        }
-
         public void StandardHandleMovementVelocity(double delta)
         {
             // We are on the ground and ready to move!

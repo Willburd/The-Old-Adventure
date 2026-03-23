@@ -9,8 +9,11 @@ height = 1.5
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_e0d0k"]
 
 [node name="Player" type="CharacterBody3D" unique_id=1452326567]
+process_mode = 3
 axis_lock_angular_x = true
 axis_lock_angular_z = true
+floor_constant_speed = true
+platform_on_leave = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1565900788]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)

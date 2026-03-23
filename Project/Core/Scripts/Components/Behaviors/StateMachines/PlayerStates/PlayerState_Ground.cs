@@ -12,7 +12,7 @@ namespace StateMachines
                 _movement_velocity = ply_prev._movement_velocity;
                 _knockback_velocity = ply_prev._knockback_velocity;
                 _sliding_velocity = Vector3.Zero;
-                _gravity_velocity = GetGravity(1f);
+                _gravity_velocity = Game.GetGravity(1f);
             }
         }
 
@@ -25,12 +25,13 @@ namespace StateMachines
                 return;
             }
             // Handle gravity (we just want a small push)
-            _gravity_velocity = GetGravity(delta);
+            _gravity_velocity = Game.GetGravity(delta);
 
-            _movement_velocity = Vector3.Left * 25f;
+            _movement_velocity = Vector3.Left * 5f;
 
             // Handle movement
             StandardHandleMovementVelocity(delta);
+            GD.Print(PlayerBehavior.PlayerParent.Velocity);
         }
     }
 }

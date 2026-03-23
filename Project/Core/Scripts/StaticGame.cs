@@ -108,6 +108,12 @@ public static class Game
 		ViewFade.GoalFade = goal_fade;
 	}
 
+	
+	public static Vector3 GetGravity(double delta)
+	{
+		return (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector") * ((float)ProjectSettings.GetSetting("physics/3d/default_gravity") * (float)delta);
+	}
+
 	public static void Shutdown()
 	{
 		Root.GetTree().Quit();

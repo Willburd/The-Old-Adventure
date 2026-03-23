@@ -5,6 +5,8 @@ namespace StateMachines
 {
     public class PlayerState_Air(Behavior owner) : PlayerState(owner)
     {
+        const float TerminalVelocity = 30f;
+
         public override void Begin(StateMachine previous_state)
         {
             if (previous_state is PlayerState ply_prev)
@@ -28,10 +30,12 @@ namespace StateMachines
             _movement_velocity = Tools.DecelerateFlat(_movement_velocity, 0.5f * (float)delta);
 
             // Handle gravity
-            _gravity_velocity += GetGravity(delta);
+            _gravity_velocity += Game.GetGravity(delta);
+            if(_gravity_velocity.Length() > TerminalVelocity) _gravity_velocity = _gravity_velocity.Normalized() * TerminalVelocity;
 
             // Handle movement
             StandardHandleMovementVelocity(delta);
+            GD.Print(PlayerBehavior.PlayerParent.Velocity);
         }
     }
 }
