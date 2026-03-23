@@ -28,7 +28,7 @@ public static class Game
 	static public Viewport SkyViewport;
 	static public Viewport PauseViewport;
 	
-	static public TextureRect ViewFade;
+	static public ViewFade ViewFade;
 
 	static public TextureRect RenderTexture;
 	static public Node LoadedScenesParent;
@@ -111,7 +111,7 @@ public static class Game
 
 	public static void SetFadeColor(Color goal_fade)
 	{
-		ViewFade.Modulate = goal_fade;
+		ViewFade.GoalFade = goal_fade;
 	}
 
 	public static void Shutdown()

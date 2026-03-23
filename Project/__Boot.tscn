@@ -98,8 +98,7 @@ render_target_update_mode = 4
 cull_mask = 131072
 environment = ExtResource("2_iy6s0")
 
-[node name="ViewFade" type="TextureRect" parent="RenderCamera/RenderTexture" unique_id=2017323444]
-layout_mode = 1
+[node name="ViewFade" type="TextureRect" parent="RenderCamera" unique_id=2017323444]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
