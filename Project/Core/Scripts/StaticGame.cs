@@ -64,7 +64,7 @@ public static class Game
 	/// <summary>
 	/// Spawns an entity at a set position using an asset path.
 	/// </summary>
-	public static Entity LoadEntityFromPath(string path, GameScenes.SceneController host_scene, Vector3 at_pos, Vector3 at_rotation)
+	public static Node3D LoadEntityFromPath(string path, GameScenes.SceneController host_scene, Vector3 at_pos, Vector3 at_rotation)
 	{
 		GD.Print("Direct load entity: " + path);
 
@@ -81,20 +81,14 @@ public static class Game
 			GD.Print(" -Failed to instantiate entity.");
 			return null;
 		}
-        if (instance is not Entity)
-        {
-            GD.Print(" -Instantiated node was not an entity.");
-			instance.Free();
-            return null;
-        }
 
 		// Setup the entity as an actually loaded entity and not just a template in a layer
-        Entity ent = instance as Entity;
-		host_scene.EntityContainer.AddChild(ent);
-		ent.Setup(host_scene, at_pos, at_rotation);
+		host_scene.EntityContainer.AddChild(instance);
+		instance.GlobalPosition = at_pos;
+		instance.GlobalRotation = at_rotation;
 
-		GD.Print(" -Loaded entity: " + ent.Name);
-		return ent;
+		GD.Print(" -Loaded entity: " + instance.Name);
+		return instance;
 	}
 
 	/// <summary>

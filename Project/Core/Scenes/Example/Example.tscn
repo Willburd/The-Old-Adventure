@@ -3,14 +3,15 @@
 [ext_resource type="Script" uid="uid://b8m6qgoyv5n2j" path="res://Core/Scenes/Example/Example.cs" id="1_tv1ab"]
 [ext_resource type="PackedScene" uid="uid://by26recat6scy" path="res://Core/Prefabs/Entities/Test.tscn" id="3_jk2u1"]
 [ext_resource type="PackedScene" uid="uid://d04g1lc3ypigm" path="res://Core/Prefabs/Skyboxes/OverworldSkybox.tscn" id="3_tv1ab"]
+[ext_resource type="PackedScene" uid="uid://d4jq2dcvhwphx" path="res://Core/Prefabs/Entities/Player.tscn" id="4_e0d0k"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e0d0k"]
+size = Vector3(300, 1, 300)
 
 [sub_resource type="BoxMesh" id="BoxMesh_tv1ab"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tv1ab"]
 albedo_color = Color(0.09288647, 0.30733562, 0.17292014, 1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_e0d0k"]
-size = Vector3(300, 1, 300)
 
 [node name="ExampleScene" type="Node3D" unique_id=1280371212]
 script = ExtResource("1_tv1ab")
@@ -21,18 +22,22 @@ script = ExtResource("1_tv1ab")
 
 [node name="Default" type="Node" parent="Layers" unique_id=960763442]
 
-[node name="TestEntity" parent="Layers/Default" unique_id=1076345598 instance=ExtResource("3_jk2u1")]
-transform = Transform3D(0.3581226, -0.47385347, -0.80449426, 0.43117437, 0.848196, -0.3076559, 0.8281527, -0.23669887, 0.50807166, 2.3479333, 1.3900566, -4.126845)
+[node name="Player" parent="Layers/Default" unique_id=1452326567 instance=ExtResource("4_e0d0k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11021018, 0.072485685, -4.8773856)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=477321320]
-transform = Transform3D(267.911, 0, 0, 0, 0.237, 0, 0, 0, 300, 0, -1, 0)
+[node name="Test" parent="Layers/Default" unique_id=1076345598 instance=ExtResource("3_jk2u1")]
+transform = Transform3D(0.2763536, -0.85661846, -0.43569884, 0.45882243, 0.5159504, -0.723379, 0.8444588, 0, 0.5356205, 2.1481953, 1.4868374, -5.063018)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2143677863]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5039698, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=339971054]
+shape = SubResource("BoxShape3D_e0d0k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=477321320]
+transform = Transform3D(300, 0, 0, 0, 1, 0, 0, 0, 300, 0, 0, 0)
 mesh = SubResource("BoxMesh_tv1ab")
 surface_material_override/0 = SubResource("StandardMaterial3D_tv1ab")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=2143677863]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=339971054]
-shape = SubResource("BoxShape3D_e0d0k")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=755787863]
 transform = Transform3D(-0.35821593, -0.66866785, 0.6515863, -0.0019569104, 0.698436, 0.7156699, -0.9336367, 0.25508925, -0.2514994, 2.241499, 0.715159, 0.15085196)

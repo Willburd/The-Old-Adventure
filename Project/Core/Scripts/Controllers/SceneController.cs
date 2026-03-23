@@ -1,5 +1,6 @@
 using System.Linq;
 using Godot;
+
 namespace GameScenes
 {
 	public partial class SceneController : Node3D
@@ -14,7 +15,17 @@ namespace GameScenes
 
 		public override void _Ready()
 		{
+			// Made all template layers disable processing
 			_layer_container = FindChild("Layers", false);
+			foreach(Node layer in _layer_container.GetChildren())
+			{
+				foreach(Node3D node in layer.GetChildren(true).Cast<Node3D>())
+				{
+					node.ProcessMode = ProcessModeEnum.Disabled;
+					node.Hide();
+				}
+			}
+			// Prepare entity container
             _entity_container = new Node
             {
                 Name = "Entities"
@@ -37,14 +48,12 @@ namespace GameScenes
 		}
 
 		/// <summary>
-		/// Respawns all entities, does not clear them.
+		/// Refreshes a scene as if you entered it from another scene. Clearing all entities and respawning them.
 		/// </summary>
-		public void RespawnAllEntities()
+		public void ReloadEntities()
 		{
-			foreach(Node3D node in _entity_container.GetChildren().Cast<Node3D>())
-			{
-				if(node is Entity) (node as Entity).Respawn();
-			}
+			ClearAllEntities();
+			LoadEntityLayer(_current_set_layer);
 		}
 
 		/// <summary>
@@ -60,34 +69,11 @@ namespace GameScenes
 				GD.Print("==Failed to load layer: " + layer_name);
 				return;
 			}
-			foreach(Node3D ent in layer.GetChildren().Cast<Node3D>())
+			foreach(Node3D node in layer.GetChildren().Cast<Node3D>())
 			{
-				if(ent is not Entity) continue;
-				(ent as Entity).Spawn(this);
+				Game.LoadEntityFromPath(node.SceneFilePath, this, node.GlobalPosition, node.GlobalRotation);
 			}
 			GD.Print("==Finished loading layer: " + Name + " :> " + layer_name);
-		}
-
-		/// <summary>
-		/// Called after all layers are loaded to delete all template entities.
-		/// </summary>
-		public void ClearLayerTemplates()
-		{
-			foreach(Node layer in _layer_container.GetChildren().Cast<Node>())
-			{
-				layer.Free();
-			}
-			_layer_container.Free();
-			_layer_container = null;
-		}
-
-		/// <summary>
-		/// Refreshes a scene as if you entered it from another scene. Clearing all entities and respawning them.
-		/// </summary>
-		public void ReloadEntities()
-		{
-			ClearAllEntities();
-			LoadEntityLayer(_current_set_layer);
 		}
 	}
 }

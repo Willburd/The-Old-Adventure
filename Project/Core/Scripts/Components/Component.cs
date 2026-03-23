@@ -4,33 +4,27 @@ namespace EntComponents
 {
 	public partial class Component : Node
 	{
+		public Game.States MaximumActiveState = Game.States.active;
+		
 		public Node3D NodeParent
 		{
 			get
 			{
-				return GetParent<Node3D>();
-			}
-		}
-
-		public Entity EntityParent
-		{
-			get
-			{
-				return GetParent<Entity>();
+				return (Node3D)GetParent();
 			}
 		}
 
 		// Don't inheret from this as a Component, use OnEntityTick()
 		public override void _Process(double delta)
 		{
-			if(!EntityParent.CanTick()) return;
+			if(!CanTick()) return;
 			OnEntityTick(delta);
 		}
 
         // Don't inheret from this as a Component, use OnEntityPhysicsTick()
         public override void _PhysicsProcess(double delta)
         {
-			if(!EntityParent.CanTick()) return;
+			if(!CanTick()) return;
 			OnEntityPhysicsTick(delta);
 		}
 
@@ -55,7 +49,7 @@ namespace EntComponents
 		/// </summary>
 		public virtual bool CanTick()
 		{
-			return EntityParent.CanTick();
+			return Game.CurrentState <= MaximumActiveState;
 		}
 	}
 }

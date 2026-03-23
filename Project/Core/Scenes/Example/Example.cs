@@ -6,7 +6,6 @@ namespace GameScenes
         {
             // Example, don't call parent.
             LoadEntityLayer("Default");
-            ClearLayerTemplates();
         }
     }
 }

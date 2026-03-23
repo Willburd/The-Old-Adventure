@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://d4jq2dcvhwphx"]
+
+[ext_resource type="Script" uid="uid://bcqk5bahyuykj" path="res://Core/Scripts/Components/Behaviors/PlayerBehavior.cs" id="2_km8fp"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tv1ab"]
+radius = 0.2626953
+height = 1.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_e0d0k"]
+
+[node name="Player" type="CharacterBody3D" unique_id=1452326567]
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1565900788]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+shape = SubResource("CapsuleShape3D_tv1ab")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1130550535]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0)
+mesh = SubResource("CapsuleMesh_e0d0k")
+
+[node name="PlayerBehavior" type="Node" parent="." unique_id=1762375852]
+script = ExtResource("2_km8fp")
