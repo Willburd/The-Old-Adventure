@@ -15,6 +15,7 @@ namespace EntComponents
 
         public override void _Ready()
 		{
+			Game.CurrentPlayer = PlayerParent;
 			CurrentState = new PlayerState_Ground(this);
 		}
 

@@ -35,7 +35,6 @@ namespace StateMachines
 
             // Handle movement
             StandardHandleMovementVelocity(delta);
-            GD.Print(PlayerBehavior.PlayerParent.Velocity);
         }
     }
 }

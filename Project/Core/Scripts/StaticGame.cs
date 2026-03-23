@@ -32,6 +32,7 @@ public static class Game
 
 	static public TextureRect RenderTexture;
 	static public Node LoadedScenesParent;
+	static public CharacterBody3D CurrentPlayer;
 
 	/// <summary>
 	/// Loads a scene and directly instantiates it. This is blocking and not async.

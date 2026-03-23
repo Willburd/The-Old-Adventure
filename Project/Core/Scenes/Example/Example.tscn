@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://by26recat6scy" path="res://Core/Prefabs/Entities/Test.tscn" id="3_jk2u1"]
 [ext_resource type="PackedScene" uid="uid://d04g1lc3ypigm" path="res://Core/Prefabs/Skyboxes/OverworldSkybox.tscn" id="3_tv1ab"]
 [ext_resource type="PackedScene" uid="uid://d4jq2dcvhwphx" path="res://Core/Prefabs/Entities/Player.tscn" id="4_e0d0k"]
+[ext_resource type="PackedScene" uid="uid://bibsr5evjlxgi" path="res://Core/Prefabs/Entities/CameraPlayerFollow.tscn" id="5_sv6s1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_e0d0k"]
 size = Vector3(300, 1, 300)
@@ -23,10 +24,12 @@ script = ExtResource("1_tv1ab")
 [node name="Default" type="Node" parent="Layers" unique_id=960763442]
 
 [node name="Player" parent="Layers/Default" unique_id=1452326567 instance=ExtResource("4_e0d0k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11021018, 57.200275, -75.688194)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1165841, 0.4077611, -6.211981)
 
 [node name="Test" parent="Layers/Default" unique_id=1076345598 instance=ExtResource("3_jk2u1")]
 transform = Transform3D(0.2763536, -0.85661846, -0.43569884, 0.45882243, 0.5159504, -0.723379, 0.8444588, 0, 0.5356205, 2.1481953, 1.4868374, -5.063018)
+
+[node name="CameraPlayerFollow" parent="Layers/Default" unique_id=458218906 instance=ExtResource("5_sv6s1")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2143677863]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5039698, 0)

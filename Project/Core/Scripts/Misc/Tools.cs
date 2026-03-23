@@ -77,9 +77,10 @@ public static class Tools
 	/// </summary>
 	public static float StepToward(float current, float goal, float rate)
 	{
+		if(rate == float.PositiveInfinity) return goal;
 		if(Mathf.Abs(current - goal) <= rate) return goal;
-		if(current < goal) return Accelerate(current, rate, goal);
-		if(current > goal) return Decelerate(current, rate, goal);
+		if(current < goal) return Mathf.Min(goal, current + rate);
+		if(current > goal) return Mathf.Max(current - rate, goal);
 		return goal;
 	}
 	

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bibsr5evjlxgi"]
+
+[ext_resource type="Script" uid="uid://yxt8c1niln5n" path="res://Core/Scripts/Components/Behaviors/CameraBehavior.cs" id="1_u12yg"]
+
+[node name="CameraPlayerFollow" type="Node3D" unique_id=458218906]
+
+[node name="CameraBehavior" type="Node" parent="." unique_id=1963944250]
+script = ExtResource("1_u12yg")
