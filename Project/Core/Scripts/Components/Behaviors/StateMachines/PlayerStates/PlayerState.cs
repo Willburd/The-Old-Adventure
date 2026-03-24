@@ -44,7 +44,7 @@ namespace StateMachines
 
         protected Vector3 CameraRelativeMoveDirection()
         {
-            Vector2 input = Input.GetVector("game_left", "game_right", "game_up", "game_down", 0.01f);
+            Vector2 input = Input.GetVector("game_left", "game_right", "game_up", "game_down", 0.05f);
             // Cutscenes ignore camera move
             // if (Cutscenes.Cutscene.Current != null) return input.Move;
             // Camera based movement input

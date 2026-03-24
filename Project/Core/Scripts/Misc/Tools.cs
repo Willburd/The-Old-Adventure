@@ -128,7 +128,16 @@ public static class Tools
 	/// </summary>
 	public static Vector3 DirVector(Vector3 start, Vector3 end)
 	{
+		if(start == end) return Vector3.Zero;
 		return (end - start).Normalized();
+	}
+	
+	/// <summary>
+	/// Gets a normalized direction vector with the Y value flattened to zero.
+	public static Vector3 FlatDirVector(Vector3 dir)
+	{
+		dir.Y = 0;
+		return DirVector(Vector3.Zero, dir);
 	}
 
 	/// <summary>
@@ -174,7 +183,7 @@ public static class Tools
 		dirvec.Y = 0;
 		return new Transform3D().LookingAt(dirvec).Basis.GetEuler();
 	}
-	
+
 	/// <summary>
 	/// Get the eular angles of a direction vector, as if it was a camera rotated to face that direction.
 	/// </summary>
@@ -183,5 +192,21 @@ public static class Tools
 		start.Y = 0;
 		end.Y = 0;
 		return GetDirEulars(DirVector(start, end));
+	}
+
+	/// <summary>
+	/// Get the rotation quaternion of a direction vector, as if it was a camera rotated to face that direction.
+	/// </summary>
+	public static Quaternion GetDirQuaternion(Vector3 dirvec)
+	{
+		return new Transform3D().LookingAt(dirvec).Basis.GetRotationQuaternion();
+	}
+	
+	/// <summary>
+	/// Get the rotation quaternion of a direction vector, as if it was a camera rotated to face that direction.
+	/// </summary>
+	public static Quaternion GetDirQuaternion(Vector3 start, Vector3 end)
+	{
+		return GetDirQuaternion(DirVector(start, end));
 	}
 }
