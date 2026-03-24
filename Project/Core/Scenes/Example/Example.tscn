@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://d04g1lc3ypigm" path="res://Core/Prefabs/Skyboxes/OverworldSkybox.tscn" id="3_tv1ab"]
 [ext_resource type="PackedScene" uid="uid://d4jq2dcvhwphx" path="res://Core/Prefabs/Entities/Player.tscn" id="4_e0d0k"]
 [ext_resource type="PackedScene" uid="uid://bibsr5evjlxgi" path="res://Core/Prefabs/Entities/CameraPlayerFollow.tscn" id="5_sv6s1"]
+[ext_resource type="PackedScene" uid="uid://dp88hb5jgm4i7" path="res://Core/Prefabs/Misc/Cube.tscn" id="6_w176y"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_e0d0k"]
 size = Vector3(300, 1, 300)
@@ -26,10 +27,10 @@ script = ExtResource("1_tv1ab")
 [node name="Player" parent="Layers/Default" unique_id=1452326567 instance=ExtResource("4_e0d0k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1165841, 0.4077611, -6.211981)
 
+[node name="PlayerCamera" parent="Layers/Default" unique_id=458218906 instance=ExtResource("5_sv6s1")]
+
 [node name="Test" parent="Layers/Default" unique_id=1076345598 instance=ExtResource("3_jk2u1")]
 transform = Transform3D(0.2763536, -0.85661846, -0.43569884, 0.45882243, 0.5159504, -0.723379, 0.8444588, 0, 0.5356205, 2.1481953, 1.4868374, -5.063018)
-
-[node name="CameraPlayerFollow" parent="Layers/Default" unique_id=458218906 instance=ExtResource("5_sv6s1")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2143677863]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5039698, 0)
@@ -46,3 +47,17 @@ surface_material_override/0 = SubResource("StandardMaterial3D_tv1ab")
 transform = Transform3D(-0.35821593, -0.66866785, 0.6515863, -0.0019569104, 0.698436, 0.7156699, -0.9336367, 0.25508925, -0.2514994, 2.241499, 0.715159, 0.15085196)
 light_color = Color(1, 1, 0.83137256, 1)
 directional_shadow_mode = 0
+
+[node name="Cube" parent="." unique_id=596461442 instance=ExtResource("6_w176y")]
+
+[node name="Cube2" parent="." unique_id=934138800 instance=ExtResource("6_w176y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0)
+
+[node name="Cube3" parent="." unique_id=1449267875 instance=ExtResource("6_w176y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+
+[node name="Cube4" parent="." unique_id=720642427 instance=ExtResource("6_w176y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="Cube5" parent="." unique_id=2079174005 instance=ExtResource("6_w176y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
