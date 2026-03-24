@@ -5,6 +5,11 @@ namespace StateMachines
 {
     public class PlayerState(Behavior owner) : StateMachine(owner)
     {
+        // Slipping
+        protected const float slip_threshold = 0.3f;
+        protected const float slip_acceleration = 0.56f;
+        protected const float slip_maxspeed = 1.5f;
+
         public Vector3 _movement_velocity = Vector3.Zero;
         public Vector3 _knockback_velocity = Vector3.Zero;
         public Vector3 _sliding_velocity = Vector3.Zero;
@@ -23,7 +28,7 @@ namespace StateMachines
             PlayerBehavior.PlayerParent.MoveAndSlide();
         }
 
-        public void StandardHandleMovementVelocity(double delta)
+        protected void StandardHandleMovementVelocity(double delta)
         {
             // We are on the ground and ready to move!
             Vector3 final_vel = _movement_velocity;
@@ -35,6 +40,20 @@ namespace StateMachines
             // Reduce knockback
             _knockback_velocity = Tools.Decelerate(_knockback_velocity, 1f * (float)delta);
             _sliding_velocity = Tools.Decelerate(_sliding_velocity, 0.2f * (float)delta);
+        }
+
+        protected Vector3 CameraRelativeMoveDirection()
+        {
+            Vector2 input = Input.GetVector("game_left", "game_right", "game_up", "game_down", 0.01f);
+            // Cutscenes ignore camera move
+            // if (Cutscenes.Cutscene.Current != null) return input.Move;
+            // Camera based movement input
+            return new Vector3(input.X, 0f, input.Y).Rotated(Vector3.Up, CameraRotationToPlayer().Y);
+        }
+
+        protected Vector3 CameraRotationToPlayer()
+        {
+            return new Transform3D().LookingAt(Tools.DirVector(Game.WorldCamera.GlobalPosition, PlayerBehavior.NodeParent.GlobalPosition)).Basis.GetEuler();
         }
     }
 }

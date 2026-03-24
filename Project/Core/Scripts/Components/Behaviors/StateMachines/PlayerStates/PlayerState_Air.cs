@@ -5,7 +5,11 @@ namespace StateMachines
 {
     public class PlayerState_Air(Behavior owner) : PlayerState(owner)
     {
-        const float TerminalVelocity = 20f;
+        protected const float air_turnrate = 8f;
+        protected const float air_acceleration = 0.18f;
+        protected const float air_friction = 0.04f;
+        protected const float air_maxspeed = 0.8f;
+        protected const float TerminalVelocity = 20f;
 
         public override void Begin(StateMachine previous_state)
         {

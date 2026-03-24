@@ -149,4 +149,39 @@ public static class Tools
 		end.Y = 0;
 		return start.DistanceTo(end);
 	}
+
+	/// <summary>
+	/// Get the eular angles of a direction vector, as if it was a camera rotated to face that direction.
+	/// </summary>
+	public static Vector3 GetDirEulars(Vector3 dirvec)
+	{
+		return new Transform3D().LookingAt(dirvec).Basis.GetEuler();
+	}
+	
+	/// <summary>
+	/// Get the eular angles of a direction vector, as if it was a camera rotated to face that direction.
+	/// </summary>
+	public static Vector3 GetDirEulars(Vector3 start, Vector3 end)
+	{
+		return GetDirEulars(DirVector(start, end));
+	}
+
+	/// <summary>
+	/// Get the eular angles of a direction vector, as if it was a camera rotated to face that direction.
+	/// </summary>
+	public static Vector3 GetFlatDirEulars(Vector3 dirvec)
+	{
+		dirvec.Y = 0;
+		return new Transform3D().LookingAt(dirvec).Basis.GetEuler();
+	}
+	
+	/// <summary>
+	/// Get the eular angles of a direction vector, as if it was a camera rotated to face that direction.
+	/// </summary>
+	public static Vector3 GetFlatDirEulars(Vector3 start, Vector3 end)
+	{
+		start.Y = 0;
+		end.Y = 0;
+		return GetDirEulars(DirVector(start, end));
+	}
 }
