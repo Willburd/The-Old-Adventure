@@ -6,9 +6,9 @@ namespace StateMachines
     public class CameraState(Behavior owner) : StateMachine(owner)
     {
         public const float DefaultCameraDistance = 7f;
-        public const float DefaultCameraSpeed = 10f;
-        public const float DefaultFocusSpeed = 12f;
-        public const float DefaultCameraRotationSpeed = 1f;
+        public const float DefaultCameraSpeed = 25f;
+        public const float DefaultFocusSpeed = 30f;
+        public const float DefaultCameraRotationSpeed = 1.2f;
 
         public void TargetMove(Vector3 goal, double delta, float rate = float.PositiveInfinity)
         {
@@ -55,8 +55,28 @@ namespace StateMachines
         protected Vector2 CameraInput(double delta)
         {
             Vector2 input = Input.GetVector("cam_left", "cam_right", "cam_up", "cam_down", 0.05f) * DefaultCameraRotationSpeed * (float)delta; // Analogs need delta
-            // Mouse does not!
+            // Mouse does not use delta time!
+            if(_last_mouse_input.Length() > 0f)
+            {
+                input = _last_mouse_input;
+            }
+            _last_mouse_input = Vector2.Zero; // Reset mouse
+            // Check inversion settings
+            bool invertedX = true;
+            bool invertedY = true;
+            if(invertedX) input.X = -input.X;
+            if(invertedY) input.Y = -input.Y;
             return input;
+        }
+
+
+        protected Vector2 _last_mouse_input = Vector2.Zero;
+        public override void InputHandler(InputEvent @event)
+        {
+			if (@event is InputEventMouseMotion eventMouseMotion)
+			{
+				_last_mouse_input = (eventMouseMotion.Relative / 500f) * DefaultCameraRotationSpeed;
+			}
         }
     }
 }

@@ -1,3 +1,4 @@
+using Godot;
 using EntComponents;
 
 namespace StateMachines
@@ -23,6 +24,11 @@ namespace StateMachines
         }
         
         public virtual void OnStatePhysicsTick(double delta)
+        {
+            
+        }
+
+        public virtual void InputHandler(InputEvent @event)
         {
             
         }

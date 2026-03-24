@@ -21,7 +21,7 @@ namespace StateMachines
 
             // Recalculate camera vector from input
             Vector2 cam_input_dir = CameraInput(delta);
-            if(cam_input_dir.Length() > 0.01f)
+            if(cam_input_dir.Length() > 0.001f)
             {
                 _camera_vector = (_camera_vector + (new Vector3(cam_input_dir.X,cam_input_dir.Y,0f) * Tools.GetDirQuaternion(CameraDirVec()))).Normalized();
             }
@@ -31,6 +31,7 @@ namespace StateMachines
 
             Vector3 goal_pos = GetTarget() + calculated_vector;
             CameraMove(goal_pos, delta, DefaultCameraSpeed);
+            CameraLookAt(GetTarget(), Vector3.Up);
         }
     }
 }
