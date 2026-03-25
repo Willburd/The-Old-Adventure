@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://by26recat6scy" path="res://Core/Prefabs/Entities/Test.tscn" id="3_jk2u1"]
 [ext_resource type="PackedScene" uid="uid://d04g1lc3ypigm" path="res://Core/Prefabs/Skyboxes/OverworldSkybox.tscn" id="3_tv1ab"]
 [ext_resource type="PackedScene" uid="uid://d4jq2dcvhwphx" path="res://Core/Prefabs/Entities/Player.tscn" id="4_e0d0k"]
-[ext_resource type="PackedScene" uid="uid://bibsr5evjlxgi" path="res://Core/Prefabs/Entities/CameraPlayerFollow.tscn" id="5_sv6s1"]
+[ext_resource type="PackedScene" uid="uid://bibsr5evjlxgi" path="res://Core/Prefabs/Entities/PlayerCamera.tscn" id="5_sv6s1"]
 [ext_resource type="PackedScene" uid="uid://dp88hb5jgm4i7" path="res://Core/Prefabs/Misc/Cube.tscn" id="6_w176y"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_e0d0k"]

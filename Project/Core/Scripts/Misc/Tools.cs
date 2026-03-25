@@ -124,12 +124,20 @@ public static class Tools
 	}
 
 	/// <summary>
+	/// Gets the vector from one point to another at full length without normalization
+	/// </summary>
+	public static Vector3 VectorTo(Vector3 start, Vector3 end)
+	{
+		if(start == end) return Vector3.Zero;
+		return end - start;
+	}
+
+	/// <summary>
 	/// Gets a normalized vector pointing from the start location to the end location.
 	/// </summary>
 	public static Vector3 DirVector(Vector3 start, Vector3 end)
 	{
-		if(start == end) return Vector3.Zero;
-		return (end - start).Normalized();
+		return VectorTo(start,end).Normalized();
 	}
 	
 	/// <summary>

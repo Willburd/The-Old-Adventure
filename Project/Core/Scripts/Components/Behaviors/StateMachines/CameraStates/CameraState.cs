@@ -10,6 +10,14 @@ namespace StateMachines
         public const float DefaultFocusSpeed = 30f;
         public const float DefaultCameraRotationSpeed = 1.2f;
 
+        public CameraBehavior CameraBehavior
+        { 
+            get
+            {
+                return Behavior as CameraBehavior;
+            }
+        }
+
         public void TargetMove(Vector3 goal, double delta, float rate = float.PositiveInfinity)
         {
             Behavior.NodeParent.GlobalPosition = Tools.StepToward(Behavior.NodeParent.GlobalPosition, goal, rate * (float)delta);
@@ -63,7 +71,7 @@ namespace StateMachines
             _last_mouse_input = Vector2.Zero; // Reset mouse
             // Check inversion settings
             bool invertedX = true;
-            bool invertedY = true;
+            bool invertedY = false;
             if(invertedX) input.X = -input.X;
             if(invertedY) input.Y = -input.Y;
             return input;

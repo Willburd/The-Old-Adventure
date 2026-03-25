@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://d04g1lc3ypigm" path="res://Core/Prefabs/Skyboxes/OverworldSkybox.tscn" id="2_8a80c"]
 [ext_resource type="PackedScene" uid="uid://d4jq2dcvhwphx" path="res://Core/Prefabs/Entities/Player.tscn" id="3_osdyf"]
 [ext_resource type="PackedScene" uid="uid://4vr73xsoy07m" path="res://Core/Models/Scenes/test_room.blend" id="5_heax7"]
-[ext_resource type="PackedScene" uid="uid://bibsr5evjlxgi" path="res://Core/Prefabs/Entities/CameraPlayerFollow.tscn" id="5_tges4"]
+[ext_resource type="PackedScene" uid="uid://bibsr5evjlxgi" path="res://Core/Prefabs/Entities/PlayerCamera.tscn" id="5_tges4"]
 
 [node name="TestScene" type="Node3D" unique_id=1280371212]
 script = ExtResource("1_l1o06")
@@ -25,4 +25,4 @@ transform = Transform3D(-0.35821593, -0.66866785, 0.6515863, -0.0019569104, 0.69
 light_color = Color(1, 1, 0.83137256, 1)
 directional_shadow_mode = 0
 
-[node name="TestRoomGeo" parent="." unique_id=141254124 instance=ExtResource("5_heax7")]
+[node name="TestRoomGeo" parent="." unique_id=1989629558 instance=ExtResource("5_heax7")]

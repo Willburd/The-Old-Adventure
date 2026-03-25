@@ -28,7 +28,18 @@ namespace StateMachines
 
             // Calculate the desired distance from our vector
             Vector3 calculated_vector = _camera_vector * DefaultCameraDistance;
+            RayCast3D ray = CameraBehavior.CameraRay;
+            ray.GlobalPosition = GetTarget();
+            ray.TargetPosition = calculated_vector;
+            if(ray.IsColliding())
+            {
+                Vector3 final_vec = Tools.VectorTo(ray.GlobalPosition, ray.GetCollisionPoint());
+                calculated_vector = final_vec - (final_vec.Inverse().Normalized() * 0.1f); // Buffer away from walls
+            }
 
+            // todo - Raycast at the sides to push us away from walls, spherecast?
+
+            // Apply final end position
             Vector3 goal_pos = GetTarget() + calculated_vector;
             CameraMove(goal_pos, delta, DefaultCameraSpeed);
             CameraLookAt(GetTarget(), Vector3.Up);
