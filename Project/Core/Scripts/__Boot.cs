@@ -32,5 +32,20 @@ public partial class __Boot : Node3D
         // Load first scene
         Game.LoadSceneFromPath(_start_scene_path);
 		Game.SetFadeColor(new Color(1f,1f,1f,0f));
+
+		// Lock mouse
+		Input.MouseMode = Input.MouseModeEnum.Captured;
+	}
+
+    public override void _Input(InputEvent @event)
+	{
+		if(@event is InputEventKey key_event)
+		{
+			if(key_event.IsAction("game_menu"))
+			{
+				Game.Shutdown(); // TEMP
+				return;
+			}
+		}
 	}
 }
