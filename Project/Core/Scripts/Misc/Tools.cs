@@ -137,8 +137,8 @@ public static class Tools
 	/// </summary>
 	public static Vector3 FlatVectorTo(Vector3 start, Vector3 end)
 	{
-		start.Y = 0;
-		end.Y = 0;
+		start = new Vector3(start.X, 0f, start.Z);
+		end = new Vector3(end.X, 0f, end.Z);
 		if(start == end) return Vector3.Zero;
 		return end - start;
 	}
@@ -155,7 +155,7 @@ public static class Tools
 	/// Gets a normalized direction vector with the Y value flattened to zero.
 	public static Vector3 FlatDirVector(Vector3 dir)
 	{
-		dir.Y = 0;
+		dir = new Vector3(dir.X, 0f, dir.Z);
 		return DirVector(Vector3.Zero, dir);
 	}
 
@@ -163,8 +163,8 @@ public static class Tools
 	/// Gets a normalized direction vector with the Y value flattened to zero.
 	public static Vector3 FlatDirVector(Vector3 start, Vector3 end)
 	{
-		start.Y = 0;
-		end.Y = 0;
+		start = new Vector3(start.X, 0f, start.Z);
+		end = new Vector3(end.X, 0f, end.Z);
 		return DirVector(start, end);
 	}
 
@@ -173,8 +173,8 @@ public static class Tools
 	/// </summary>
 	public static float FlatDistance(Vector3 start, Vector3 end)
 	{
-		start.Y = 0;
-		end.Y = 0;
+		start = new Vector3(start.X, 0f, start.Z);
+		end = new Vector3(end.X, 0f, end.Z);
 		return start.DistanceTo(end);
 	}
 
@@ -199,7 +199,7 @@ public static class Tools
 	/// </summary>
 	public static Vector3 GetFlatDirEulars(Vector3 dirvec)
 	{
-		dirvec.Y = 0;
+		dirvec = new(dirvec.X, 0f, dirvec.Z);
 		return new Transform3D().LookingAt(dirvec).Basis.GetEuler();
 	}
 
@@ -208,8 +208,8 @@ public static class Tools
 	/// </summary>
 	public static Vector3 GetFlatDirEulars(Vector3 start, Vector3 end)
 	{
-		start.Y = 0;
-		end.Y = 0;
+		start = new Vector3(start.X, 0f, start.Z);
+		end = new Vector3(end.X, 0f, end.Z);
 		return GetDirEulars(DirVector(start, end));
 	}
 

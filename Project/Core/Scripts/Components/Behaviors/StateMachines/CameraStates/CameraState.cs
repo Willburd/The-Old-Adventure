@@ -89,17 +89,10 @@ namespace StateMachines
             }
             return calculated_vector;
         }
-        
-        
-        protected Vector3 ClampMinDistance(Vector3 calculated_vector)
+
+        protected Vector3 InputToCameraSpace(Vector2 cam_input_dir)
         {
-            Vector3 _min_point = Tools.FlatDirVector(calculated_vector) * 0.5f;
-            if(Tools.FlatVectorTo(Vector3.Zero, calculated_vector).Length() < _min_point.Length())
-            {
-                calculated_vector = new Vector3(_min_point.X, calculated_vector.Y, _min_point.Z);
-                GD.Print(calculated_vector);
-            }
-            return calculated_vector;
+            return new Vector3(cam_input_dir.X,cam_input_dir.Y,0f) * Tools.GetDirQuaternion(CameraDirVec());
         }
 
         protected Vector2 _last_mouse_input = Vector2.Zero;
