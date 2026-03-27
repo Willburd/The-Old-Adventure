@@ -77,13 +77,37 @@ namespace StateMachines
             return input;
         }
 
+        protected Vector3 RaycastWallPush(Vector3 calculated_vector)
+        {
+            RayCast3D ray = CameraBehavior.CameraRay;
+            ray.GlobalPosition = GetTarget();
+            ray.TargetPosition = calculated_vector;
+            if(ray.IsColliding())
+            {
+                Vector3 final_vec = Tools.VectorTo(ray.GlobalPosition, ray.GetCollisionPoint());
+                calculated_vector = final_vec - (final_vec.Inverse().Normalized() * 0.1f); // Buffer away from walls
+            }
+            return calculated_vector;
+        }
+        
+        
+        protected Vector3 ClampMinDistance(Vector3 calculated_vector)
+        {
+            Vector3 _min_point = Tools.FlatDirVector(calculated_vector) * 0.5f;
+            if(Tools.FlatVectorTo(Vector3.Zero, calculated_vector).Length() < _min_point.Length())
+            {
+                calculated_vector = new Vector3(_min_point.X, calculated_vector.Y, _min_point.Z);
+                GD.Print(calculated_vector);
+            }
+            return calculated_vector;
+        }
 
         protected Vector2 _last_mouse_input = Vector2.Zero;
         public override void InputHandler(InputEvent @event)
         {
 			if (@event is InputEventMouseMotion eventMouseMotion)
 			{
-				_last_mouse_input = (eventMouseMotion.Relative / 500f) * DefaultCameraRotationSpeed;
+				_last_mouse_input = (eventMouseMotion.Relative / 100f) * DefaultCameraRotationSpeed;
 			}
         }
     }

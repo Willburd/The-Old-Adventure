@@ -133,6 +133,17 @@ public static class Tools
 	}
 
 	/// <summary>
+	/// Gets the vector from one point to another at full length without normalization, but flattend on the Y axis.
+	/// </summary>
+	public static Vector3 FlatVectorTo(Vector3 start, Vector3 end)
+	{
+		start.Y = 0;
+		end.Y = 0;
+		if(start == end) return Vector3.Zero;
+		return end - start;
+	}
+
+	/// <summary>
 	/// Gets a normalized vector pointing from the start location to the end location.
 	/// </summary>
 	public static Vector3 DirVector(Vector3 start, Vector3 end)

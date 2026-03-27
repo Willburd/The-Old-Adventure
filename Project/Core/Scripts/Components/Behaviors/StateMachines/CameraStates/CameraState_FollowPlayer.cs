@@ -1,6 +1,5 @@
 using Godot;
 using EntComponents;
-
 namespace StateMachines
 {
     public class CameraState_FollowPlayer(Behavior owner) : CameraState(owner)
@@ -28,16 +27,12 @@ namespace StateMachines
 
             // Calculate the desired distance from our vector
             Vector3 calculated_vector = _camera_vector * DefaultCameraDistance;
-            RayCast3D ray = CameraBehavior.CameraRay;
-            ray.GlobalPosition = GetTarget();
-            ray.TargetPosition = calculated_vector;
-            if(ray.IsColliding())
-            {
-                Vector3 final_vec = Tools.VectorTo(ray.GlobalPosition, ray.GetCollisionPoint());
-                calculated_vector = final_vec - (final_vec.Inverse().Normalized() * 0.1f); // Buffer away from walls
-            }
+            calculated_vector = RaycastWallPush(calculated_vector);
 
             // todo - Raycast at the sides to push us away from walls, spherecast?
+
+            // Try to clamp at top and bottom
+            calculated_vector = ClampMinDistance(calculated_vector);
 
             // Apply final end position
             Vector3 goal_pos = GetTarget() + calculated_vector;
