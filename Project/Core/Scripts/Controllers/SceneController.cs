@@ -33,17 +33,17 @@ namespace GameScenes
                 Name = "Entities"
             };
             AddChild(_entity_container);
-			SceneStarted();
 			// Entrances now too
 			_entrance_container = FindChild("Entrances", false);
 			// Enter scene
-			EnterScene();
+			EnterScene(Game.CurrentEntrance);
+			SceneStarted(Game.CurrentEntrance);
 		}
 
 		/// <summary>
 		/// Called when a scene finishes loading, override to handle layer setup and player spawning.
 		/// </summary>
-		protected virtual void SceneStarted() {}
+		protected virtual void SceneStarted(string entrance_id) {}
 
 		/// <summary>
 		/// Clears all entities in a scene, does not respawn them.
@@ -82,9 +82,9 @@ namespace GameScenes
 			GD.Print("==Finished loading layer: " + Name + " :> " + layer_name);
 		}
 
-		public void EnterScene()
+		public void EnterScene(string entrance_id)
 		{
-			Entrance ent = (Entrance)_entrance_container.FindChild(Game.CurrentEntrance, false);
+			Entrance ent = (Entrance)_entrance_container.FindChild(entrance_id, false);
 			ent ??= (Entrance)_entrance_container.FindChild("Default", false); // Backup
 			GD.Print("Loading entrance " + ((ent == null) ? "Err" : ent.Name));
 
