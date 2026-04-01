@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://1xxhj4tst8tj"]
 
 [ext_resource type="Script" uid="uid://cfbcv4gniswis" path="res://Core/Scripts/__Boot.cs" id="1_tjtiu"]
+[ext_resource type="PackedScene" uid="uid://bistcr46g4l6j" path="res://Core/Scenes/Test/Test.tscn" id="2_2l2b8"]
 [ext_resource type="Environment" uid="uid://v6btgohgyd4k" path="res://Core/Environments/PauseScreen.tres" id="2_iy6s0"]
 [ext_resource type="Script" uid="uid://bxrjc1on14lxj" path="res://Core/Scripts/Misc/SkyCamera.cs" id="2_tjtiu"]
+[ext_resource type="PackedScene" uid="uid://d4jq2dcvhwphx" path="res://Core/Prefabs/Entities/Player.tscn" id="3_2l2b8"]
+[ext_resource type="PackedScene" uid="uid://bibsr5evjlxgi" path="res://Core/Prefabs/Entities/PlayerCamera.tscn" id="4_5f18f"]
 [ext_resource type="Texture2D" uid="uid://dh28susorjjum" path="res://Core/Textures/Effects/white.png" id="4_tjtiu"]
 [ext_resource type="Script" uid="uid://c7bxgepnly25l" path="res://Core/Scripts/Misc/ViewFade.cs" id="5_x6g1h"]
 
@@ -10,7 +13,9 @@
 
 [node name="Main" type="Node3D" unique_id=1812087155]
 script = ExtResource("1_tjtiu")
-_start_scene_path = "res://Core/Scenes/Test/Test.tscn"
+_start_scene = ExtResource("2_2l2b8")
+_player_template_scene = ExtResource("3_2l2b8")
+_camera_template_scene = ExtResource("4_5f18f")
 
 [node name="RenderCamera" type="Camera3D" parent="." unique_id=656179604]
 cull_mask = 524288

@@ -15,6 +15,7 @@ namespace EntComponents
 
         public override void _Ready()
 		{
+			Game.CurrentPlayer?.Free(); // Remove previous
 			Game.CurrentPlayer = PlayerParent;
 			CurrentState = new PlayerState_Ground(this);
 		}

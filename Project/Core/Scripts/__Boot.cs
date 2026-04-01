@@ -3,7 +3,12 @@ using Godot;
 public partial class __Boot : Node3D
 {
 	[Export]
-	private string _start_scene_path;
+	private PackedScene _start_scene;
+	[Export]
+	private PackedScene _player_template_scene;
+	[Export]
+	private PackedScene _camera_template_scene;
+	
 
 	public override void _Ready()
 	{
@@ -29,8 +34,12 @@ public partial class __Boot : Node3D
         };
 		Game.Root.AddChild(Game.LoadedScenesParent);
 
+		// Get prototypes
+		Game.PlayerResourcePath = _player_template_scene.ResourcePath;
+		Game.CameraResourcePath = _camera_template_scene.ResourcePath;
+
         // Load first scene
-        Game.LoadSceneFromPath(_start_scene_path);
+        Game.LoadSceneFromPath(_start_scene.ResourcePath);
 		Game.SetFadeColor(new Color(1f,1f,1f,0f));
 
 		// Lock mouse

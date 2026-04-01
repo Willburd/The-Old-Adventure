@@ -7,11 +7,13 @@ namespace GameScenes
 	{
 		private Node _entity_container;
 		private Node _layer_container;
+		private Node _entrance_container;
 
 		private string _current_set_layer;
 
 		public Node LayerContainer { get { return _layer_container; } }
 		public Node EntityContainer { get { return _entity_container; } }
+		public Node EntranceContainer { get { return _entrance_container; } }
 
 		public override void _Ready()
 		{
@@ -32,6 +34,10 @@ namespace GameScenes
             };
             AddChild(_entity_container);
 			SceneStarted();
+			// Entrances now too
+			_entrance_container = FindChild("Entrances", false);
+			// Enter scene
+			EnterScene();
 		}
 
 		/// <summary>
@@ -74,6 +80,23 @@ namespace GameScenes
 				Game.LoadEntityFromPath(node.SceneFilePath, this, node.GlobalPosition, node.GlobalRotation);
 			}
 			GD.Print("==Finished loading layer: " + Name + " :> " + layer_name);
+		}
+
+		public void EnterScene()
+		{
+			Entrance ent = (Entrance)_entrance_container.FindChild(Game.CurrentEntrance, false);
+			ent ??= (Entrance)_entrance_container.FindChild("Default", false); // Backup
+			GD.Print("Loading entrance " + ((ent == null) ? "Err" : ent.Name));
+
+			// Spawn player
+			Vector3 spawn_pos = (ent == null) ? Vector3.Zero : ent.SpawnPosition();
+			Vector3 spawn_rot = (ent == null) ? Vector3.Zero : ent.SpawnRotation();
+			Game.LoadEntityFromPath(Game.PlayerResourcePath, this, spawn_pos, spawn_rot);
+
+			// Spawn camera
+			Vector3 camera_pos = (ent == null) ? Vector3.Back : ent.CameraPosition();
+			Vector3 camera_rot = (ent == null) ? Vector3.Zero : ent.CameraRotation();
+			Game.LoadEntityFromPath(Game.CameraResourcePath, this, camera_pos, camera_rot);
 		}
 	}
 }

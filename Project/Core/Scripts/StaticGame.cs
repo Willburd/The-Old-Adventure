@@ -30,6 +30,11 @@ public static class Game
 	
 	static public ViewFade ViewFade;
 
+	static public string CurrentEntrance = "Default";
+
+	static public string PlayerResourcePath;
+	static public string CameraResourcePath;
+
 	static public TextureRect RenderTexture;
 	static public Node LoadedScenesParent;
 	static public CharacterBody3D CurrentPlayer;
