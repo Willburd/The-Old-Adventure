@@ -1,11 +1,10 @@
 using Godot;
 
-public partial class SkyCamera : Camera3D
+public partial class PrerenderCamera : Camera3D
 {
 	public override void _Ready()
 	{
 		RenderingServer.FramePreDraw += () => SnapToWorldCamera();
-		GlobalPosition = Vector3.Zero;
 	}
 
 	/// <summary>
@@ -13,6 +12,8 @@ public partial class SkyCamera : Camera3D
 	/// </summary>
 	private void SnapToWorldCamera()
 	{
+		Environment = Game.WorldCamera.Environment;
+		GlobalPosition = Game.WorldCamera.GlobalPosition;
 		GlobalRotation = Game.WorldCamera.GlobalRotation;
 	}
 }
