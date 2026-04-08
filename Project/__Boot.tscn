@@ -8,23 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bibsr5evjlxgi" path="res://Core/Prefabs/Entities/PlayerCamera.tscn" id="4_5f18f"]
 [ext_resource type="Texture2D" uid="uid://dh28susorjjum" path="res://Core/Textures/Effects/white.png" id="4_tjtiu"]
 [ext_resource type="Script" uid="uid://c7bxgepnly25l" path="res://Core/Scripts/Misc/ViewFade.cs" id="5_x6g1h"]
-[ext_resource type="Script" uid="uid://ckkw1codj5jai" path="res://Core/Scripts/Misc/PrerenderCamera.cs" id="7_5f18f"]
-[ext_resource type="Shader" uid="uid://bcyw1k2h20ngc" path="res://Core/Materials/Shaders/PreRenderDepthCompare.tres" id="8_ch318"]
-[ext_resource type="Texture2D" uid="uid://caur1iosoa25m" path="res://Core/Materials/Prerender/PreRenderTexture.tres" id="9_36weu"]
-[ext_resource type="Texture2D" uid="uid://csbp4nc81nid1" path="res://Core/Materials/Prerender/WorldRenderTexture.tres" id="10_cjifj"]
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_iy6s0"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0mmr6"]
-resource_local_to_scene = true
-render_priority = 0
-shader = ExtResource("8_ch318")
-shader_parameter/WorldTexture = ExtResource("10_cjifj")
-shader_parameter/PrerenderTex = ExtResource("9_36weu")
-shader_parameter/WorldTextureDepth = ExtResource("10_cjifj")
-shader_parameter/PrerenderTexDepth = ExtResource("9_36weu")
-
-[sub_resource type="ImageTexture" id="ImageTexture_dcgr5"]
 
 [node name="Main" type="Node3D" unique_id=1812087155]
 script = ExtResource("1_tjtiu")
@@ -38,25 +21,15 @@ environment = ExtResource("2_iy6s0")
 projection = 1
 current = true
 
-[node name="RenderTexture" type="TextureRect" parent="RenderCamera" unique_id=371820395]
-texture_filter = 1
-texture_repeat = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("CanvasTexture_iy6s0")
-
-[node name="ScreenControl" type="Control" parent="RenderCamera/RenderTexture" unique_id=1844934944]
-layout_mode = 1
+[node name="ScreenControl" type="Control" parent="RenderCamera" unique_id=1844934944]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SkyView" type="SubViewportContainer" parent="RenderCamera/RenderTexture/ScreenControl" unique_id=2143334374]
+[node name="SkyView" type="SubViewportContainer" parent="RenderCamera/ScreenControl" unique_id=2143334374]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -66,35 +39,16 @@ grow_vertical = 2
 stretch = true
 stretch_shrink = 2
 
-[node name="SkyPort" type="SubViewport" parent="RenderCamera/RenderTexture/ScreenControl/SkyView" unique_id=1226463471]
+[node name="SkyPort" type="SubViewport" parent="RenderCamera/ScreenControl/SkyView" unique_id=1226463471]
 handle_input_locally = false
 size = Vector2i(576, 324)
 render_target_update_mode = 4
 
-[node name="SkyCamera" type="Camera3D" parent="RenderCamera/RenderTexture/ScreenControl/SkyView/SkyPort" unique_id=1460964628]
+[node name="SkyCamera" type="Camera3D" parent="RenderCamera/ScreenControl/SkyView/SkyPort" unique_id=1460964628]
 cull_mask = 65536
 script = ExtResource("2_tjtiu")
 
-[node name="PrerenderView" type="SubViewportContainer" parent="RenderCamera/RenderTexture/ScreenControl" unique_id=1853545011]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-stretch = true
-stretch_shrink = 4
-
-[node name="PrerenderPort" type="SubViewport" parent="RenderCamera/RenderTexture/ScreenControl/PrerenderView" unique_id=2004021183]
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(288, 162)
-render_target_update_mode = 4
-
-[node name="PrerenderCamera" type="Camera3D" parent="RenderCamera/RenderTexture/ScreenControl/PrerenderView/PrerenderPort" unique_id=1434019227]
-cull_mask = 1024
-script = ExtResource("7_5f18f")
-
-[node name="WorldView" type="SubViewportContainer" parent="RenderCamera/RenderTexture/ScreenControl" unique_id=2049790011]
+[node name="WorldView" type="SubViewportContainer" parent="RenderCamera/ScreenControl" unique_id=2049790011]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 1
@@ -106,26 +60,16 @@ grow_vertical = 2
 stretch = true
 stretch_shrink = 2
 
-[node name="WorldPort" type="SubViewport" parent="RenderCamera/RenderTexture/ScreenControl/WorldView" unique_id=612911490]
+[node name="WorldPort" type="SubViewport" parent="RenderCamera/ScreenControl/WorldView" unique_id=612911490]
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(576, 324)
 render_target_update_mode = 4
 
-[node name="WorldCamera" type="Camera3D" parent="RenderCamera/RenderTexture/ScreenControl/WorldView/WorldPort" unique_id=1389947943]
+[node name="WorldCamera" type="Camera3D" parent="RenderCamera/ScreenControl/WorldView/WorldPort" unique_id=1389947943]
 cull_mask = 1023
 
-[node name="WorldRenderTex" type="TextureRect" parent="RenderCamera/RenderTexture/ScreenControl" unique_id=1435385096]
-material = SubResource("ShaderMaterial_0mmr6")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("ImageTexture_dcgr5")
-
-[node name="PauseView" type="SubViewportContainer" parent="RenderCamera/RenderTexture/ScreenControl" unique_id=1268530204]
+[node name="PauseView" type="SubViewportContainer" parent="RenderCamera/ScreenControl" unique_id=1268530204]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 1
@@ -137,17 +81,18 @@ grow_vertical = 2
 stretch = true
 stretch_shrink = 2
 
-[node name="PausePort" type="SubViewport" parent="RenderCamera/RenderTexture/ScreenControl/PauseView" unique_id=1005239000]
+[node name="PausePort" type="SubViewport" parent="RenderCamera/ScreenControl/PauseView" unique_id=1005239000]
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(576, 324)
 render_target_update_mode = 4
 
-[node name="PauseCamera" type="Camera3D" parent="RenderCamera/RenderTexture/ScreenControl/PauseView/PausePort" unique_id=1438838193]
+[node name="PauseCamera" type="Camera3D" parent="RenderCamera/ScreenControl/PauseView/PausePort" unique_id=1438838193]
 cull_mask = 131072
 environment = ExtResource("2_iy6s0")
 
 [node name="ViewFade" type="TextureRect" parent="RenderCamera" unique_id=2017323444]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

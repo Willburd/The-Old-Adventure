@@ -1,5 +1,0 @@
-[gd_resource type="ViewportTexture" format=3 uid="uid://caur1iosoa25m"]
-
-[resource]
-resource_name = "SkyRender"
-viewport_path = NodePath("RenderCamera/RenderTexture/ScreenControl/PrerenderView/PrerenderPort")

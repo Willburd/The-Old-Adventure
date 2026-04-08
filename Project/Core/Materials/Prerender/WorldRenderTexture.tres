@@ -1,5 +1,0 @@
-[gd_resource type="ViewportTexture" format=3 uid="uid://csbp4nc81nid1"]
-
-[resource]
-resource_name = "WorldRender"
-viewport_path = NodePath("RenderCamera/RenderTexture/ScreenControl/WorldView/WorldPort")
