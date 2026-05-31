@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://c5bi20u5efjcv" path="res://Core/Scenes/Test/Test.cs" id="1_l1o06"]
 [ext_resource type="PackedScene" uid="uid://d04g1lc3ypigm" path="res://Core/Prefabs/Skyboxes/OverworldSkybox.tscn" id="2_8a80c"]
-[ext_resource type="PackedScene" uid="uid://dp88hb5jgm4i7" path="res://Core/Prefabs/Misc/Cube.tscn" id="5_0k0cd"]
 [ext_resource type="PackedScene" uid="uid://4vr73xsoy07m" path="res://Core/Models/Scenes/test_room.blend" id="5_heax7"]
 [ext_resource type="PackedScene" uid="uid://c850oivjjoqf0" path="res://Core/Prefabs/Loadingzones/Entrance.tscn" id="5_i02ps"]
 
@@ -42,10 +41,6 @@ directional_shadow_mode = 0
 
 [node name="TestRoomGeo" parent="." unique_id=1989629558 instance=ExtResource("5_heax7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0029640198, 0.009064794, -0.0047130585)
-
-[node name="Cube" parent="." unique_id=596461442 instance=ExtResource("5_0k0cd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.86621, -0.6194734, 0)
-layers = 1024
 
 [editable path="Entrances/Default"]
 [editable path="Entrances/Test"]

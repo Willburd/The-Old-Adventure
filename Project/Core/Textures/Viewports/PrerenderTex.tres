@@ -1,0 +1,4 @@
+[gd_resource type="ViewportTexture" format=3 uid="uid://dhwg03cvxllr1"]
+
+[resource]
+viewport_path = NodePath("RenderCamera/ScreenControl/WorldRenderTex/PrerenderPort")
