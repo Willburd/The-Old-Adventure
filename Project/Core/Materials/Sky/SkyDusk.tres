@@ -1,6 +1,0 @@
-[gd_resource type="PanoramaSkyMaterial" format=3 uid="uid://chqiteeb5ls0u"]
-
-[ext_resource type="Texture2D" uid="uid://dgroa1amvsdjk" path="res://Core/Textures/Skybox/standard_skybox_dusk.png" id="1_q2vo0"]
-
-[resource]
-panorama = ExtResource("1_q2vo0")

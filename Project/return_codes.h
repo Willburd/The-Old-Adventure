@@ -1,0 +1,7 @@
+#ifndef RETURNCODE_HEADER
+#define RETURNCODE_HEADER
+
+#define ERR_SUCCESS 0
+#define ERR_NOALLOC 1
+
+#endif

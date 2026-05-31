@@ -1,9 +1,0 @@
-[gd_scene format=3 uid="uid://d04g1lc3ypigm"]
-
-[ext_resource type="Environment" uid="uid://b4rjlo7ske2lx" path="res://Core/Environments/Overworld.tres" id="1_28say"]
-[ext_resource type="Script" uid="uid://bpaw35ygq12na" path="res://Core/Scripts/Misc/SkyRotator.cs" id="2_28say"]
-
-[node name="OverworldSkybox" type="WorldEnvironment" unique_id=1467002431]
-environment = ExtResource("1_28say")
-script = ExtResource("2_28say")
-_rotation_rate = Vector3(0, 0.01, 0)
