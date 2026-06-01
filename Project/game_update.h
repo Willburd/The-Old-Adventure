@@ -3,6 +3,8 @@
 
 void game_setup();
 
+void game_load_global_assets();
+
 void game_update();
 
 void game_shutdown();

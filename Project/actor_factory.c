@@ -25,7 +25,11 @@ struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3
 		perror("Actor allocation failed!\n");
 		exit(ERR_NOALLOC);
 	}
+
+	// Setup actor
 	ACTOR_CLEAR(actor);
+	if (ACTOR_HAS(actor, func_load_preloadassets))
+		actor->func_load_preloadassets(actor);
 	ACTOR_POS_SNAP(actor, at_position);
 	ACTOR_VEL_RESET(actor, initial_velocity);
 	

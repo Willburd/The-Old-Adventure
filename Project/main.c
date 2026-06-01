@@ -15,6 +15,8 @@ double seconds_counter = 0;
 int main(void)
 {
     InitWindow(screenWidth, screenHeight, "The Old Adventures");
+    InitAudioDevice();
+
     SetTargetFPS(60);
     game_setup();
 

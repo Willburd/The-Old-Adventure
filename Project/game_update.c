@@ -6,6 +6,9 @@
 #include "actor.h"
 #include "actor_factory.h"
 #include "game_update.h"
+#include "assets.h"
+#include "hashmap.h"
+
 
 int current_actor_cap = 0;
 int total_actors = 0;
@@ -20,6 +23,12 @@ void game_setup()
 	{
 		world_actors[i] = NULL;
 	}
+	loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
+}
+
+void game_load_global_assets()
+{
+
 }
 
 void game_update()

@@ -148,8 +148,10 @@
   <ItemGroup>
     <ClCompile Include="actor_player.c" />
     <ClCompile Include="actor_factory.c" />
+    <ClCompile Include="assets.c" />
     <ClCompile Include="game_draw.c" />
     <ClCompile Include="game_update.c" />
+    <ClCompile Include="hashmap.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="return_codes.h" />
   </ItemGroup>
@@ -157,9 +159,11 @@
     <ClInclude Include="actor.h" />
     <ClInclude Include="actor_player.h" />
     <ClInclude Include="actor_factory.h" />
+    <ClInclude Include="assets.h" />
     <ClInclude Include="game_draw.h" />
     <ClInclude Include="game_update.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="hashmap.h" />
     <ClInclude Include="tools.h" />
   </ItemGroup>
   <ItemGroup>

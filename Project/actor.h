@@ -13,7 +13,7 @@ struct Actor {
 	Vector3 last_velocity;
 
 	void (*func_init)(struct Actor* player);
-	void (*func_load_assets)(struct Actor* player);
+	void (*func_load_preloadassets)(struct Actor* player);
 	void (*func_preupdate)(struct Actor* player);
 	void (*func_update)(struct Actor* player);
 	void (*func_postupdate)(struct Actor* player);
@@ -22,7 +22,7 @@ struct Actor {
 	void (*func_destroy)(struct Actor* player);
 	void* data;
 };
-#define ACTOR_CLEAR(x) x->index = -1;x->func_init = NULL;x->func_load_assets = NULL;x->func_destroy = NULL;x->func_preupdate = NULL;x->func_update = NULL;x->func_postupdate = NULL;x->func_drawworld = NULL;x->func_drawhud = NULL;x->data = NULL;
+#define ACTOR_CLEAR(x) x->index = -1;x->func_init = NULL;x->func_load_preloadassets = NULL;x->func_destroy = NULL;x->func_preupdate = NULL;x->func_update = NULL;x->func_postupdate = NULL;x->func_drawworld = NULL;x->func_drawhud = NULL;x->data = NULL;
 #define ACTOR_POS_SNAP(x, pos) x->position = pos;x->last_position = pos;
 #define ACTOR_VEL_RESET(x, vel) x->velocity = vel;x->last_velocity = vel;
 #define ACTOR_EXISTS(x) (x != NULL && x->index > -1)

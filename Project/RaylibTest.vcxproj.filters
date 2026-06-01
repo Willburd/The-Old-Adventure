@@ -33,6 +33,12 @@
     <ClCompile Include="return_codes.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="assets.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hashmap.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game_draw.h">
@@ -54,6 +60,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hashmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
