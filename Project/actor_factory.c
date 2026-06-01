@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "hashmap.h"
 #include "tools.h"
 #include "return_codes.h"
 #include "actor.h"
@@ -9,6 +11,17 @@
 #include "actor_player.h"
 
 #define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor);}
+
+int actor_compare(const void* a, const void* b, void* udata) {
+	const struct Actor* ua = a;
+	const struct Actor* ub = b;
+	return strcmp(ua->uuid, ub->uuid);
+}
+
+uint64_t actor_hash(const void* item, uint64_t seed0, uint64_t seed1) {
+	const struct Actor* asset = item;
+	return hashmap_sip(asset->uuid, strlen(asset->uuid), seed0, seed1);
+}
 
 struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3 initial_velocity)
 {
@@ -22,6 +35,13 @@ struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3
 	total_actors++;
 	MALLOC(struct Actor, actor);
 
+	// Set unique ID. 
+	MALLOC_SIZE(char,sizeof(uint64_t), set_uuid);
+	actor->uuid = set_uuid;
+	int* dref_uuid = &set_uuid;
+	dref_uuid = ++current_unique_id;
+	hashmap_set(loaded_actors, actor);
+	
 	// Setup actor
 	ACTOR_CLEAR(actor);
 	if (ACTOR_HAS(actor, func_load_preloadassets))
@@ -62,6 +82,8 @@ void ACTOR_DESTROY(struct Actor* actor)
 		actor->func_destroy(actor);
 	// Wipedata
 	world_actors[actor->index] = NULL;
+	hashmap_delete(loaded_actors, actor);
+	free(actor->uuid); // chararray
 	if (ACTOR_HAS(actor, data))
 		free(actor->data);
 	ACTOR_CLEAR(actor);

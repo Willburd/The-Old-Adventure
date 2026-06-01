@@ -12,6 +12,7 @@
 
 int current_actor_cap = 0;
 int total_actors = 0;
+uint64_t current_unique_id = 0;
 
 void game_setup()
 {
@@ -24,11 +25,7 @@ void game_setup()
 		world_actors[i] = NULL;
 	}
 	loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
-}
-
-void game_load_global_assets()
-{
-
+	loaded_actors = hashmap_new(sizeof(struct Actor), ACTOR_LIMIT, 0, 0, actor_hash, actor_compare, NULL, NULL);
 }
 
 void game_update()
@@ -101,6 +98,7 @@ void game_update()
 
 void game_shutdown()
 {
+	// Clear the actors entirely
 	for (int i = 0; i < ACTOR_LIMIT; i++)
 	{
 		struct Actor* destroy_actor = world_actors[i];
@@ -108,4 +106,7 @@ void game_shutdown()
 			continue;
 		ACTOR_DESTROY(destroy_actor);
 	}
+	// Clear assets and the actor id map
+	hashmap_free(loaded_assets);
+	hashmap_free(loaded_actors);
 }
