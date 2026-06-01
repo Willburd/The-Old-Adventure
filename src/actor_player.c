@@ -33,9 +33,8 @@ void player_preload_assets(struct Actor* actor)
 
 void player_actor_update(struct Actor* actor)
 {
-	actor->position.x += 1;
-	actor->position.y += 1;
-
+	if (actor->position.y > 40)
+		ACTOR_DESTROY(actor);
 }
 
 void player_actor_draw(struct Actor* actor, float delta_time)
@@ -47,5 +46,6 @@ void player_actor_draw(struct Actor* actor, float delta_time)
 
 void player_actor_destroy(struct Actor* actor)
 {
-
+	ACTOR_FACTORY(player, (Vector3) { 0, 0, 0 }, (Vector3) { 1, 1, 0 });
+	ACTOR_FACTORY(player, (Vector3) { 0, 0, 0 }, (Vector3) { 1, 1, 0 });
 }

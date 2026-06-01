@@ -24,11 +24,13 @@ void game_setup()
 	{
 		world_actors[i] = NULL;
 	}
+
+	// Create asset cache
 	loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
-	loaded_actors = hashmap_new(sizeof(struct Actor), ACTOR_LIMIT, 0, 0, actor_hash, actor_compare, NULL, NULL);
+	reset_global_asset_cache();
 
 	// TEMP
-	ACTOR_FACTORY(player, (Vector3) {0,0,0}, (Vector3) { 0, 0, 0 });
+	ACTOR_FACTORY(player, (Vector3) {0,0,0}, (Vector3) { 1, 1, 0 });
 }
 
 void game_update()
@@ -113,5 +115,4 @@ void game_shutdown()
 	}
 	// Clear assets and the actor id map
 	hashmap_free(loaded_assets);
-	hashmap_free(loaded_actors);
 }

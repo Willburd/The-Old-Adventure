@@ -66,6 +66,9 @@
     <ClCompile Include="tools.c">
       <Filter>Source Files\engine\tools</Filter>
     </ClCompile>
+    <ClCompile Include="actor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
