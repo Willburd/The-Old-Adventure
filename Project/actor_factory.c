@@ -106,7 +106,7 @@ void ACTOR_DESTROY(struct Actor* actor)
 	// Wipedata
 	world_actors[actor->index] = NULL;
 	hashmap_delete(loaded_actors, actor);
-	free(actor->uuid); // chararray
+	free(actor->uuid); // malloc chararray
 	if (ACTOR_HAS(actor, data))
 		free(actor->data);
 	ACTOR_CLEAR(actor);
