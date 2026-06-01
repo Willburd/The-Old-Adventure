@@ -54,7 +54,7 @@ struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3
 
 	// Set unique ID. Turns a uint64 into a char string for the hashtable
 	current_unique_id++;
-	MALLOC_SIZE(char, sizeof(uint64_t), set_uuid);
+	MALLOC_SIZE(char, sizeof(uint64_t), set_uuid, 0);
 	memcpy(set_uuid, &current_unique_id, sizeof(uint64_t));
 	actor->uuid = set_uuid;
 	hashmap_set(loaded_actors, actor);

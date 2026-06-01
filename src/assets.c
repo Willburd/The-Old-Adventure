@@ -14,8 +14,8 @@ uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1) {
     return hashmap_sip(asset->filepath, strlen(asset->filepath), seed0, seed1);
 }
 
-void asset_free(const void* item) {
-    const Asset* asset = item;
+void asset_free(void* item) {
+    Asset* asset = item;
     if(IsTextureValid(asset->tex))
         UnloadTexture(asset->tex);
     if (IsModelValid(asset->mdl))
@@ -40,7 +40,7 @@ void LoadAsset_Texture(const char* path)
     asset->tex = tex;
 }
 
-void LoadAsset_Model(char* path)
+void LoadAsset_Model(const char* path)
 {
     Model mdl = LoadModel(path);
     if (!IsModelValid(mdl))

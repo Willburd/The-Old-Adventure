@@ -51,7 +51,9 @@ void game_update()
 			// Shift the actor back to the last free slot.
 			update_actor->index = shift_index;
 			world_actors[shift_index] = update_actor;
-			//printf("Actor slot shift: %i -> %i\n", i, shift_index);
+#ifdef _DEBUG
+			printf("Actor slot shift: %i -> %i\n", i, shift_index);
+#endif
 			// Clear the current slot
 			world_actors[i] = NULL;
 			shift_index = i;

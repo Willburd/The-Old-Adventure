@@ -2,6 +2,10 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file.
 
+#pragma warning(disable : 4334) 
+#pragma warning(disable : 4244) 
+#pragma warning(disable : 4267) 
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

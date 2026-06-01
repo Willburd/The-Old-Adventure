@@ -151,7 +151,10 @@
     <ClCompile Include="assets.c" />
     <ClCompile Include="game_draw.c" />
     <ClCompile Include="game_update.c" />
-    <ClCompile Include="hashmap.c" />
+    <ClCompile Include="hashmap.c">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </DisableSpecificWarnings>
+    </ClCompile>
     <ClCompile Include="main.c" />
     <ClCompile Include="return_codes.h" />
     <ClCompile Include="tools.c" />
