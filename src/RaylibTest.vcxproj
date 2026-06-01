@@ -154,6 +154,7 @@
     <ClCompile Include="hashmap.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="return_codes.h" />
+    <ClCompile Include="tools.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor.h" />

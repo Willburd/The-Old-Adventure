@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\engine">
+      <UniqueIdentifier>{0499538f-b898-4701-af13-00bcbf33a88e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine">
+      <UniqueIdentifier>{39b39bc7-f6a5-4ae2-bafd-20ea21a3bacd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine\tools">
+      <UniqueIdentifier>{14661c5b-57a6-4308-af02-7c1dda120df4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine\actors">
+      <UniqueIdentifier>{af52e4f6-7051-4bc6-a6de-5e10ff3683ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine\game">
+      <UniqueIdentifier>{c71734ef-b456-4727-8ff1-b9d4b650394a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine\actors">
+      <UniqueIdentifier>{83e68efb-8427-4fc8-8b4c-5f5746700572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine\tools">
+      <UniqueIdentifier>{fa76b4d2-461b-4e0b-b266-bcb865a88ae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine\game">
+      <UniqueIdentifier>{6d3c62e6-e65f-4da3-b9bb-5184a1758aec}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="return_codes.h">
+      <Filter>Header Files\engine\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_player.c">
+      <Filter>Source Files\engine\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_factory.c">
+      <Filter>Source Files\engine\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="hashmap.c">
+      <Filter>Source Files\engine\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="game_draw.c">
+      <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
+    <ClCompile Include="assets.c">
+      <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game_update.c">
+      <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
+    <ClCompile Include="tools.c">
+      <Filter>Source Files\engine\tools</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="tools.h">
+      <Filter>Header Files\engine\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="hashmap.h">
+      <Filter>Header Files\engine\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="actor.h">
+      <Filter>Header Files\engine\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_factory.h">
+      <Filter>Header Files\engine\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_player.h">
+      <Filter>Header Files\engine\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="assets.h">
+      <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game_draw.h">
+      <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game_update.h">
+      <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="globals.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+</Project>
