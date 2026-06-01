@@ -118,7 +118,7 @@ void ACTOR_DESTROY(struct Actor* actor)
 // Actor library. Contains all actor polymorphs and where their init function pointers are.
 // This only handles the actor_init function. Those functions set the rest of their pointers.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor);}
+#define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor); actor->func_load_preloadassets(actor);}
 inline void ACTOR_LIBRARY(struct Actor* actor, actor_types actor_type)
 {
 	MAKE_ACTOR_INIT(player, player_actor_init);
