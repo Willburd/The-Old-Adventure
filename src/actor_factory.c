@@ -21,7 +21,7 @@ struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3
 
 	// Allocate an actor as we have a free slot
 	total_actors++;
-	MALLOC(struct Actor, actor);
+	MALLOC(struct Actor, actor, NULL);
 
 	// Setup actor
 	ACTOR_CLEAR(actor);

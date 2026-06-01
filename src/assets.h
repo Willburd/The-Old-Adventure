@@ -20,7 +20,7 @@
 
 #define ASSET_LIMIT 2048
 
-const struct hashmap* loaded_assets;
+struct hashmap* loaded_assets;
 
 typedef struct {
     char* filepath;
@@ -32,18 +32,18 @@ typedef struct {
 
 void reset_global_asset_cache();
 
-int asset_compare(const void* a, void* b, void* udata);
+int asset_compare(const void* a, const void* b, void* udata);
 uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1);
 void asset_free(const void* item);
 
-int LoadAsset_Texture(const char* path);
-int LoadAsset_Model(const char* path);
-int LoadAsset_Sound(const char* path);
-int LoadAsset_Music(const char* path);
+int LoadAsset_Texture(char* path);
+int LoadAsset_Model(char* path);
+int LoadAsset_Sound(char* path);
+int LoadAsset_Music(char* path);
 
-int AssetExists(const char* path);
-Texture2D AssetGet_Texture(const char* path);
-Model AssetGet_Model(const char* path);
-Sound AssetGet_Sound(const char* path);
-Music AssetGet_Music(const char* path);
+int AssetExists(char* path);
+Texture2D AssetGet_Texture(char* path);
+Model AssetGet_Model(char* path);
+Sound AssetGet_Sound(char* path);
+Music AssetGet_Music(char* path);
 #endif
