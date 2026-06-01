@@ -1,7 +1,7 @@
 #include "assets.h"
 #include "tools.h"
 
-#define MALLOC_ASSET(a) MALLOC(Asset, a);a->filepath = CHAR_STR_COPY(path);hashmap_set(loaded_assets, &a);
+#define MALLOC_ASSET(a, p) MALLOC(Asset, a);a->filepath = CHAR_STR_COPY(p);hashmap_set(loaded_assets, &a);
 
 int asset_compare(const void* a, const void* b, void* udata) {
     const Asset* ua = a;
@@ -29,24 +29,52 @@ void asset_free(const void* item) {
 
 void LoadAsset_Texture(const char* path)
 {
-    MALLOC_ASSET(asset);
-    asset->tex = LoadTexture(path);
+    Texture2D tex = LoadTexture(path);
+    if (!IsTextureValid(tex))
+    {
+        // Failed asset load
+        // TODO - Fallback asset
+        return;
+    }
+    MALLOC_ASSET(asset, path);
+    asset->tex = tex;
 }
 
 void LoadAsset_Model(char* path)
 {
-    MALLOC_ASSET(asset);
-    asset->mdl = LoadModel(path);
+    Model mdl = LoadModel(path);
+    if (!IsModelValid(mdl))
+    {
+        // Failed asset load
+        // TODO - Fallback asset
+        return;
+    }
+    MALLOC_ASSET(asset, path);
+    asset->mdl = mdl;
 }
 
 void LoadAsset_Sound(const char* path)
 {
-    MALLOC_ASSET(asset);
-    asset->snd = LoadSound(path);
+    Sound snd = LoadSound(path);
+    if (!IsSoundValid(snd))
+    {
+        // Failed asset load
+        // TODO - Fallback asset
+        return;
+    }
+    MALLOC_ASSET(asset, path);
+    asset->snd = snd;
 }
 
 void LoadAsset_Music(const char* path)
 {
-    MALLOC_ASSET(asset);
-    asset->mus = LoadMusicStream(path);
+    Music mus = LoadMusicStream(path);
+    if (!IsMusicValid(mus))
+    {
+        // Failed asset load
+        // TODO - Fallback asset
+        return;
+    }
+    MALLOC_ASSET(asset, path);
+    asset->mus = mus;
 }
