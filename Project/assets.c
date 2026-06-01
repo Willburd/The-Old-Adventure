@@ -13,8 +13,6 @@ __int64 asset_hash(const void* item, __int64 seed0, __int64 seed1) {
 
 void asset_free(const void* item) {
     const Asset* asset = item;
-    if (asset == NULL)
-        return;
     if(IsTextureValid(asset->tex))
         UnloadTexture(asset->tex);
     if (IsModelValid(asset->mdl))
