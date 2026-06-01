@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "tools.h"
 #include "return_codes.h"
 #include "actor.h"
 #include "actor_factory.h"
@@ -19,12 +20,7 @@ struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3
 
 	// Allocate an actor as we have a free slot
 	total_actors++;
-	struct Actor* actor = (struct Actor*)malloc(sizeof(struct Actor));
-	if (actor == NULL)
-	{
-		perror("Actor allocation failed!\n");
-		exit(ERR_NOALLOC);
-	}
+	MALLOC(struct Actor, actor);
 
 	// Setup actor
 	ACTOR_CLEAR(actor);

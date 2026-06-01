@@ -1,6 +1,8 @@
 #ifndef GLOBALS_HEADER
 #define GLOBALS_HEADER
 
+#include <stdint.h>
+
 #define TRUE 1
 #define FALSE 0
 
@@ -9,7 +11,7 @@ const int screenWidth;
 const int screenHeight;
 
 double update_ticker;
-__int64 tick_counter;
+uint64_t tick_counter;
 double seconds_counter;
 
 #endif

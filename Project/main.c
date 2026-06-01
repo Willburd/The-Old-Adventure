@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include "raylib.h"
 #include "return_codes.h"
 #include "game_update.h"
@@ -9,7 +10,7 @@ const int screenWidth = 800;
 const int screenHeight = 600;
 
 double update_ticker = 0;
-__int64 tick_counter = 0;
+uint64_t tick_counter = 0;
 double seconds_counter = 0;
 
 int main(void)
