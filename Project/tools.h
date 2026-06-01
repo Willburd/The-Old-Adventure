@@ -5,7 +5,7 @@
 #include "return_codes.h"
 
 #define MALLOC(t,n) t* n = (t*)malloc(sizeof(t));if(n == NULL){printf("Failed malloc");exit(ERR_NOALLOC);};
-#define MALLOC_SIZE(t,s,n) t* n = (t*)malloc(s);if(n == NULL){printf("Failed malloc");exit(ERR_NOALLOC);};
+#define MALLOC_SIZE(t,s,n) t* n = (t*)malloc(s);if(n == NULL){printf("Failed malloc");exit(ERR_NOALLOC);};for(int _mi = 0;_mi < s; ++_mi) { n[_mi] = NULL;};
 #define CHAR_STR_COPY(s) (char*)malloc(strlen(s) + 1)
 
 #endif

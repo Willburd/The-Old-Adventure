@@ -10,8 +10,6 @@
 #include "game_update.h"
 #include "actor_player.h"
 
-#define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor);}
-
 int actor_compare(const void* a, const void* b, void* udata) {
 	const struct Actor* ua = a;
 	const struct Actor* ub = b;
@@ -19,10 +17,24 @@ int actor_compare(const void* a, const void* b, void* udata) {
 }
 
 uint64_t actor_hash(const void* item, uint64_t seed0, uint64_t seed1) {
-	const struct Actor* asset = item;
-	return hashmap_sip(asset->uuid, strlen(asset->uuid), seed0, seed1);
+	const struct Actor* actor = item;
+	return hashmap_sip(actor->uuid, strlen(actor->uuid), seed0, seed1);
 }
 
+// This should not be needed under normal release params
+#ifdef _DEBUG
+void print_uuid(char* input)
+{
+	printf("[");
+	for (int i = 0; i < sizeof(uint64_t); i++) {
+		if(i > 0) printf(":");
+		printf("%02X", (unsigned char)input[i]);
+	}
+	printf("]");
+}
+#endif
+
+// Creates an actor in the world.
 struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3 initial_velocity)
 {
 	if (current_actor_cap >= ACTOR_LIMIT)
@@ -35,22 +47,24 @@ struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3
 	total_actors++;
 	MALLOC(struct Actor, actor);
 
-	// Set unique ID. 
-	MALLOC_SIZE(char,sizeof(uint64_t), set_uuid);
-	actor->uuid = set_uuid;
-	int* dref_uuid = &set_uuid;
-	dref_uuid = ++current_unique_id;
-	hashmap_set(loaded_actors, actor);
-	
 	// Setup actor
 	ACTOR_CLEAR(actor);
 	if (ACTOR_HAS(actor, func_load_preloadassets))
 		actor->func_load_preloadassets(actor);
+
+	// Set unique ID. Turns a uint64 into a char string for the hashtable
+	current_unique_id++;
+	MALLOC_SIZE(char, sizeof(uint64_t), set_uuid);
+	memcpy(set_uuid, &current_unique_id, sizeof(uint64_t));
+	actor->uuid = set_uuid;
+	hashmap_set(loaded_actors, actor);
+
+	// Set position
 	ACTOR_POS_SNAP(actor, at_position);
 	ACTOR_VEL_RESET(actor, initial_velocity);
 	
-	// Actor library
-	MAKE_ACTOR_INIT(player, player_actor_init);
+	// Configure to type of actor made
+	ACTOR_LIBRARY(actor, actor_type);
 
 	// Place in update list
 	for (int i = 0; i < ACTOR_LIMIT; i++)
@@ -61,7 +75,11 @@ struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3
 		actor->index = i;
 		if (i > current_actor_cap)
 			current_actor_cap = i;
-		printf("Actor spawn slot: %i\n", i);
+#ifdef _DEBUG
+		printf("Actor spawn slot: %i ", i);
+		print_uuid(actor->uuid);
+		printf("\n");
+#endif
 		return actor;
 	}
 
@@ -71,12 +89,17 @@ struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3
 	exit(ERR_NOALLOC);
 }
 
+// Removes an actor from the world.
 void ACTOR_DESTROY(struct Actor* actor)
 {
 	// No recursive destroy
 	if (actor->index == -1)
 		return;
-	printf("Actor slot destroy: %i\n", actor->index);
+#ifdef _DEBUG
+	printf("Actor slot destroy: %i ", actor->index);
+	print_uuid(actor->uuid);
+	printf("\n");
+#endif
 	total_actors--;
 	if (ACTOR_HAS(actor, func_destroy))
 		actor->func_destroy(actor);
@@ -88,4 +111,15 @@ void ACTOR_DESTROY(struct Actor* actor)
 		free(actor->data);
 	ACTOR_CLEAR(actor);
 	free(actor);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Actor library. Contains all actor polymorphs and where their init function pointers are.
+// This only handles the actor_init function. Those functions set the rest of their pointers.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor);}
+inline void ACTOR_LIBRARY(struct Actor* actor, actor_types actor_type)
+{
+	MAKE_ACTOR_INIT(player, player_actor_init);
 }

@@ -26,6 +26,9 @@ void game_setup()
 	}
 	loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
 	loaded_actors = hashmap_new(sizeof(struct Actor), ACTOR_LIMIT, 0, 0, actor_hash, actor_compare, NULL, NULL);
+
+	// TEMP
+	ACTOR_FACTORY(player, (Vector3) {0,0,0}, (Vector3) { 0, 0, 0 });
 }
 
 void game_update()
