@@ -8,7 +8,7 @@
 #include "game_update.h"
 
 // Creates an actor in the world.
-struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity)
+struct Actor* ACTOR_FACTORY(ActorTypes actor_type, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity)
 {
 	if (current_actor_cap >= ACTOR_LIMIT)
 	{
@@ -87,7 +87,7 @@ void ACTOR_DESTROY(struct Actor* actor)
 #include "actor_scene.h"
 
 #define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor);}
-inline void ACTOR_LIBRARY(struct Actor* actor, actor_types actor_type)
+inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 {
 	MAKE_ACTOR_INIT(player, player_actor_init);
 	MAKE_ACTOR_INIT(scene, scene_actor_init);

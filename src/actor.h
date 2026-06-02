@@ -5,7 +5,7 @@
 #include "raylib.h"
 #include "raymath.h"
 
-typedef enum actor_types;
+typedef enum ActorTypes;
 
 struct Actor;
 struct Actor {
@@ -72,6 +72,6 @@ typedef enum
 	scene,
 	player,
 
-} actor_types;
+} ActorTypes;
 
 #endif
