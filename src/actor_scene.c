@@ -38,7 +38,7 @@ void UnloadScene()
 	current_scene = NULL;
 }
 
-void scene_actor_init(struct Actor* scene)
+void actor_scene_init(struct Actor* scene)
 {
 	// Unload previous scene
 	UnloadScene();

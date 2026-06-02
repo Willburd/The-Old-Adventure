@@ -102,6 +102,9 @@
     <ClCompile Include="scene_titlescene.c">
       <Filter>Source Files\adventure\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="actor_test.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">

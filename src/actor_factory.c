@@ -4,6 +4,7 @@
 #include "hashmap.h"
 #include "tools.h"
 #include "return_codes.h"
+#include "actor.h"
 #include "actor_factory.h"
 #include "game_update.h"
 
@@ -75,17 +76,4 @@ void ACTOR_DESTROY(struct Actor* actor)
 		free(actor->data);
 	ACTOR_CLEAR(actor);
 	free(actor);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Actor library. Contains all actor polymorphs and where their init function pointers are.
-// This only handles the actor_init function. Those functions set the rest of their pointers.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor);}
-inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
-{
-	MAKE_ACTOR_INIT(player, player_actor_init);
-	MAKE_ACTOR_INIT(scene, scene_actor_init);
 }

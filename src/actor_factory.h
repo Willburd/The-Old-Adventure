@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "actor.h"
+#include "actor_library.h"
 #include "raylib.h"
 
 struct Actor;

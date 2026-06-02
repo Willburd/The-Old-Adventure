@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include "raylib.h"
 #include "raymath.h"
-#include "actor_library.h"
 
 struct Actor;
 struct Actor {
