@@ -36,8 +36,8 @@ int main(void)
             update_ticker -= ticker_rate;
             game_update();
         }
-
-        game_draw(delta_time);
+        float tick_percent = update_ticker / ticker_rate;
+        game_draw(tick_percent);
     }
 
     game_shutdown();

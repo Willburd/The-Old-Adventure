@@ -17,7 +17,7 @@ void scene_debugscene_init(struct Actor* scene)
 	// Actor spawns
 	//for (int i = 0; i < 1000; i++)
 	//{
-	ACTOR_FACTORY(player, (Vector3) { rand() % 300, rand() % 300, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 1, 1, 0 });
+	ACTOR_FACTORY(player, (Vector3) { rand() % 300, rand() % 300, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 0, 0, 0 });
 	//}
 }
 

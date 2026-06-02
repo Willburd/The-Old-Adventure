@@ -26,21 +26,24 @@ void player_actor_init(struct Actor* actor)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#define PLAYER_ASSET_TEXTURE ASSET_TEXTURES"/Objects/example.png"
+
 void player_preload_assets(struct Actor* actor)
 {
-	LoadAsset_Texture(ASSET_TEXTURES"/Objects/example.png");
+	LoadAsset_Texture(PLAYER_ASSET_TEXTURE);
 }
 
 void player_actor_update(struct Actor* actor)
 {
 	if (actor->position.y > 300)
 		ACTOR_DESTROY(actor);
-	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler(5 * DEG2RAD, 0, 0));
+	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler(15 * DEG2RAD, 0, 0));
 }
 
-void player_actor_draw(struct Actor* actor, float delta_time)
+void player_actor_draw(struct Actor* actor, float tick_percent)
 {
-	DrawTextureEx(AssetGet_Texture(ASSET_TEXTURES"/Objects/example.png"), (Vector2){ actor->position.x, actor->position.y }, QuaternionToEuler(actor->rotation).x * RAD2DEG, 1, WHITE);
+	Vector3 delta_pos = ACTOR_POS_DELTA(actor, tick_percent);
+	DrawTextureEx(AssetGet_Texture(PLAYER_ASSET_TEXTURE), (Vector2){ delta_pos.x, delta_pos.y }, QuaternionToEuler(ACTOR_ROT_DELTA(actor, tick_percent)).x * RAD2DEG, 1, WHITE);
 }
 
 void player_actor_destroy(struct Actor* actor)

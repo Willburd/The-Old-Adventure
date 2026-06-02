@@ -2,7 +2,7 @@
 #include "globals.h"
 #include "actor.h"
 
-void game_draw(float delta_time)
+void game_draw(float tick_percent)
 {
 
     BeginDrawing();
@@ -21,7 +21,7 @@ void game_draw(float delta_time)
 		if (!ACTOR_EXISTS(draw_actor))
 			continue;
 		if (ACTOR_HAS(draw_actor, func_drawworld))
-			draw_actor->func_drawworld(draw_actor, delta_time);
+			draw_actor->func_drawworld(draw_actor, tick_percent);
 	}
 	//EndMode3D();
 
@@ -32,12 +32,10 @@ void game_draw(float delta_time)
 		if (!ACTOR_EXISTS(draw_actor))
 			continue;
 		if (ACTOR_HAS(draw_actor, func_drawhud))
-			draw_actor->func_drawhud(draw_actor, delta_time);
+			draw_actor->func_drawhud(draw_actor, tick_percent);
 	}
 	//EndMode2D();
 
-	DrawText(TextFormat("Actor Total: [%i]\nSeconds [%f]\nTicks [%i]\nDelta [%f]", total_actors, seconds_counter, tick_counter, delta_time), 10, 30, 10, BLACK);
-
+	DrawText(TextFormat("Actor Total: [%i]\nSeconds [%f]\nTicks [%i]\nDelta [%f]", total_actors, seconds_counter, tick_counter, tick_percent), 10, 30, 10, BLACK);
     EndDrawing();
-
 }

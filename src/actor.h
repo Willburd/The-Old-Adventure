@@ -25,8 +25,8 @@ struct Actor {
 	void (*func_preupdate)(struct Actor* player);
 	void (*func_update)(struct Actor* player);
 	void (*func_postupdate)(struct Actor* player);
-	void (*func_drawworld)(struct Actor* player, float delta_time);
-	void (*func_drawhud)(struct Actor* player, float delta_time);
+	void (*func_drawworld)(struct Actor* player, float tick_percent);
+	void (*func_drawhud)(struct Actor* player, float tick_percent);
 	void (*func_destroy)(struct Actor* player);
 	void* data;
 };
@@ -37,6 +37,11 @@ struct Actor {
 #define ACTOR_VEL_RESET(x, vel) x->velocity = vel;x->last_velocity = vel;
 #define ACTOR_EXISTS(x) (x != NULL && x->index > -1)
 #define ACTOR_HAS(x, func) (x->func != NULL)
+
+#define ACTOR_POS_DELTA(x, delta) Vector3Lerp(x->last_position, x->position, delta)
+#define ACTOR_ROT_DELTA(x, delta) QuaternionLerp(x->last_rotation, x->rotation, delta)
+#define ACTOR_SCALE_DELTA(x, delta) Vector3Lerp(x->last_scale, x->scale, delta)
+#define ACTOR_VEL_DELTA(x, delta) Vector3Lerp(x->last_velocity, x->velocity, delta)
 
 #define ACTOR_LIMIT 2048
 
