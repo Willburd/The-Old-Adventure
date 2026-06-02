@@ -10,10 +10,10 @@
 
 typedef enum
 {
-	error,
-	test,		// Debugging
-	scene,
-	player,
+	act_error,
+	act_test,		// Debugging
+	act_scene,
+	act_player,
 	LAST_ACTOR
 
 } ActorTypes;
@@ -25,9 +25,9 @@ void actor_player_init(struct Actor* player);
 #define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor);}
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 {
-	MAKE_ACTOR_INIT(test, actor_test_init);
-	MAKE_ACTOR_INIT(player, actor_player_init);
-	MAKE_ACTOR_INIT(scene, actor_scene_init);
+	MAKE_ACTOR_INIT(act_test, actor_test_init);
+	MAKE_ACTOR_INIT(act_player, actor_player_init);
+	MAKE_ACTOR_INIT(act_scene, actor_scene_init);
 }
 
 #endif

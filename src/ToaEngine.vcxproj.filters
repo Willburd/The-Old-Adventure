@@ -93,17 +93,20 @@
     <ClCompile Include="actor_player.c">
       <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
-    <ClCompile Include="scene_debugscene.c">
+    <ClCompile Include="scene_debug.c">
       <Filter>Source Files\adventure\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="scene_testscene.c">
+    <ClCompile Include="scene_test.c">
       <Filter>Source Files\adventure\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="scene_titlescene.c">
+    <ClCompile Include="scene_title.c">
       <Filter>Source Files\adventure\scenes</Filter>
     </ClCompile>
     <ClCompile Include="actor_test.c">
       <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_boot.c">
+      <Filter>Source Files\adventure\scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@
 #include "globals.h"
 
 // public header
-const SceneID game_start_scene = debugscene;
+const SceneID game_start_scene = scene_boot;
 
 // private header
 SceneID next_scene;
@@ -22,13 +22,13 @@ void LoadScene(SceneID id, EntranceID entrance)
 {
 	next_scene = id;
 	next_entrance = entrance;
-	ACTOR_FACTORY(scene, (Vector3) { 0, 0, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 0, 0, 0 });
+	ACTOR_FACTORY(act_scene, (Vector3) { 0, 0, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 0, 0, 0 });
 }
 
 void ReloadScene()
 {
 	UnloadScene();
-	ACTOR_FACTORY(scene, (Vector3) { 0, 0, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 0, 0, 0 });
+	ACTOR_FACTORY(act_scene, (Vector3) { 0, 0, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 0, 0, 0 });
 }
 
 void UnloadScene()

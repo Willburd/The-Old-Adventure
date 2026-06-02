@@ -10,24 +10,26 @@
 
 typedef enum
 {
-	debugscene,
-	bootscene,
-	titlescene,
-	testscene,
+	scene_boot,
+	scene_debug,
+	scene_title,
+	scene_test,
 	LAST_SCENE
 
 } SceneID;
 
-void scene_debugscene_init(struct Actor* scene);
-void scene_titlescene_init(struct Actor* scene);
-void scene_testscene_init(struct Actor* scene);
+void scene_debug_init(struct Actor* scene);
+void scene_boot_init(struct Actor* scene);
+void scene_title_init(struct Actor* scene);
+void scene_test_init(struct Actor* scene);
 
 #define MAKE_SCENE_INIT(x,y) if(scene_id == x){scene->func_init = y;scene->func_init(scene);}
 inline void SCENE_LIBRARY(struct Actor* scene, SceneID scene_id)
 {
-	MAKE_SCENE_INIT(debugscene, scene_debugscene_init);
-	MAKE_SCENE_INIT(titlescene, scene_titlescene_init);
-	MAKE_SCENE_INIT(testscene, scene_testscene_init);
+	MAKE_SCENE_INIT(scene_boot, scene_boot_init);
+	MAKE_SCENE_INIT(scene_debug, scene_debug_init);
+	MAKE_SCENE_INIT(scene_title, scene_title_init);
+	MAKE_SCENE_INIT(scene_test, scene_test_init);
 }
 
 #endif
