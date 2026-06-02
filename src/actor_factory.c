@@ -45,7 +45,7 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, Vector3 at_position, Quaterni
 		if (i > current_actor_cap)
 			current_actor_cap = i;
 #ifdef _DEBUG
-		printf("Actor spawn slot: %i [%llu]\n", actor->index, actor->uuid);
+		printf("Actor [type: %02x] spawn slot: %i [%llu]\n", actor_type, actor->index, actor->uuid);
 #endif
 		return actor;
 	}
