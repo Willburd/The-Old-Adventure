@@ -11,6 +11,7 @@ struct Actor;
 struct Actor {
 	int index;
 	uint64_t uuid;
+	int actor_type;
 
 	Vector3 position;
 	Quaternion rotation;
@@ -39,7 +40,7 @@ struct Actor {
 	void (*func_destroy)(struct Actor* player);
 	void* data;
 };
-#define ACTOR_CLEAR(x) x->index = -1;actor->uuid = 0;x->func_init = NULL;x->func_load_preloadassets = NULL;x->func_destroy = NULL;x->func_preupdate = NULL;x->func_update = NULL;x->func_postupdate = NULL;x->func_predrawworld = NULL;x->func_drawworld = NULL;x->func_postdrawworld = NULL;x->func_predrawhud = NULL;x->func_drawhud = NULL;x->func_postdrawhud = NULL;x->data = NULL;
+#define ACTOR_CLEAR(x) x->index = -1;actor->uuid = 0;x->actor_type = 0;x->func_init = NULL;x->func_load_preloadassets = NULL;x->func_destroy = NULL;x->func_preupdate = NULL;x->func_update = NULL;x->func_postupdate = NULL;x->func_predrawworld = NULL;x->func_drawworld = NULL;x->func_postdrawworld = NULL;x->func_predrawhud = NULL;x->func_drawhud = NULL;x->func_postdrawhud = NULL;x->data = NULL;
 #define ACTOR_POS_SNAP(x, pos) x->position = pos;x->last_position = pos;
 #define ACTOR_ROT_SNAP(x, rot) x->rotation = rot;x->last_rotation = rot;
 #define ACTOR_SCALE_SNAP(x, scl) x->scale = scl;x->last_scale = scl;

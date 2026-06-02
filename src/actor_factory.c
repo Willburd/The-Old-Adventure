@@ -23,6 +23,7 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, Vector3 at_position, Quaterni
 	// Setup actor
 	ACTOR_CLEAR(actor);
 	actor->uuid = ++current_unique_id;
+	actor->actor_type = actor_type;
 
 	// Set position
 	ACTOR_POS_SNAP(actor, at_position);
@@ -45,7 +46,7 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, Vector3 at_position, Quaterni
 		if (i > current_actor_cap)
 			current_actor_cap = i;
 #ifdef _DEBUG
-		printf("Actor [type: %02x] spawn slot: %i [%llu]\n", actor_type, actor->index, actor->uuid);
+		printf("Actor [type: %02x] spawn slot: %i [%llu]\n", actor->actor_type, actor->index, actor->uuid);
 #endif
 		return actor;
 	}
@@ -63,12 +64,11 @@ void ACTOR_DESTROY(struct Actor* actor)
 	if (actor->index == -1)
 		return;
 #ifdef _DEBUG
-	printf("Actor slot destroy: %i [%llu]\n", actor->index, actor->uuid);
+	printf("Actor [type: %02x] slot destroy: %i [%llu]\n", actor->actor_type, actor->index, actor->uuid);
 #endif
 	total_actors--;
 	if (ACTOR_HAS(actor, func_destroy))
 		actor->func_destroy(actor);
-	actor->uuid = 0;
 	// Wipedata
 	world_actors[actor->index] = NULL;
 	if (ACTOR_HAS(actor, data))
