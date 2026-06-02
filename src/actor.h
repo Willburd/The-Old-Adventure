@@ -5,6 +5,8 @@
 #include "raylib.h"
 #include "raymath.h"
 
+typedef enum actor_types;
+
 struct Actor;
 struct Actor {
 	int index;
@@ -62,5 +64,14 @@ int total_actors;
 uint64_t current_unique_id;		
 
 struct Actor* FINDACTOR(uint64_t id);
+
+typedef enum
+{
+	error,
+	test,		// Debugging
+	scene,
+	player,
+
+} actor_types;
 
 #endif
