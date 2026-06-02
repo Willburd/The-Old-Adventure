@@ -1,5 +1,6 @@
 #include "actor_scene.h"
 #include "scene_entry.h"
+#include "scene_library.h"
 #include "actor_factory.h"
 #include "raylib.h"
 #include "globals.h"
@@ -72,10 +73,3 @@ void actor_scene_init(struct Actor* scene)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define MAKE_SCENE_INIT(x,y) if(scene_id == x){scene->func_init = y;scene->func_init(scene);}
-inline void SCENE_LIBRARY(struct Actor* scene, SceneID scene_id)
-{
-	MAKE_SCENE_INIT(debugscene, scene_debugscene_init);
-	MAKE_SCENE_INIT(titlescene, scene_titlescene_init);
-	MAKE_SCENE_INIT(testscene, scene_testscene_init);
-}

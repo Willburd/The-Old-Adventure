@@ -9,7 +9,6 @@
 struct Actor;
 
 struct Actor* ACTOR_FACTORY(ActorTypes actor_type, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity);
-inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type);
 void ACTOR_DESTROY(struct Actor* actor);
 
 #endif
