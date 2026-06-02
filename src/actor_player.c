@@ -1,6 +1,5 @@
 #include "tools.h"
 #include "assets.h"
-#include "actor.h"
 #include "actor_factory.h"
 #include "actor_player.h"
 

@@ -2,7 +2,6 @@
 #include "scene_entry.h"
 #include "actor_factory.h"
 #include "raylib.h"
-#include "actor.h"
 #include "globals.h"
 
 // public header
