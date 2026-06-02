@@ -4,35 +4,12 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "actor.h"
-#include "actor_factory.h"
-#include "scene_entry.h"
 #include "game_update.h"
-#include "assets.h"
-#include "hashmap.h"
 
 
 int current_actor_cap = 0;
 int total_actors = 0;
 uint64_t current_unique_id = 0;
-
-void game_setup()
-{
-	if (world_actors == NULL) {
-		perror("Actor array allocation failed!\n");
-		exit(ERR_NOALLOC);
-	}
-	for (int i = 0; i < ACTOR_LIMIT; i++)
-	{
-		world_actors[i] = NULL;
-	}
-
-	// Create asset cache
-	loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
-	reset_global_asset_cache();
-
-	// Enter game
-	LoadScene(game_start_scene, titleentrance);
-}
 
 void game_update()
 {
@@ -115,18 +92,4 @@ void game_update()
 		if (ACTOR_HAS(update_actor, func_postupdate))
 			update_actor->func_postupdate(update_actor);
 	}
-}
-
-void game_shutdown()
-{
-	// Clear the actors entirely
-	for (int i = 0; i < ACTOR_LIMIT; i++)
-	{
-		struct Actor* destroy_actor = world_actors[i];
-		if (!ACTOR_EXISTS(destroy_actor))
-			continue;
-		ACTOR_DESTROY(destroy_actor);
-	}
-	// Clear assets and the actor id map
-	hashmap_free(loaded_assets);
 }
