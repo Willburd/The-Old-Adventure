@@ -43,6 +43,12 @@
     <Filter Include="Source Files\engine\scenes">
       <UniqueIdentifier>{457e31dc-0d85-4b9c-a621-01fc25bea142}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\adventure">
+      <UniqueIdentifier>{bd4cc79c-b03b-4d7f-b4bc-ab5de5ff33a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\adventure\actors">
+      <UniqueIdentifier>{8aa38d55-9da6-423c-b464-c3ef27563c7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -50,9 +56,6 @@
     </ClCompile>
     <ClCompile Include="return_codes.h">
       <Filter>Header Files\engine\tools</Filter>
-    </ClCompile>
-    <ClCompile Include="actor_player.c">
-      <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
     <ClCompile Include="actor_factory.c">
       <Filter>Source Files\engine\actors</Filter>
@@ -72,9 +75,6 @@
     <ClCompile Include="tools.c">
       <Filter>Source Files\engine\tools</Filter>
     </ClCompile>
-    <ClCompile Include="actor.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="actor_scene.c">
       <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
@@ -86,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="scene_testscene.c">
       <Filter>Source Files\engine\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="actor.c">
+      <Filter>Source Files\engine\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_player.c">
+      <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
