@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "raylib.h"
+#include "raymath.h"
 
 struct Actor;
 struct Actor {
@@ -19,7 +20,6 @@ struct Actor {
 	Vector3 last_scale;
 	Vector3 last_velocity;
 
-
 	void (*func_init)(struct Actor* player);
 	void (*func_load_preloadassets)(struct Actor* player);
 	void (*func_preupdate)(struct Actor* player);
@@ -32,6 +32,8 @@ struct Actor {
 };
 #define ACTOR_CLEAR(x) x->index = -1;actor->uuid = 0;x->func_init = NULL;x->func_load_preloadassets = NULL;x->func_destroy = NULL;x->func_preupdate = NULL;x->func_update = NULL;x->func_postupdate = NULL;x->func_drawworld = NULL;x->func_drawhud = NULL;x->data = NULL;
 #define ACTOR_POS_SNAP(x, pos) x->position = pos;x->last_position = pos;
+#define ACTOR_ROT_SNAP(x, rot) x->rotation = rot;x->last_rotation = rot;
+#define ACTOR_SCALE_SNAP(x, scl) x->scale = scl;x->last_scale = scl;
 #define ACTOR_VEL_RESET(x, vel) x->velocity = vel;x->last_velocity = vel;
 #define ACTOR_EXISTS(x) (x != NULL && x->index > -1)
 #define ACTOR_HAS(x, func) (x->func != NULL)

@@ -35,16 +35,15 @@ void player_actor_update(struct Actor* actor)
 {
 	if (actor->position.y > 300)
 		ACTOR_DESTROY(actor);
+	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler(5 * DEG2RAD, 0, 0));
 }
 
 void player_actor_draw(struct Actor* actor, float delta_time)
 {
-	Vector2 vec = { actor->position.x, actor->position.y };
-	Texture2D tex = AssetGet_Texture(ASSET_TEXTURES"/Objects/example.png");
-	DrawTexture(tex, (int)vec.x, (int)vec.y, WHITE);
+	DrawTextureEx(AssetGet_Texture(ASSET_TEXTURES"/Objects/example.png"), (Vector2){ actor->position.x, actor->position.y }, QuaternionToEuler(actor->rotation).x * RAD2DEG, 1, WHITE);
 }
 
 void player_actor_destroy(struct Actor* actor)
 {
-	ACTOR_FACTORY(player, (Vector3) { rand() % 200, rand() % 200, 0 }, (Vector3) { 1, 1, 0 });
+	ACTOR_FACTORY(player, (Vector3) { rand() % 200, rand() % 400, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 1, 1, 0 });
 }

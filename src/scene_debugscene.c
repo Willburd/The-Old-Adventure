@@ -15,10 +15,10 @@ void scene_debugscene_init(struct Actor* scene)
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 
 	// Actor spawns
-	for (int i = 0; i < 1000; i++)
-	{
-		ACTOR_FACTORY(player, (Vector3) { rand() % 300, rand() % 300, 0 }, (Vector3) { 1, 1, 0 });
-	}
+	//for (int i = 0; i < 1000; i++)
+	//{
+	ACTOR_FACTORY(player, (Vector3) { rand() % 300, rand() % 300, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 1, 1, 0 });
+	//}
 }
 
 void scene_debugscene_destroy(struct Actor* scene)

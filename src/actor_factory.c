@@ -9,7 +9,7 @@
 #include "game_update.h"
 
 // Creates an actor in the world.
-struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3 initial_velocity)
+struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity)
 {
 	if (current_actor_cap >= ACTOR_LIMIT)
 	{
@@ -27,6 +27,8 @@ struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3
 
 	// Set position
 	ACTOR_POS_SNAP(actor, at_position);
+	ACTOR_ROT_SNAP(actor, at_rotation);
+	ACTOR_SCALE_SNAP(actor, at_scale);
 	ACTOR_VEL_RESET(actor, initial_velocity);
 	
 	// Configure to type of actor made

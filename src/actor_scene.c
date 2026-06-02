@@ -22,13 +22,13 @@ void LoadScene(SceneID id, EntranceID entrance)
 {
 	next_scene = id;
 	next_entrance = entrance;
-	ACTOR_FACTORY(scene, (Vector3) { 0, 0, 0 }, (Vector3) { 0, 0, 0 });
+	ACTOR_FACTORY(scene, (Vector3) { 0, 0, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 0, 0, 0 });
 }
 
 void ReloadScene()
 {
 	UnloadScene();
-	ACTOR_FACTORY(scene, (Vector3) { 0, 0, 0 }, (Vector3) { 0, 0, 0 });
+	ACTOR_FACTORY(scene, (Vector3) { 0, 0, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 0, 0, 0 });
 }
 
 void UnloadScene()

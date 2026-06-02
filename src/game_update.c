@@ -36,7 +36,7 @@ void game_setup()
 
 void game_update()
 {
-	// Preupdate and reorganization
+	// Preupdate and state control
 	int cap_actor = 0;
 	int shift_index = -1;
 	for (int i = 0; i <= current_actor_cap; i++)
