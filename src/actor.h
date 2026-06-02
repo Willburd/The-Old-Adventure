@@ -10,9 +10,15 @@ struct Actor {
 	uint64_t uuid;
 
 	Vector3 position;
+	Quaternion rotation;
+	Vector3 scale;
 	Vector3 velocity;
+
 	Vector3 last_position;
+	Quaternion last_rotation;
+	Vector3 last_scale;
 	Vector3 last_velocity;
+
 
 	void (*func_init)(struct Actor* player);
 	void (*func_load_preloadassets)(struct Actor* player);

@@ -61,16 +61,29 @@ void game_update()
 			world_actors[i] = NULL;
 			shift_index = i;
 		}
-		// Store previous values
+
+		// Store previous state values
 		update_actor->last_position.x = update_actor->position.x;
 		update_actor->last_position.y = update_actor->position.y;
 		update_actor->last_position.z = update_actor->position.z;
+
 		update_actor->last_velocity.x = update_actor->velocity.x;
 		update_actor->last_velocity.y = update_actor->velocity.y;
 		update_actor->last_velocity.z = update_actor->velocity.z;
+
+		update_actor->last_scale.x = update_actor->scale.x;
+		update_actor->last_scale.y = update_actor->scale.y;
+		update_actor->last_scale.z = update_actor->scale.z;
+
+		update_actor->last_rotation.x = update_actor->rotation.x;
+		update_actor->last_rotation.y = update_actor->rotation.y;
+		update_actor->last_rotation.z = update_actor->rotation.z;
+		update_actor->last_rotation.w = update_actor->rotation.w;
+
 		// Handle actor preupdate
 		if (ACTOR_HAS(update_actor, func_preupdate))
 			update_actor->func_preupdate(update_actor);
+
 		// Move actor if they have velocity
 		if (Vector3Distance(Vector3Zero(), update_actor->velocity) > 0.0)
 		{
