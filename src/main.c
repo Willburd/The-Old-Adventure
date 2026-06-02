@@ -23,6 +23,7 @@ void game_shutdown();
 
 int main(void)
 {
+    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_ALWAYS_RUN);
     InitWindow(screenWidth, screenHeight, "The Old Adventures");
     InitAudioDevice();
 
