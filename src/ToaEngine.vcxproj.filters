@@ -49,6 +49,12 @@
     <Filter Include="Source Files\adventure\actors">
       <UniqueIdentifier>{8aa38d55-9da6-423c-b464-c3ef27563c7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\adventure">
+      <UniqueIdentifier>{73ea9d1c-9f18-4dd9-a7ba-c5fc38abba3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\adventure\actors">
+      <UniqueIdentifier>{98d1ed99-10f7-4a78-a846-64368538569b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -107,9 +113,6 @@
     <ClInclude Include="actor_factory.h">
       <Filter>Header Files\engine\actors</Filter>
     </ClInclude>
-    <ClInclude Include="actor_player.h">
-      <Filter>Header Files\engine\actors</Filter>
-    </ClInclude>
     <ClInclude Include="assets.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="camera.h">
       <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_player.h">
+      <Filter>Header Files\adventure\actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
