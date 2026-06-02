@@ -14,6 +14,10 @@ void scene_test_init(struct Actor* scene)
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 
 	// Actor spawns
+	for (int i = 0; i < 100; i++)
+	{
+		ACTOR_FACTORY(act_test, (Vector3) { (float)(rand() % 300), (float)(rand() % 300), 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 1, 1, 0 });
+	}
 }
 
 void scene_test_destroy(struct Actor* scene)

@@ -23,9 +23,21 @@ void scene_boot_init(struct Actor* scene);
 void scene_title_init(struct Actor* scene);
 void scene_test_init(struct Actor* scene);
 
+inline char* scene_name(SceneID scene_id)
+{
+	const char* scene_names[LAST_SCENE] = {
+		"Boot",
+		"Debug",
+		"Title",
+		"Test"
+	};
+	return scene_names[scene_id];
+}
+
 #define MAKE_SCENE_INIT(x,y) if(scene_id == x){scene->func_init = y;scene->func_init(scene);}
 inline void SCENE_LIBRARY(struct Actor* scene, SceneID scene_id)
 {
+	printf("SCENE CHANGE: %s \n", scene_name(scene_id));
 	MAKE_SCENE_INIT(scene_boot, scene_boot_init);
 	MAKE_SCENE_INIT(scene_debug, scene_debug_init);
 	MAKE_SCENE_INIT(scene_title, scene_title_init);

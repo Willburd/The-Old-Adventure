@@ -22,6 +22,17 @@ void actor_test_init(struct Actor* actor);
 void actor_scene_init(struct Actor* scene);
 void actor_player_init(struct Actor* player);
 
+inline char* actor_name(ActorTypes actor_id)
+{
+	const char* actor_names[LAST_ACTOR] = {
+		"Error",
+		"Test",
+		"Scene",
+		"Player"
+	};
+	return actor_names[actor_id];
+}
+
 #define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor);}
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 {

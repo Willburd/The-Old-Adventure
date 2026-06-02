@@ -13,7 +13,7 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, Vector3 at_position, Quaterni
 {
 	if (current_actor_cap >= ACTOR_LIMIT)
 	{
-		perror("No free actor slots available!\n");
+		perror("ACTOR SPAWN:No free actor slots available!\n");
 		exit(ERR_NOALLOC);
 	}
 
@@ -47,13 +47,13 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, Vector3 at_position, Quaterni
 		if (i > current_actor_cap)
 			current_actor_cap = i;
 #ifdef _DEBUG
-		printf("Actor [type: %02x] spawn slot: %i [%llu]\n", actor->actor_type, actor->index, actor->uuid);
+		printf("ACTOR SPAWN: [type: %s] slot: %i [%llu]\n", actor_name(actor->actor_type), actor->index, actor->uuid);
 #endif
 		return actor;
 	}
 
 	// Out of slots
-	perror("Actor slot load failed!\n");
+	perror("ACTOR SPAWN: slot load failed!\n");
 	ACTOR_DESTROY(actor);
 	exit(ERR_NOALLOC);
 }
@@ -65,7 +65,7 @@ void ACTOR_DESTROY(struct Actor* actor)
 	if (actor->index == -1)
 		return;
 #ifdef _DEBUG
-	printf("Actor [type: %02x] slot destroy: %i [%llu]\n", actor->actor_type, actor->index, actor->uuid);
+	printf("ACTOR DESTROY: [type: %02x] slot: %i [%llu]\n", actor->actor_type, actor->index, actor->uuid);
 #endif
 	total_actors--;
 	if (ACTOR_HAS(actor, func_destroy))
