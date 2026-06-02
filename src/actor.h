@@ -22,15 +22,22 @@ struct Actor {
 
 	void (*func_init)(struct Actor* player);
 	void (*func_load_preloadassets)(struct Actor* player);
+
 	void (*func_preupdate)(struct Actor* player);
 	void (*func_update)(struct Actor* player);
 	void (*func_postupdate)(struct Actor* player);
+
+	void (*func_predrawworld)(struct Actor* player, double tick_percent);
 	void (*func_drawworld)(struct Actor* player, double tick_percent);
+	void (*func_postdrawworld)(struct Actor* player, double tick_percent);
+
+	void (*func_predrawhud)(struct Actor* player, double tick_percent);
 	void (*func_drawhud)(struct Actor* player, double tick_percent);
+	void (*func_postdrawhud)(struct Actor* player, double tick_percent);
 	void (*func_destroy)(struct Actor* player);
 	void* data;
 };
-#define ACTOR_CLEAR(x) x->index = -1;actor->uuid = 0;x->func_init = NULL;x->func_load_preloadassets = NULL;x->func_destroy = NULL;x->func_preupdate = NULL;x->func_update = NULL;x->func_postupdate = NULL;x->func_drawworld = NULL;x->func_drawhud = NULL;x->data = NULL;
+#define ACTOR_CLEAR(x) x->index = -1;actor->uuid = 0;x->func_init = NULL;x->func_load_preloadassets = NULL;x->func_destroy = NULL;x->func_preupdate = NULL;x->func_update = NULL;x->func_postupdate = NULL;x->func_predrawworld = NULL;x->func_drawworld = NULL;x->func_postdrawworld = NULL;x->func_predrawhud = NULL;x->func_drawhud = NULL;x->func_postdrawhud = NULL;x->data = NULL;
 #define ACTOR_POS_SNAP(x, pos) x->position = pos;x->last_position = pos;
 #define ACTOR_ROT_SNAP(x, rot) x->rotation = rot;x->last_rotation = rot;
 #define ACTOR_SCALE_SNAP(x, scl) x->scale = scl;x->last_scale = scl;
@@ -43,7 +50,7 @@ struct Actor {
 #define ACTOR_SCALE_DELTA(x, delta) Vector3Lerp(x->last_scale, x->scale, delta)
 #define ACTOR_VEL_DELTA(x, delta) Vector3Lerp(x->last_velocity, x->velocity, delta)
 
-#define ACTOR_LIMIT 2048
+#define ACTOR_LIMIT 8192
 
 /// Array of all actors
 struct Actor* world_actors[ACTOR_LIMIT];	

@@ -15,8 +15,24 @@ void game_draw(double tick_percent)
 			struct Actor* draw_actor = world_actors[i];
 			if (!ACTOR_EXISTS(draw_actor))
 				continue;
+			if (ACTOR_HAS(draw_actor, func_predrawworld))
+				draw_actor->func_predrawworld(draw_actor, tick_percent);
+		}
+		for (int i = 0; i <= current_actor_cap; i++)
+		{
+			struct Actor* draw_actor = world_actors[i];
+			if (!ACTOR_EXISTS(draw_actor))
+				continue;
 			if (ACTOR_HAS(draw_actor, func_drawworld))
 				draw_actor->func_drawworld(draw_actor, tick_percent);
+		}
+		for (int i = 0; i <= current_actor_cap; i++)
+		{
+			struct Actor* draw_actor = world_actors[i];
+			if (!ACTOR_EXISTS(draw_actor))
+				continue;
+			if (ACTOR_HAS(draw_actor, func_postdrawworld))
+				draw_actor->func_postdrawworld(draw_actor, tick_percent);
 		}
 	EndMode3D();
 
@@ -26,8 +42,24 @@ void game_draw(double tick_percent)
 			struct Actor* draw_actor = world_actors[i];
 			if (!ACTOR_EXISTS(draw_actor))
 				continue;
+			if (ACTOR_HAS(draw_actor, func_predrawhud))
+				draw_actor->func_predrawhud(draw_actor, tick_percent);
+		}
+		for (int i = 0; i <= current_actor_cap; i++)
+		{
+			struct Actor* draw_actor = world_actors[i];
+			if (!ACTOR_EXISTS(draw_actor))
+				continue;
 			if (ACTOR_HAS(draw_actor, func_drawhud))
 				draw_actor->func_drawhud(draw_actor, tick_percent);
+		}
+		for (int i = 0; i <= current_actor_cap; i++)
+		{
+			struct Actor* draw_actor = world_actors[i];
+			if (!ACTOR_EXISTS(draw_actor))
+				continue;
+			if (ACTOR_HAS(draw_actor, func_postdrawhud))
+				draw_actor->func_postdrawhud(draw_actor, tick_percent);
 		}
 	EndMode2D();
 
