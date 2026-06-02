@@ -1,3 +1,4 @@
+#include "tools.h"
 #include "assets.h"
 #include "actor.h"
 #include "actor_factory.h"
@@ -35,9 +36,30 @@ void player_preload_assets(struct Actor* actor)
 
 void player_actor_update(struct Actor* actor)
 {
-	if (actor->position.y > 300)
-		ACTOR_DESTROY(actor);
-	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler(15 * DEG2RAD, 0, 0));
+	const boundary = 600;
+	const ply_speed = 10;
+	if (actor->position.x > boundary)
+	{
+		actor->velocity.x = -ply_speed;
+		actor->velocity.y = RAND_RANGE(-ply_speed, ply_speed);
+	}
+	if (actor->position.y > boundary)
+	{
+		actor->velocity.x = RAND_RANGE(-ply_speed, ply_speed);
+		actor->velocity.y = -ply_speed;
+	}
+	if (actor->position.x < 0)
+	{
+		actor->velocity.x = +ply_speed;
+		actor->velocity.y = RAND_RANGE(-ply_speed, ply_speed);
+	}
+	if (actor->position.y < 0)
+	{
+		actor->velocity.x = RAND_RANGE(-ply_speed, ply_speed);
+		actor->velocity.y = +ply_speed;
+	}
+	
+	//actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler(15 * DEG2RAD, 0, 0));
 }
 
 void player_actor_draw(struct Actor* actor, float tick_percent)
