@@ -1,15 +1,7 @@
 #ifndef SCENE_ENTRY_HEADER
 #define SCENE_ENTRY_HEADER
 
-typedef enum
-{
-	debugscene,
-	bootscene,
-	titlescene,
-	testscene,
-	LAST_SCENE
-
-} SceneID;
+#include "scene_library.h"
 
 const SceneID game_start_scene;
 

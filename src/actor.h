@@ -4,8 +4,7 @@
 #include <stdint.h>
 #include "raylib.h"
 #include "raymath.h"
-
-typedef enum ActorTypes;
+#include "actor_library.h"
 
 struct Actor;
 struct Actor {
@@ -65,14 +64,5 @@ int total_actors;
 uint64_t current_unique_id;		
 
 struct Actor* FINDACTOR(uint64_t id);
-
-typedef enum
-{
-	error,
-	test,		// Debugging
-	scene,
-	player,
-
-} ActorTypes;
 
 #endif

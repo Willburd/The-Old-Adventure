@@ -2,15 +2,16 @@
 #include "raylib.h"
 #include "return_codes.h"
 #include "game_update.h"
+#include "game_draw.h"
 #include "camera.h"
 #include "globals.h"
-#include "actor.h"
-#include "assets.h"
+#include "actor_factory.h"
 #include "scene_entry.h"
+#include "assets.h"
 #include "tools.h"
 
 const double update_rate = 40.0;
-const double frame_rate = 60.0;
+const int frame_rate = 60;
 const int screenWidth = 800;
 const int screenHeight = 600;
 

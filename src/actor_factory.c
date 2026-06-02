@@ -83,9 +83,6 @@ void ACTOR_DESTROY(struct Actor* actor)
 // This only handles the actor_init function. Those functions set the rest of their pointers.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "actor_player.h"
-#include "actor_scene.h"
-
 #define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor);}
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 {
