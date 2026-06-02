@@ -5,9 +5,6 @@
 #include "raylib.h"
 #include "globals.h"
 
-// public header
-const SceneID game_start_scene = scene_boot;
-
 // private header
 SceneID next_scene;
 EntranceID next_entrance;
@@ -18,8 +15,10 @@ int unload_previous_scene = TRUE;
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LoadScene(SceneID id, EntranceID entrance)
+void LoadScene(SceneID id, EntranceID entrance, int unload_previous)
 {
+	if (unload_previous)
+		UnloadScene();
 	next_scene = id;
 	next_entrance = entrance;
 	ACTOR_FACTORY(act_scene, (Vector3) { 0, 0, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 0, 0, 0 });

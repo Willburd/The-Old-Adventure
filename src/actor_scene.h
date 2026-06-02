@@ -3,8 +3,4 @@
 
 #include "scene_entry.h"
 
-void LoadScene(SceneID id, EntranceID entrance);
-void ReloadScene();
-void UnloadScene();
-
 #endif

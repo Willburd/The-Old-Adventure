@@ -88,7 +88,7 @@ void game_setup()
     reset_global_asset_cache();
 
     // Enter game
-    LoadScene(game_start_scene, titleentrance);
+    LoadScene(scene_boot, ent_title, FALSE);
 }
 
 void game_shutdown()
