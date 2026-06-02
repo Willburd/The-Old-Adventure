@@ -33,7 +33,7 @@ void player_preload_assets(struct Actor* actor)
 
 void player_actor_update(struct Actor* actor)
 {
-	if (actor->position.y > 40)
+	if (actor->position.y > 300)
 		ACTOR_DESTROY(actor);
 }
 
@@ -41,11 +41,10 @@ void player_actor_draw(struct Actor* actor, float delta_time)
 {
 	Vector2 vec = { actor->position.x, actor->position.y };
 	Texture2D tex = AssetGet_Texture(ASSET_TEXTURES"/Objects/example.png");
-	DrawTexture(tex,vec.x,vec.y, WHITE);
+	DrawTexture(tex, (int)vec.x, (int)vec.y, WHITE);
 }
 
 void player_actor_destroy(struct Actor* actor)
 {
-	ACTOR_FACTORY(player, (Vector3) { 0, 0, 0 }, (Vector3) { 1, 1, 0 });
-	ACTOR_FACTORY(player, (Vector3) { 0, 0, 0 }, (Vector3) { 1, 1, 0 });
+	ACTOR_FACTORY(player, (Vector3) { rand() % 200, rand() % 200, 0 }, (Vector3) { 1, 1, 0 });
 }

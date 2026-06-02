@@ -2,6 +2,7 @@
 #define ENTITY_HEADER
 
 #include <stdint.h>
+#include "raylib.h"
 
 struct Actor;
 

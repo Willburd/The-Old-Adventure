@@ -5,6 +5,7 @@
 #include "raymath.h"
 #include "actor.h"
 #include "actor_factory.h"
+#include "scene_entry.h"
 #include "game_update.h"
 #include "assets.h"
 #include "hashmap.h"
@@ -29,8 +30,8 @@ void game_setup()
 	loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
 	reset_global_asset_cache();
 
-	// TEMP
-	ACTOR_FACTORY(player, (Vector3) {0,0,0}, (Vector3) { 1, 1, 0 });
+	// Enter game
+	LoadScene(game_start_scene, titleentrance);
 }
 
 void game_update()

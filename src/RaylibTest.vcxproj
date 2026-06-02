@@ -149,6 +149,7 @@
     <ClCompile Include="actor.c" />
     <ClCompile Include="actor_player.c" />
     <ClCompile Include="actor_factory.c" />
+    <ClCompile Include="actor_scene.c" />
     <ClCompile Include="assets.c" />
     <ClCompile Include="game_draw.c" />
     <ClCompile Include="game_update.c" />
@@ -158,17 +159,22 @@
     </ClCompile>
     <ClCompile Include="main.c" />
     <ClCompile Include="return_codes.h" />
+    <ClCompile Include="scene_debugscene.c" />
+    <ClCompile Include="scene_testscene.c" />
+    <ClCompile Include="scene_titlescene.c" />
     <ClCompile Include="tools.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor.h" />
     <ClInclude Include="actor_player.h" />
     <ClInclude Include="actor_factory.h" />
+    <ClInclude Include="actor_scene.h" />
     <ClInclude Include="assets.h" />
     <ClInclude Include="game_draw.h" />
     <ClInclude Include="game_update.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="hashmap.h" />
+    <ClInclude Include="scene_entry.h" />
     <ClInclude Include="tools.h" />
   </ItemGroup>
   <ItemGroup>

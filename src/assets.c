@@ -108,31 +108,17 @@ int AssetExists(char* path)
     return asset == NULL ? FALSE : TRUE;
 }
 
-Texture2D AssetGet_Texture(char* path)
-{
-    const Asset* asset = hashmap_get(loaded_assets, &(const Asset){.filepath = path });
-    if(asset == NULL)
-        asset = hashmap_get(loaded_assets, &(const Asset){.filepath = ASSET_TEXTURES"/Error/no_texture.png"});
-    return *asset->tex;
+#define ASSET_FALLBACK(orgpath,pth,ast) \
+{\
+    const Asset* asset = hashmap_get(loaded_assets, &(const Asset){.filepath = orgpath }); \
+    if (asset == NULL) \
+    { \
+        const Asset* backup_asset = hashmap_get(loaded_assets, &(const Asset){.filepath = pth}); \
+        return *backup_asset->ast; \
+    } \
+    return *asset->ast; \
 }
-
-Model AssetGet_Model(char* path)
-{
-    const Asset* asset = hashmap_get(loaded_assets, &(const Asset){.filepath = path });
-    //if (asset == NULL)
-    return *asset->mdl;
-}
-
-Sound AssetGet_Sound(char* path)
-{
-    const Asset* asset = hashmap_get(loaded_assets, &(const Asset){.filepath = path });
-    //if (asset == NULL)
-    return *asset->snd;
-}
-
-Music AssetGet_Music(char* path)
-{
-    const Asset* asset = hashmap_get(loaded_assets, &(const Asset){.filepath = path });
-    //if (asset == NULL)
-    return *asset->mus;
-}
+Texture2D AssetGet_Texture(char* path) ASSET_FALLBACK(path,ASSET_TEXTURES"/Error/no_texture.png", tex);
+Model AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mdl);
+Sound AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", snd);
+Music AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mus);

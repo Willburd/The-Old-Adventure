@@ -6,9 +6,7 @@
 #include "return_codes.h"
 #include "actor.h"
 #include "actor_factory.h"
-#include "raymath.h"
 #include "game_update.h"
-#include "actor_player.h"
 
 // Creates an actor in the world.
 struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3 initial_velocity)
@@ -25,8 +23,6 @@ struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3
 
 	// Setup actor
 	ACTOR_CLEAR(actor);
-	if (ACTOR_HAS(actor, func_load_preloadassets))
-		actor->func_load_preloadassets(actor);
 	actor->uuid = ++current_unique_id;
 
 	// Set position
@@ -35,6 +31,8 @@ struct Actor* ACTOR_FACTORY(actor_types actor_type, Vector3 at_position, Vector3
 	
 	// Configure to type of actor made
 	ACTOR_LIBRARY(actor, actor_type);
+	if (ACTOR_HAS(actor, func_load_preloadassets))
+		actor->func_load_preloadassets(actor);
 
 	// Place in update list
 	for (int i = 0; i < ACTOR_LIMIT; i++)
@@ -83,8 +81,13 @@ void ACTOR_DESTROY(struct Actor* actor)
 // Actor library. Contains all actor polymorphs and where their init function pointers are.
 // This only handles the actor_init function. Those functions set the rest of their pointers.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor); actor->func_load_preloadassets(actor);}
+
+#include "actor_player.h"
+#include "actor_scene.h"
+
+#define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor);}
 inline void ACTOR_LIBRARY(struct Actor* actor, actor_types actor_type)
 {
 	MAKE_ACTOR_INIT(player, player_actor_init);
+	MAKE_ACTOR_INIT(scene, scene_actor_init);
 }
