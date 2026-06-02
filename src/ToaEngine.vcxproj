@@ -170,6 +170,7 @@
     <ClInclude Include="actor_factory.h" />
     <ClInclude Include="actor_scene.h" />
     <ClInclude Include="assets.h" />
+    <ClInclude Include="camera.h" />
     <ClInclude Include="game_draw.h" />
     <ClInclude Include="game_update.h" />
     <ClInclude Include="globals.h" />

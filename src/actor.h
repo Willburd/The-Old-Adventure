@@ -25,8 +25,8 @@ struct Actor {
 	void (*func_preupdate)(struct Actor* player);
 	void (*func_update)(struct Actor* player);
 	void (*func_postupdate)(struct Actor* player);
-	void (*func_drawworld)(struct Actor* player, float tick_percent);
-	void (*func_drawhud)(struct Actor* player, float tick_percent);
+	void (*func_drawworld)(struct Actor* player, double tick_percent);
+	void (*func_drawhud)(struct Actor* player, double tick_percent);
 	void (*func_destroy)(struct Actor* player);
 	void* data;
 };

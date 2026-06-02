@@ -122,6 +122,9 @@
     <ClInclude Include="scene_entry.h">
       <Filter>Header Files\engine\scenes</Filter>
     </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

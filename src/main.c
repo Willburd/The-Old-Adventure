@@ -9,7 +9,8 @@
 #include "scene_entry.h"
 #include "tools.h"
 
-const double update_rate = 20.0;
+const double update_rate = 40.0;
+const double frame_rate = 60.0;
 const int screenWidth = 800;
 const int screenHeight = 600;
 
@@ -25,9 +26,10 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "The Old Adventures");
     InitAudioDevice();
 
-    SetTargetFPS(60);
+    SetTargetFPS(frame_rate);
     game_setup();
 
+    double current_prog = 0;
     double ticker_rate = 0;
     while (!WindowShouldClose())
     {
@@ -43,8 +45,7 @@ int main(void)
             update_ticker -= ticker_rate;
             game_update();
         }
-        float tick_percent = update_ticker / ticker_rate;
-        game_draw(tick_percent);
+        game_draw(update_ticker / ticker_rate);
     }
 
     game_shutdown();

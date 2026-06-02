@@ -3,7 +3,7 @@
 #include "globals.h"
 #include "actor.h"
 
-void game_draw(float tick_percent)
+void game_draw(double tick_percent)
 {
 
     BeginDrawing();

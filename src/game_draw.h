@@ -3,6 +3,6 @@
 
 #include "raylib.h"
 
-void game_draw(float delta_time);
+void game_draw(double tick_percent);
 
 #endif

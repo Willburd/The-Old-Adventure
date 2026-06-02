@@ -64,12 +64,12 @@ void player_actor_update(struct Actor* actor)
 	//actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler(15 * DEG2RAD, 0, 0));
 }
 
-void player_actor_drawworld(struct Actor* actor, float tick_percent)
+void player_actor_drawworld(struct Actor* actor, double tick_percent)
 {
-
+	DrawCube(Vector3Add(Vector3Scale(VEC3FORWARD,5.0f), Vector3Scale(ACTOR_POS_DELTA(actor, tick_percent), 0.01f)), 0.2f, 0.2f, 0.2f, RED);
 }
 
-void player_actor_drawhud(struct Actor* actor, float tick_percent)
+void player_actor_drawhud(struct Actor* actor, double tick_percent)
 {
 	Vector3 delta_pos = ACTOR_POS_DELTA(actor, tick_percent);
 	DrawTextureEx(AssetGet_Texture(PLAYER_ASSET_TEXTURE), (Vector2){ delta_pos.x, delta_pos.y }, QuaternionToEuler(ACTOR_ROT_DELTA(actor, tick_percent)).x * RAD2DEG, 1, WHITE);
@@ -77,5 +77,5 @@ void player_actor_drawhud(struct Actor* actor, float tick_percent)
 
 void player_actor_destroy(struct Actor* actor)
 {
-	ACTOR_FACTORY(player, (Vector3) { rand() % 200, rand() % 400, 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 1, 1, 0 });
+
 }
