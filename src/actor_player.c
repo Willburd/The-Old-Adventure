@@ -7,7 +7,8 @@
 // private header
 void player_preload_assets(struct Actor* actor);
 void player_actor_update(struct Actor* actor);
-void player_actor_draw(struct Actor* actor, float delta_time);
+void player_actor_drawworld(struct Actor* actor, float delta_time);
+void player_actor_drawhud(struct Actor* actor, float delta_time);
 void player_actor_destroy(struct Actor* actor);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,7 +20,8 @@ void player_actor_init(struct Actor* actor)
 {
 	actor->func_load_preloadassets = player_preload_assets;
 	actor->func_update = player_actor_update;
-	actor->func_drawworld = player_actor_draw;
+	actor->func_drawworld = player_actor_drawworld;
+	actor->func_drawhud = player_actor_drawhud;
 	actor->func_destroy = player_actor_destroy;
 }
 
@@ -62,7 +64,12 @@ void player_actor_update(struct Actor* actor)
 	//actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler(15 * DEG2RAD, 0, 0));
 }
 
-void player_actor_draw(struct Actor* actor, float tick_percent)
+void player_actor_drawworld(struct Actor* actor, float tick_percent)
+{
+
+}
+
+void player_actor_drawhud(struct Actor* actor, float tick_percent)
 {
 	Vector3 delta_pos = ACTOR_POS_DELTA(actor, tick_percent);
 	DrawTextureEx(AssetGet_Texture(PLAYER_ASSET_TEXTURE), (Vector2){ delta_pos.x, delta_pos.y }, QuaternionToEuler(ACTOR_ROT_DELTA(actor, tick_percent)).x * RAD2DEG, 1, WHITE);

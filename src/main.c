@@ -2,11 +2,12 @@
 #include "raylib.h"
 #include "return_codes.h"
 #include "game_update.h"
-#include "game_draw.h"
+#include "camera.h"
 #include "globals.h"
 #include "actor.h"
 #include "assets.h"
 #include "scene_entry.h"
+#include "tools.h"
 
 const double update_rate = 20.0;
 const int screenWidth = 800;
@@ -61,6 +62,23 @@ void game_setup()
     {
         world_actors[i] = NULL;
     }
+
+    // Create cameras
+    cam_main = (Camera)
+    {
+        .position = (Vector3){0,0,0},
+        .target = VEC3FORWARD,
+        .fovy = 90.0f,
+        .projection = CAMERA_PERSPECTIVE,
+        .up = VEC3UP,
+    };
+    cam_hud = (Camera2D)
+    {
+        .target = (Vector2) {0,0},
+        .offset = (Vector2) {0,0},
+        .rotation = 0.0f,
+        .zoom = 1.0f 
+    };
 
     // Create asset cache
     loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);

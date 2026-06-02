@@ -13,6 +13,11 @@
 
 #define RAND_RANGE(l,h) ((l) + (rand() % ((h)-(l))))
 
+#define VEC3UP ((Vector3){0,1,0})
+#define VEC3DOWN ((Vector3){0,-1,0})
+#define VEC3FORWARD ((Vector3){0,0,1})
+#define VEC3BACKWARD ((Vector3){0,0,-1})
+
 #ifdef _WIN32
 #include <direct.h>
 #define GetCurrentDir _getcwd
