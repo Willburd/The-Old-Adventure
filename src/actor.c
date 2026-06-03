@@ -77,7 +77,7 @@ struct Actor* FINDCHILD(const struct Actor* parent)
 		struct Actor* find_actor = world_actors[i];
 		if (find_actor == NULL)
 			continue;
-		if (find_actor->parent == parent)
+		if (ACTOR_PARENT(find_actor) == parent)
 			return find_actor;
 	}
 	return NULL;
@@ -99,7 +99,7 @@ void FINDACTORCHILDREN(const struct Actor* found_group[], int max_count, const s
 		struct Actor* find_actor = world_actors[i];
 		if (find_actor == NULL)
 			continue;
-		if (find_actor->parent != parent)
+		if (ACTOR_PARENT(find_actor) != parent)
 			continue;
 		found_group[collected_index++] = find_actor;
 		if (collected_index < max_count)
@@ -116,8 +116,17 @@ int CHILDCOUNT(const struct Actor* parent)
 		struct Actor* find_actor = world_actors[i];
 		if (find_actor == NULL)
 			continue;
-		if (find_actor->parent == parent)
+		if (ACTOR_PARENT(find_actor) == parent)
 			count++;
 	}
 	return count;
+}
+
+struct Actor* GETSCENE(struct Actor* actor)
+{
+	while (ACTOR_PARENT(actor))
+	{
+		actor = ACTOR_PARENT(actor);
+	}
+	return actor;
 }

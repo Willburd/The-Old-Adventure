@@ -14,6 +14,7 @@ void scene_fieldtest_init(struct Actor* scene)
 
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
+	SCENEDATA_CLEAR(scene->data);
 
 	// Actor spawns
 }

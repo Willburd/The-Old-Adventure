@@ -12,6 +12,7 @@ struct Actor {
 	int actor_type;
 
 	struct Actor* parent;
+	void* data;
 
 	Vector3 position;
 	Quaternion rotation;
@@ -23,22 +24,25 @@ struct Actor {
 	Vector3 last_scale;
 	Vector3 last_velocity;
 
-	void (*func_init)(struct Actor* player);
-	void (*func_load_preloadassets)(struct Actor* player);
-
-	void (*func_preupdate)(struct Actor* player);
-	void (*func_update)(struct Actor* player);
-	void (*func_postupdate)(struct Actor* player);
-
-	void (*func_predrawworld)(struct Actor* player, double tick_percent);
-	void (*func_drawworld)(struct Actor* player, double tick_percent);
-	void (*func_postdrawworld)(struct Actor* player, double tick_percent);
-
-	void (*func_predrawhud)(struct Actor* player, double tick_percent);
-	void (*func_drawhud)(struct Actor* player, double tick_percent);
-	void (*func_postdrawhud)(struct Actor* player, double tick_percent);
-	void (*func_destroy)(struct Actor* player);
-	void* data;
+	// Creation and destruction
+	void (*func_init)(struct Actor* actor);
+	void (*func_load_preloadassets)(struct Actor* actor);
+	void (*func_destroy)(struct Actor* actor);
+	// Update tick
+	void (*func_preupdate)(struct Actor* actor);
+	void (*func_update)(struct Actor* actor);
+	void (*func_postupdate)(struct Actor* actor);
+	// Drawing in world
+	void (*func_predrawworld)(struct Actor* actor, double tick_percent);
+	void (*func_drawworld)(struct Actor* actor, double tick_percent);
+	void (*func_postdrawworld)(struct Actor* actor, double tick_percent);
+	// Drawing on hud
+	void (*func_predrawhud)(struct Actor* actor, double tick_percent);
+	void (*func_drawhud)(struct Actor* actor, double tick_percent);
+	void (*func_postdrawhud)(struct Actor* actor, double tick_percent);
+	// Subrooms in scenes
+	void (*func_activate_room)(struct Actor* actor, int room_index);
+	void (*func_deactivate_room)(struct Actor* actor, int room_index);
 };
 #define ACTOR_CLEAR(x) x->index = -1;actor->uuid = 0;x->actor_type = 0;x->parent = NULL;x->func_init = NULL;x->func_load_preloadassets = NULL;x->func_destroy = NULL;x->func_preupdate = NULL;x->func_update = NULL;x->func_postupdate = NULL;x->func_predrawworld = NULL;x->func_drawworld = NULL;x->func_postdrawworld = NULL;x->func_predrawhud = NULL;x->func_drawhud = NULL;x->func_postdrawhud = NULL;x->data = NULL;
 #define ACTOR_POS_SNAP(x, pos) x->position = pos;x->last_position = pos;
@@ -52,6 +56,8 @@ struct Actor {
 #define ACTOR_ROT_DELTA(x, delta) QuaternionLerp(x->last_rotation, x->rotation, delta)
 #define ACTOR_SCALE_DELTA(x, delta) Vector3Lerp(x->last_scale, x->scale, delta)
 #define ACTOR_VEL_DELTA(x, delta) Vector3Lerp(x->last_velocity, x->velocity, delta)
+
+#define ACTOR_PARENT(x) (x->parent)
 
 #define ACTOR_LIMIT 8192
 
@@ -78,5 +84,7 @@ struct Actor* FINDCHILD(const struct Actor* parent);
 void FINDACTORCHILDREN(const struct Actor* found_group[], int max_count, const struct Actor* parent);
 // Get number of children a parent has
 int CHILDCOUNT(const struct Actor* parent);
+// Get parent scene
+struct Actor* GETSCENE(struct Actor* actor);
 
 #endif

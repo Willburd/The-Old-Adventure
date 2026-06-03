@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "input.h"
 #include "globals.h"
 
@@ -15,8 +16,8 @@ const int inputpads[INPUT_LAST] = {
 	0,
 	0,
 	0,
-	GAMEPAD_BUTTON_LEFT_FACE_DOWN,	// confirm
-	GAMEPAD_BUTTON_LEFT_FACE_RIGHT,	// cancel
+	GAMEPAD_BUTTON_RIGHT_FACE_DOWN,	// confirm
+	GAMEPAD_BUTTON_RIGHT_FACE_RIGHT,// cancel
 };
 
 int current_gamepad = 0;
@@ -25,7 +26,7 @@ Vector2 input_analog = { 0,0 };
 
 void UpdateInputState()
 {
-	const float deadzone = 0.1;
+	const float deadzone = 0.1f;
 
 	// Update analog from keyboard
 	input_analog.x = 0;

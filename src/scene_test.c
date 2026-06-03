@@ -5,15 +5,13 @@
 #include "actor_scene.h"
 #include "scene_entry.h"
 
-void scene_test_destroy(struct Actor* scene);
-
 void scene_test_init(struct Actor* scene)
 {
 	// Configure scene
-	scene->func_destroy = scene_test_destroy;
 
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
+	SCENEDATA_CLEAR(scene->data);
 
 	// Actor spawns
 	for (int i = 0; i < 60; i++)
@@ -28,9 +26,4 @@ void scene_test_init(struct Actor* scene)
 	struct Actor* child_array[10] = { NULL };
 	FINDACTORCHILDREN(child_array, 10, scene);
 	printf("cuid: %llu\n", child_array[0]->uuid);
-}
-
-void scene_test_destroy(struct Actor* scene)
-{
-
 }

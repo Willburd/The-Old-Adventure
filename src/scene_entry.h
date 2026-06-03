@@ -1,6 +1,7 @@
 #ifndef SCENE_ENTRY_HEADER
 #define SCENE_ENTRY_HEADER
 
+#include "stdint.h"
 #include "scene_library.h"
 
 typedef enum
@@ -69,8 +70,19 @@ typedef enum
 #define SCENE_ENTRANCE_COUNT 20
 
 typedef struct {
-	int temp;
+	uint64_t temp_flags;
+	uint64_t perm_flags;
+	int utilityA1;
+	int utilityA2;
+	int utilityA3;
+	int utilityA4;
+	float utilityB1;
+	float utilityB2;
+	float utilityB3;
+	float utilityB4;
 } SceneData;
+
+#define SCENEDATA_CLEAR(x) {SceneData* __dat = (SceneData*)x;__dat->temp_flags = 0;__dat->perm_flags = 0;__dat->utilityA1 = 0;__dat->utilityA2 = 0;__dat->utilityA3 = 0;__dat->utilityA4 = 0;__dat->utilityB1 = 0.0f;__dat->utilityB2 = 0.0f;__dat->utilityB3 = 0.0f;__dat->utilityB4 = 0.0f;}
 
 void LoadScene(SceneID id, EntranceID entrance, int unload_previous);
 void ReloadScene();

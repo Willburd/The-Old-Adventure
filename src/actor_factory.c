@@ -116,7 +116,7 @@ void ACTOR_DESTROY_CHILDREN(struct Actor* parent)
 		struct Actor* check_actor = world_actors[i];
 		if (!ACTOR_EXISTS(check_actor))
 			continue;
-		if (check_actor->parent != parent)
+		if (ACTOR_PARENT(check_actor) != parent)
 			continue;
 		ACTOR_DESTROY(check_actor);
 	}
