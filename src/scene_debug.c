@@ -36,7 +36,7 @@ void scene_debug_init(struct Actor* scene)
 	clear_background_color = BLACK;
 
 	// Debug info actor
-	ACTOR_FACTORY(act_debug, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 void scene_debug_update(struct Actor* scene)

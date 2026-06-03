@@ -18,7 +18,7 @@ void scene_test_init(struct Actor* scene)
 	// Actor spawns
 	for (int i = 0; i < 100; i++)
 	{
-		ACTOR_FACTORY(act_test, (Vector3) { (float)(rand() % 300), (float)(rand() % 300), 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 1, 1, 0 });
+		ACTOR_FACTORY(act_test, scene, (Vector3) { (float)(rand() % 300), (float)(rand() % 300), 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 1, 1, 0 });
 	}
 }
 

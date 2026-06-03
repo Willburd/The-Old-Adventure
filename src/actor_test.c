@@ -71,9 +71,6 @@ void actor_test_drawhud(struct Actor* actor, double tick_percent)
 {
 	Vector3 delta_pos = ACTOR_POS_DELTA(actor, (float)tick_percent);
 	DrawTextureEx(AssetGet_Texture(PLAYER_ASSET_TEXTURE), (Vector2) { delta_pos.x, delta_pos.y }, QuaternionToEuler(ACTOR_ROT_DELTA(actor, (float)tick_percent)).x* RAD2DEG, 1, WHITE);
-
-	DrawFPS(10, 10);
-	DrawText(TextFormat("Actor Total: [%i]\nSeconds [%f]\nTicks [%i]\nDelta [%f]", total_actors, seconds_counter, tick_counter, tick_percent), 10, 30, 10, BLACK);
 }
 
 void actor_test_destroy(struct Actor* actor)

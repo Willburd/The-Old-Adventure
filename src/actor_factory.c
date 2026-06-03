@@ -9,7 +9,7 @@
 #include "game_update.h"
 
 // Creates an actor in the world.
-struct Actor* ACTOR_FACTORY(ActorTypes actor_type, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity)
+struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity)
 {
 	if (current_actor_cap >= ACTOR_LIMIT)
 	{
@@ -25,6 +25,7 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, Vector3 at_position, Quaterni
 	ACTOR_CLEAR(actor);
 	actor->uuid = ++current_unique_id;
 	actor->actor_type = actor_type;
+	actor->parent = actor_parent;
 
 	// Set position
 	ACTOR_POS_SNAP(actor, at_position);
@@ -64,12 +65,26 @@ void ACTOR_DESTROY(struct Actor* actor)
 	// No recursive destroy
 	if (actor->index == -1)
 		return;
+
+	// Remove all children
+	for (int i = 0; i < current_actor_cap; i++)
+	{
+		struct Actor* check_actor = world_actors[i];
+		if (!ACTOR_EXISTS(check_actor))
+			continue;
+		if (check_actor->parent != actor)
+			continue;
+		ACTOR_DESTROY(check_actor);
+	}
+
+	// Call destroy actions
 #ifdef _DEBUG
 	printf("ACTOR DESTROY: [type: %02x] slot: %i [%llu]\n", actor->actor_type, actor->index, actor->uuid);
 #endif
 	total_actors--;
 	if (ACTOR_HAS(actor, func_destroy))
 		actor->func_destroy(actor);
+
 	// Wipedata
 	world_actors[actor->index] = NULL;
 	if (ACTOR_HAS(actor, data))

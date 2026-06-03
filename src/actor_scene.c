@@ -21,13 +21,13 @@ void LoadScene(SceneID id, EntranceID entrance, int unload_previous)
 		UnloadScene();
 	next_scene = id;
 	next_entrance = entrance;
-	ACTOR_FACTORY(act_scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 void ReloadScene()
 {
 	UnloadScene();
-	ACTOR_FACTORY(act_scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 void UnloadScene()
