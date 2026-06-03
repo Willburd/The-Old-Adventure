@@ -36,14 +36,16 @@ int asset_compare(const void* a, const void* b, void* udata);
 uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1);
 void asset_free(const void* item);
 
-int LoadAsset_Texture(char* path);
-int LoadAsset_Model(char* path);
-int LoadAsset_Sound(char* path);
-int LoadAsset_Music(char* path);
+Asset* LoadAsset_Texture(char* path);
+Asset* LoadAsset_Model(char* path);
+Asset* LoadAsset_Sound(char* path);
+Asset* LoadAsset_Music(char* path);
+int AssetExists(char* path);
+Asset* AssetGetPackage(char* path);
 
 int AssetExists(char* path);
-Texture2D AssetGet_Texture(char* path);
-Model AssetGet_Model(char* path);
-Sound AssetGet_Sound(char* path);
-Music AssetGet_Music(char* path);
+Texture2D* AssetGet_Texture(char* path);
+Model* AssetGet_Model(char* path);
+Sound* AssetGet_Sound(char* path);
+Music* AssetGet_Music(char* path);
 #endif

@@ -50,56 +50,60 @@ void asset_free(const void* item) {
     free(asset->filepath); // malloc char* string
 }
 
-int LoadAsset_Texture(char* path)
+Asset* LoadAsset_Texture(char* path)
 {
-    if (AssetExists(path))
-        return FALSE;
+    Asset* check = AssetGetPackage(path);
+    if (check)
+        return check;
     MALLOC_ASSET(asset, path);
     MALLOC_SET(Texture2D, asset->tex, FALSE);
     *asset->tex = LoadTexture(path);
     if (!IsTextureValid(*asset->tex))
         printf("Unable to load asset: %s", path);
     hashmap_set(loaded_assets, asset);
-    return TRUE;
+    return asset;
 }
 
-int LoadAsset_Model(char* path)
+Asset* LoadAsset_Model(char* path)
 {
-    if (AssetExists(path))
-        return FALSE;
+    Asset* check = AssetGetPackage(path);
+    if (check)
+        return check;
     MALLOC_ASSET(asset, path);
     MALLOC_SET(Model, asset->mdl, FALSE);
     *asset->mdl = LoadModel(path);
     if (!IsModelValid(*asset->mdl))
         printf("Unable to load asset: %s", path);
     hashmap_set(loaded_assets, asset);
-    return TRUE;
+    return asset;
 }
 
-int LoadAsset_Sound(char* path)
+Asset* LoadAsset_Sound(char* path)
 {
-    if (AssetExists(path))
-        return FALSE;
+    Asset* check = AssetGetPackage(path);
+    if (check)
+        return check;
     MALLOC_ASSET(asset, path);
     MALLOC_SET(Sound, asset->snd, FALSE);
     *asset->snd = LoadSound(path);
     if (!IsSoundValid(*asset->snd))
         printf("Unable to load asset: %s", path);
     hashmap_set(loaded_assets, asset);
-    return TRUE;
+    return asset;
 }
 
-int LoadAsset_Music(char* path)
+Asset* LoadAsset_Music(char* path)
 {
-    if (AssetExists(path))
-        return FALSE;
+    Asset* check = AssetGetPackage(path);
+    if (check)
+        return check;
     MALLOC_ASSET(asset, path);
     MALLOC_SET(Music, asset->mus, FALSE);
     *asset->mus = LoadMusicStream(path);
     if (!IsMusicValid(*asset->mus))
         printf("Unable to load asset: %s", path);
     hashmap_set(loaded_assets, asset);
-    return TRUE;
+    return asset;
 }
 
 int AssetExists(char* path)
@@ -108,17 +112,22 @@ int AssetExists(char* path)
     return asset == NULL ? FALSE : TRUE;
 }
 
+Asset* AssetGetPackage(char* path)
+{
+    return hashmap_get(loaded_assets, &(const Asset){.filepath = path });
+}
+
 #define ASSET_FALLBACK(orgpath,pth,ast) \
 {\
     const Asset* asset = hashmap_get(loaded_assets, &(const Asset){.filepath = orgpath }); \
     if (asset == NULL) \
     { \
         const Asset* backup_asset = hashmap_get(loaded_assets, &(const Asset){.filepath = pth}); \
-        return *backup_asset->ast; \
+        return backup_asset->ast; \
     } \
-    return *asset->ast; \
+    return asset->ast; \
 }
-Texture2D AssetGet_Texture(char* path) ASSET_FALLBACK(path,ASSET_TEXTURES"/Error/no_texture.png", tex);
-Model AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mdl);
-Sound AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", snd);
-Music AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mus);
+Texture2D* AssetGet_Texture(char* path) ASSET_FALLBACK(path,ASSET_TEXTURES"/Error/no_texture.png", tex);
+Model* AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mdl);
+Sound* AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", snd);
+Music* AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mus);

@@ -4,6 +4,7 @@
 #include "actor_factory.h"
 #include "actor_scene.h"
 #include "scene_entry.h"
+#include "assets.h"
 
 void scene_fieldtest_preloadassets(struct Actor* scene);
 void scene_fieldtest_destroy(struct Actor* scene);
@@ -23,14 +24,19 @@ void scene_fieldtest_init(struct Actor* scene)
 	// Actor spawns
 }
 
+#define FIELD_ASSET_GROUND_TEXTURE ASSET_TEXTURES"/Objects/sign_wood.png"
+#define FIELD_ASSET_MAIN_MODEL ASSET_MODELS"/Scenes/test_room.blend"
+
 void scene_fieldtest_preloadassets(struct Actor* scene)
 {
+	LoadAsset_Texture(FIELD_ASSET_GROUND_TEXTURE);
+	Asset* asset_model = LoadAsset_Model(FIELD_ASSET_MAIN_MODEL);
 }
 
 
 void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)
 {
-	DrawCube(Vector3Zero(), 0.2f, 0.2f, 0.2f, RED);
+
 }
 
 void scene_fieldtest_destroy(struct Actor* scene)
