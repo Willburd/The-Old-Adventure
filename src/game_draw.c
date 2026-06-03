@@ -3,11 +3,12 @@
 #include "globals.h"
 #include "actor.h"
 
+Color clear_background_color;
+
 void game_draw(double tick_percent)
 {
-
     BeginDrawing();
-    ClearBackground(SKYBLUE);
+    ClearBackground(clear_background_color);
 
 	BeginMode3D(cam_main);
 		for (int i = 0; i <= current_actor_cap; i++)
@@ -63,7 +64,5 @@ void game_draw(double tick_percent)
 		}
 	EndMode2D();
 
-	DrawFPS(10, 10);
-	DrawText(TextFormat("Actor Total: [%i]\nSeconds [%f]\nTicks [%i]\nDelta [%f]", total_actors, seconds_counter, tick_counter, tick_percent), 10, 30, 10, BLACK);
     EndDrawing();
 }

@@ -67,6 +67,7 @@ void game_setup()
     }
 
     // Create cameras
+    clear_background_color = SKYBLUE;
     cam_main = (Camera)
     {
         .position = (Vector3){0,0,0},

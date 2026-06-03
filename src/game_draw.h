@@ -3,6 +3,8 @@
 
 #include "raylib.h"
 
+Color clear_background_color;
+
 void game_draw(double tick_percent);
 
 #endif

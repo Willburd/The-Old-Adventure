@@ -4,6 +4,7 @@
 #include "actor_factory.h"
 #include "actor_scene.h"
 #include "scene_entry.h"
+#include "game_draw.h"
 
 void scene_debug_destroy(struct Actor* scene);
 void scene_debug_update(struct Actor* scene);
@@ -17,7 +18,11 @@ void scene_debug_init(struct Actor* scene)
 	scene->func_drawhud = scene_debug_drawhud;
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 
+	// Set sky
+	clear_background_color = BLACK;
+
 	// Choose a scene to warp to list
+
 }
 
 void scene_debug_update(struct Actor* scene)
@@ -27,7 +32,7 @@ void scene_debug_update(struct Actor* scene)
 
 void scene_debug_drawhud(struct Actor* scene, double tick_percent)
 {
-
+	DrawText("Load Scene:", 30, 30, 20, WHITE);
 }
 
 void scene_debug_destroy(struct Actor* scene)
