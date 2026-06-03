@@ -6,10 +6,12 @@
 #include "scene_entry.h"
 
 void scene_fieldtest_destroy(struct Actor* scene);
+void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent);
 
 void scene_fieldtest_init(struct Actor* scene)
 {
 	// Configure scene
+	scene->func_drawworld = scene_fieldtest_drawworld;
 	scene->func_destroy = scene_fieldtest_destroy;
 
 	// Set data
@@ -17,6 +19,11 @@ void scene_fieldtest_init(struct Actor* scene)
 	SCENEDATA_CLEAR(scene->data);
 
 	// Actor spawns
+}
+
+void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)
+{
+	DrawCube(Vector3Zero(), 0.2f, 0.2f, 0.2f, RED);
 }
 
 void scene_fieldtest_destroy(struct Actor* scene)

@@ -17,6 +17,7 @@ typedef enum
 	// Gameengine
 	act_scene,
 	act_player,
+	act_camera,
 	LAST_ACTOR
 
 } ActorTypes;
@@ -25,6 +26,7 @@ void actor_debug_init(struct Actor* actor);
 void actor_test_init(struct Actor* actor);
 void actor_scene_init(struct Actor* scene);
 void actor_player_init(struct Actor* player);
+void actor_camera_init(struct Actor* player);
 
 inline char* actor_name(ActorTypes actor_id)
 {
@@ -35,6 +37,7 @@ inline char* actor_name(ActorTypes actor_id)
 		"Test",
 		// Gameengine
 		"Scene",
+		"Camera",
 		"Player"
 	};
 	return actor_names[actor_id];
@@ -50,6 +53,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 	// Gameengine
 	MAKE_ACTOR_INIT(act_player, actor_player_init);
 	MAKE_ACTOR_INIT(act_scene, actor_scene_init);
+	MAKE_ACTOR_INIT(act_camera, actor_camera_init);
 }
 
 #endif

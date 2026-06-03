@@ -23,13 +23,12 @@ void scene_debug_init(struct Actor* scene)
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 	SCENEDATA_CLEAR(scene->data);
 
-	// Set sky
-	cam_main.position = (Vector3){ 0, 2, 0 };
-	clear_background_color = BLACK;
-
 	// Debug info actor
 	if(!ACTOREXISTS(act_debug))
 		ACTOR_FACTORY(act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+
+	// Aim camera
+
 }
 
 #define MENUINDEX utilityA1

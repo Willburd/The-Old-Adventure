@@ -74,28 +74,14 @@ void game_setup()
     {
         world_actors[i] = NULL;
     }
-
-    // Create cameras
-    clear_background_color = SKYBLUE;
-    cam_main = (Camera)
-    {
-        .position = (Vector3){0,0,0},
-        .target = VEC3FORWARD,
-        .fovy = 90.0f,
-        .projection = CAMERA_PERSPECTIVE,
-        .up = VEC3UP,
-    };
-    cam_hud = (Camera2D)
-    {
-        .target = (Vector2) {0,0},
-        .offset = (Vector2) {0,0},
-        .rotation = 0.0f,
-        .zoom = 1.0f 
-    };
+    clear_background_color = BLACK;
 
     // Create asset cache
     loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
     reset_global_asset_cache();
+
+    // Spawn camera
+    ACTOR_FACTORY(act_camera, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 
     // Enter game
     LoadScene(scene_boot, ent_title, FALSE);

@@ -43,6 +43,9 @@ Vector2 mouse_last_pos = { 0,0 };
 Vector2 mouse_velocity = { 0,0 };
 
 #define CHECK_KEY(x) inputkeys[x] && IsKeyDown(inputkeys[x])
+#define CHECK_PAD(x) inputpads[x] && IsGamepadButtonDown(current_gamepad, inputpads[inp])
+#define DEADZONE_P(x) (x < deadzone)
+#define DEADZONE_N(x) (x < -deadzone)
 
 void UpdateInputState()
 {
@@ -131,36 +134,36 @@ void UpdateInputState()
 			{
 			// Analog input check
 			case input_left:
-				if (input_analog.x < -deadzone)
+				if (!DEADZONE_N(input_analog.x))
 					is_pressed = TRUE;
 				break;
 			case input_right:
-				if (input_analog.x > deadzone)
+				if (!DEADZONE_P(input_analog.x))
 					is_pressed = TRUE;
 				break;
 			case input_up:
-				if (input_analog.y < -deadzone)
+				if (!DEADZONE_N(input_analog.y))
 					is_pressed = TRUE;
 				break;
 			case input_down:
-				if (input_analog.y > deadzone)
+				if (!DEADZONE_P(input_analog.y))
 					is_pressed = TRUE;
 				break;
 			// Camera input check
 			case input_camleft:
-				if (input_camera.x < -deadzone)
+				if (!DEADZONE_N(input_camera.x))
 					is_pressed = TRUE;
 				break;
 			case input_camright:
-				if (input_camera.x > deadzone)
+				if (!DEADZONE_P(input_camera.x))
 					is_pressed = TRUE;
 				break;
 			case input_camup:
-				if (input_camera.y < -deadzone)
+				if (!DEADZONE_N(input_camera.y))
 					is_pressed = TRUE;
 				break;
 			case input_camdown:
-				if (input_camera.y > deadzone)
+				if (!DEADZONE_P(input_camera.y))
 					is_pressed = TRUE;
 				break;
 			}
@@ -168,9 +171,9 @@ void UpdateInputState()
 		else
 		{
 			// Digital check
-			if (inputkeys[inp] && IsKeyDown(inputkeys[inp]))
+			if (CHECK_KEY(inp))
 				is_pressed = TRUE;
-			if (inputpads[inp] && IsGamepadButtonDown(current_gamepad, inputpads[inp]))
+			if (CHECK_PAD(inp))
 				is_pressed = TRUE;
 		}
 
