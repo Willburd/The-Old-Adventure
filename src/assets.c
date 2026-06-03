@@ -25,13 +25,14 @@ void UnloadAllAssets(int including_core)
         if (!including_core && asset->core_asset)
             continue;
         hashmap_delete(loaded_assets, asset);
+        asset_free(asset);
     }
 }
 
 int asset_compare(const void* a, const void* b, void* udata) {
     const Asset* ua = a;
     const Asset* ub = b;
-    return strcmp(ua->filepath, ub->filepath) == 0;
+    return strcmp(ua->filepath, ub->filepath);
 }
 
 uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1) {
@@ -45,23 +46,26 @@ void asset_free(const void* item) {
     {
         UnloadTexture(*asset->tex);
         free(asset->tex);
+        printf("ASSET: texture unloaded %s\n", asset->filepath);
     }
     if (asset->mdl != NULL)
     {
         UnloadModel(*asset->mdl);
         free(asset->mdl);
+        printf("ASSET: model unloaded %s\n", asset->filepath);
     }
     if (asset->snd != NULL)
     {
         UnloadSound(*asset->snd);
         free(asset->snd);
+        printf("ASSET: sound unloaded %s\n", asset->filepath);
     }
     if (asset->mus != NULL)
     {
         UnloadMusicStream(*asset->mus);
         free(asset->mus);
+        printf("ASSET: music unloaded %s\n", asset->filepath);
     }
-    printf("ASSET: deleted %s\n", asset->filepath);
     free(asset->filepath); // malloc char* string
 }
 

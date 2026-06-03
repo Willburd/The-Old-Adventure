@@ -46,7 +46,7 @@ int main(void)
             if (frame_rate < 100) frame_rate = 9999; else frame_rate = 60;
             SetTargetFPS(frame_rate);
         }
-        if (IsKeyPressed(KEY_F4)) LoadScene(scene_debug, ent_title, TRUE); // Debug warp
+        if (IsKeyPressed(KEY_F4)) LoadScene(scene_debug, ent_title); // Debug warp
 #endif
 
         ticker_rate = 1.0 / update_rate;
@@ -83,7 +83,7 @@ void game_setup()
     ACTOR_FACTORY(act_camera, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 
     // Enter game
-    LoadScene(scene_boot, ent_title, FALSE);
+    LoadScene(scene_boot, ent_title);
 }
 
 void game_shutdown()

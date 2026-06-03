@@ -4,6 +4,7 @@
 #include "actor_factory.h"
 #include "raylib.h"
 #include "globals.h"
+#include "assets.h"
 
 // private header
 SceneID next_scene;
@@ -15,10 +16,8 @@ int unload_previous_scene = TRUE;
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LoadScene(SceneID id, EntranceID entrance, int unload_previous)
+void LoadScene(SceneID id, EntranceID entrance)
 {
-	if (unload_previous)
-		UnloadScene();
 	next_scene = id;
 	next_entrance = entrance;
 	ACTOR_FACTORY(act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
@@ -26,22 +25,24 @@ void LoadScene(SceneID id, EntranceID entrance, int unload_previous)
 
 void ReloadScene()
 {
-	UnloadScene();
+	UnloadScene(FALSE);
 	ACTOR_FACTORY(act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
-void UnloadScene()
+void UnloadScene(int clear_assets)
 {
 	if (current_scene == NULL)
 		return;
 	ACTOR_DESTROY(current_scene);
+	if(clear_assets)
+		UnloadAllAssets(FALSE);
 	current_scene = NULL;
 }
 
 void actor_scene_init(struct Actor* scene)
 {
 	// Unload previous scene
-	UnloadScene();
+	UnloadScene(TRUE);
 	current_scene = scene;
 
 	// Setup scene actor with the intended functions
