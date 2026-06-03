@@ -1,4 +1,5 @@
 #include "actor.h"
+#include "tools.h"
 
 struct Actor* FINDACTOR(uint64_t find_uuid)
 {
@@ -13,13 +14,12 @@ struct Actor* FINDACTOR(uint64_t find_uuid)
 	return NULL;
 }
 
-void FINDACTORGROUP( const struct Actor* found_group[], const uint64_t find_uuids[])
+void FINDACTORGROUP( const struct Actor* found_group[], int max_count, const uint64_t find_uuids[])
 {
 	if (find_uuids == NULL || found_group == NULL)
 		return;
 	// Fill the results with known values
-	int search_arr_len = sizeof(find_uuids) / sizeof(uint64_t);
-	for (int i = 0; i <= search_arr_len; i++)
+	for (int i = 0; i <= max_count; i++)
 	{
 		found_group[i] = NULL; 
 	}
@@ -30,14 +30,94 @@ void FINDACTORGROUP( const struct Actor* found_group[], const uint64_t find_uuid
 		struct Actor* find_actor = world_actors[i];
 		if (find_actor == NULL)
 			continue;
-		for (int t = 0; t <= search_arr_len; t++)
+		for (int t = 0; t <= max_count; t++)
 		{
 			uint64_t check_id = find_uuids[t];
 			if (find_actor->uuid != check_id)
 				continue;
 			found_group[collected_index++] = find_actor;
-			if (collected_index >= search_arr_len)
-				return;
+			if (collected_index < max_count)
+				continue;
+			return;
 		}
 	}
+}
+
+struct Actor* ACTOREXISTS(int actor_type)
+{
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL)
+			continue;
+		if (find_actor->actor_type == actor_type)
+			return find_actor;
+	}
+	return NULL;
+}
+
+int ACTORCOUNT(int actor_type)
+{
+	int count = 0;
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL)
+			continue;
+		if (find_actor->actor_type == actor_type)
+			count++;
+	}
+	return count;
+}
+
+struct Actor* FINDCHILD(const struct Actor* parent)
+{
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL)
+			continue;
+		if (find_actor->parent == parent)
+			return find_actor;
+	}
+	return NULL;
+}
+
+void FINDACTORCHILDREN(const struct Actor* found_group[], int max_count, const struct Actor* parent)
+{
+	if (parent == NULL || found_group == NULL)
+		return;
+	// Fill the results with known values
+	for (int i = 0; i < max_count; i++)
+	{
+		found_group[i] = NULL;
+	}
+	// Search all entities till we find our targets
+	int collected_index = 0;
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL)
+			continue;
+		if (find_actor->parent != parent)
+			continue;
+		found_group[collected_index++] = find_actor;
+		if (collected_index < max_count)
+			continue;
+		return;
+	}
+}
+
+int CHILDCOUNT(const struct Actor* parent)
+{
+	int count = 0;
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL)
+			continue;
+		if (find_actor->parent == parent)
+			count++;
+	}
+	return count;
 }

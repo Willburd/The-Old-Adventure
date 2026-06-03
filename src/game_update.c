@@ -16,11 +16,6 @@ uint64_t current_unique_id = 0;
 
 void game_update()
 {
-
-#ifdef _DEBUG // Debug warp
-	if (IsKeyPressed(KEY_F4))LoadScene(scene_debug, ent_title, TRUE);
-#endif
-
 	// Update controller
 	UpdateInputState();
 

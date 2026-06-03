@@ -16,10 +16,18 @@ void scene_test_init(struct Actor* scene)
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 
 	// Actor spawns
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 60; i++)
 	{
 		ACTOR_FACTORY(act_test, scene, (Vector3) { (float)(rand() % 300), (float)(rand() % 300), 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 1, 1, 0 });
 	}
+
+	// Function testing
+	int child_count = CHILDCOUNT(scene);
+	printf("children: %i\n", child_count);
+
+	struct Actor* child_array[10] = { NULL };
+	FINDACTORCHILDREN(child_array, 10, scene);
+	printf("cuid: %llu\n", child_array[0]->uuid);
 }
 
 void scene_test_destroy(struct Actor* scene)

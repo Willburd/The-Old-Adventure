@@ -64,7 +64,19 @@ int total_actors;
 /// Incrimented for every actor made. NOT used to index world_actors.
 uint64_t current_unique_id;		
 
+// Find an actor by its uuid
 struct Actor* FINDACTOR(uint64_t id);
-void FINDACTORGROUP(const struct Actor* found_group[], const uint64_t find_uuids[]);
+// Find multiple actors by their uuids
+void FINDACTORGROUP(const struct Actor* found_group[], int max_count, const uint64_t find_uuids[]);
+// Get first actor of a specified type
+struct Actor* ACTOREXISTS(int actor_type);
+// Number of actors of this type
+int ACTORCOUNT(int actor_type);
+// Get first child of parent
+struct Actor* FINDCHILD(const struct Actor* parent);
+// Get all children of parent
+void FINDACTORCHILDREN(const struct Actor* found_group[], int max_count, const struct Actor* parent);
+// Get number of children a parent has
+int CHILDCOUNT(const struct Actor* parent);
 
 #endif

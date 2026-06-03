@@ -11,9 +11,9 @@
 #include "tools.h"
 
 const double update_rate = 40.0;
-const int frame_rate = 60;
-const int screenWidth = 800;
-const int screenHeight = 600;
+int frame_rate = 60;
+int screenWidth = 800;
+int screenHeight = 600;
 
 double update_ticker = 0;
 uint64_t tick_counter = 0;
@@ -24,7 +24,7 @@ void game_shutdown();
 
 int main(void)
 {
-    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_ALWAYS_RUN);
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_ALWAYS_RUN);
     InitWindow(screenWidth, screenHeight, "The Old Adventures");
     InitAudioDevice();
 
@@ -39,6 +39,15 @@ int main(void)
 
         update_ticker += delta_time;
         seconds_counter += delta_time;
+
+#ifdef _DEBUG 
+        if (IsKeyPressed(KEY_F3))
+        {
+            if (frame_rate < 100) frame_rate = 9999; else frame_rate = 60;
+            SetTargetFPS(frame_rate);
+        }
+        if (IsKeyPressed(KEY_F4)) LoadScene(scene_debug, ent_title, TRUE); // Debug warp
+#endif
 
         ticker_rate = 1.0 / update_rate;
         while (update_ticker >= ticker_rate)
