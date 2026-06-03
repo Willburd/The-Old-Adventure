@@ -9,6 +9,10 @@ typedef enum
 	input_right,
 	input_up,
 	input_down,
+	input_camleft,
+	input_camright,
+	input_camup,
+	input_camdown,
 	input_confirm,
 	input_cancel,
 	INPUT_LAST
@@ -22,7 +26,13 @@ typedef enum
 
 int current_gamepad;
 int input_state[];
+
 Vector2 input_analog;
+Vector2 input_camera;
+
+float cam_speed_keyboard;
+float cam_speed_mouse;
+float cam_speed_gamepad;
 
 const int inputkeys[];
 const int inputpads[];
