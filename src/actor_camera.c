@@ -61,11 +61,20 @@ void actor_camera_preupdate(struct Actor* actor)
     if (cam_data->freeaim)
     {
         // Rotate actor
-        Vector2 input_cam = input_camera;
+        Quaternion cam_rot = QuaternionFromEuler(0, input_camera.y, input_camera.x);
+        actor->rotation = QuaternionMultiply(actor->rotation, cam_rot);
 
         // Move actor
-        Vector3 axis_move = (Vector3) { input_analog.x, 0, input_analog.y };
-        actor->position = Vector3Add(actor->position, Vector3Scale(axis_move, 0.1f));
+        Vector3 axis_move = Vector3Zero();
+        axis_move = Vector3Add(axis_move, Vector3Scale(VEC3FORWARD, -input_analog.y));
+        axis_move = Vector3Add(axis_move, Vector3Scale(VEC3RIGHT, -input_analog.x));
+        axis_move = Vector3RotateByQuaternion(axis_move, actor->rotation);
+        axis_move = Vector3Scale(axis_move, 0.1f);
+        actor->position = Vector3Add(actor->position, axis_move);
+
+        // Rotate camera
+        cam_main.position = actor->position;
+        cam_main.target = Vector3Add(actor->position, Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation));
     }
 }
 
@@ -76,7 +85,6 @@ void actor_camera_predrawworld(struct Actor* actor, double tick_percent)
         return;
     if (cam_data->freeaim)
     {
-        cam_main.position = ACTOR_POS_DELTA(actor, tick_percent);
-        cam_main.target = Vector3Add(cam_main.position, Vector3RotateByQuaternion(VEC3FORWARD, ACTOR_ROT_DELTA(actor, tick_percent)));
+        DrawCube(cam_main.target, 0.1f, 0.1f, 0.1f, BLUE);
     }
 }

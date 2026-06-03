@@ -34,6 +34,9 @@ float cam_speed_keyboard;
 float cam_speed_mouse;
 float cam_speed_gamepad;
 
+int camerax_inverted;
+int cameray_inverted;
+
 const int inputkeys[];
 const int inputpads[];
 
