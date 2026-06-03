@@ -15,7 +15,7 @@ void scene_debug_init(struct Actor* scene)
 	// Configure scene
 	scene->func_destroy = scene_debug_destroy;
 	scene->func_update = scene_debug_update;
-	scene->func_drawhud = scene_debug_drawhud;
+	scene->func_postdrawhud = scene_debug_drawhud;
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 
 	// Set sky
@@ -23,6 +23,8 @@ void scene_debug_init(struct Actor* scene)
 
 	// Choose a scene to warp to list
 
+	// Debug info actor
+	ACTOR_FACTORY(act_debug, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 void scene_debug_update(struct Actor* scene)
