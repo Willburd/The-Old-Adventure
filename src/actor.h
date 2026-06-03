@@ -63,5 +63,6 @@ int total_actors;
 uint64_t current_unique_id;		
 
 struct Actor* FINDACTOR(uint64_t id);
+void FINDACTORGROUP(const struct Actor* found_group[], const uint64_t find_uuids[]);
 
 #endif

@@ -26,7 +26,7 @@ void scene_test_init(struct Actor* scene);
 
 inline char* scene_name(SceneID scene_id)
 {
-	const char* scene_names[LAST_SCENE] = {
+	char* scene_names[LAST_SCENE] = {
 		"Boot",
 		"Debug",
 		"Title",
