@@ -80,9 +80,9 @@ void ACTOR_DESTROY(struct Actor* actor)
 	// Wipedata
 	world_actors[actor->index] = NULL;
 	if (ACTOR_HAS(actor, data))
-		free(actor->data);
+		RELEASE(actor->data);
 	ACTOR_CLEAR(actor);
-	free(actor);
+	RELEASE(actor);
 }
 
 void ACTOR_DESTROY_UUID(uint64_t uuid)

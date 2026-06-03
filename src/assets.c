@@ -1,23 +1,37 @@
 #include "assets.h"
 #include "tools.h"
 
-#define MALLOC_ASSET(a, p) MALLOC(Asset, a, 0);CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;
+#define MALLOC_ASSET(a, p) MALLOC(Asset, a, 0);a->core_asset=FALSE;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;
 
-// Clears all loaded assets and reloads the global base assets only.
-void reset_global_asset_cache()
+// Loads all core assets, and flags them as core assets.
+void LoadCoreAssets()
 {
-    // Wipe the current asset cache
-    hashmap_clear(loaded_assets, FALSE);
+    // Create the asset cache
+    loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
 
     // Load the default assets
-    LoadAsset_Texture(ASSET_TEXTURES"/Error/no_texture.png");
-    LoadAsset_Texture(ASSET_TEXTURES"/Error/no_material.png");
+    LoadAsset_Texture(ASSET_TEXTURES"/Error/no_texture.png")->core_asset = TRUE;
+    LoadAsset_Texture(ASSET_TEXTURES"/Error/no_material.png")->core_asset = TRUE;
+}
+
+// Remove all assets from the hashmap. Normally ignores core assets.
+void UnloadAllAssets(int including_core)
+{
+    size_t iter = 0;
+    void* item;
+    // Scan the hashmap for assets that are not core assets
+    while (hashmap_iter(loaded_assets, &iter, &item)) {
+        const Asset* asset = item;
+        if (!including_core && asset->core_asset)
+            continue;
+        hashmap_delete(loaded_assets, asset);
+    }
 }
 
 int asset_compare(const void* a, const void* b, void* udata) {
     const Asset* ua = a;
     const Asset* ub = b;
-    return strcmp(ua->filepath, ub->filepath);
+    return strcmp(ua->filepath, ub->filepath) == 0;
 }
 
 uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1) {
@@ -47,6 +61,7 @@ void asset_free(const void* item) {
         UnloadMusicStream(*asset->mus);
         free(asset->mus);
     }
+    printf("ASSET: deleted %s\n", asset->filepath);
     free(asset->filepath); // malloc char* string
 }
 
@@ -59,8 +74,9 @@ Asset* LoadAsset_Texture(char* path)
     MALLOC_SET(Texture2D, asset->tex, FALSE);
     *asset->tex = LoadTexture(path);
     if (!IsTextureValid(*asset->tex))
-        printf("Unable to load asset: %s", path);
+        printf("ASSET: Unable to load texture: %s\n", path);
     hashmap_set(loaded_assets, asset);
+    printf("ASSET: loaded texture: %s\n", path);
     return asset;
 }
 
@@ -73,8 +89,9 @@ Asset* LoadAsset_Model(char* path)
     MALLOC_SET(Model, asset->mdl, FALSE);
     *asset->mdl = LoadModel(path);
     if (!IsModelValid(*asset->mdl))
-        printf("Unable to load asset: %s", path);
+        printf("ASSET: Unable to load model: %s\n", path);
     hashmap_set(loaded_assets, asset);
+    printf("ASSET: loaded model: %s\n", path);
     return asset;
 }
 
@@ -87,8 +104,9 @@ Asset* LoadAsset_Sound(char* path)
     MALLOC_SET(Sound, asset->snd, FALSE);
     *asset->snd = LoadSound(path);
     if (!IsSoundValid(*asset->snd))
-        printf("Unable to load asset: %s", path);
+        printf("ASSET: Unable to load sound: %s\n", path);
     hashmap_set(loaded_assets, asset);
+    printf("ASSET: loaded sound: %s\n", path);
     return asset;
 }
 
@@ -101,8 +119,9 @@ Asset* LoadAsset_Music(char* path)
     MALLOC_SET(Music, asset->mus, FALSE);
     *asset->mus = LoadMusicStream(path);
     if (!IsMusicValid(*asset->mus))
-        printf("Unable to load asset: %s", path);
+        printf("ASSET: Unable to load music: %s\n", path);
     hashmap_set(loaded_assets, asset);
+    printf("ASSET: loaded music: %s\n", path);
     return asset;
 }
 

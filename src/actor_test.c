@@ -70,7 +70,7 @@ void actor_test_drawworld(struct Actor* actor, double tick_percent)
 void actor_test_drawhud(struct Actor* actor, double tick_percent)
 {
 	Vector3 delta_pos = ACTOR_POS_DELTA(actor, (float)tick_percent);
-	DrawTextureEx(*AssetGet_Texture(PLAYER_ASSET_TEXTURE), (Vector2) { delta_pos.x, delta_pos.y }, QuaternionToEuler(ACTOR_ROT_DELTA(actor, (float)tick_percent)).x* RAD2DEG, 1, WHITE);
+	DrawTextureEx(*AssetGet_Texture(TEST_ASSET_TEXTURE), (Vector2) { delta_pos.x, delta_pos.y }, QuaternionToEuler(ACTOR_ROT_DELTA(actor, (float)tick_percent)).x* RAD2DEG, 1, WHITE);
 }
 
 void actor_test_destroy(struct Actor* actor)

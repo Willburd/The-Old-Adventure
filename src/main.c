@@ -77,8 +77,7 @@ void game_setup()
     clear_background_color = BLACK;
 
     // Create asset cache
-    loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
-    reset_global_asset_cache();
+    LoadCoreAssets();
 
     // Spawn camera
     ACTOR_FACTORY(act_camera, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
@@ -98,5 +97,6 @@ void game_shutdown()
         ACTOR_DESTROY(destroy_actor);
     }
     // Clear assets and the actor id map
+    UnloadAllAssets(TRUE);
     hashmap_free(loaded_assets);
 }

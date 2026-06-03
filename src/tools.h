@@ -22,6 +22,8 @@
 #define VEC3RIGHT ((Vector3){1,0,0})
 #define VEC3LEFT ((Vector3){-1,0,0})
 
+#define RELEASE(x) free(x);x = NULL;
+
 #ifdef _WIN32
 #include <direct.h>
 #define GetCurrentDir _getcwd

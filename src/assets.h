@@ -23,6 +23,7 @@
 struct hashmap* loaded_assets;
 
 typedef struct {
+    int core_asset;
     char* filepath;
     Texture2D* tex;
     Model* mdl;
@@ -30,7 +31,8 @@ typedef struct {
     Music* mus;
 } Asset;
 
-void reset_global_asset_cache();
+void LoadCoreAssets();
+void UnloadAllAssets(int including_core);
 
 int asset_compare(const void* a, const void* b, void* udata);
 uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1);
