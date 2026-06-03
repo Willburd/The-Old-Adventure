@@ -26,7 +26,7 @@ struct Actor {
 
 	// Creation and destruction
 	void (*func_init)(struct Actor* actor);
-	void (*func_load_preloadassets)(struct Actor* actor);
+	void (*func_preloadassets)(struct Actor* actor);
 	void (*func_destroy)(struct Actor* actor);
 	// Update tick
 	void (*func_preupdate)(struct Actor* actor);
@@ -44,7 +44,7 @@ struct Actor {
 	void (*func_activate_room)(struct Actor* actor, int room_index);
 	void (*func_deactivate_room)(struct Actor* actor, int room_index);
 };
-#define ACTOR_CLEAR(x) x->index = -1;actor->uuid = 0;x->actor_type = 0;x->parent = NULL;x->func_init = NULL;x->func_load_preloadassets = NULL;x->func_destroy = NULL;x->func_preupdate = NULL;x->func_update = NULL;x->func_postupdate = NULL;x->func_predrawworld = NULL;x->func_drawworld = NULL;x->func_postdrawworld = NULL;x->func_predrawhud = NULL;x->func_drawhud = NULL;x->func_postdrawhud = NULL;x->data = NULL;
+#define ACTOR_CLEAR(x) x->index = -1;actor->uuid = 0;x->actor_type = 0;x->parent = NULL;x->func_init = NULL;x->func_preloadassets = NULL;x->func_destroy = NULL;x->func_preupdate = NULL;x->func_update = NULL;x->func_postupdate = NULL;x->func_predrawworld = NULL;x->func_drawworld = NULL;x->func_postdrawworld = NULL;x->func_predrawhud = NULL;x->func_drawhud = NULL;x->func_postdrawhud = NULL;x->data = NULL;
 #define ACTOR_POS_SNAP(x, pos) x->position = pos;x->last_position = pos;
 #define ACTOR_ROT_SNAP(x, rot) x->rotation = rot;x->last_rotation = rot;
 #define ACTOR_SCALE_SNAP(x, scl) x->scale = scl;x->last_scale = scl;

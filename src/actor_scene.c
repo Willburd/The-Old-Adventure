@@ -48,8 +48,8 @@ void actor_scene_init(struct Actor* scene)
 	SCENE_LIBRARY(scene, next_scene);
 
 	// Load assets
-	if (ACTOR_HAS(scene, func_load_preloadassets))
-		scene->func_load_preloadassets(scene);
+	if (ACTOR_HAS(scene, func_preloadassets))
+		scene->func_preloadassets(scene);
 
 	// Check for our entrance
 	struct Actor* entrance = NULL;

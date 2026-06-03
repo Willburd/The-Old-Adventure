@@ -35,8 +35,8 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, V
 	
 	// Configure to type of actor made
 	ACTOR_LIBRARY(actor, actor_type);
-	if (ACTOR_HAS(actor, func_load_preloadassets))
-		actor->func_load_preloadassets(actor);
+	if (ACTOR_HAS(actor, func_preloadassets))
+		actor->func_preloadassets(actor);
 
 	// Place in update list
 	for (int i = 0; i < ACTOR_LIMIT; i++)

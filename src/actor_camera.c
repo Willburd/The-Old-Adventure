@@ -69,7 +69,7 @@ void actor_camera_preupdate(struct Actor* actor)
         actor->rotation = QuaternionNormalize(QuaternionMultiply(cam_rot, actor->rotation)); // Apply and normalize
 
         // Move actor
-        Vector3 axis_move = { input_analog.x, 0, input_analog.y };
+        Vector3 axis_move = { -input_analog.x, 0, input_analog.y }; // TODO - Find out why I need to invert the x axis.
         axis_move = Vector3RotateByQuaternion(axis_move, actor->rotation);
         axis_move = Vector3Scale(axis_move, 0.1f);
         actor->position = Vector3Add(actor->position, axis_move);

@@ -16,7 +16,7 @@ void actor_test_destroy(struct Actor* actor);
 // Setup the player actor. Public function in the header
 void actor_test_init(struct Actor* actor)
 {
-	actor->func_load_preloadassets = actor_test_preload_assets;
+	actor->func_preloadassets = actor_test_preload_assets;
 	actor->func_update = actor_test_update;
 	actor->func_drawworld = actor_test_drawworld;
 	actor->func_drawhud = actor_test_drawhud;
