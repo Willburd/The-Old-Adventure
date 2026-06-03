@@ -29,5 +29,5 @@ void actor_debug_predrawworld(struct Actor* scene, double tick_percent)
 void actor_debug_postdrawhud(struct Actor* actor, double tick_percent)
 {
 	DrawFPS(10, 10);
-	DrawText(TextFormat("Actor Total: [%i]\nSeconds [%f]\nTicks [%i]\nDelta [%f]", total_actors, seconds_counter, tick_counter, tick_percent), 10, 30, 10, BLACK);
+	DrawText(TextFormat("Actor Total: [%i]\nSeconds [%f]\nTicks [%i]\nDelta [%f]", total_actors, seconds_counter, tick_counter, tick_percent), 10, 30, 20, GRAY);
 }
