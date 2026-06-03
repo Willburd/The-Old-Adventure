@@ -159,6 +159,7 @@
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </DisableSpecificWarnings>
     </ClCompile>
+    <ClCompile Include="input.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="return_codes.h" />
     <ClCompile Include="scene_boot.c" />
@@ -184,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="input.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

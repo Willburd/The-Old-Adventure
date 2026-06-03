@@ -111,6 +111,9 @@
     <ClCompile Include="actor_debug.c">
       <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
+    <ClCompile Include="input.c">
+      <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -155,5 +158,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="input.h">
+      <Filter>Header Files\engine\game</Filter>
+    </None>
   </ItemGroup>
 </Project>

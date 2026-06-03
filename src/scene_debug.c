@@ -8,6 +8,7 @@
 #include "game_draw.h"
 #include "camera.h"
 #include "globals.h"
+#include "input.h"
 
 void scene_debug_destroy(struct Actor* scene);
 void scene_debug_update(struct Actor* scene);
@@ -42,7 +43,18 @@ void scene_debug_update(struct Actor* scene)
 {
 	SceneData_Debug* our_data = (SceneData_Debug*)scene->data;
 
-	if (IsKeyPressed(KEY_ENTER))
+	if (CHECK_INPUTPRESSED(input_up))
+	{
+		our_data->menu_index -= 1;
+		if (our_data->menu_index < 0) our_data->menu_index = 0;
+	}
+	if (CHECK_INPUTPRESSED(input_down))
+	{
+		our_data->menu_index += 1;
+		if (our_data->menu_index >= LAST_SCENE) our_data->menu_index = LAST_SCENE-1;
+	}
+
+	if (CHECK_INPUTPRESSED(input_confirm))
 	{
 		LoadScene(our_data->menu_index, ent_debugentrance, TRUE);
 		return;

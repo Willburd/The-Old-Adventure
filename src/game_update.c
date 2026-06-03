@@ -7,6 +7,7 @@
 #include "game_update.h"
 #include "scene_entry.h"
 #include "globals.h"
+#include "input.h"
 
 
 int current_actor_cap = 0;
@@ -19,6 +20,9 @@ void game_update()
 #ifdef _DEBUG // Debug warp
 	if (IsKeyPressed(KEY_F4))LoadScene(scene_debug, ent_title, TRUE);
 #endif
+
+	// Update controller
+	UpdateInputState();
 
 	// Preupdate and state control
 	int cap_actor = 0;
