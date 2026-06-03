@@ -11,6 +11,8 @@ void scene_test_init(struct Actor* scene)
 {
 	// Configure scene
 	scene->func_destroy = scene_test_destroy;
+
+	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 
 	// Actor spawns
