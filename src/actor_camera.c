@@ -64,10 +64,9 @@ void actor_camera_preupdate(struct Actor* actor)
         Vector3 right = Vector3RotateByQuaternion(VEC3RIGHT, actor->rotation);
 
         // Rotate actor
-        Quaternion cam_rot = QuaternionFromAxisAngle(VEC3UP, input_camera.x);
-        cam_rot = QuaternionMultiply(cam_rot, QuaternionFromAxisAngle(right, input_camera.y));
-        actor->rotation = QuaternionMultiply(cam_rot, actor->rotation);
-        actor->rotation = QuaternionNormalize(actor->rotation);
+        Quaternion cam_rot = QuaternionFromAxisAngle(VEC3UP, input_camera.x); // Stationary vertical axis
+        cam_rot = QuaternionMultiply(cam_rot, QuaternionFromAxisAngle(right, input_camera.y)); // Relative horizontal axis to camera
+        actor->rotation = QuaternionNormalize(QuaternionMultiply(cam_rot, actor->rotation)); // Apply and normalize
 
         // Move actor
         Vector3 axis_move = { input_analog.x, 0, input_analog.y };
