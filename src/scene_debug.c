@@ -3,9 +3,11 @@
 #include "tools.h"
 #include "actor_factory.h"
 #include "actor_scene.h"
+#include "scene_library.h"
 #include "scene_entry.h"
 #include "game_draw.h"
 #include "camera.h"
+#include "globals.h"
 
 void scene_debug_destroy(struct Actor* scene);
 void scene_debug_update(struct Actor* scene);
@@ -26,7 +28,7 @@ void scene_debug_init(struct Actor* scene)
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData_Debug, scene->data);
 	SceneData_Debug* our_data = (SceneData_Debug*)scene->data;
-	our_data->menu_index = 0;
+	our_data->menu_index = 3;
 
 	// Set sky
 	cam_main.position = (Vector3){ 0, 2, 0 };
@@ -39,17 +41,26 @@ void scene_debug_init(struct Actor* scene)
 void scene_debug_update(struct Actor* scene)
 {
 	SceneData_Debug* our_data = (SceneData_Debug*)scene->data;
-	our_data->menu_index += 1;
 
+	if (IsKeyPressed(KEY_ENTER))
+	{
+		LoadScene(our_data->menu_index, ent_debugentrance, TRUE);
+		return;
+	}
 }
 
 void scene_debug_drawhud(struct Actor* scene, double tick_percent)
 {
 	SceneData_Debug* our_data = (SceneData_Debug*)scene->data;
 
-	DrawText(TextFormat("Load Scene [%i]:", our_data->menu_index), 100, 30, 20, WHITE);
+	DrawText("Load Scene:", 100, 30, 20, WHITE);
 
-
+	for (int i = 0; i < LAST_SCENE; i++)
+	{
+		char* entry = scene_name(i);
+		char* pretex = our_data->menu_index == i ? ">" : "";
+		DrawText(TextFormat("%s%s", pretex, entry), 140, 60 + (i * 20), 20, WHITE);
+	}
 }
 
 void scene_debug_destroy(struct Actor* scene)

@@ -5,6 +5,8 @@
 #include "raymath.h"
 #include "actor.h"
 #include "game_update.h"
+#include "scene_entry.h"
+#include "globals.h"
 
 
 int current_actor_cap = 0;
@@ -13,6 +15,15 @@ uint64_t current_unique_id = 0;
 
 void game_update()
 {
+
+#ifdef _DEBUG
+	// Debugcode
+	if (IsKeyPressed(KEY_F4))
+	{
+		LoadScene(scene_debug, ent_title, TRUE);
+	}
+#endif
+
 	// Preupdate and state control
 	int cap_actor = 0;
 	int shift_index = -1;
