@@ -67,15 +67,7 @@ void ACTOR_DESTROY(struct Actor* actor)
 		return;
 
 	// Remove all children
-	for (int i = 0; i < current_actor_cap; i++)
-	{
-		struct Actor* check_actor = world_actors[i];
-		if (!ACTOR_EXISTS(check_actor))
-			continue;
-		if (check_actor->parent != actor)
-			continue;
-		ACTOR_DESTROY(check_actor);
-	}
+	ACTOR_DESTROY_CHILDREN(actor);
 
 	// Call destroy actions
 #ifdef _DEBUG
@@ -91,4 +83,41 @@ void ACTOR_DESTROY(struct Actor* actor)
 		free(actor->data);
 	ACTOR_CLEAR(actor);
 	free(actor);
+}
+
+void ACTOR_DESTROY_UUID(uint64_t uuid)
+{
+	for (int i = 0; i < current_actor_cap; i++)
+	{
+		struct Actor* check_actor = world_actors[i];
+		if (!ACTOR_EXISTS(check_actor))
+			continue;
+		if (check_actor->uuid != uuid)
+			continue;
+		ACTOR_DESTROY(check_actor);
+	}
+}
+
+void ACTOR_DESTROY_ALL()
+{
+	for (int i = 0; i < current_actor_cap; i++)
+	{
+		struct Actor* check_actor = world_actors[i];
+		if (!ACTOR_EXISTS(check_actor))
+			continue;
+		ACTOR_DESTROY(check_actor);
+	}
+}
+
+void ACTOR_DESTROY_CHILDREN(struct Actor* parent)
+{
+	for (int i = 0; i < current_actor_cap; i++)
+	{
+		struct Actor* check_actor = world_actors[i];
+		if (!ACTOR_EXISTS(check_actor))
+			continue;
+		if (check_actor->parent != parent)
+			continue;
+		ACTOR_DESTROY(check_actor);
+	}
 }
