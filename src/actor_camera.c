@@ -60,14 +60,17 @@ void actor_camera_preupdate(struct Actor* actor)
         return;
     if (cam_data->freeaim)
     {
+        // Identity vectors
+        Vector3 right = Vector3RotateByQuaternion(VEC3RIGHT, actor->rotation);
+
         // Rotate actor
-        Quaternion cam_rot = QuaternionFromEuler(0, input_camera.y, input_camera.x);
-        actor->rotation = QuaternionMultiply(actor->rotation, cam_rot);
+        Quaternion cam_rot = QuaternionFromAxisAngle(VEC3UP, input_camera.x);
+        cam_rot = QuaternionMultiply(cam_rot, QuaternionFromAxisAngle(right, input_camera.y));
+        actor->rotation = QuaternionMultiply(cam_rot, actor->rotation);
+        actor->rotation = QuaternionNormalize(actor->rotation);
 
         // Move actor
-        Vector3 axis_move = Vector3Zero();
-        axis_move = Vector3Add(axis_move, Vector3Scale(VEC3FORWARD, -input_analog.y));
-        axis_move = Vector3Add(axis_move, Vector3Scale(VEC3RIGHT, -input_analog.x));
+        Vector3 axis_move = { input_analog.x, 0, input_analog.y };
         axis_move = Vector3RotateByQuaternion(axis_move, actor->rotation);
         axis_move = Vector3Scale(axis_move, 0.1f);
         actor->position = Vector3Add(actor->position, axis_move);

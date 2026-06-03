@@ -34,12 +34,12 @@ int input_state[INPUT_LAST] = { 0 };
 Vector2 input_analog = { 0,0 };
 Vector2 input_camera = { 0,0 };
 
-float cam_speed_keyboard = 5.0f;
+float cam_speed_keyboard = 0.10f;
 float cam_speed_mouse = 0.01f;
 float cam_speed_gamepad = 0.10f;
 
 int camerax_inverted = FALSE;
-int cameray_inverted = TRUE; // Pref set
+int cameray_inverted = TRUE;
 
 Vector2 mouse_pos = { 0,0 };
 Vector2 mouse_last_pos = { 0,0 };
@@ -125,9 +125,9 @@ void UpdateInputState()
 		input_camera.y *= cam_speed_mouse;
 	}
 	// Camera inversions
-	if(!camerax_inverted)
+	if(camerax_inverted)
 		input_camera.x *= -1.0f;
-	if (!cameray_inverted)
+	if (cameray_inverted)
 		input_camera.y *= -1.0f;
 
 
