@@ -11,10 +11,14 @@
 
 typedef enum
 {
+	// Setup
 	scene_boot,
+	// Debug
 	scene_debug,
 	scene_title,
 	scene_test,
+	scene_fieldtest,
+	// Adventure
 	LAST_SCENE
 
 } SceneID;
@@ -23,14 +27,19 @@ void scene_debug_init(struct Actor* scene);
 void scene_boot_init(struct Actor* scene);
 void scene_title_init(struct Actor* scene);
 void scene_test_init(struct Actor* scene);
+void scene_fieldtest_init(struct Actor* scene);
 
 inline char* scene_name(SceneID scene_id)
 {
 	char* scene_names[LAST_SCENE] = {
+		// Setup
 		"Boot",
+		// Debug
 		"Debug",
 		"Title",
-		"Test"
+		"Test",
+		"FieldTest"
+		// Adventure
 	};
 	return scene_names[scene_id];
 }
@@ -39,10 +48,14 @@ inline char* scene_name(SceneID scene_id)
 inline void SCENE_LIBRARY(struct Actor* scene, SceneID scene_id)
 {
 	printf("SCENE CHANGE: %s \n", scene_name(scene_id));
+	// Setup
 	MAKE_SCENE_INIT(scene_boot, scene_boot_init);
+	// Debug
 	MAKE_SCENE_INIT(scene_debug, scene_debug_init);
 	MAKE_SCENE_INIT(scene_title, scene_title_init);
 	MAKE_SCENE_INIT(scene_test, scene_test_init);
+	MAKE_SCENE_INIT(scene_fieldtest, scene_fieldtest_init);
+	// Adventure
 }
 
 #endif

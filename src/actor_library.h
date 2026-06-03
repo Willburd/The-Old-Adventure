@@ -11,8 +11,10 @@
 typedef enum
 {
 	act_error,
+	// debugging
 	act_debug,
 	act_test,
+	// Gameengine
 	act_scene,
 	act_player,
 	LAST_ACTOR
@@ -28,8 +30,10 @@ inline char* actor_name(ActorTypes actor_id)
 {
 	char* actor_names[LAST_ACTOR] = {
 		"Error",
+		// debugging
 		"Debug",
 		"Test",
+		// Gameengine
 		"Scene",
 		"Player"
 	};
@@ -40,8 +44,10 @@ inline char* actor_name(ActorTypes actor_id)
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 {
 	MAKE_ACTOR_INIT(act_error, NULL);
+	// debugging
 	MAKE_ACTOR_INIT(act_debug, actor_debug_init);
 	MAKE_ACTOR_INIT(act_test, actor_test_init);
+	// Gameengine
 	MAKE_ACTOR_INIT(act_player, actor_player_init);
 	MAKE_ACTOR_INIT(act_scene, actor_scene_init);
 }

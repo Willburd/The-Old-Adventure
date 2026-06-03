@@ -114,6 +114,9 @@
     <ClCompile Include="input.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
+    <ClCompile Include="scene_fieldtest.c">
+      <Filter>Source Files\adventure\scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
