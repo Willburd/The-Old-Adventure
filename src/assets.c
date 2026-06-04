@@ -2,8 +2,6 @@
 #include "materials.h"
 #include "tools.h"
 
-#define MALLOC_ASSET(a, p) MALLOC(Asset, a, 0);a->core_asset=FALSE;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;
-
 // Remove all assets from the hashmap. Normally ignores core assets.
 void UnloadAllAssets(int including_core)
 {
@@ -62,14 +60,20 @@ void asset_free(const void* item) {
         free(asset->mat);
         printf("ASSET: material unloaded %s\n", asset->filepath);
     }
+    if (asset->shd != NULL)
+    {
+        UnloadShader(*asset->shd);
+        free(asset->shd);
+        printf("ASSET: shader unloaded %s\n", asset->filepath);
+    }
     free(asset->filepath); // malloc char* string
 }
 
+#define RETURN_EXISTING_ASSET(pth) Asset* check = AssetGetPackage(pth); if (check){return check;}
+
 Asset* LoadAsset_Texture(char* path)
 {
-    Asset* check = AssetGetPackage(path);
-    if (check)
-        return check;
+    RETURN_EXISTING_ASSET(path);
     MALLOC_ASSET(asset, path);
     MALLOC_SET(Texture2D, asset->tex, FALSE);
     *asset->tex = LoadTexture(path);
@@ -82,9 +86,7 @@ Asset* LoadAsset_Texture(char* path)
 
 Asset* LoadAsset_Model(char* path)
 {
-    Asset* check = AssetGetPackage(path);
-    if (check)
-        return check;
+    RETURN_EXISTING_ASSET(path);
     MALLOC_ASSET(asset, path);
     MALLOC_SET(Model, asset->mdl, FALSE);
     *asset->mdl = LoadModel(path);
@@ -97,9 +99,7 @@ Asset* LoadAsset_Model(char* path)
 
 Asset* LoadAsset_Sound(char* path)
 {
-    Asset* check = AssetGetPackage(path);
-    if (check)
-        return check;
+    RETURN_EXISTING_ASSET(path);
     MALLOC_ASSET(asset, path);
     MALLOC_SET(Sound, asset->snd, FALSE);
     *asset->snd = LoadSound(path);
@@ -112,9 +112,7 @@ Asset* LoadAsset_Sound(char* path)
 
 Asset* LoadAsset_Music(char* path)
 {
-    Asset* check = AssetGetPackage(path);
-    if (check)
-        return check;
+    RETURN_EXISTING_ASSET(path);
     MALLOC_ASSET(asset, path);
     MALLOC_SET(Music, asset->mus, FALSE);
     *asset->mus = LoadMusicStream(path);
@@ -127,9 +125,7 @@ Asset* LoadAsset_Music(char* path)
 
 Asset* LoadAsset_Material(char* path)
 {
-    Asset* check = AssetGetPackage(path);
-    if (check)
-        return check;
+    RETURN_EXISTING_ASSET(path);
     MALLOC_ASSET(asset, path);
     MALLOC_SET(Material, asset->mat, FALSE);
     *asset->mat = LoadMaterial(path);
@@ -137,6 +133,19 @@ Asset* LoadAsset_Material(char* path)
         printf("ASSET: Unable to load material: %s\n", path);
     hashmap_set(loaded_assets, asset);
     printf("ASSET: loaded material: %s\n", path);
+    return asset;
+}
+
+Asset* LoadAsset_Shader(char* shader_name, char* path_vertex, char* path_fragment)
+{
+    RETURN_EXISTING_ASSET(shader_name);
+    MALLOC_ASSET(asset, shader_name);
+    MALLOC_SET(Shader, asset->shd, FALSE);
+    *asset->shd = LoadShader(path_vertex, path_fragment);
+    if (!IsShaderValid(*asset->shd))
+        printf("ASSET: Unable to load shader: %s\n", shader_name);
+    hashmap_set(loaded_assets, asset);
+    printf("ASSET: loaded shader: %s\n", shader_name);
     return asset;
 }
 
@@ -166,3 +175,4 @@ Model* AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_
 Sound* AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", snd);
 Music* AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mus);
 Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mus);
+Shader* AssetGet_Shader(char* shader_name) ASSET_FALLBACK(shader_name, ASSET_TEXTURES"/Error/no_texture.png", mus);

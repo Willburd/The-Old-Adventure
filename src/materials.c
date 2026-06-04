@@ -7,6 +7,8 @@ Material LoadMaterial(char* path)
 
 	Texture2D tex;
 
+	Shader shd;
+
 	return mat;
 }
 

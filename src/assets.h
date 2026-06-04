@@ -30,7 +30,10 @@ typedef struct {
     Sound* snd;
     Music* mus;
     Material* mat;
+    Shader* shd;
 } Asset;
+
+#define MALLOC_ASSET(a, p) MALLOC(Asset, a, 0);a->core_asset=FALSE;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;a->shd=NULL;
 
 void UnloadAllAssets(int including_core);
 
@@ -43,6 +46,7 @@ Asset* LoadAsset_Model(char* path);
 Asset* LoadAsset_Sound(char* path);
 Asset* LoadAsset_Music(char* path);
 Asset* LoadAsset_Material(char* path);
+Asset* LoadAsset_Shader(char* shader_name, char* path_vertex, char* path_fragment);
 int AssetExists(char* path);
 Asset* AssetGetPackage(char* path);
 
@@ -52,4 +56,5 @@ Model* AssetGet_Model(char* path);
 Sound* AssetGet_Sound(char* path);
 Music* AssetGet_Music(char* path);
 Material* AssetGet_Material(char* path);
+Shader* AssetGet_Shader(char* shader_name);
 #endif
