@@ -38,7 +38,6 @@ Material LoadMaterial(char* path, int is_core_asset)
 	Material mat = LoadMaterialDefault();
 
 	// Shader info
-	char shader_id[PATH_LEN] = { 0 };
 	char shader_vpath[PATH_LEN] = { 0 };
 	char shader_fpath[PATH_LEN] = { 0 };
 
@@ -79,15 +78,6 @@ Material LoadMaterial(char* path, int is_core_asset)
 					if (STRMATCH(tag_data, "#PREFI")) map_type = MATERIAL_MAP_PREFILTER;
 					if (STRMATCH(tag_data, "#BRDF_")) map_type = MATERIAL_MAP_BRDF;
 					// Shader properties are collected and assigned at the end
-					if (STRMATCH(tag_data, "#SHDRI"))
-					{
-						tag_data = strtok_s(NULL, " ", &next_token);
-						if (tag_data == NULL)
-							break;
-						STRENDLINETERMINATE(tag_data);
-						strcat_s(shader_id, PATH_LEN, tag_data);
-						continue;
-					}
 					if (STRMATCH(tag_data, "#SHDRV"))
 					{
 						tag_data = strtok_s(NULL, " ", &next_token);

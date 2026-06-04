@@ -26,6 +26,8 @@ void scene_fieldtest_init(struct Actor* scene)
 #define FIELD_ASSET_GROUND_TEXTURE ASSET_TEXTURES"/Objects/sign_wood.png"
 #define FIELD_ASSET_MAIN_MODEL ASSET_MODELS"/Scenes/test_room.glb"
 
+#define FIELD_ASSET_MAIN_MATERIAL ASSET_MATERIALS"/Objects/wood.mat"
+
 #define MAIN_MODEL_MESH_MAIN 0
 #define MAIN_MODEL_MESH_COLLISION 1
 #define MAIN_MODEL_MATERIAL_MAIN 0
@@ -35,12 +37,14 @@ void scene_fieldtest_preloadassets(struct Actor* scene)
 	Asset* field_texture = LoadAsset_Texture(FIELD_ASSET_GROUND_TEXTURE, FALSE);
 	Asset* model_asset = LoadAsset_Model(FIELD_ASSET_MAIN_MODEL, FALSE);
 	SetActorCollision(scene, model_asset->mdl, MAIN_MODEL_MESH_COLLISION);
+
+	LoadAsset_Material(FIELD_ASSET_MAIN_MATERIAL, FALSE);
 }
 
 void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)
 {
-	Model* field_model = AssetGet_Model(FIELD_ASSET_MAIN_MODEL);
-	Material* field_material = AssetGet_Material(ASSET_MATERIALS"/Error/no_material.mat");
-
-	DrawMesh(field_model->meshes[MAIN_MODEL_MESH_MAIN], *field_material, GetMatrix(scene));
+	DrawMesh(
+		AssetGet_Model(FIELD_ASSET_MAIN_MODEL)->meshes[MAIN_MODEL_MESH_MAIN],
+		*AssetGet_Material(FIELD_ASSET_MAIN_MATERIAL),
+		GetMatrix(scene));
 }

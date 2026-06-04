@@ -1,5 +1,5 @@
 // Textures
-#ALBED /Error/no_material.png
+#ALBED /Objects/sign_wood.png
 
 // Shader
 #SHDRV /standard.vs
