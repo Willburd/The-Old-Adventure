@@ -31,7 +31,7 @@ void actor_test_init(struct Actor* actor)
 
 void actor_test_preload_assets(struct Actor* actor)
 {
-	LoadAsset_Texture(TEST_ASSET_TEXTURE);
+	LoadAsset_Texture(TEST_ASSET_TEXTURE, FALSE);
 }
 
 void actor_test_update(struct Actor* actor)

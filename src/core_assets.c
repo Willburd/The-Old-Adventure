@@ -6,6 +6,6 @@ void LoadCoreAssets()
     // Read materials list
 
     // Load the default assets
-    MARK_CORE( LoadAsset_Texture(ASSET_TEXTURES"/Error/no_texture.png"));
-    MARK_CORE( LoadAsset_Texture(ASSET_TEXTURES"/Error/no_material.png"));
+    LoadAsset_Texture(ASSET_TEXTURES"/Error/no_texture.png", TRUE);
+    LoadAsset_Texture(ASSET_TEXTURES"/Error/no_material.png", TRUE);
 }

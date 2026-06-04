@@ -3,9 +3,7 @@
 
 #include "raylib.h"
 
-#define MAX_MATERIAL_MAPS 10
-
-Material LoadMaterial(char* path);
+Material LoadMaterial(char* path, int is_core_asset);
 void MaterialMapSet(Material* mat, int map_layer, float value, Color col, Texture2D* texture);
 
 #endif

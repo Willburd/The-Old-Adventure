@@ -32,8 +32,8 @@ void scene_fieldtest_init(struct Actor* scene)
 
 void scene_fieldtest_preloadassets(struct Actor* scene)
 {
-	Asset* field_texture = LoadAsset_Texture(FIELD_ASSET_GROUND_TEXTURE);
-	Asset* model_asset = LoadAsset_Model(FIELD_ASSET_MAIN_MODEL);
+	Asset* field_texture = LoadAsset_Texture(FIELD_ASSET_GROUND_TEXTURE, FALSE);
+	Asset* model_asset = LoadAsset_Model(FIELD_ASSET_MAIN_MODEL, FALSE);
 	SetActorCollision(scene, model_asset->mdl, MAIN_MODEL_MESH_COLLISION);
 
 	Model field_model = *AssetGet_Model(FIELD_ASSET_MAIN_MODEL);

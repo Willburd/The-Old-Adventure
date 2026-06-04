@@ -69,12 +69,12 @@ void asset_free(const void* item) {
     free(asset->filepath); // malloc char* string
 }
 
-#define RETURN_EXISTING_ASSET(pth) Asset* check = AssetGetPackage(pth); if (check){return check;}
+#define RETURN_EXISTING_ASSET(pth, s_core) Asset* check = AssetGetPackage(pth); if (check){if(s_core){check->core_asset=s_core;};return check;}
 
-Asset* LoadAsset_Texture(char* path)
+Asset* LoadAsset_Texture(char* path, int is_core)
 {
-    RETURN_EXISTING_ASSET(path);
-    MALLOC_ASSET(asset, path);
+    RETURN_EXISTING_ASSET(path, is_core);
+    MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Texture2D, asset->tex, FALSE);
     *asset->tex = LoadTexture(path);
     if (!IsTextureValid(*asset->tex))
@@ -84,10 +84,10 @@ Asset* LoadAsset_Texture(char* path)
     return asset;
 }
 
-Asset* LoadAsset_Model(char* path)
+Asset* LoadAsset_Model(char* path, int is_core)
 {
-    RETURN_EXISTING_ASSET(path);
-    MALLOC_ASSET(asset, path);
+    RETURN_EXISTING_ASSET(path, is_core);
+    MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Model, asset->mdl, FALSE);
     *asset->mdl = LoadModel(path);
     if (!IsModelValid(*asset->mdl))
@@ -97,10 +97,10 @@ Asset* LoadAsset_Model(char* path)
     return asset;
 }
 
-Asset* LoadAsset_Sound(char* path)
+Asset* LoadAsset_Sound(char* path, int is_core)
 {
-    RETURN_EXISTING_ASSET(path);
-    MALLOC_ASSET(asset, path);
+    RETURN_EXISTING_ASSET(path, is_core);
+    MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Sound, asset->snd, FALSE);
     *asset->snd = LoadSound(path);
     if (!IsSoundValid(*asset->snd))
@@ -110,10 +110,10 @@ Asset* LoadAsset_Sound(char* path)
     return asset;
 }
 
-Asset* LoadAsset_Music(char* path)
+Asset* LoadAsset_Music(char* path, int is_core)
 {
-    RETURN_EXISTING_ASSET(path);
-    MALLOC_ASSET(asset, path);
+    RETURN_EXISTING_ASSET(path, is_core);
+    MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Music, asset->mus, FALSE);
     *asset->mus = LoadMusicStream(path);
     if (!IsMusicValid(*asset->mus))
@@ -123,12 +123,12 @@ Asset* LoadAsset_Music(char* path)
     return asset;
 }
 
-Asset* LoadAsset_Material(char* path)
+Asset* LoadAsset_Material(char* path, int is_core)
 {
-    RETURN_EXISTING_ASSET(path);
-    MALLOC_ASSET(asset, path);
+    RETURN_EXISTING_ASSET(path, is_core);
+    MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Material, asset->mat, FALSE);
-    *asset->mat = LoadMaterial(path);
+    *asset->mat = LoadMaterial(path, is_core);
     if (!IsMaterialValid(*asset->mat))
         printf("ASSET: Unable to load material: %s\n", path);
     hashmap_set(loaded_assets, asset);
@@ -136,10 +136,10 @@ Asset* LoadAsset_Material(char* path)
     return asset;
 }
 
-Asset* LoadAsset_Shader(char* shader_name, char* path_vertex, char* path_fragment)
+Asset* LoadAsset_Shader(char* shader_name, char* path_vertex, char* path_fragment, int is_core)
 {
-    RETURN_EXISTING_ASSET(shader_name);
-    MALLOC_ASSET(asset, shader_name);
+    RETURN_EXISTING_ASSET(shader_name, is_core);
+    MALLOC_ASSET(asset, shader_name, is_core);
     MALLOC_SET(Shader, asset->shd, FALSE);
     *asset->shd = LoadShader(path_vertex, path_fragment);
     if (!IsShaderValid(*asset->shd))

@@ -33,7 +33,7 @@ typedef struct {
     Shader* shd;
 } Asset;
 
-#define MALLOC_ASSET(a, p) MALLOC(Asset, a, 0);a->core_asset=FALSE;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;a->shd=NULL;
+#define MALLOC_ASSET(a, p, s_core) MALLOC(Asset, a, 0);a->core_asset=s_core;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;a->shd=NULL;
 
 void UnloadAllAssets(int including_core);
 
@@ -41,12 +41,12 @@ int asset_compare(const void* a, const void* b, void* udata);
 uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1);
 void asset_free(const void* item);
 
-Asset* LoadAsset_Texture(char* path);
-Asset* LoadAsset_Model(char* path);
-Asset* LoadAsset_Sound(char* path);
-Asset* LoadAsset_Music(char* path);
-Asset* LoadAsset_Material(char* path);
-Asset* LoadAsset_Shader(char* shader_name, char* path_vertex, char* path_fragment);
+Asset* LoadAsset_Texture(char* path, int is_core);
+Asset* LoadAsset_Model(char* path, int is_core);
+Asset* LoadAsset_Sound(char* path, int is_core);
+Asset* LoadAsset_Music(char* path, int is_core);
+Asset* LoadAsset_Material(char* path, int is_core);
+Asset* LoadAsset_Shader(char* shader_name, char* path_vertex, char* path_fragment, int is_core);
 int AssetExists(char* path);
 Asset* AssetGetPackage(char* path);
 
