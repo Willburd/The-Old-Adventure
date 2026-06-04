@@ -43,7 +43,7 @@ void FINDACTORGROUP( const struct Actor* found_group[], int max_count, const uin
 	}
 }
 
-struct Actor* ACTOREXISTS(int actor_type)
+struct Actor* FINDACTORTYPE(int actor_type)
 {
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
@@ -72,6 +72,8 @@ int ACTORCOUNT(int actor_type)
 
 struct Actor* FINDCHILD(const struct Actor* parent)
 {
+	if (parent == NULL)
+		return NULL;
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* find_actor = world_actors[i];
@@ -110,6 +112,8 @@ void FINDACTORCHILDREN(const struct Actor* found_group[], int max_count, const s
 
 int CHILDCOUNT(const struct Actor* parent)
 {
+	if (parent == NULL)
+		return NULL;
 	int count = 0;
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
@@ -124,6 +128,8 @@ int CHILDCOUNT(const struct Actor* parent)
 
 struct Actor* GETSCENE(struct Actor* actor)
 {
+	if (actor == NULL)
+		return NULL;
 	while (ACTOR_PARENT(actor))
 	{
 		actor = ACTOR_PARENT(actor);

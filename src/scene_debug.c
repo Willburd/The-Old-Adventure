@@ -24,7 +24,7 @@ void scene_debug_init(struct Actor* scene)
 	SCENEDATA_CLEAR(scene->data);
 
 	// Debug info actor
-	if(!ACTOREXISTS(act_debug))
+	if(!FINDACTORTYPE(act_debug))
 		ACTOR_FACTORY(act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 
 	// Set sky color
