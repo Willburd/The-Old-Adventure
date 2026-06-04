@@ -31,6 +31,8 @@
 // 
 ///////////////////////////////////////////////////////////////
 
+#define ADVANCETOKEN(tag) tag = strtok_s(NULL, " ", &next_token);if (tag == NULL){break;};STRENDLINETERMINATE(tag);
+
 #define PATH_LEN 100
 Material LoadMaterial(char* path, int is_core_asset)
 {
@@ -49,8 +51,7 @@ Material LoadMaterial(char* path, int is_core_asset)
 		return mat;
 	}
 	while (fgets(cur_line, 256, fptr)) {
-		char identifier = cur_line[0];
-		switch (identifier)
+		switch (cur_line[0])
 		{
 		default:
 		case '/': // Skip comment
@@ -80,30 +81,33 @@ Material LoadMaterial(char* path, int is_core_asset)
 					// Shader properties are collected and assigned at the end
 					if (STRMATCH(tag_data, "#SHDRV"))
 					{
-						tag_data = strtok_s(NULL, " ", &next_token);
-						if (tag_data == NULL)
-							break;
-						STRENDLINETERMINATE(tag_data);
+						ADVANCETOKEN(tag_data);
 						strcat_s(shader_vpath, PATH_LEN, tag_data);
 						continue;
 					}
 					if (STRMATCH(tag_data, "#SHDRF"))
 					{
-						tag_data = strtok_s(NULL, " ", &next_token);
-						if (tag_data == NULL)
-							break;
-						STRENDLINETERMINATE(tag_data);
+						ADVANCETOKEN(tag_data);
 						strcat_s(shader_fpath, PATH_LEN, tag_data);
 						continue;
 					}
 
 					// Concat define and data from the material file to load textures
-					tag_data = strtok_s(NULL, " ", &next_token);
-					if (tag_data == NULL)
-						break;
-					STRENDLINETERMINATE(tag_data);
+					ADVANCETOKEN(tag_data);
 					Texture2D* tex = LoadAsset_Texture(TextFormat("%s%s", ASSET_TEXTURES, tag_data), is_core_asset)->tex;
 					MaterialMapSet(&mat, map_type, 1.0f, WHITE, tex);
+
+					// Additional texture properties
+					ADVANCETOKEN(tag_data);
+					if (STRMATCH(tag_data, "FILT_POINT")) SetTextureFilter(*tex, TEXTURE_FILTER_POINT);
+					if (STRMATCH(tag_data, "FILT_BI")) SetTextureFilter(*tex, TEXTURE_FILTER_BILINEAR);
+					if (STRMATCH(tag_data, "FILT_TRI")) SetTextureFilter(*tex, TEXTURE_FILTER_TRILINEAR);
+
+					ADVANCETOKEN(tag_data);
+					if (STRMATCH(tag_data, "WRAP_REPEAT")) SetTextureWrap(*tex, TEXTURE_WRAP_REPEAT);
+					if (STRMATCH(tag_data, "WRAP_CLAMP")) SetTextureWrap(*tex, TEXTURE_WRAP_CLAMP);
+					if (STRMATCH(tag_data, "WRAP_MIRROR")) SetTextureWrap(*tex, TEXTURE_WRAP_MIRROR_REPEAT);
+					if (STRMATCH(tag_data, "WRAP_CLAMP_MIRROR")) SetTextureWrap(*tex, TEXTURE_WRAP_MIRROR_CLAMP);
 				}
 				break;
 			}
