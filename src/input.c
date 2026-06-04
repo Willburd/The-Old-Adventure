@@ -39,7 +39,7 @@ float cam_speed_mouse = 0.01f;
 float cam_speed_gamepad = 0.10f;
 
 int camerax_inverted = FALSE;
-int cameray_inverted = TRUE;
+int cameray_inverted = FALSE;
 
 Vector2 mouse_pos = { 0,0 };
 Vector2 mouse_last_pos = { 0,0 };
@@ -101,10 +101,10 @@ void UpdateInputState()
 	// Try gamepad camera
 	if (input_camera.x == 0 && input_camera.y == 0)
 	{
-		input_camera.x = GetGamepadAxisMovement(current_gamepad, GAMEPAD_AXIS_RIGHT_X);
+		input_camera.x = -GetGamepadAxisMovement(current_gamepad, GAMEPAD_AXIS_RIGHT_X);
 		if (fabs(input_camera.x) < deadzone)
 			input_camera.x = 0.0f;
-		input_camera.y = GetGamepadAxisMovement(current_gamepad, GAMEPAD_AXIS_RIGHT_Y);
+		input_camera.y = -GetGamepadAxisMovement(current_gamepad, GAMEPAD_AXIS_RIGHT_Y);
 		if (fabs(input_camera.y) < deadzone)
 			input_camera.y = 0.0f;
 		// camspeed AFTER for deadzone sanity
@@ -115,7 +115,7 @@ void UpdateInputState()
 	if (input_camera.x == 0 && input_camera.y == 0 && Vector2Length(mouse_velocity) >= deadzone)
 	{
 		input_camera.x = mouse_velocity.x;
-		input_camera.y = mouse_velocity.y;
+		input_camera.y = -mouse_velocity.y;
 		if (fabs(input_camera.x) < deadzone)
 			input_camera.x = 0.0f;
 		if (fabs(input_camera.y) < deadzone)
