@@ -9,19 +9,19 @@
 #include "game_draw.h"
 
 void scene_fieldtest_preloadassets(struct Actor* scene);
+void scene_fieldtest_activate_room(struct Actor* scene, int room_index, EntranceID entrance);
 void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent);
 
 void scene_fieldtest_init(struct Actor* scene)
 {
 	// Configure scene
 	scene->func_preloadassets = scene_fieldtest_preloadassets;
+	scene->func_activate_room = scene_fieldtest_activate_room;
 	scene->func_drawworld = scene_fieldtest_drawworld;
 
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 	SCENEDATA_CLEAR(scene->data);
-
-	// Actor spawns
 
 	// Set scene background
 	clear_background_color = SKYBLUE;
@@ -39,6 +39,12 @@ void scene_fieldtest_preloadassets(struct Actor* scene)
 	Asset* model_asset = LoadAsset_Model(FIELD_ASSET_MAIN_MODEL, FALSE);
 	SetActorCollision(scene, model_asset->mdl, MAIN_MODEL_MESH_COLLISION);
 	LoadAsset_Material(FIELD_ASSET_MAIN_MATERIAL, FALSE);
+}
+
+void scene_fieldtest_activate_room(struct Actor* scene, int room_index, EntranceID entrance)
+{
+	// Actor spawns
+
 }
 
 void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)

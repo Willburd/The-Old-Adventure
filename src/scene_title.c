@@ -5,13 +5,20 @@
 #include "actor_scene.h"
 #include "scene_entry.h"
 
+void scene_title_activate_room(struct Actor* scene, int room_index, EntranceID entrance);
+
 void scene_title_init(struct Actor* scene)
 {
 	// Configure scene
+	scene->func_activate_room = scene_title_activate_room;
 
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 	SCENEDATA_CLEAR(scene->data);
+}
 
+void scene_title_activate_room(struct Actor* scene, int room_index, EntranceID entrance)
+{
 	// Actor spawns
+
 }

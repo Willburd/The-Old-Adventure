@@ -52,16 +52,26 @@ void actor_scene_init(struct Actor* scene)
 	if (ACTOR_HAS(scene, func_preloadassets))
 		scene->func_preloadassets(scene);
 
-	// Check for our entrance
+	// Activate the first room inside the scene
+	if (ACTOR_HAS(scene, func_activate_room))
+		scene->func_activate_room(scene, 0, next_entrance);
+
+	// Check for entrance actors, find the one we're using.
 	struct Actor* entrance = NULL;
 
 
-	// Backup entrance
+	// Backup entrance, if we can't find the one we're using, use the default.
 	if (entrance == NULL)
 	{
 
 	}
 
+	// If we STILL have no entrance, use 0,0,0
+	if (entrance == NULL)
+	{
+
+	}
+	
 	// Spawn player
 	if (entrance != NULL && next_entrance < NO_PLAYER_SCENE)
 	{
