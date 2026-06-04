@@ -29,42 +29,36 @@ uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1) {
 }
 
 void asset_free(const void* item) {
-    const Asset* asset = item;
-    if (asset->tex != NULL)
+    Asset* asset = item;
+    if (asset->tex != NULL && IsTextureValid(*asset->tex))
     {
         UnloadTexture(*asset->tex);
-        free(asset->tex);
+        RELEASE(asset->tex);
         printf("ASSET: texture unloaded %s\n", asset->filepath);
     }
-    if (asset->mdl != NULL)
+    if (asset->mdl != NULL && IsModelValid(*asset->mdl))
     {
         UnloadModel(*asset->mdl);
-        free(asset->mdl);
+        RELEASE(asset->mdl);
         printf("ASSET: model unloaded %s\n", asset->filepath);
     }
-    if (asset->snd != NULL)
+    if (asset->snd != NULL && IsSoundValid(*asset->snd))
     {
         UnloadSound(*asset->snd);
-        free(asset->snd);
+        RELEASE(asset->snd);
         printf("ASSET: sound unloaded %s\n", asset->filepath);
     }
-    if (asset->mus != NULL)
+    if (asset->mus != NULL && IsMusicValid(*asset->mus))
     {
         UnloadMusicStream(*asset->mus);
-        free(asset->mus);
+        RELEASE(asset->mus);
         printf("ASSET: music unloaded %s\n", asset->filepath);
     }
-    if (asset->mat != NULL)
+    if (asset->mat != NULL && IsMaterialValid(*asset->mat))
     {
         UnloadMaterial(*asset->mat);
-        free(asset->mat);
+        RELEASE(asset->mat);
         printf("ASSET: material unloaded %s\n", asset->filepath);
-    }
-    if (asset->shd != NULL)
-    {
-        UnloadShader(*asset->shd);
-        free(asset->shd);
-        printf("ASSET: shader unloaded %s\n", asset->filepath);
     }
     free(asset->filepath); // malloc char* string
 }
@@ -136,19 +130,6 @@ Asset* LoadAsset_Material(char* path, int is_core)
     return asset;
 }
 
-Asset* LoadAsset_Shader(char* shader_name, char* path_vertex, char* path_fragment, int is_core)
-{
-    RETURN_EXISTING_ASSET(shader_name, is_core);
-    MALLOC_ASSET(asset, shader_name, is_core);
-    MALLOC_SET(Shader, asset->shd, FALSE);
-    *asset->shd = LoadShader(path_vertex, path_fragment);
-    if (!IsShaderValid(*asset->shd))
-        printf("ASSET: Unable to load shader: %s\n", shader_name);
-    hashmap_set(loaded_assets, asset);
-    printf("ASSET: loaded shader: %s\n", shader_name);
-    return asset;
-}
-
 int AssetExists(char* path)
 {
     const Asset* asset = hashmap_get(loaded_assets, &(const Asset){.filepath = path });
@@ -174,5 +155,4 @@ Texture2D* AssetGet_Texture(char* path) ASSET_FALLBACK(path,ASSET_TEXTURES"/Erro
 Model* AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mdl);
 Sound* AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", snd);
 Music* AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mus);
-Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mus);
-Shader* AssetGet_Shader(char* shader_name) ASSET_FALLBACK(shader_name, ASSET_TEXTURES"/Error/no_texture.png", mus);
+Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mat);

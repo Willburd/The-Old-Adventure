@@ -17,6 +17,8 @@
 
 #define ASSET_TEXTURES ASSET_PATH"/Textures"
 #define ASSET_MODELS ASSET_PATH"/Models"
+#define ASSET_MATERIALS ASSET_PATH"/Materials"
+#define ASSET_SHADERS ASSET_PATH"/Shaders"
 
 #define ASSET_LIMIT 2048
 
@@ -30,10 +32,9 @@ typedef struct {
     Sound* snd;
     Music* mus;
     Material* mat;
-    Shader* shd;
 } Asset;
 
-#define MALLOC_ASSET(a, p, s_core) MALLOC(Asset, a, 0);a->core_asset=s_core;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;a->shd=NULL;
+#define MALLOC_ASSET(a, p, s_core) MALLOC(Asset, a, 0);a->core_asset=s_core;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;
 
 void UnloadAllAssets(int including_core);
 
@@ -46,7 +47,6 @@ Asset* LoadAsset_Model(char* path, int is_core);
 Asset* LoadAsset_Sound(char* path, int is_core);
 Asset* LoadAsset_Music(char* path, int is_core);
 Asset* LoadAsset_Material(char* path, int is_core);
-Asset* LoadAsset_Shader(char* shader_name, char* path_vertex, char* path_fragment, int is_core);
 int AssetExists(char* path);
 Asset* AssetGetPackage(char* path);
 
@@ -56,5 +56,4 @@ Model* AssetGet_Model(char* path);
 Sound* AssetGet_Sound(char* path);
 Music* AssetGet_Music(char* path);
 Material* AssetGet_Material(char* path);
-Shader* AssetGet_Shader(char* shader_name);
 #endif

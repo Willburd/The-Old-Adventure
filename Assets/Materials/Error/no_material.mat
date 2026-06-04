@@ -1,0 +1,7 @@
+// Textures
+#ALBED /Error/no_material.png
+
+// Shader
+#SHDRI standard
+#SHDRV /standard.vs
+#SHDRF /standard.fs
