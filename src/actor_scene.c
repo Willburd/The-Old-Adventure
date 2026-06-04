@@ -57,25 +57,23 @@ void actor_scene_init(struct Actor* scene)
 		scene->func_activate_room(scene, 0, next_entrance);
 
 	// Check for entrance actors, find the one we're using.
+	Vector3 spawn_pos = Vector3Zero(); // If we have no entrance, use 0,0,0
+	Quaternion spawn_rot = QuaternionIdentity();
 	struct Actor* entrance = NULL;
+	struct Actor* entrance_backup = NULL;
 
 
-	// Backup entrance, if we can't find the one we're using, use the default.
-	if (entrance == NULL)
-	{
+	if (entrance == NULL) // Fallback to a debugging entrance if the scene has one
+		entrance = entrance_backup;
 
-	}
-
-	// If we STILL have no entrance, use 0,0,0
-	if (entrance == NULL)
-	{
-
-	}
-	
 	// Spawn player
-	if (entrance != NULL && next_entrance < NO_PLAYER_SCENE)
+	if (next_entrance < NO_PLAYER_SCENE)
 	{
+		ACTOR_FACTORY(act_player, scene, spawn_pos, spawn_rot, Vector3One(), Vector3Zero());
+		if (entrance != NULL) // Perform entrance actions like aligning the camera and making the player run into the scene
+		{
 
+		}
 	}
 }
 

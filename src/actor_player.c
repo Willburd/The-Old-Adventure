@@ -39,7 +39,7 @@ void actor_player_update(struct Actor* actor)
 
 void actor_player_drawworld(struct Actor* actor, double tick_percent)
 {
-
+	DrawCube(actor->position, 0.2f, 0.2f, 0.2f, GREEN);
 }
 
 void actor_player_drawhud(struct Actor* actor, double tick_percent)
