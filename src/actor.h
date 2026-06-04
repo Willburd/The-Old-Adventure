@@ -24,6 +24,9 @@ struct Actor {
 	Vector3 last_scale;
 	Vector3 last_velocity;
 
+	BoundingBox bounds;
+	Mesh* collision_mesh;
+
 	// Creation and destruction
 	void (*func_init)(struct Actor* actor);
 	void (*func_preloadassets)(struct Actor* actor);
@@ -70,6 +73,7 @@ int total_actors;
 /// Incrimented for every actor made. NOT used to index world_actors.
 uint64_t current_unique_id;		
 
+// Utility
 // Find an actor by its uuid
 struct Actor* FINDACTOR(uint64_t id);
 // Find multiple actors by their uuids
@@ -86,5 +90,11 @@ void FINDACTORCHILDREN(const struct Actor* found_group[], int max_count, const s
 int CHILDCOUNT(const struct Actor* parent);
 // Get parent scene
 struct Actor* GETSCENE(struct Actor* actor);
+// Get matrix of model
+Matrix GetMatrix(struct Actor* actor);
+// Get transform of model
+Transform GetTransform(struct Actor* actor);
+// Sets the collision mesh and bounds from a model's mesh
+void SetActorCollision(struct Actor* actor, Model* model, int mesh_index);
 
 #endif

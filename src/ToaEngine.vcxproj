@@ -162,6 +162,7 @@
     </ClCompile>
     <ClCompile Include="input.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="materials.c" />
     <ClCompile Include="return_codes.h" />
     <ClCompile Include="scene_boot.c" />
     <ClCompile Include="scene_debug.c" />
@@ -181,6 +182,7 @@
     <ClInclude Include="game_update.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="hashmap.h" />
+    <ClInclude Include="materials.h" />
     <ClInclude Include="scene_entry.h" />
     <ClInclude Include="scene_library.h" />
     <ClInclude Include="tools.h" />

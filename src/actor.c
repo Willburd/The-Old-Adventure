@@ -130,3 +130,22 @@ struct Actor* GETSCENE(struct Actor* actor)
 	}
 	return actor;
 }
+
+Matrix GetMatrix(struct Actor* actor)
+{
+	return MatrixCompose(actor->position, actor->rotation, actor->scale);
+}
+
+Transform GetTransform(struct Actor* actor)
+{
+	return (Transform) { actor->position, actor->rotation, actor->scale };
+}
+
+
+void SetActorCollision(struct Actor* actor, Model* model, int mesh_index)
+{
+	Mesh* mesh = &model->meshes[mesh_index];
+	actor->bounds = GetMeshBoundingBox(*mesh);
+	actor->collision_mesh = mesh;
+}
+

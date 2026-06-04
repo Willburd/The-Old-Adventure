@@ -120,6 +120,9 @@
     <ClCompile Include="actor_camera.c">
       <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
+    <ClCompile Include="materials.c">
+      <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="actor_library.h">
       <Filter>Header Files\adventure\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="materials.h">
+      <Filter>Header Files\engine\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
