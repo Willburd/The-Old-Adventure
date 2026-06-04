@@ -1,18 +1,8 @@
 #include "assets.h"
+#include "materials.h"
 #include "tools.h"
 
-#define MALLOC_ASSET(a, p) MALLOC(Asset, a, 0);a->core_asset=FALSE;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;
-
-// Loads all core assets, and flags them as core assets.
-void LoadCoreAssets()
-{
-    // Create the asset cache
-    loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
-
-    // Load the default assets
-    LoadAsset_Texture(ASSET_TEXTURES"/Error/no_texture.png")->core_asset = TRUE;
-    LoadAsset_Texture(ASSET_TEXTURES"/Error/no_material.png")->core_asset = TRUE;
-}
+#define MALLOC_ASSET(a, p) MALLOC(Asset, a, 0);a->core_asset=FALSE;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;
 
 // Remove all assets from the hashmap. Normally ignores core assets.
 void UnloadAllAssets(int including_core)
@@ -65,6 +55,12 @@ void asset_free(const void* item) {
         UnloadMusicStream(*asset->mus);
         free(asset->mus);
         printf("ASSET: music unloaded %s\n", asset->filepath);
+    }
+    if (asset->mat != NULL)
+    {
+        UnloadMaterial(*asset->mat);
+        free(asset->mat);
+        printf("ASSET: material unloaded %s\n", asset->filepath);
     }
     free(asset->filepath); // malloc char* string
 }
@@ -129,6 +125,21 @@ Asset* LoadAsset_Music(char* path)
     return asset;
 }
 
+Asset* LoadAsset_Material(char* path)
+{
+    Asset* check = AssetGetPackage(path);
+    if (check)
+        return check;
+    MALLOC_ASSET(asset, path);
+    MALLOC_SET(Material, asset->mat, FALSE);
+    *asset->mat = LoadMaterial(path);
+    if (!IsMaterialValid(*asset->mat))
+        printf("ASSET: Unable to load material: %s\n", path);
+    hashmap_set(loaded_assets, asset);
+    printf("ASSET: loaded material: %s\n", path);
+    return asset;
+}
+
 int AssetExists(char* path)
 {
     const Asset* asset = hashmap_get(loaded_assets, &(const Asset){.filepath = path });
@@ -154,3 +165,4 @@ Texture2D* AssetGet_Texture(char* path) ASSET_FALLBACK(path,ASSET_TEXTURES"/Erro
 Model* AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mdl);
 Sound* AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", snd);
 Music* AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mus);
+Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mus);

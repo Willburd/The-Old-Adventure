@@ -37,7 +37,7 @@ void scene_fieldtest_preloadassets(struct Actor* scene)
 	SetActorCollision(scene, model_asset->mdl, MAIN_MODEL_MESH_COLLISION);
 
 	Model field_model = *AssetGet_Model(FIELD_ASSET_MAIN_MODEL);
-	MaterialMapSet(&field_model.materials[MAIN_MODEL_MATERIAL_MAIN], 1.0f, WHITE, field_texture->tex);
+	MaterialMapSet(&field_model.materials[MAIN_MODEL_MATERIAL_MAIN], MATERIAL_MAP_ALBEDO, 1.0f, WHITE, field_texture->tex);
 }
 
 void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)

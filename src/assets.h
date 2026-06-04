@@ -29,9 +29,9 @@ typedef struct {
     Model* mdl;
     Sound* snd;
     Music* mus;
+    Material* mat;
 } Asset;
 
-void LoadCoreAssets();
 void UnloadAllAssets(int including_core);
 
 int asset_compare(const void* a, const void* b, void* udata);
@@ -42,6 +42,7 @@ Asset* LoadAsset_Texture(char* path);
 Asset* LoadAsset_Model(char* path);
 Asset* LoadAsset_Sound(char* path);
 Asset* LoadAsset_Music(char* path);
+Asset* LoadAsset_Material(char* path);
 int AssetExists(char* path);
 Asset* AssetGetPackage(char* path);
 
@@ -50,4 +51,5 @@ Texture2D* AssetGet_Texture(char* path);
 Model* AssetGet_Model(char* path);
 Sound* AssetGet_Sound(char* path);
 Music* AssetGet_Music(char* path);
+Material* AssetGet_Material(char* path);
 #endif

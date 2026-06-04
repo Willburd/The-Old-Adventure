@@ -58,6 +58,12 @@
     <Filter Include="Header Files\adventure\scenes">
       <UniqueIdentifier>{8bb89acc-e637-4242-8459-cd48d45e31ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\adventure\assets">
+      <UniqueIdentifier>{d02f349d-0f27-4f7b-b9f6-ee4898d2923b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\adventure\assets">
+      <UniqueIdentifier>{9dc72926-71e7-4416-9bb6-68ea5280ae3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -123,6 +129,9 @@
     <ClCompile Include="materials.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
+    <ClCompile Include="core_assets.c">
+      <Filter>Source Files\adventure\assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -166,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="materials.h">
       <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="core_assets.h">
+      <Filter>Header Files\adventure\assets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

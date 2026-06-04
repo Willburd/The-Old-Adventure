@@ -7,7 +7,7 @@
 #include "globals.h"
 #include "actor_factory.h"
 #include "scene_entry.h"
-#include "assets.h"
+#include "core_assets.h"
 #include "tools.h"
 
 const double update_rate = 40.0;
@@ -77,6 +77,7 @@ void game_setup()
     clear_background_color = BLACK;
 
     // Create asset cache
+    loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
     LoadCoreAssets();
 
     // Spawn camera

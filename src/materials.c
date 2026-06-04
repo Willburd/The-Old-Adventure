@@ -1,10 +1,20 @@
+#include <stdlib.h>
 #include "materials.h"
 
-void MaterialMapSet(Material* mat, float value, Color col, Texture2D* texture)
+Material LoadMaterial(char* path)
 {
-	mat->maps[MATERIAL_MAP_ALBEDO].value = value;
-	mat->maps[MATERIAL_MAP_ALBEDO].color = col;
-	mat->maps[MATERIAL_MAP_ALBEDO].texture = *texture;
+	Material mat = LoadMaterialDefault();
+
+	Texture2D tex;
+
+	return mat;
+}
+
+void MaterialMapSet(Material* mat,int map_layer, float value, Color col, Texture2D* texture)
+{
+	mat->maps[map_layer].value = value;
+	mat->maps[map_layer].color = col;
+	SetMaterialTexture(mat, map_layer, *texture);
 }
 
 
