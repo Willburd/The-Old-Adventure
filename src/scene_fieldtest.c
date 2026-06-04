@@ -43,6 +43,10 @@ void scene_fieldtest_preloadassets(struct Actor* scene)
 
 void scene_fieldtest_activate_room(struct Actor* scene, int room_index, EntranceID entrance)
 {
+	// Store the current active subroom of the scene
+	SceneData* data = (SceneData*)scene->data;
+	data->active_room = room_index;
+
 	// Actor spawns
 
 }

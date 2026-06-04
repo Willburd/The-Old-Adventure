@@ -19,6 +19,10 @@ void scene_test_init(struct Actor* scene)
 
 void scene_test_activate_room(struct Actor* scene, int room_index, EntranceID entrance)
 {
+	// Store the current active subroom of the scene
+	SceneData* data = (SceneData*)scene->data;
+	data->active_room = room_index;
+
 	// Actor spawns
 	for (int i = 0; i < 60; i++)
 	{

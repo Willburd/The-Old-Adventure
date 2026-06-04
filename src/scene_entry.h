@@ -70,6 +70,7 @@ typedef enum
 #define SCENE_ENTRANCE_COUNT 20
 
 typedef struct {
+	int active_room;
 	uint64_t temp_flags;
 	uint64_t perm_flags;
 	int utilityA1;
