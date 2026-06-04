@@ -2,5 +2,4 @@
 #ALBED /Error/no_material.png FILT_POINT WRAP_REPEAT
 
 // Shader
-#SHDRV /standard.vs
-#SHDRF /standard.fs
+#SHADR /standard.vs /standard.fs

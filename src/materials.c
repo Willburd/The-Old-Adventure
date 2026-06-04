@@ -4,6 +4,10 @@
 #include "materials.h"
 #include "tools.h"
 
+// Step through the current line's tokens
+#define ADVANCETOKEN(tag) tag = strtok_s(NULL, " ", &next_token);if (tag == NULL){break;};STRENDLINETERMINATE(tag);
+#define PATH_LEN 100
+
 ///////////////////////////////////////////////////////////////
 //
 // Materials are the primary system used to draw models.
@@ -22,26 +26,16 @@
 // Per actor materials can be used too, but must be recreated on each
 // scene transition through the standard actor func_preloadassets.
 // 
-// Materials are special assets, materials are a combination of 
-// shaders, textures, and parameters. This MUST be taken into account
-// when creating a material, as materials will load these assets themselves
-// if they are not already in the asset hashmap. Care should be taken to mark
-// these assets as core when needed for reuse. Fear the material that has
-// had it's textures or shader unloaded because they were not flagged properly.
+// Shaders are special snowflakes. They are not tracked by the asset
+// loader, and instead by raylib itself. They are tied to each material
+// Materials will unload their shader with them.
 // 
 ///////////////////////////////////////////////////////////////
 
-#define ADVANCETOKEN(tag) tag = strtok_s(NULL, " ", &next_token);if (tag == NULL){break;};STRENDLINETERMINATE(tag);
-
-#define PATH_LEN 100
 Material LoadMaterial(char* path, int is_core_asset)
 {
 	// Setup material
 	Material mat = LoadMaterialDefault();
-
-	// Shader info
-	char shader_vpath[PATH_LEN] = { 0 };
-	char shader_fpath[PATH_LEN] = { 0 };
 
 	// Load material define file
 	FILE* fptr = fopen(path, "r");
@@ -51,74 +45,68 @@ Material LoadMaterial(char* path, int is_core_asset)
 		return mat;
 	}
 	while (fgets(cur_line, 256, fptr)) {
-		switch (cur_line[0])
-		{
-		default:
-		case '/': // Skip comment
-			break;
-		case '#': // Tag
+		// Ignore everything except actual material defines
+		if (cur_line[0] != '#')
+			continue;
+
+		// Step through string tokens
+		char* next_token = "\0";
+		char* tag_data = strtok_s(cur_line, " ", &next_token);
+		while (tag_data != NULL) {
+			// Remove \n chars and replace with endchar
+			STRENDLINETERMINATE(tag_data);
+
+			// Shader being used
+			if (STRMATCH(tag_data, "#SHADR"))
 			{
-				// Step through string tokens
-				char* next_token = "\0";
-				char* tag_data = strtok_s(cur_line, " ", &next_token);
-				while (tag_data != NULL) {
-					// Remove \n chars and replace with endchar
-					STRENDLINETERMINATE(tag_data);
+				// Set shader
+				char shader_vpath[PATH_LEN] = { 0 };
+				char shader_fpath[PATH_LEN] = { 0 };
 
-					// Texture slot being used
-					int map_type = MATERIAL_MAP_ALBEDO;
-					if (STRMATCH(tag_data, "#ALBED")) map_type = MATERIAL_MAP_ALBEDO;
-					if (STRMATCH(tag_data, "#METAL")) map_type = MATERIAL_MAP_METALNESS;
-					if (STRMATCH(tag_data, "#NORMAL")) map_type = MATERIAL_MAP_NORMAL;
-					if (STRMATCH(tag_data, "#ROUGH")) map_type = MATERIAL_MAP_ROUGHNESS;
-					if (STRMATCH(tag_data, "#OCCLU")) map_type = MATERIAL_MAP_OCCLUSION;
-					if (STRMATCH(tag_data, "#EMISS")) map_type = MATERIAL_MAP_EMISSION;
-					if (STRMATCH(tag_data, "#HEIGH")) map_type = MATERIAL_MAP_HEIGHT;
-					if (STRMATCH(tag_data, "#CUBEM")) map_type = MATERIAL_MAP_CUBEMAP;
-					if (STRMATCH(tag_data, "#IRRAD")) map_type = MATERIAL_MAP_IRRADIANCE;
-					if (STRMATCH(tag_data, "#PREFI")) map_type = MATERIAL_MAP_PREFILTER;
-					if (STRMATCH(tag_data, "#BRDF_")) map_type = MATERIAL_MAP_BRDF;
-					// Shader properties are collected and assigned at the end
-					if (STRMATCH(tag_data, "#SHDRV"))
-					{
-						ADVANCETOKEN(tag_data);
-						strcat_s(shader_vpath, PATH_LEN, tag_data);
-						continue;
-					}
-					if (STRMATCH(tag_data, "#SHDRF"))
-					{
-						ADVANCETOKEN(tag_data);
-						strcat_s(shader_fpath, PATH_LEN, tag_data);
-						continue;
-					}
+				ADVANCETOKEN(tag_data);
+				strcat_s(shader_vpath, PATH_LEN, tag_data);
 
-					// Concat define and data from the material file to load textures
-					ADVANCETOKEN(tag_data);
-					Texture2D* tex = LoadAsset_Texture(TextFormat("%s%s", ASSET_TEXTURES, tag_data), is_core_asset)->tex;
-					MaterialMapSet(&mat, map_type, 1.0f, WHITE, tex);
+				ADVANCETOKEN(tag_data);
+				strcat_s(shader_fpath, PATH_LEN, tag_data);
 
-					// Additional texture properties
-					ADVANCETOKEN(tag_data);
-					if (STRMATCH(tag_data, "FILT_POINT")) SetTextureFilter(*tex, TEXTURE_FILTER_POINT);
-					if (STRMATCH(tag_data, "FILT_BI")) SetTextureFilter(*tex, TEXTURE_FILTER_BILINEAR);
-					if (STRMATCH(tag_data, "FILT_TRI")) SetTextureFilter(*tex, TEXTURE_FILTER_TRILINEAR);
-
-					ADVANCETOKEN(tag_data);
-					if (STRMATCH(tag_data, "WRAP_REPEAT")) SetTextureWrap(*tex, TEXTURE_WRAP_REPEAT);
-					if (STRMATCH(tag_data, "WRAP_CLAMP")) SetTextureWrap(*tex, TEXTURE_WRAP_CLAMP);
-					if (STRMATCH(tag_data, "WRAP_MIRROR")) SetTextureWrap(*tex, TEXTURE_WRAP_MIRROR_REPEAT);
-					if (STRMATCH(tag_data, "WRAP_CLAMP_MIRROR")) SetTextureWrap(*tex, TEXTURE_WRAP_MIRROR_CLAMP);
-				}
-				break;
+				Shader shd = LoadShader(TextFormat("%s%s", ASSET_SHADERS, shader_vpath), TextFormat("%s%s", ASSET_SHADERS, shader_fpath));
+				MaterialShaderSet(&mat, &shd);
+				continue;
 			}
+
+			// Texture slot being used
+			int map_type = MATERIAL_MAP_ALBEDO;
+			if (STRMATCH(tag_data, "#ALBED")) map_type = MATERIAL_MAP_ALBEDO;
+			if (STRMATCH(tag_data, "#METAL")) map_type = MATERIAL_MAP_METALNESS;
+			if (STRMATCH(tag_data, "#NORMAL")) map_type = MATERIAL_MAP_NORMAL;
+			if (STRMATCH(tag_data, "#ROUGH")) map_type = MATERIAL_MAP_ROUGHNESS;
+			if (STRMATCH(tag_data, "#OCCLU")) map_type = MATERIAL_MAP_OCCLUSION;
+			if (STRMATCH(tag_data, "#EMISS")) map_type = MATERIAL_MAP_EMISSION;
+			if (STRMATCH(tag_data, "#HEIGH")) map_type = MATERIAL_MAP_HEIGHT;
+			if (STRMATCH(tag_data, "#CUBEM")) map_type = MATERIAL_MAP_CUBEMAP;
+			if (STRMATCH(tag_data, "#IRRAD")) map_type = MATERIAL_MAP_IRRADIANCE;
+			if (STRMATCH(tag_data, "#PREFI")) map_type = MATERIAL_MAP_PREFILTER;
+			if (STRMATCH(tag_data, "#BRDF_")) map_type = MATERIAL_MAP_BRDF;
+			
+			// Creature texture and link it to the material
+			ADVANCETOKEN(tag_data);
+			Texture2D* tex = LoadAsset_Texture(TextFormat("%s%s", ASSET_TEXTURES, tag_data), is_core_asset)->tex;
+			MaterialMapSet(&mat, map_type, 1.0f, WHITE, tex);
+
+			// Additional texture properties
+			ADVANCETOKEN(tag_data); // Filtering
+			if (STRMATCH(tag_data, "FILT_POINT")) SetTextureFilter(*tex, TEXTURE_FILTER_POINT);
+			if (STRMATCH(tag_data, "FILT_BI")) SetTextureFilter(*tex, TEXTURE_FILTER_BILINEAR);
+			if (STRMATCH(tag_data, "FILT_TRI")) SetTextureFilter(*tex, TEXTURE_FILTER_TRILINEAR);
+
+			ADVANCETOKEN(tag_data); // Wrapping
+			if (STRMATCH(tag_data, "WRAP_REPEAT")) SetTextureWrap(*tex, TEXTURE_WRAP_REPEAT);
+			if (STRMATCH(tag_data, "WRAP_CLAMP")) SetTextureWrap(*tex, TEXTURE_WRAP_CLAMP);
+			if (STRMATCH(tag_data, "WRAP_MIRROR")) SetTextureWrap(*tex, TEXTURE_WRAP_MIRROR_REPEAT);
+			if (STRMATCH(tag_data, "WRAP_CLAMP_MIRROR")) SetTextureWrap(*tex, TEXTURE_WRAP_MIRROR_CLAMP);
 		}
 	}
 	fclose(fptr);
-
-	// Set shader
-	Shader shd = LoadShader(TextFormat("%s%s", ASSET_SHADERS, shader_vpath), TextFormat("%s%s", ASSET_SHADERS, shader_fpath));
-	MaterialShaderSet(&mat, &shd);
-
 	return mat;
 }
 
