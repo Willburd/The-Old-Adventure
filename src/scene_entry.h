@@ -54,6 +54,10 @@ typedef enum
 	ent_graveB,
 	ent_graveC,
 	ent_graveD,
+	ent_caveA,
+	ent_caveB,
+	ent_caveC,
+	ent_caveD,
 	NO_PLAYER_SCENE, // If beyond this point, don't spawn the player automatically
 	ent_title,
 	ent_cutsceneA,

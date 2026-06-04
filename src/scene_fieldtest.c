@@ -7,6 +7,7 @@
 #include "assets.h"
 #include "materials.h"
 #include "game_draw.h"
+#include "actor_entrance.h"
 
 void scene_fieldtest_preloadassets(struct Actor* scene);
 void scene_fieldtest_activate_room(struct Actor* scene, int room_index, EntranceID entrance);
@@ -46,6 +47,10 @@ void scene_fieldtest_activate_room(struct Actor* scene, int room_index, Entrance
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
 	data->active_room = room_index;
+
+	// Entrances
+	entrance_create(ent_debugentrance, scene, (Vector3) { 0, 0, 2 }, (Vector3) { 1, 0, 2 });
+	entrance_create(ent_caveA, scene, (Vector3) { -0.2, -1.1, 21.5 }, (Vector3) { -0.2, -1.1, 19.0 });
 
 	// Actor spawns
 

@@ -132,6 +132,9 @@
     <ClCompile Include="core_assets.c">
       <Filter>Source Files\adventure\assets</Filter>
     </ClCompile>
+    <ClCompile Include="actor_entrance.c">
+      <Filter>Source Files\engine\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="core_assets.h">
       <Filter>Header Files\adventure\assets</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_entrance.h">
+      <Filter>Header Files\engine\actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

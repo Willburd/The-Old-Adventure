@@ -5,6 +5,8 @@
 #include "raylib.h"
 #include "globals.h"
 #include "assets.h"
+#include "actor_entrance.h"
+#include "tools.h"
 
 // private header
 SceneID next_scene;
@@ -57,23 +59,32 @@ void actor_scene_init(struct Actor* scene)
 		scene->func_activate_room(scene, 0, next_entrance);
 
 	// Check for entrance actors, find the one we're using.
-	Vector3 spawn_pos = Vector3Zero(); // If we have no entrance, use 0,0,0
-	Quaternion spawn_rot = QuaternionIdentity();
+	const struct Actor* found_group[LAST_ENTRANCE] = { 0 };
+	FINDALLACTORTYPE(found_group, LAST_ENTRANCE, act_entrance);
 	struct Actor* entrance = NULL;
 	struct Actor* entrance_backup = NULL;
-
-
-	if (entrance == NULL) // Fallback to a debugging entrance if the scene has one
-		entrance = entrance_backup;
+	for (int i = 0; i < LAST_ENTRANCE; i++)
+	{
+		struct Actor* check_entrance = found_group[i];
+		if (!ACTOR_EXISTS(check_entrance))
+			continue;
+		// Check if the entrance type is valid for use
+		EntranceData* data = check_entrance->data;
+		if (data->entrance_id == next_entrance)
+			entrance = check_entrance;
+		if (data->entrance_id == ent_debugentrance)
+			entrance_backup = check_entrance;
+	}
 
 	// Spawn player
 	if (next_entrance < NO_PLAYER_SCENE)
 	{
-		ACTOR_FACTORY(act_player, scene, spawn_pos, spawn_rot, Vector3One(), Vector3Zero());
-		if (entrance != NULL) // Perform entrance actions like aligning the camera and making the player run into the scene
-		{
+		if(FINDACTORTYPE(act_player) == NULL) // Only a single player
+			ACTOR_FACTORY(act_player, scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+		if (entrance != NULL) // Enter the scene from this entrance if we have one
+			actor_entrance_startentry(entrance);
 
-		}
+		
 	}
 }
 

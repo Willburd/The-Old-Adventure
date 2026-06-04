@@ -56,6 +56,29 @@ struct Actor* FINDACTORTYPE(int actor_type)
 	return NULL;
 }
 
+void FINDALLACTORTYPE(const struct Actor* found_group[], int max_count, int actor_type)
+{
+	// Fill the results with known values
+	for (int i = 0; i < max_count; i++)
+	{
+		found_group[i] = NULL;
+	}
+	// Search all entities till we find our targets
+	int collected_index = 0;
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL)
+			continue;
+		if (find_actor->actor_type != actor_type)
+			continue;
+		found_group[collected_index++] = find_actor;
+		if (collected_index < max_count)
+			continue;
+		return;
+	}
+}
+
 int ACTORCOUNT(int actor_type)
 {
 	int count = 0;

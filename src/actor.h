@@ -99,6 +99,8 @@ struct Actor* FINDACTOR(uint64_t id);
 void FINDACTORGROUP(const struct Actor* found_group[], int max_count, const uint64_t find_uuids[]);
 // Get first actor of a specified type
 struct Actor* FINDACTORTYPE(int actor_type);
+// Get all actors of a specific type
+void FINDALLACTORTYPE(const struct Actor* found_group[], int max_count, int actor_type);
 // Number of actors of this type
 int ACTORCOUNT(int actor_type);
 // Get first child of parent
