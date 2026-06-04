@@ -7,6 +7,7 @@
 // private header
 void actor_camera_preupdate(struct Actor* actor);
 void actor_camera_predrawworld(struct Actor* actor, double tick_percent);
+void actor_camera_postdrawhud(struct Actor* actor, double tick_percent);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -23,6 +24,7 @@ void actor_camera_init(struct Actor* actor)
     // Configure actor
     actor->func_preupdate = actor_camera_preupdate;
     actor->func_predrawworld = actor_camera_predrawworld;
+    actor->func_postdrawhud = actor_camera_postdrawhud;
 
     // Configure camera
     cam_main = (Camera)
@@ -89,4 +91,9 @@ void actor_camera_predrawworld(struct Actor* actor, double tick_percent)
     {
         DrawCube(cam_main.target, 0.1f, 0.1f, 0.1f, BLUE);
     }
+}
+
+void actor_camera_postdrawhud(struct Actor* actor, double tick_percent)
+{
+    DrawText(TextFormat("%f\n%f\n%f", cam_main.target.x, cam_main.target.y, cam_main.target.z), screenWidth / 2.0f, screenHeight / 2.0f, 20, WHITE);
 }

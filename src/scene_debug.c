@@ -27,8 +27,8 @@ void scene_debug_init(struct Actor* scene)
 	if(!ACTOREXISTS(act_debug))
 		ACTOR_FACTORY(act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 
-	// Aim camera
-
+	// Set sky color
+	clear_background_color = BLACK;
 }
 
 #define MENUINDEX utilityA1

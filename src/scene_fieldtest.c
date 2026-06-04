@@ -6,6 +6,7 @@
 #include "scene_entry.h"
 #include "assets.h"
 #include "materials.h"
+#include "game_draw.h"
 
 void scene_fieldtest_preloadassets(struct Actor* scene);
 void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent);
@@ -21,6 +22,9 @@ void scene_fieldtest_init(struct Actor* scene)
 	SCENEDATA_CLEAR(scene->data);
 
 	// Actor spawns
+
+	// Set scene background
+	clear_background_color = SKYBLUE;
 }
 
 #define FIELD_ASSET_MAIN_MODEL ASSET_MODELS"/Scenes/test_room.glb"
