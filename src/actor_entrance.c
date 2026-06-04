@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <stdio.h>
 #include "tools.h"
 #include "actor_factory.h"
 #include "actor_entrance.h"

@@ -29,35 +29,35 @@ uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1) {
 }
 
 void asset_free(const void* item) {
-    Asset* asset = item;
+    const Asset* asset = item;
     if (asset->tex != NULL && IsTextureValid(*asset->tex))
     {
         UnloadTexture(*asset->tex);
-        RELEASE(asset->tex);
+        free(asset->tex);
         printf("ASSET: texture unloaded %s\n", asset->filepath);
     }
     if (asset->mdl != NULL && IsModelValid(*asset->mdl))
     {
         UnloadModel(*asset->mdl);
-        RELEASE(asset->mdl);
+        free(asset->mdl);
         printf("ASSET: model unloaded %s\n", asset->filepath);
     }
     if (asset->snd != NULL && IsSoundValid(*asset->snd))
     {
         UnloadSound(*asset->snd);
-        RELEASE(asset->snd);
+        free(asset->snd);
         printf("ASSET: sound unloaded %s\n", asset->filepath);
     }
     if (asset->mus != NULL && IsMusicValid(*asset->mus))
     {
         UnloadMusicStream(*asset->mus);
-        RELEASE(asset->mus);
+        free(asset->mus);
         printf("ASSET: music unloaded %s\n", asset->filepath);
     }
     if (asset->mat != NULL && IsMaterialValid(*asset->mat))
     {
         UnloadMaterial(*asset->mat);
-        RELEASE(asset->mat);
+        free(asset->mat);
         printf("ASSET: material unloaded %s\n", asset->filepath);
     }
     free(asset->filepath); // malloc char* string

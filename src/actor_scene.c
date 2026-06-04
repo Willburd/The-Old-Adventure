@@ -59,7 +59,7 @@ void actor_scene_init(struct Actor* scene)
 		scene->func_activate_room(scene, 0, next_entrance);
 
 	// Check for entrance actors, find the one we're using.
-	const struct Actor* found_group[LAST_ENTRANCE] = { 0 };
+	struct Actor* found_group[LAST_ENTRANCE] = { 0 };
 	FINDALLACTORTYPE(found_group, LAST_ENTRANCE, act_entrance);
 	struct Actor* entrance = NULL;
 	struct Actor* entrance_backup = NULL;

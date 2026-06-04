@@ -4,7 +4,6 @@
 #include "hashmap.h"
 #include "tools.h"
 #include "return_codes.h"
-#include "actor.h"
 #include "actor_factory.h"
 #include "game_update.h"
 

@@ -95,5 +95,5 @@ void actor_camera_predrawworld(struct Actor* actor, double tick_percent)
 
 void actor_camera_postdrawhud(struct Actor* actor, double tick_percent)
 {
-    DrawText(TextFormat("X:%f\nY:%f\nZ:%f", cam_main.target.x, cam_main.target.y, cam_main.target.z), screenWidth / 2.0f, screenHeight / 2.0f, 20, WHITE);
+    DrawText(TextFormat("X:%f\nY:%f\nZ:%f", cam_main.target.x, cam_main.target.y, cam_main.target.z), (float)screenWidth / 2.0f, (float)screenHeight / 2.0f, 20, WHITE);
 }

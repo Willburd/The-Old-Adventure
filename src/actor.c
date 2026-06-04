@@ -136,7 +136,7 @@ void FINDACTORCHILDREN(const struct Actor* found_group[], int max_count, const s
 int CHILDCOUNT(const struct Actor* parent)
 {
 	if (parent == NULL)
-		return NULL;
+		return 0;
 	int count = 0;
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
