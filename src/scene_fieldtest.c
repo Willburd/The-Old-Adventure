@@ -23,9 +23,7 @@ void scene_fieldtest_init(struct Actor* scene)
 	// Actor spawns
 }
 
-#define FIELD_ASSET_GROUND_TEXTURE ASSET_TEXTURES"/Objects/sign_wood.png"
 #define FIELD_ASSET_MAIN_MODEL ASSET_MODELS"/Scenes/test_room.glb"
-
 #define FIELD_ASSET_MAIN_MATERIAL ASSET_MATERIALS"/Objects/wood.mat"
 
 #define MAIN_MODEL_MESH_MAIN 0
@@ -34,7 +32,6 @@ void scene_fieldtest_init(struct Actor* scene)
 
 void scene_fieldtest_preloadassets(struct Actor* scene)
 {
-	Asset* field_texture = LoadAsset_Texture(FIELD_ASSET_GROUND_TEXTURE, FALSE);
 	Asset* model_asset = LoadAsset_Model(FIELD_ASSET_MAIN_MODEL, FALSE);
 	SetActorCollision(scene, model_asset->mdl, MAIN_MODEL_MESH_COLLISION);
 	LoadAsset_Material(FIELD_ASSET_MAIN_MATERIAL, FALSE);
