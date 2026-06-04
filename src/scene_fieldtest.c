@@ -37,7 +37,6 @@ void scene_fieldtest_preloadassets(struct Actor* scene)
 	Asset* field_texture = LoadAsset_Texture(FIELD_ASSET_GROUND_TEXTURE, FALSE);
 	Asset* model_asset = LoadAsset_Model(FIELD_ASSET_MAIN_MODEL, FALSE);
 	SetActorCollision(scene, model_asset->mdl, MAIN_MODEL_MESH_COLLISION);
-
 	LoadAsset_Material(FIELD_ASSET_MAIN_MATERIAL, FALSE);
 }
 
@@ -46,5 +45,6 @@ void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)
 	DrawMesh(
 		AssetGet_Model(FIELD_ASSET_MAIN_MODEL)->meshes[MAIN_MODEL_MESH_MAIN],
 		*AssetGet_Material(FIELD_ASSET_MAIN_MATERIAL),
-		GetMatrix(scene));
+		GetMatrix(scene)
+	);
 }
