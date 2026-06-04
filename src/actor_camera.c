@@ -89,11 +89,11 @@ void actor_camera_predrawworld(struct Actor* actor, double tick_percent)
         return;
     if (cam_data->freeaim)
     {
-        DrawCube(cam_main.target, 0.1f, 0.1f, 0.1f, BLUE);
+        DrawCube(cam_main.target, 0.01f, 0.01f, 0.01f, BLUE);
     }
 }
 
 void actor_camera_postdrawhud(struct Actor* actor, double tick_percent)
 {
-    DrawText(TextFormat("%f\n%f\n%f", cam_main.target.x, cam_main.target.y, cam_main.target.z), screenWidth / 2.0f, screenHeight / 2.0f, 20, WHITE);
+    DrawText(TextFormat("X:%f\nY:%f\nZ:%f", cam_main.target.x, cam_main.target.y, cam_main.target.z), screenWidth / 2.0f, screenHeight / 2.0f, 20, WHITE);
 }

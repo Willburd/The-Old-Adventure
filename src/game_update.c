@@ -19,6 +19,10 @@ void game_update()
 	// Update controller
 	UpdateInputState();
 
+	// Update window
+	screenWidth = GetScreenWidth();
+	screenHeight = GetScreenHeight();
+
 	// Preupdate and state control
 	int cap_actor = 0;
 	int shift_index = -1;
