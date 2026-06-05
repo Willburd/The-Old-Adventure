@@ -153,6 +153,7 @@
     <ClCompile Include="actor_player.c" />
     <ClCompile Include="actor_factory.c" />
     <ClCompile Include="actor_scene.c" />
+    <ClCompile Include="actor_skybox.c" />
     <ClCompile Include="actor_test.c" />
     <ClCompile Include="assets.c" />
     <ClCompile Include="core_assets.c" />

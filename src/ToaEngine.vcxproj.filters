@@ -135,6 +135,9 @@
     <ClCompile Include="actor_entrance.c">
       <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_skybox.c">
+      <Filter>Source Files\engine\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">

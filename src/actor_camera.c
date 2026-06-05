@@ -6,7 +6,7 @@
 
 // private header
 void actor_camera_preupdate(struct Actor* actor);
-void actor_camera_predrawworld(struct Actor* actor, double tick_percent);
+void actor_camera_drawworld(struct Actor* actor, double tick_percent);
 void actor_camera_postdrawhud(struct Actor* actor, double tick_percent);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +23,7 @@ void actor_camera_init(struct Actor* actor)
 {
     // Configure actor
     actor->func_preupdate = actor_camera_preupdate;
-    actor->func_predrawworld = actor_camera_predrawworld;
+    actor->func_drawworld = actor_camera_drawworld;
     actor->func_postdrawhud = actor_camera_postdrawhud;
 
     // Configure camera
@@ -82,7 +82,7 @@ void actor_camera_preupdate(struct Actor* actor)
     }
 }
 
-void actor_camera_predrawworld(struct Actor* actor, double tick_percent)
+void actor_camera_drawworld(struct Actor* actor, double tick_percent)
 {
     CameraData* cam_data = (CameraData*)actor->data;
     if (cam_data->locked)

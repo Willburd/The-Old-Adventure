@@ -12,6 +12,9 @@ int frame_rate;
 int screenWidth;
 int screenHeight;
 
+// Internal render size, width is solved by screen aspect ratio
+int renderHeight;
+
 double update_ticker;
 uint64_t tick_counter;
 double seconds_counter;

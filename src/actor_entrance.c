@@ -58,7 +58,7 @@ void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endp
 	ACTOR_ROT_SNAP(entrance, QuaternionFromAxisAngle(VEC3UP, QuaternionToEuler(VEC3DIRECTION(startpos, endpos)).y));
 }
 
-struct Actor* entrance_create(int entrance_id, struct Actor* scene, Vector3 s_pos, Vector3 e_pos)
+struct Actor* ENTRANCE_CREATE(int entrance_id, struct Actor* scene, Vector3 s_pos, Vector3 e_pos)
 {
 	struct Actor* entrance = ACTOR_FACTORY(act_entrance, scene, s_pos, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	actor_entrance_setup(entrance, s_pos, e_pos);

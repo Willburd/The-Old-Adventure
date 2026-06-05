@@ -15,6 +15,8 @@ int frame_rate = 60;
 int screenWidth = 800;
 int screenHeight = 600;
 
+int renderHeight = 240; 
+
 double update_ticker = 0;
 uint64_t tick_counter = 0;
 double seconds_counter = 0;
@@ -74,6 +76,8 @@ void game_setup()
     {
         world_actors[i] = NULL;
     }
+
+    // Setup renderer
     clear_background_color = BLACK;
 
     // Create asset cache

@@ -11,6 +11,6 @@ typedef struct
 
 void actor_entrance_startentry(struct Actor* entrance);
 void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endpos);
-struct Actor* entrance_create(int entrance_id, struct Actor* scene, Vector3 s_pos, Vector3 e_pos);
+struct Actor* ENTRANCE_CREATE(int entrance_id, struct Actor* scene, Vector3 s_pos, Vector3 e_pos);
 
 #endif
