@@ -42,7 +42,7 @@ int asset_compare(const void* a, const void* b, void* udata);
 uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1);
 void asset_free(const void* item);
 
-Asset* LoadAsset_Texture(char* path, int is_core);
+Asset* LoadAsset_Texture(char* path, int is_core, Asset* mat_link);
 Asset* LoadAsset_Model(char* path, int is_core);
 Asset* LoadAsset_Sound(char* path, int is_core);
 Asset* LoadAsset_Music(char* path, int is_core);

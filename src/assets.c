@@ -65,7 +65,7 @@ void asset_free(const void* item) {
 
 #define RETURN_EXISTING_ASSET(pth, s_core) Asset* check = AssetGetPackage(pth); if (check){if(s_core){check->core_asset=s_core;};return check;}
 
-Asset* LoadAsset_Texture(char* path, int is_core)
+Asset* LoadAsset_Texture(char* path, int is_core, Asset* mat_link)
 {
     RETURN_EXISTING_ASSET(path, is_core);
     MALLOC_ASSET(asset, path, is_core);
@@ -73,8 +73,10 @@ Asset* LoadAsset_Texture(char* path, int is_core)
     *asset->tex = LoadTexture(path);
     if (!IsTextureValid(*asset->tex))
         printf("ASSET: Unable to load texture: %s\n", path);
+    if (mat_link != NULL)
+        *asset->filepath = TextFormat("%s::%s", mat_link->filepath, path);
     hashmap_set(loaded_assets, asset);
-    printf("ASSET: loaded texture: %s\n", path);
+    printf("ASSET: loaded texture: %s\n", asset->filepath);
     return asset;
 }
 
@@ -87,7 +89,7 @@ Asset* LoadAsset_Model(char* path, int is_core)
     if (!IsModelValid(*asset->mdl))
         printf("ASSET: Unable to load model: %s\n", path);
     hashmap_set(loaded_assets, asset);
-    printf("ASSET: loaded model: %s\n", path);
+    printf("ASSET: loaded model: %s\n", asset->filepath);
     return asset;
 }
 
@@ -100,7 +102,7 @@ Asset* LoadAsset_Sound(char* path, int is_core)
     if (!IsSoundValid(*asset->snd))
         printf("ASSET: Unable to load sound: %s\n", path);
     hashmap_set(loaded_assets, asset);
-    printf("ASSET: loaded sound: %s\n", path);
+    printf("ASSET: loaded sound: %s\n", asset->filepath);
     return asset;
 }
 
@@ -113,7 +115,7 @@ Asset* LoadAsset_Music(char* path, int is_core)
     if (!IsMusicValid(*asset->mus))
         printf("ASSET: Unable to load music: %s\n", path);
     hashmap_set(loaded_assets, asset);
-    printf("ASSET: loaded music: %s\n", path);
+    printf("ASSET: loaded music: %s\n", asset->filepath);
     return asset;
 }
 
@@ -122,11 +124,11 @@ Asset* LoadAsset_Material(char* path, int is_core)
     RETURN_EXISTING_ASSET(path, is_core);
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Material, asset->mat, FALSE);
-    *asset->mat = LoadMaterial(path, is_core);
+    *asset->mat = LoadMaterial(asset, path, is_core);
     if (!IsMaterialValid(*asset->mat))
         printf("ASSET: Unable to load material: %s\n", path);
     hashmap_set(loaded_assets, asset);
-    printf("ASSET: loaded material: %s\n", path);
+    printf("ASSET: loaded material: %s\n", asset->filepath);
     return asset;
 }
 

@@ -32,7 +32,7 @@
 // 
 ///////////////////////////////////////////////////////////////
 
-Material LoadMaterial(char* path, int is_core_asset)
+Material LoadMaterial(Asset* asset, char* path, int is_core_asset)
 {
 	// Setup material
 	Material mat = LoadMaterialDefault();
@@ -90,7 +90,7 @@ Material LoadMaterial(char* path, int is_core_asset)
 			
 			// Creature texture and link it to the material
 			ADVANCETOKEN(tag_data);
-			Texture2D* tex = LoadAsset_Texture(TextFormat("%s%s", ASSET_TEXTURES, tag_data), is_core_asset)->tex;
+			Texture2D* tex = LoadAsset_Texture(TextFormat("%s%s", ASSET_TEXTURES, tag_data), is_core_asset, asset)->tex;
 			MaterialMapSet(&mat, map_type, 1.0f, WHITE, tex);
 
 			// Additional texture properties

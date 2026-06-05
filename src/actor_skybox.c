@@ -1,6 +1,8 @@
 #include "tools.h"
 #include "assets.h"
 #include "actor.h"
+#include "camera.h"
+#include "core_assets.h"
 
 // private header
 void actor_skybox_update(struct Actor* actor);
@@ -14,8 +16,9 @@ void actor_skybox_predrawworld(struct Actor* actor, double tick_percent);
 void actor_skybox_init(struct Actor* actor)
 {
     // Configure actor
-    actor->func_preupdate = actor_skybox_update;
     actor->func_predrawworld = actor_skybox_predrawworld;
+	actor->func_update = actor_skybox_update;
+	actor->scale = Vector3Scale(actor->scale, 1200.0f);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -24,10 +27,16 @@ void actor_skybox_init(struct Actor* actor)
 
 void actor_skybox_update(struct Actor* actor)
 {
-
+	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler( 0.0f, 0.01f * DEG2RAD, 0.0f));
 }
 
 void actor_skybox_predrawworld(struct Actor* actor, double tick_percent)
 {
-
+	// Snap to position of camera
+	actor->position = cam_main.position;
+	DrawMesh(
+		AssetGet_Model(CUBEMAP_MODEL)->meshes[0],
+		*AssetGet_Material(SKYBOX_MATERIAL_CYCLE),
+		GetMatrix(actor)
+	);
 }
