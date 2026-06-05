@@ -16,7 +16,7 @@ void game_draw(double tick_percent)
 {
 	// Recalculate render size
 	float window_aspect = (float)screenWidth / (float)screenHeight;
-	renderWidth = renderHeight * window_aspect;
+	renderWidth = (int)((float)renderHeight * window_aspect);
 
 	int want_resize = FALSE;
 	if (IsRenderTextureValid(render_tex_pre))

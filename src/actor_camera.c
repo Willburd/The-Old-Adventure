@@ -97,5 +97,5 @@ void actor_camera_postdrawhud(struct Actor* actor, double tick_percent)
 {
     if (!draw_debug_info)
         return;
-    DrawText(TextFormat("X:%f\nY:%f\nZ:%f", cam_main.target.x, cam_main.target.y, cam_main.target.z), (float)renderWidth / 2.0f, (float)renderHeight / 2.0f, 4, WHITE);
+    DrawText(TextFormat("X:%f\nY:%f\nZ:%f", cam_main.target.x, cam_main.target.y, cam_main.target.z), renderWidth / 2, renderHeight / 2, 4, WHITE);
 }
