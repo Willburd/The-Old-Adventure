@@ -15,7 +15,8 @@ int frame_rate = 60;
 int screenWidth = 800;
 int screenHeight = 600;
 
-int renderHeight = 240; 
+int renderHeight = 240;
+int renderWidth = -1;
 
 double update_ticker = 0;
 uint64_t tick_counter = 0;
@@ -43,6 +44,10 @@ int main(void)
         seconds_counter += delta_time;
 
 #ifdef _DEBUG 
+        if (IsKeyPressed(KEY_F2))
+        {
+            draw_debug_info = !draw_debug_info;
+        }
         if (IsKeyPressed(KEY_F3))
         {
             if (frame_rate < 100) frame_rate = 9999; else frame_rate = 60;

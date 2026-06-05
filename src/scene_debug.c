@@ -59,13 +59,13 @@ void scene_debug_drawhud(struct Actor* scene, double tick_percent)
 {
 	SceneData* our_data = (SceneData*)scene->data;
 
-	DrawText("Load Scene:", 100, 30, 20, WHITE);
+	DrawText("Load Scene:", 100, 20, 5, WHITE);
 
 	for (int i = 0; i < LAST_SCENE; i++)
 	{
 		char* entry = scene_name(i);
 		char* pretex = our_data->MENUINDEX == i ? ">" : "";
-		DrawText(TextFormat("%s%s", pretex, entry), 140, 60 + (i * 20), 20, WHITE);
+		DrawText(TextFormat("%s%s", pretex, entry), 120, 30 + (i * 8), 5, WHITE);
 	}
 }
 

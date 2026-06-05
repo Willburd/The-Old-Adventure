@@ -3,17 +3,20 @@
 #include "globals.h"
 #include "actor.h"
 
+int draw_debug_info = FALSE;
+
 Color clear_background_color;
 
 RenderTexture render_tex_pre = { 0 };
 RenderTexture render_tex_main = { 0 };
 RenderTexture render_tex_post = { 0 };
+RenderTexture render_tex_hud = { 0 };
 
 void game_draw(double tick_percent)
 {
 	// Recalculate render size
 	float window_aspect = (float)screenWidth / (float)screenHeight;
-	int renderWidth = renderHeight * window_aspect;
+	renderWidth = renderHeight * window_aspect;
 
 	int want_resize = FALSE;
 	if (IsRenderTextureValid(render_tex_pre))
@@ -37,10 +40,13 @@ void game_draw(double tick_percent)
 			UnloadRenderTexture(render_tex_main);
 		if (IsRenderTextureValid(render_tex_post))
 			UnloadRenderTexture(render_tex_post);
+		if (IsRenderTextureValid(render_tex_hud))
+			UnloadRenderTexture(render_tex_hud);
 		// Create size
 		render_tex_pre = LoadRenderTexture(renderWidth, renderHeight);
 		render_tex_main = LoadRenderTexture(renderWidth, renderHeight);
 		render_tex_post = LoadRenderTexture(renderWidth, renderHeight);
+		render_tex_hud = LoadRenderTexture(renderWidth, renderHeight);
 	}
 
 	////////////////////////////////////////////////////////////////////////
@@ -101,11 +107,9 @@ void game_draw(double tick_percent)
 	Rectangle src = (Rectangle){ 0, 0, (float)renderWidth, (float)-renderHeight };
 	Rectangle dest = (Rectangle){ screenWidth / 2.0f, screenHeight / 2.0f, (float)screenWidth, (float)screenHeight };
 
-	BeginDrawing();
+	BeginTextureMode(render_tex_hud);
+	ClearBackground((Color) { 1.0f, 1.0f, 1.0f, 0.0f });
 	BeginMode2D(cam_hud);
-	DrawTexturePro(render_tex_pre.texture, src, dest, org, 0, WHITE);
-	DrawTexturePro(render_tex_main.texture, src, dest, org, 0, WHITE);
-	DrawTexturePro(render_tex_post.texture, src, dest, org, 0, WHITE);
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* draw_actor = world_actors[i];
@@ -130,6 +134,16 @@ void game_draw(double tick_percent)
 		if (ACTOR_HAS(draw_actor, func_postdrawhud))
 			draw_actor->func_postdrawhud(draw_actor, tick_percent);
 	}
+	EndMode2D();
+	EndTextureMode();
+
+
+	BeginDrawing();
+	BeginMode2D(cam_hud);
+	DrawTexturePro(render_tex_pre.texture, src, dest, org, 0, WHITE);
+	DrawTexturePro(render_tex_main.texture, src, dest, org, 0, WHITE);
+	DrawTexturePro(render_tex_post.texture, src, dest, org, 0, WHITE);
+	DrawTexturePro(render_tex_hud.texture, src, dest, org, 0, WHITE);
 	EndMode2D();
 	EndDrawing();
 }

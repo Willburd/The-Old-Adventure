@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "camera.h"
 #include "input.h"
+#include "game_draw.h"
 
 // private header
 void actor_camera_preupdate(struct Actor* actor);
@@ -84,16 +85,17 @@ void actor_camera_preupdate(struct Actor* actor)
 
 void actor_camera_drawworld(struct Actor* actor, double tick_percent)
 {
-    CameraData* cam_data = (CameraData*)actor->data;
-    if (cam_data->locked)
+    if (!draw_debug_info)
         return;
+    // Handle camera lock
+    CameraData* cam_data = (CameraData*)actor->data;
     if (cam_data->freeaim)
-    {
         DrawCube(cam_main.target, 0.01f, 0.01f, 0.01f, BLUE);
-    }
 }
 
 void actor_camera_postdrawhud(struct Actor* actor, double tick_percent)
 {
-    DrawText(TextFormat("X:%f\nY:%f\nZ:%f", cam_main.target.x, cam_main.target.y, cam_main.target.z), (float)screenWidth / 2.0f, (float)screenHeight / 2.0f, 20, WHITE);
+    if (!draw_debug_info)
+        return;
+    DrawText(TextFormat("X:%f\nY:%f\nZ:%f", cam_main.target.x, cam_main.target.y, cam_main.target.z), (float)renderWidth / 2.0f, (float)renderHeight / 2.0f, 4, WHITE);
 }
