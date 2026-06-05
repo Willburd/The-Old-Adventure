@@ -4,10 +4,10 @@
 #include "raymath.h"
 
 const int inputkeys[INPUT_LAST] = {
-	KEY_LEFT,						// Move vec
-	KEY_RIGHT,
-	KEY_UP,
-	KEY_DOWN,
+	KEY_A,						// Move vec
+	KEY_D,
+	KEY_W,
+	KEY_S,
 	KEY_KP_4,						// Camera vec
 	KEY_KP_6,
 	KEY_KP_8,

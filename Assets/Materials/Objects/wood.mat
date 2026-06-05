@@ -2,4 +2,4 @@
 #ALBED /Objects/sign_wood.png FILT_BI WRAP_REPEAT
 
 // Shader
-#SHADR /standard.vs /standard.fs
+#SHADR /standard.vert /standard.frag
