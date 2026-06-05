@@ -10,6 +10,12 @@
 #include "core_assets.h"
 #include "tools.h"
 
+#if defined(PLATFORM_DESKTOP)
+#define GLSL_VERSION            330
+#else   // PLATFORM_ANDROID, PLATFORM_WEB
+#define GLSL_VERSION            100
+#endif
+
 const double update_rate = 40.0;
 int frame_rate = 60;
 int screenWidth = 800;
