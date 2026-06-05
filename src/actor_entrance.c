@@ -3,6 +3,7 @@
 #include "actor_factory.h"
 #include "actor_entrance.h"
 #include "camera.h"
+#include "tools.h"
 
 // private header
 void actor_entrance_drawworld(struct Actor* entrance, double delta_time);
@@ -50,11 +51,11 @@ void actor_entrance_startentry(struct Actor* entrance)
 
 void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endpos)
 {
-	ACTOR_POS_SNAP(entrance, startpos);
 	// Stay on same plane for rotations
-	Vector3 dir_vec = (Vector3){ endpos.x, startpos.y, endpos.z }; 
-	entrance->scale.x = Vector3Distance(startpos, dir_vec);
-	ACTOR_ROT_SNAP(entrance, QuaternionNormalize(QuaternionFromVector3ToVector3(startpos, dir_vec)));
+	entrance->scale.x = Vector3Distance(startpos, endpos);
+	startpos.y = 0.0f;
+	endpos.y = 0.0f;
+	ACTOR_ROT_SNAP(entrance, QuaternionFromAxisAngle(VEC3UP, QuaternionToEuler(VEC3DIRECTION(startpos, endpos)).y));
 }
 
 struct Actor* entrance_create(int entrance_id, struct Actor* scene, Vector3 s_pos, Vector3 e_pos)

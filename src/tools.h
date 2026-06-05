@@ -2,6 +2,7 @@
 #define TOOLS_HEADER
 
 #include "raylib.h"
+#include "raymath.h"
 #include "return_codes.h"
 #include "stdlib.h"
 
@@ -25,6 +26,8 @@
 #define VEC3BACKWARD ((Vector3){0,0,1})
 #define VEC3RIGHT ((Vector3){1,0,0})
 #define VEC3LEFT ((Vector3){-1,0,0})
+
+#define VEC3DIRECTION(s,e) QuaternionNormalize(QuaternionFromVector3ToVector3(Vector3Normalize(Vector3Subtract(e, s)), VEC3BACKWARD))
 
 #define RELEASE(x) free(x);x = NULL;
 
