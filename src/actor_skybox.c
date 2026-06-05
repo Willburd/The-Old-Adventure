@@ -35,7 +35,7 @@ void actor_skybox_predrawworld(struct Actor* actor, double tick_percent)
 	// Snap to position of camera
 	actor->position = cam_main.position;
 	DrawMesh(
-		AssetGet_Model(CUBEMAP_MODEL)->meshes[0],
+		AssetGet_Model(SKYSPHERE_MODEL)->meshes[0],
 		*AssetGet_Material(SKYBOX_MATERIAL_CYCLE),
 		GetMatrix(actor)
 	);

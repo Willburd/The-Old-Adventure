@@ -19,4 +19,5 @@ void LoadCoreAssets()
 
     // Load default models
     LoadAsset_Model(CUBEMAP_MODEL, TRUE);
+    LoadAsset_Model(SKYSPHERE_MODEL, TRUE);
 }

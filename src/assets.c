@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "assets.h"
 #include "materials.h"
 #include "tools.h"
@@ -56,6 +57,9 @@ void asset_free(const void* item) {
     }
     if (asset->mat != NULL && IsMaterialValid(*asset->mat))
     {
+        // Unload material's local textures
+
+        // Unload map
         UnloadMaterial(*asset->mat);
         free(asset->mat);
         printf("ASSET: material unloaded %s\n", asset->filepath);
@@ -65,18 +69,20 @@ void asset_free(const void* item) {
 
 #define RETURN_EXISTING_ASSET(pth, s_core) Asset* check = AssetGetPackage(pth); if (check){if(s_core){check->core_asset=s_core;};return check;}
 
-Asset* LoadAsset_Texture(char* path, int is_core, Asset* mat_link)
+Asset* LoadAsset_Texture(char* path, int is_core, char* mat_link)
 {
     RETURN_EXISTING_ASSET(path, is_core);
-    MALLOC_ASSET(asset, path, is_core);
+    char* tex_name = mat_link != NULL ? TextFormat("%s[%s]", mat_link, path) : path;
+    MALLOC_ASSET(asset, tex_name, is_core);
     MALLOC_SET(Texture2D, asset->tex, FALSE);
     *asset->tex = LoadTexture(path);
     if (!IsTextureValid(*asset->tex))
         printf("ASSET: Unable to load texture: %s\n", path);
-    if (mat_link != NULL)
-        *asset->filepath = TextFormat("%s::%s", mat_link->filepath, path);
     hashmap_set(loaded_assets, asset);
-    printf("ASSET: loaded texture: %s\n", asset->filepath);
+    if(mat_link != NULL)
+        printf("ASSET: loaded material-texture: %s\n", asset->filepath);
+    else
+        printf("ASSET: loaded texture: %s\n", asset->filepath);
     return asset;
 }
 

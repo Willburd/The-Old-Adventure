@@ -70,7 +70,7 @@ void game_draw(double tick_percent)
 	// Main draw
 	////////////////////////////////////////////////////////////////////////
 	BeginTextureMode(render_tex_main);
-	ClearBackground((Color) { 1.0f, 1.0f, 1.0f, 0.0f });
+	ClearBackground((Color) { 0xff, 0xff, 0xff, 0x00 });
 	BeginMode3D(cam_main);
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
@@ -87,7 +87,7 @@ void game_draw(double tick_percent)
 	// Post draw
 	////////////////////////////////////////////////////////////////////////
 	BeginTextureMode(render_tex_post);
-	ClearBackground((Color) { 1.0f, 1.0f, 1.0f, 0.0f });
+	ClearBackground((Color) { 0xff, 0xff, 0xff, 0x00 });
 	BeginMode3D(cam_main);
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
@@ -108,7 +108,7 @@ void game_draw(double tick_percent)
 	Rectangle dest = (Rectangle){ screenWidth / 2.0f, screenHeight / 2.0f, (float)screenWidth, (float)screenHeight };
 
 	BeginTextureMode(render_tex_hud);
-	ClearBackground((Color) { 1.0f, 1.0f, 1.0f, 0.0f });
+	ClearBackground((Color) { 0xff, 0xff, 0xff, 0x00 });
 	BeginMode2D(cam_hud);
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
