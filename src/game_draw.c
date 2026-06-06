@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "actor.h"
 #include "rlgl.h"
+#include "tools.h"
 
 int draw_debug_info = FALSE;
 
@@ -182,20 +183,35 @@ void fog_set(Color col, float power, float dist)
 
 void lighting_append_light(Vector3 pos, float radius, Color col, float influence)
 {
+	int write_index = light_count;
 	if (light_count >= MAX_LIGHTS) // Find furthest light and replace it
 	{
-		int furthest_index = 0;
-		float furthest_distance = 0;
+		int weakest_index = 0;
+		float weakest_influence = INFINITY;
 		Vector3 cam_pos = cam_main.position;
 		for (int i = 0; i < MAX_LIGHTS; i += 1)
 		{
-
+			// Radius multiplied by alpha
+			float influence = world_light_positions[i].w * world_light_colors[i].w;
+			// Check distance to camera by radius of light, global lights don't do this check.
+			if (world_light_positions[i].w < LIGHT_WORLD_RANGE)
+			{
+				float dist = fclamp(Vector3Distance(cam_main.position, (Vector3) { world_light_positions[i].x, world_light_positions[i].y, world_light_positions[i].z }) / world_light_positions[i].w, 0, 1);
+				influence *= dist;
+			}
+			if (influence >= weakest_influence)
+				continue;
+			// Weaker than the weakest so far
+			weakest_influence = influence;
+			weakest_index = i;
 		}
-		return;
+		write_index = weakest_index;
 	}
-	world_light_positions[light_count] = (Vector4){ pos.x, pos.y, pos.z, radius };
-	world_light_colors[light_count] = (Vector4){ (float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f, influence };
-	light_count++;
+	// Write the light to the slot decided
+	world_light_positions[write_index] = (Vector4){ pos.x, pos.y, pos.z, radius };
+	world_light_colors[write_index] = (Vector4){ (float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f, influence };
+	if (++light_count > MAX_LIGHTS)
+		light_count = MAX_LIGHTS;
 }
 
 void shader_update_fog(Shader shader)
