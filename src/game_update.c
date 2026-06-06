@@ -31,12 +31,6 @@ void game_update()
 
 	light_count = 0;
 
-	// LIGHT TESTING - TODO 
-	lighting_append_light((Vector3){ 3.0, 2.0, 1.0}, LIGHT_WORLD_RANGE, WHITE, 0.1f);
-	lighting_append_light((Vector3) { 3.0, 2.0, 1.0 }, 30.0f, RED, 1.0f);
-	lighting_append_light((Vector3) { 8.0, 1.0, 3.0 }, 30.0f, GREEN, 1.0f);
-	// LIGHT TESTING - TODO 
-
 	////////////////////////////////////////////////////////////////////////
 	// Preupdate and state control
 	////////////////////////////////////////////////////////////////////////
@@ -118,7 +112,7 @@ void game_update()
 
 
 	////////////////////////////////////////////////////////////////////////
-	// Post update
+	// Post update, update lights
 	////////////////////////////////////////////////////////////////////////
 
 	for (int i = 0; i <= current_actor_cap; i++)
@@ -128,5 +122,7 @@ void game_update()
 			continue;
 		if (ACTOR_HAS(update_actor, func_postupdate))
 			update_actor->func_postupdate(update_actor);
+		if (ACTOR_HAS(update_actor, func_append_lights))
+			update_actor->func_append_lights(update_actor);
 	}
 }

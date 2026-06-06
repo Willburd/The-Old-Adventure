@@ -24,9 +24,6 @@ struct Actor {
 	Vector3 last_scale;
 	Vector3 last_velocity;
 
-	BoundingBox bounds;
-	Mesh* collision_mesh;
-
 	// Creation and destruction
 	void (*func_init)(struct Actor* actor);
 	void (*func_preloadassets)(struct Actor* actor);
@@ -35,6 +32,7 @@ struct Actor {
 	void (*func_preupdate)(struct Actor* actor);
 	void (*func_update)(struct Actor* actor);
 	void (*func_postupdate)(struct Actor* actor);
+	void (*func_append_lights)(struct Actor* actor);
 	// Drawing in world
 	void (*func_predrawworld)(struct Actor* actor, double tick_percent);
 	void (*func_drawworld)(struct Actor* actor, double tick_percent);
@@ -48,25 +46,17 @@ struct Actor {
 	void (*func_deactivate_room)(struct Actor* actor, int room_index);
 };
 #define ACTOR_CLEAR(x) \
-x->uuid = 0; \
-x->index = -1; \
-x->actor_type = 0; \
+x->uuid = 0; x->index = -1; x->actor_type = 0; \
 x->parent = NULL; \
-x->func_init = NULL; \
-x->func_preloadassets = NULL; \
+x->func_init = NULL; x->func_preloadassets = NULL; \
 x->func_destroy = NULL; \
-x->func_preupdate = NULL; \
-x->func_update = NULL; \
-x->func_postupdate = NULL; \
-x->func_predrawworld = NULL; \
-x->func_drawworld = NULL; \
-x->func_postdrawworld = NULL; \
-x->func_predrawhud = NULL; \
-x->func_drawhud = NULL; \
-x->func_postdrawhud = NULL; \
-x->func_activate_room=NULL; \
-x->func_deactivate_room=NULL; \
+x->func_preupdate = NULL; x->func_update = NULL; x->func_postupdate = NULL; \
+x->func_append_lights = NULL; \
+x->func_predrawworld = NULL; x->func_drawworld = NULL; x->func_postdrawworld = NULL; \
+x->func_predrawhud = NULL; x->func_drawhud = NULL; x->func_postdrawhud = NULL; \
+x->func_activate_room = NULL; x->func_deactivate_room = NULL; \
 x->data = NULL;
+
 #define ACTOR_POS_SNAP(x, pos) x->position = pos;x->last_position = pos;
 #define ACTOR_ROT_SNAP(x, rot) x->rotation = rot;x->last_rotation = rot;
 #define ACTOR_SCALE_SNAP(x, scl) x->scale = scl;x->last_scale = scl;
@@ -115,7 +105,5 @@ struct Actor* GETSCENE(struct Actor* actor);
 Matrix GetMatrix(struct Actor* actor);
 // Get transform of model
 Transform GetTransform(struct Actor* actor);
-// Sets the collision mesh and bounds from a model's mesh
-void SetActorCollision(struct Actor* actor, Model* model, int mesh_index);
 
 #endif

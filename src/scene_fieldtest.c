@@ -8,15 +8,20 @@
 #include "materials.h"
 #include "game_draw.h"
 #include "actor_entrance.h"
+#include "collision.h"
 
 void scene_fieldtest_preloadassets(struct Actor* scene);
+void scene_fieldtest_destroy(struct Actor* scene);
 void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entrance);
+void scene_fieldtest_lights(struct Actor* scene);
 void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent);
 
 void scene_fieldtest_init(struct Actor* scene)
 {
 	// Configure scene
 	scene->func_preloadassets = scene_fieldtest_preloadassets;
+	scene->func_destroy = scene_fieldtest_destroy;
+	scene->func_append_lights = scene_fieldtest_lights;
 	scene->func_activate_room = scene_fieldtest_activate_room;
 	scene->func_drawworld = scene_fieldtest_drawworld;
 
@@ -37,9 +42,18 @@ void scene_fieldtest_init(struct Actor* scene)
 
 void scene_fieldtest_preloadassets(struct Actor* scene)
 {
+	// Load model
 	Asset* model_asset = LoadAsset_Model(FIELD_ASSET_MAIN_MODEL, FALSE);
-	SetActorCollision(scene, model_asset->mdl, MAIN_MODEL_MESH_COLLISION);
 	LoadAsset_Material(FIELD_ASSET_MAIN_MATERIAL, FALSE);
+
+	// Set collision data
+	CollisionRegister(scene, &model_asset->mdl->meshes[MAIN_MODEL_MESH_COLLISION]);
+}
+
+void scene_fieldtest_destroy(struct Actor* scene)
+{
+	// clear collision data
+	CollisionResign(scene, &AssetGet_Model(FIELD_ASSET_MAIN_MODEL)->meshes[MAIN_MODEL_MESH_COLLISION]);
 }
 
 void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entrance)
@@ -57,6 +71,15 @@ void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entr
 	
 	// Set fog
 	fog_set(SKYBLUE, FOG_DEFAULT_POWER, FOG_DEFAULT_RANGE);
+}
+
+void scene_fieldtest_lights(struct Actor* scene)
+{
+	lighting_append_light((Vector3) { 3.0, 2.0, 1.0 }, LIGHT_WORLD_RANGE, WHITE, 0.8f);
+	/*
+	lighting_append_light((Vector3) { 3.0, 2.0, 1.0 }, 30.0f, RED, 1.0f);
+	lighting_append_light((Vector3) { 8.0, 1.0, 3.0 }, 30.0f, GREEN, 1.0f);
+	*/
 }
 
 void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)

@@ -31,8 +31,10 @@
 
 #define RELEASE(x) free(x);x = NULL;
 
-inline int clamp(int val, int min, int max);
-inline float fclamp(float val, float min, float max);
+int clamp(int val, int min, int max);
+float fclamp(float val, float min, float max);
+
+#endif
 
 #ifdef _WIN32
 #include <direct.h>
@@ -40,6 +42,4 @@ inline float fclamp(float val, float min, float max);
 #else
 #include <unistd.h>
 #define GetCurrentDir getcwd
-#endif
-
 #endif
