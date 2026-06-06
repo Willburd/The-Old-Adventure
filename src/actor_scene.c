@@ -50,11 +50,11 @@ void actor_scene_init(struct Actor* scene)
 	// Setup scene actor with the intended functions
 	SCENE_LIBRARY(scene, next_scene);
 
-	// Load assets
+	// Load assets. This has polymorphed to the SCENE'S assets since the initial call to preloadassets in actor library.
 	if (ACTOR_HAS(scene, func_preloadassets))
 		scene->func_preloadassets(scene);
 
-	// Activate the first room inside the scene
+	// Activate the first room inside the scene.
 	if (ACTOR_HAS(scene, func_activate_room))
 		scene->func_activate_room(scene, 0, next_entrance);
 

@@ -3,6 +3,7 @@
 #include "actor_factory.h"
 #include "actor_entrance.h"
 #include "camera.h"
+#include "collision.h"
 #include "tools.h"
 
 // private header
@@ -25,6 +26,9 @@ void actor_entrance_init(struct Actor* actor)
 
 	// Set data
 	MALLOC_ACTOR_DATA(EntranceData, actor->data);
+
+	// Snap to entry
+	ACTOR_POS_SNAP(actor, actor_entrance_get_start(actor));
 }
 
 // Perform entrance actions like aligning the camera and making the player run into the scene
@@ -72,17 +76,26 @@ struct Actor* ENTRANCE_CREATE(int entrance_id, struct Actor* scene, Vector3 s_po
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Vector3 actor_entrance_get_start(struct Actor* entrance)
 {
-	Vector3 ray_check_pos = entrance->position;
-	// TODO - Raycast to the ground
-	return ray_check_pos;
+	Ray raycast = {
+		.position = entrance->position,
+		.direction = VEC3DOWN
+	};
+	RayCollision collision = CollisionGetNearest(raycast, COL_LAYER_WORLD);
+	if (collision.hit)
+		return collision.point;
+	return raycast.position;
 }
 
 Vector3 actor_entrance_get_end(struct Actor* entrance)
 {
-	Vector3 offset = Vector3Scale(VEC3FORWARD, entrance->scale.x);
-	Vector3 ray_check_pos = Vector3Add(entrance->position, Vector3RotateByQuaternion(offset, entrance->rotation));
-	// TODO - Raycast to the ground
-	return ray_check_pos;
+	Ray raycast = {
+		.position = Vector3Add(entrance->position, Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, entrance->scale.x), entrance->rotation)),
+		.direction = VEC3DOWN
+	};
+	RayCollision collision = CollisionGetNearest(raycast, COL_LAYER_WORLD);
+	if (collision.hit)
+		return collision.point;
+	return raycast.position;
 }
 
 Vector3 actor_entrance_get_camerastart(struct Actor* entrance)

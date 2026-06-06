@@ -24,6 +24,8 @@ struct Actor {
 	Vector3 last_scale;
 	Vector3 last_velocity;
 
+	unsigned int collision_flags; // Defines in collision.h
+
 	// Creation and destruction
 	void (*func_init)(struct Actor* actor);
 	void (*func_preloadassets)(struct Actor* actor);
@@ -48,6 +50,7 @@ struct Actor {
 #define ACTOR_CLEAR(x) \
 x->uuid = 0; x->index = -1; x->actor_type = 0; \
 x->parent = NULL; \
+x->collision_flags = 0; \
 x->func_init = NULL; x->func_preloadassets = NULL; \
 x->func_destroy = NULL; \
 x->func_preupdate = NULL; x->func_update = NULL; x->func_postupdate = NULL; \
