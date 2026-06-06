@@ -5,6 +5,7 @@
 #include "raymath.h"
 #include "actor.h"
 #include "game_update.h"
+#include "game_draw.h"
 #include "scene_entry.h"
 #include "globals.h"
 #include "input.h"
@@ -23,7 +24,23 @@ void game_update()
 	screenWidth = GetScreenWidth();
 	screenHeight = GetScreenHeight();
 
+
+	////////////////////////////////////////////////////////////////////////
+	// Prepare shader data
+	////////////////////////////////////////////////////////////////////////
+
+	for (int i = 0; i < light_count; i++)
+	{
+		world_lights[i].pos = (Vector4){ 0 };
+		world_lights[i].col = (Vector4){ 0 };
+	}
+	light_count = 0;
+	lighting_append_light((Vector3){ 3.0, 2.0, 1.0}, 10.0f, WHITE);
+
+	////////////////////////////////////////////////////////////////////////
 	// Preupdate and state control
+	////////////////////////////////////////////////////////////////////////
+
 	int cap_actor = 0;
 	int shift_index = -1;
 	for (int i = 0; i <= current_actor_cap; i++)
@@ -84,7 +101,12 @@ void game_update()
 			cap_actor = update_actor->index;
 	}
 	current_actor_cap = cap_actor;
+
+
+	////////////////////////////////////////////////////////////////////////
 	// Primary update
+	////////////////////////////////////////////////////////////////////////
+
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor * update_actor = world_actors[i];
@@ -93,7 +115,12 @@ void game_update()
 		if (ACTOR_HAS(update_actor, func_update))
 			update_actor->func_update(update_actor);
 	}
+
+
+	////////////////////////////////////////////////////////////////////////
 	// Post update
+	////////////////////////////////////////////////////////////////////////
+
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* update_actor = world_actors[i];

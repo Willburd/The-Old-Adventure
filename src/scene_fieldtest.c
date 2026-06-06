@@ -54,15 +54,21 @@ void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entr
 
 	// Actor spawns
 	ACTOR_FACTORY(act_skybox, scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
-
 	
+	// Set fog
+	fog_set(SKYBLUE, FOG_DEFAULT_POWER, FOG_DEFAULT_RANGE);
 }
 
 void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)
 {
+	Material* mat = AssetGet_Material(FIELD_ASSET_MAIN_MATERIAL);
+	shader_update_camera_pos(mat->shader);
+	shader_update_fog(mat->shader);
+	shader_update_lights(mat->shader);
+
 	DrawMesh(
 		AssetGet_Model(FIELD_ASSET_MAIN_MODEL)->meshes[MAIN_MODEL_MESH_MAIN],
-		*AssetGet_Material(FIELD_ASSET_MAIN_MATERIAL),
+		*mat,
 		GetMatrix(scene)
 	);
 }
