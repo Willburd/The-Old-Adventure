@@ -3,7 +3,7 @@
 // Input vertex attributes (from vertex shader)
 in vec2 fragTexCoord;
 in vec4 fragColor;
-in vec4 VertLight;
+in vec4 fragLight;
 
 uniform sampler2D texture0;
 uniform vec4 colDiffuse;
@@ -19,5 +19,5 @@ void main()
     finalColor = vec4(finalColor.rgb * fragColor.rgb, fragColor.a);
     if(finalColor.a < 0.001) discard;
     // Blend lights
-    //finalColor *= VertLight;
+    finalColor *= fragLight;
 }

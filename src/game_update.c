@@ -29,13 +29,13 @@ void game_update()
 	// Prepare shader data
 	////////////////////////////////////////////////////////////////////////
 
-	for (int i = 0; i < light_count; i++)
-	{
-		world_lights[i].pos = (Vector4){ 0 };
-		world_lights[i].col = (Vector4){ 0 };
-	}
 	light_count = 0;
-	lighting_append_light((Vector3){ 3.0, 2.0, 1.0}, 10.0f, WHITE);
+
+	// LIGHT TESTING - TODO 
+	lighting_append_light((Vector3){ 3.0, 2.0, 1.0}, LIGHT_WORLD_RANGE, WHITE, 0.1f);
+	lighting_append_light((Vector3) { 3.0, 2.0, 1.0 }, 30.0f, RED, 1.0f);
+	lighting_append_light((Vector3) { 8.0, 1.0, 3.0 }, 30.0f, GREEN, 1.0f);
+	// LIGHT TESTING - TODO 
 
 	////////////////////////////////////////////////////////////////////////
 	// Preupdate and state control

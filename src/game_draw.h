@@ -5,13 +5,15 @@
 
 int draw_debug_info;
 
+#define LIGHT_WORLD_RANGE 10000.0f
 #define MAX_LIGHTS 16
 typedef struct {
-	Vector4 pos; // XYZpos, Wradiance
-	Vector4 col; // XYZcolor, Walpha
+	Vector4 pos; 
+	Vector4 col; 
 } ShaderLight;
 int light_count;
-ShaderLight world_lights[MAX_LIGHTS];
+Vector4 world_light_positions[MAX_LIGHTS]; // XYZpos, Wradiance
+Vector4 world_light_colors[MAX_LIGHTS];// XYZcolor, Walpha
 
 #define FOG_DEFAULT_RANGE 320.0f
 #define FOG_DEFAULT_POWER 4.0f
@@ -30,7 +32,7 @@ RenderTexture render_tex_hud;
 void game_draw(double tick_percent);
 
 void fog_set(Color col, float power, float dist);
-void lighting_append_light(Vector3 pos, float radius, Color col);
+void lighting_append_light(Vector3 pos, float radius, Color col, float influence);
 
 void shader_update_fog(Shader shader);
 void shader_update_camera_pos(Shader shader);

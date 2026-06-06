@@ -7,7 +7,8 @@
 int draw_debug_info = FALSE;
 
 int light_count = 0;
-ShaderLight world_lights[MAX_LIGHTS] = { 0 };
+Vector4 world_light_positions[MAX_LIGHTS] = { 0 };
+Vector4 world_light_colors[MAX_LIGHTS] = { 0 };
 
 Color clear_background_color;
 
@@ -176,10 +177,10 @@ void fog_set(Color col, float power, float dist)
 {
 	fog_distance = dist;
 	fog_power = power;
-	fog_color = (Vector4){ (float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f };
+	fog_color = (Vector4){ (float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f, (float)col.a / 255.0f };
 }
 
-void lighting_append_light(Vector3 pos, float radius, Color col)
+void lighting_append_light(Vector3 pos, float radius, Color col, float influence)
 {
 	if (light_count >= MAX_LIGHTS) // Find furthest light and replace it
 	{
@@ -192,8 +193,8 @@ void lighting_append_light(Vector3 pos, float radius, Color col)
 		}
 		return;
 	}
-	world_lights[light_count].pos = (Vector4){ pos.x, pos.y, pos.z, radius };
-	world_lights[light_count].col = (Vector4){ (float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f, (float)col.a / 255.0f };
+	world_light_positions[light_count] = (Vector4){ pos.x, pos.y, pos.z, radius };
+	world_light_colors[light_count] = (Vector4){ (float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f, influence };
 	light_count++;
 }
 
@@ -215,18 +216,14 @@ void shader_update_camera_pos(Shader shader)
 
 void shader_update_lights(Shader shader)
 {
-	int light_loc = GetShaderLocation(shader, "lights[0]");
+	// Pass number of lights
+	int light_loc = GetShaderLocation(shader, "uLightCount");
 	if (light_loc < 0)
 		return;
-	for (int i = 0; i < light_count; i += 1)
-	{
-		// Pass number of lights
-		light_loc = GetShaderLocation(shader, "uLightCount");
-		SetShaderValue(shader, light_loc, &light_count, SHADER_UNIFORM_FLOAT);
-		// Pass lights in
-		light_loc = GetShaderLocation(shader, TextFormat("uLightPositions[%i]", i+0));
-		SetShaderValue(shader, light_loc, &world_lights[i].pos, SHADER_UNIFORM_VEC4);
-		light_loc = GetShaderLocation(shader, TextFormat("uLightColors[%i]", i));
-		SetShaderValue(shader, light_loc, &world_lights[i].col, SHADER_UNIFORM_VEC4);
-	}
+	SetShaderValue(shader, light_loc, &light_count, SHADER_UNIFORM_INT);
+
+	light_loc = GetShaderLocation(shader, "uLightPositions");
+	SetShaderValueV(shader, light_loc, &world_light_positions, SHADER_UNIFORM_VEC4, light_count);
+	light_loc = GetShaderLocation(shader, "uLightColors");
+	SetShaderValueV(shader, light_loc, &world_light_colors, SHADER_UNIFORM_VEC4, light_count);
 }
