@@ -87,7 +87,6 @@ void scene_fieldtest_lights(struct Actor* scene)
 void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)
 {
 	Material* mat = AssetGet_Material(FIELD_ASSET_MAIN_MATERIAL);
-	shader_update_camera_pos(mat->shader);
 	shader_update_fog(mat->shader);
 	shader_update_lights(mat->shader);
 

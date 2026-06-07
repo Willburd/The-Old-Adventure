@@ -229,12 +229,6 @@ void shader_update_fog(Shader shader)
 	SetShaderValue(shader, fog_loc, &fog_distance, SHADER_UNIFORM_FLOAT);
 }
 
-void shader_update_camera_pos(Shader shader)
-{
-	float camera_pos[3] = { cam_main.position.x, cam_main.position.y, cam_main.position.z };
-	SetShaderValue(shader, shader.locs[SHADER_LOC_VECTOR_VIEW], camera_pos, SHADER_UNIFORM_VEC3);
-}
-
 void shader_update_lights(Shader shader)
 {
 	// Pass number of lights

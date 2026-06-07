@@ -35,7 +35,6 @@ void fog_set(Color col, float power, float dist);
 void lighting_append_light(Vector3 pos, float radius, Color col, float influence);
 
 void shader_update_fog(Shader shader);
-void shader_update_camera_pos(Shader shader);
 void shader_update_lights(Shader shader);
 
 #endif
