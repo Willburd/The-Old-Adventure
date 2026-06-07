@@ -62,11 +62,11 @@ void game_draw(double tick_percent)
 	BeginTextureMode(render_tex_pre);
 	ClearBackground(clear_background_color);
 	BeginMode3D(cam_main);
+	// Prep shaders
+	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
+	BeginBlendMode(BLEND_CUSTOM_SEPARATE);
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
-		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
-		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-
 		struct Actor* draw_actor = world_actors[i];
 		if (!ACTOR_EXISTS(draw_actor))
 			continue;
@@ -84,11 +84,10 @@ void game_draw(double tick_percent)
 	BeginTextureMode(render_tex_main);
 	ClearBackground((Color) { 0xff, 0xff, 0xff, 0x00 });
 	BeginMode3D(cam_main);
+	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
+	BeginBlendMode(BLEND_CUSTOM_SEPARATE);
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
-		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
-		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-
 		struct Actor* draw_actor = world_actors[i];
 		if (!ACTOR_EXISTS(draw_actor))
 			continue;
@@ -106,11 +105,10 @@ void game_draw(double tick_percent)
 	BeginTextureMode(render_tex_post);
 	ClearBackground((Color) { 0xff, 0xff, 0xff, 0x00 });
 	BeginMode3D(cam_main);
+	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
+	BeginBlendMode(BLEND_CUSTOM_SEPARATE);
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
-		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
-		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-
 		struct Actor* draw_actor = world_actors[i];
 		if (!ACTOR_EXISTS(draw_actor))
 			continue;
@@ -135,7 +133,7 @@ void game_draw(double tick_percent)
 	{
 		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
 		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-
+		// predraw hud
 		for (int i = 0; i <= current_actor_cap; i++)
 		{
 			struct Actor* draw_actor = world_actors[i];
@@ -144,6 +142,7 @@ void game_draw(double tick_percent)
 			if (ACTOR_HAS(draw_actor, func_predrawhud))
 				draw_actor->func_predrawhud(draw_actor, tick_percent);
 		}
+		// draw hud
 		for (int i = 0; i <= current_actor_cap; i++)
 		{
 			struct Actor* draw_actor = world_actors[i];
@@ -152,6 +151,7 @@ void game_draw(double tick_percent)
 			if (ACTOR_HAS(draw_actor, func_drawhud))
 				draw_actor->func_drawhud(draw_actor, tick_percent);
 		}
+		// postdraw hud
 		for (int i = 0; i <= current_actor_cap; i++)
 		{
 			struct Actor* draw_actor = world_actors[i];

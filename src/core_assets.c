@@ -10,11 +10,11 @@ void LoadCoreAssets()
     // Load default materials
     LoadAsset_Material(ASSET_MATERIALS"/Error/no_material.mat", TRUE);
 
-    LoadAsset_Material(SKYBOX_MATERIAL_DAWN, TRUE);
-    LoadAsset_Material(SKYBOX_MATERIAL_DAYRAIN, TRUE);
-    LoadAsset_Material(SKYBOX_MATERIAL_DUSK, TRUE);
-    LoadAsset_Material(SKYBOX_MATERIAL_NIGHT, TRUE);
-    LoadAsset_Material(SKYBOX_MATERIAL_NIGHTRAIN, TRUE);
+    LoadAsset_Texture(ASSET_TEXTURES"/Skybox/standard_skybox_day.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Skybox/standard_skybox_night.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Skybox/standard_skybox_dusk.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Skybox/standard_skybox_dayrain.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Skybox/standard_skybox_nightrain.png", TRUE, NULL);
     LoadAsset_Material(SKYBOX_MATERIAL_CYCLE, TRUE);
 
     // Load default models

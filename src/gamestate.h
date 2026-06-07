@@ -16,7 +16,13 @@ void InitGameState();
 // Update the state of the world each game tick
 void UpdateGameState();
 
+float GetDayIntensity();
+float GetNightIntensity();
+float GetDawnIntensity();
+float GetDuskIntensity();
+
 // Get the current sun/moon light color based on time of day
 Color GetSunColor();
+Color GetSkyColor();
 
 #endif

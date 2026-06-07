@@ -76,17 +76,19 @@ Material LoadMaterial(Asset* asset, char* path, int is_core_asset)
 
 			// Texture slot being used
 			int map_type = MATERIAL_MAP_ALBEDO;
-			if (STRMATCH(tag_data, "#ALBED")) map_type = MATERIAL_MAP_ALBEDO;
-			if (STRMATCH(tag_data, "#METAL")) map_type = MATERIAL_MAP_METALNESS;
-			if (STRMATCH(tag_data, "#NORMAL")) map_type = MATERIAL_MAP_NORMAL;
-			if (STRMATCH(tag_data, "#ROUGH")) map_type = MATERIAL_MAP_ROUGHNESS;
-			if (STRMATCH(tag_data, "#OCCLU")) map_type = MATERIAL_MAP_OCCLUSION;
-			if (STRMATCH(tag_data, "#EMISS")) map_type = MATERIAL_MAP_EMISSION;
-			if (STRMATCH(tag_data, "#HEIGH")) map_type = MATERIAL_MAP_HEIGHT;
-			if (STRMATCH(tag_data, "#CUBEM")) map_type = MATERIAL_MAP_CUBEMAP;
-			if (STRMATCH(tag_data, "#IRRAD")) map_type = MATERIAL_MAP_IRRADIANCE;
-			if (STRMATCH(tag_data, "#PREFI")) map_type = MATERIAL_MAP_PREFILTER;
-			if (STRMATCH(tag_data, "#BRDF_")) map_type = MATERIAL_MAP_BRDF;
+			if (STRMATCH(tag_data, "#ALBED") || STRMATCH(tag_data, "#TEX00")) map_type = MATERIAL_MAP_ALBEDO;
+			if (STRMATCH(tag_data, "#METAL") || STRMATCH(tag_data, "#TEX01")) map_type = MATERIAL_MAP_METALNESS;
+			if (STRMATCH(tag_data, "#NORMAL")|| STRMATCH(tag_data, "#TEX02")) map_type = MATERIAL_MAP_NORMAL;
+			/* Inaccessible normally
+			if (STRMATCH(tag_data, "#ROUGH") || STRMATCH(tag_data, "#TEX03")) map_type = MATERIAL_MAP_ROUGHNESS;
+			if (STRMATCH(tag_data, "#OCCLU") || STRMATCH(tag_data, "#TEX04")) map_type = MATERIAL_MAP_OCCLUSION;
+			if (STRMATCH(tag_data, "#EMISS") || STRMATCH(tag_data, "#TEX05")) map_type = MATERIAL_MAP_EMISSION;
+			if (STRMATCH(tag_data, "#HEIGH") || STRMATCH(tag_data, "#TEX06")) map_type = MATERIAL_MAP_HEIGHT;
+			if (STRMATCH(tag_data, "#CUBEM") || STRMATCH(tag_data, "#TEX07")) map_type = MATERIAL_MAP_CUBEMAP;
+			if (STRMATCH(tag_data, "#IRRAD") || STRMATCH(tag_data, "#TEX08")) map_type = MATERIAL_MAP_IRRADIANCE;
+			if (STRMATCH(tag_data, "#PREFI") || STRMATCH(tag_data, "#TEX09")) map_type = MATERIAL_MAP_PREFILTER;
+			if (STRMATCH(tag_data, "#BRDF_") || STRMATCH(tag_data, "#TEX10")) map_type = MATERIAL_MAP_BRDF;
+			*/
 			
 			// Creature texture and link it to the material
 			ADVANCETOKEN(tag_data);

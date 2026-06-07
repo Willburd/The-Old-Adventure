@@ -1,5 +1,6 @@
 // Textures
-#ALBED /Skybox/standard_skybox_day.png FILT_BI WRAP_REPEAT
+#TEX00 /Skybox/standard_skybox.png FILT_BI WRAP_REPEAT
+#TEX01 /Skybox/standard_skybox_clouds.png FILT_BI WRAP_REPEAT
 
 // Shader
-#SHADR /unshaded.vert /unshaded.frag
+#SHADR /unshaded.vert /sky.frag

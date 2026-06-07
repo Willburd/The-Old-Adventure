@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "camera.h"
 #include "core_assets.h"
+#include "gamestate.h"
 
 // private header
 void actor_skybox_update(struct Actor* actor);
@@ -32,6 +33,26 @@ void actor_skybox_update(struct Actor* actor)
 
 void actor_skybox_predrawworld(struct Actor* actor, double tick_percent)
 {
+	////////////////////////////////////////////////
+	// Skybox shader uniforms
+	////////////////////////////////////////////////
+	Material* mat = AssetGet_Material(SKYBOX_MATERIAL_CYCLE);
+	Shader set_shader = mat->shader;
+
+	////////////////////////////////////////////////
+	// Set shader mode.
+	////////////////////////////////////////////////
+	BeginShaderMode(set_shader);
+
+	// Intensities
+	Vector4 sky_color = ColorToVector4(GetSkyColor());
+	int sky_loc = GetShaderLocation(set_shader, "sky_color");
+	SetShaderValue(set_shader, sky_loc, &sky_color, SHADER_UNIFORM_VEC4);
+
+	Vector4 cloud_color = ColorToVector4(GetSunColor());
+	sky_loc = GetShaderLocation(set_shader, "cloud_color");
+	SetShaderValue(set_shader, sky_loc, &cloud_color, SHADER_UNIFORM_VEC4);
+
 	// Snap to position of camera
 	actor->position = cam_main.position;
 	DrawMesh(
@@ -39,4 +60,6 @@ void actor_skybox_predrawworld(struct Actor* actor, double tick_percent)
 		*AssetGet_Material(SKYBOX_MATERIAL_CYCLE),
 		GetMatrix(actor)
 	);
+
+	EndShaderMode();
 }
