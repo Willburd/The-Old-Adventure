@@ -27,14 +27,13 @@ void actor_entrance_init(struct Actor* actor)
 	// Set data
 	MALLOC_ACTOR_DATA(EntranceData, actor->data);
 
-	// Snap to entry
+	// Snap to entrypoint
 	ACTOR_POS_SNAP(actor, actor_entrance_get_start(actor));
 }
 
 // Perform entrance actions like aligning the camera and making the player run into the scene
 void actor_entrance_startentry(struct Actor* entrance)
 {
-	Vector3 spawn_pos = actor_entrance_get_start(entrance);
 	Vector3 end_pos = actor_entrance_get_end(entrance);
 	Vector3 cam_pos = actor_entrance_get_camerastart(entrance);
 
@@ -46,10 +45,10 @@ void actor_entrance_startentry(struct Actor* entrance)
 	}
 	if (ACTOR_EXISTS(player))
 	{
-		ACTOR_POS_SNAP(player, spawn_pos);
-		ACTOR_ROT_SNAP(player, QuaternionFromAxisAngle(VEC3UP, Vector3Angle(spawn_pos, end_pos)));
+		ACTOR_POS_SNAP(player, entrance->position);
+		ACTOR_ROT_SNAP(player, QuaternionFromAxisAngle(VEC3UP, Vector3Angle(entrance->position, end_pos)));
 		if (ACTOR_EXISTS(camera)) // Focus on player from camera pos
-			cam_main.target = Vector3Add(spawn_pos, VEC3UP);
+			cam_main.target = Vector3Add(entrance->position, VEC3UP);
 	}
 }
 

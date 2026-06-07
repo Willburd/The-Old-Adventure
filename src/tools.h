@@ -34,6 +34,9 @@
 int clamp(int val, int min, int max);
 float fclamp(float val, float min, float max);
 
+Vector4 ColorToVector4(Color col);
+Color Vector4ToColor(Vector4 vec);
+
 #endif
 
 #ifdef _WIN32

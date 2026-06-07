@@ -45,11 +45,14 @@ vec3 solve_lights(vec3 pos)
         if(rad_influence > 0.01)
         {
             // If we are worth considering, put us into the mix with the other lights
-            total_light_blend += light_col.rgb * rad_influence * remaining;
+            vec3 light_affect = light_col.rgb;
+            if(light_affect == vec3(0.0,0.0,0.0)) // Special cave darkness handling
+                light_affect = vec3(-10.0,-10.0,-10.0);
+            total_light_blend += light_affect * rad_influence * remaining;
             remaining *= (1.0 - rad_influence);
         }
     }
-    return total_light_blend;
+    return clamp(total_light_blend, 0.0, 1.0);
 }
 
 void main()

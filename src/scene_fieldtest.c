@@ -76,7 +76,11 @@ void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entr
 
 void scene_fieldtest_lights(struct Actor* scene)
 {
-	lighting_append_light((Vector3) { 3.0, 2.0, 1.0 }, LIGHT_WORLD_RANGE, WHITE, 0.8f);
+	lighting_append_light((Vector3) { 3.0, 2.0, 1.0 }, LIGHT_WORLD_RANGE, WHITE, 0.9f);
+
+	// Cave darkness
+	lighting_append_light((Vector3) { -1.5, 0.15, 36.0 }, 25.0f, BLACK, 1.0f);
+	
 	/*
 	lighting_append_light((Vector3) { 3.0, 2.0, 1.0 }, 30.0f, RED, 1.0f);
 	lighting_append_light((Vector3) { 8.0, 1.0, 3.0 }, 30.0f, GREEN, 1.0f);

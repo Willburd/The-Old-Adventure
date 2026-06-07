@@ -19,5 +19,8 @@ void main()
     finalColor = vec4(finalColor.rgb * fragColor.rgb, fragColor.a);
     if(finalColor.a < 0.001) discard;
     // Blend lights
-    finalColor *= fragLight;
+    if(fragLight.r > 1.0 || fragLight.g > 1.0 || fragLight.b > 1.0)
+        finalColor = vec4(1.0, 1.0, 1.0, finalColor.a); // Cave exit light
+    else
+        finalColor *= fragLight; // standard light
 }
