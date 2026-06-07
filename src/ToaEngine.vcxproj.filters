@@ -64,6 +64,12 @@
     <Filter Include="Header Files\adventure\assets">
       <UniqueIdentifier>{9dc72926-71e7-4416-9bb6-68ea5280ae3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\adventure\game">
+      <UniqueIdentifier>{5d1f3ef7-3d0a-4436-9a0e-8b9a609b2428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\adventure\game">
+      <UniqueIdentifier>{cd9a0e50-0966-42ad-9e50-4634f46ef16f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -141,6 +147,9 @@
     <ClCompile Include="collision.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
+    <ClCompile Include="gamestate.c">
+      <Filter>Source Files\adventure\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -193,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="gamestate.h">
+      <Filter>Header Files\adventure\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

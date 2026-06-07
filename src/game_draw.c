@@ -197,7 +197,7 @@ void lighting_append_light(Vector3 pos, float radius, Color col, float influence
 			// Check distance to camera by radius of light, global lights don't do this check.
 			if (world_light_positions[i].w < LIGHT_WORLD_RANGE)
 			{
-				float dist = fclamp(
+				float dist = Clamp(
 								Vector3Distance(cam_main.position, (Vector3) { world_light_positions[i].x, world_light_positions[i].y, world_light_positions[i].z }) / world_light_positions[i].w, 
 								0, 
 								1

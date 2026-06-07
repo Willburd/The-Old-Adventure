@@ -9,6 +9,7 @@
 #include "scene_entry.h"
 #include "core_assets.h"
 #include "tools.h"
+#include "gamestate.h"
 
 #if defined(PLATFORM_DESKTOP)
 #define GLSL_VERSION            330
@@ -90,6 +91,9 @@ void game_setup()
 
     // Setup renderer
     clear_background_color = BLACK;
+
+    // Set worldstate up temporarily
+    InitGameState();
 
     // Create asset cache
     loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);

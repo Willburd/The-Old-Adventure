@@ -1,19 +1,5 @@
 #include "tools.h"
 
-int clamp(int val, int min, int max)
-{
-    if (val < min) return min;
-    if (val > max) return max;
-    return val;
-}
-
-float fclamp(float val, float min, float max) 
-{
-    if (val < min) return min;
-    if (val > max) return max;
-    return val;
-}
-
 Vector4 ColorToVector4(Color col)
 {
     return (Vector4) { (float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f, (float)col.a / 255.0f };
