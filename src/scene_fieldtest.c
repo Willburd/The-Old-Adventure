@@ -78,8 +78,6 @@ void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entr
 
 void scene_fieldtest_lights(struct Actor* scene)
 {
-	// Sky light
-	LIGHT_NODE_SKYBOX;
 	LIGHT_NODE_CAVE(-1.5f, 0.15f, 36.0f, 15.0f);
 	LIGHT_NODE_TORCH(3.0f, 2.0f, 1.0f, 30.0f);
 }
