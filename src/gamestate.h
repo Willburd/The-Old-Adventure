@@ -22,6 +22,7 @@ float GetDawnIntensity();
 float GetDuskIntensity();
 
 // Get the current sun/moon light color based on time of day
+float GetSunIntensity();
 Color GetSunColor();
 Color GetSkyColor();
 

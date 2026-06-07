@@ -10,6 +10,7 @@
 #include "actor_entrance.h"
 #include "collision.h"
 #include "gamestate.h"
+#include "light_tools.h"
 
 void scene_fieldtest_preloadassets(struct Actor* scene);
 void scene_fieldtest_destroy(struct Actor* scene);
@@ -77,15 +78,10 @@ void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entr
 
 void scene_fieldtest_lights(struct Actor* scene)
 {
-	lighting_append_light((Vector3) { 3.0, 2.0, 1.0 }, LIGHT_WORLD_RANGE, GetSunColor(), 0.9f);
-
-	// Cave darkness
-	lighting_append_light((Vector3) { -1.5, 0.15, 36.0 }, 15.0f, BLACK, 1.0f);
-	
-	/*
-	lighting_append_light((Vector3) { 3.0, 2.0, 1.0 }, 30.0f, RED, 1.0f);
-	lighting_append_light((Vector3) { 8.0, 1.0, 3.0 }, 30.0f, GREEN, 1.0f);
-	*/
+	// Sky light
+	LIGHT_NODE_SKYBOX;
+	LIGHT_NODE_CAVE(-1.5f, 0.15f, 36.0f, 15.0f);
+	LIGHT_NODE_TORCH(3.0f, 2.0f, 1.0f, 30.0f);
 }
 
 void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)

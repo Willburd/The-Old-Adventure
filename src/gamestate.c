@@ -36,6 +36,15 @@ float GetDuskIntensity()
 	return pow((float)sin(daynight_cycle * PI), 30.0f);
 }
 
+float GetSunIntensity()
+{
+	float night_intense = GetNightIntensity() * 0.12f;
+	float day_intense = GetDayIntensity() * 0.96f;
+	float dawn_intense = GetDawnIntensity() * 0.30f;
+	float dusk_intense = GetDuskIntensity() * 0.25f;
+	return Clamp(night_intense + day_intense + dawn_intense + dusk_intense, 0.0f, 1.0f);
+}
+
 Color GetSunColor()
 {
 	float day_intense = GetDayIntensity();
