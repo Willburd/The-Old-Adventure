@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "assets.h"
+#include "animation.h"
 #include "materials.h"
 #include "tools.h"
 
@@ -43,6 +44,11 @@ void asset_free(const void* item) {
         free(asset->mdl);
         printf("ASSET: model unloaded %s\n", asset->filepath);
     }
+    if (asset->anm != NULL)
+    {
+        UnloadModelAnimations(asset->anm, asset->anm_count);
+        printf("ASSET: animations unloaded %s\n", asset->filepath);
+    }
     if (asset->snd != NULL && IsSoundValid(*asset->snd))
     {
         UnloadSound(*asset->snd);
@@ -78,6 +84,7 @@ Asset* LoadAsset_Texture(char* path, int is_core, char* mat_link)
     *asset->tex = LoadTexture(path);
     if (!IsTextureValid(*asset->tex))
         printf("ASSET: Unable to load texture: %s\n", path);
+    // This uses MEMSET, ensure all data is assigned before hashmapping!
     hashmap_set(loaded_assets, asset);
     if(mat_link != NULL)
         printf("ASSET: loaded material-texture: %s\n", asset->filepath);
@@ -91,10 +98,14 @@ Asset* LoadAsset_Model(char* path, int is_core)
     RETURN_EXISTING_ASSET(path, is_core);
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Model, asset->mdl, FALSE);
+    // Load model
     *asset->mdl = LoadModel(path);
     if (!IsModelValid(*asset->mdl))
         printf("ASSET: Unable to load model: %s\n", path);
-    hashmap_set(loaded_assets, asset);
+    // Load animation data too
+    asset->anm = LoadModelAnimations(path, &asset->anm_count);
+    // This uses MEMSET, ensure all data is assigned before hashmapping!
+    hashmap_set(loaded_assets, asset); 
     printf("ASSET: loaded model: %s\n", asset->filepath);
     return asset;
 }
@@ -107,6 +118,7 @@ Asset* LoadAsset_Sound(char* path, int is_core)
     *asset->snd = LoadSound(path);
     if (!IsSoundValid(*asset->snd))
         printf("ASSET: Unable to load sound: %s\n", path);
+    // This uses MEMSET, ensure all data is assigned before hashmapping!
     hashmap_set(loaded_assets, asset);
     printf("ASSET: loaded sound: %s\n", asset->filepath);
     return asset;
@@ -120,6 +132,7 @@ Asset* LoadAsset_Music(char* path, int is_core)
     *asset->mus = LoadMusicStream(path);
     if (!IsMusicValid(*asset->mus))
         printf("ASSET: Unable to load music: %s\n", path);
+    // This uses MEMSET, ensure all data is assigned before hashmapping!
     hashmap_set(loaded_assets, asset);
     printf("ASSET: loaded music: %s\n", asset->filepath);
     return asset;
@@ -133,6 +146,7 @@ Asset* LoadAsset_Material(char* path, int is_core)
     *asset->mat = LoadMaterial(asset, path, is_core);
     if (!IsMaterialValid(*asset->mat))
         printf("ASSET: Unable to load material: %s\n", path);
+    // This uses MEMSET, ensure all data is assigned before hashmapping!
     hashmap_set(loaded_assets, asset);
     printf("ASSET: loaded material: %s\n", asset->filepath);
     return asset;

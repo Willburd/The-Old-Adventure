@@ -156,6 +156,7 @@
     <ClCompile Include="actor_scene.c" />
     <ClCompile Include="actor_skybox.c" />
     <ClCompile Include="actor_test.c" />
+    <ClCompile Include="animation.c" />
     <ClCompile Include="assets.c" />
     <ClCompile Include="collision.c" />
     <ClCompile Include="core_assets.c" />
@@ -183,6 +184,7 @@
     <ClInclude Include="actor_library.h" />
     <ClInclude Include="actor_factory.h" />
     <ClInclude Include="actor_scene.h" />
+    <ClInclude Include="animation.h" />
     <ClInclude Include="assets.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="collision.h" />

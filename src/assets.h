@@ -32,9 +32,11 @@ typedef struct {
     Sound* snd;
     Music* mus;
     Material* mat;
+    int anm_count;
+    ModelAnimation* anm;
 } Asset;
 
-#define MALLOC_ASSET(a, p, s_core) MALLOC(Asset, a, 0);a->core_asset=s_core;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;
+#define MALLOC_ASSET(a, p, s_core) MALLOC(Asset, a, 0);a->core_asset=s_core;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;a->anm=NULL;a->anm_count=0;
 
 void UnloadAllAssets(int including_core);
 

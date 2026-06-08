@@ -153,6 +153,9 @@
     <ClCompile Include="actor_animationtest.c">
       <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
+    <ClCompile Include="animation.c">
+      <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="light_tools.h">
       <Filter>Header Files\engine\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="animation.h">
+      <Filter>Header Files\engine\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
