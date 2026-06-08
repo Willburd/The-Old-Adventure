@@ -3,10 +3,10 @@
 #include "actor.h"
 
 // private header
-void actor_animationtes_preload_assets(struct Actor* actor);
-void actor_animationtes_update(struct Actor* actor);
-void actor_animationtes_drawworld(struct Actor* actor, double delta_time);
-void actor_animationtes_destroy(struct Actor* actor);
+void actor_animationtest_preload_assets(struct Actor* actor);
+void actor_animationtest_update(struct Actor* actor);
+void actor_animationtest_drawworld(struct Actor* actor, double delta_time);
+void actor_animationtest_destroy(struct Actor* actor);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -15,10 +15,10 @@ void actor_animationtes_destroy(struct Actor* actor);
 // Setup the player actor. Public function in the header
 void actor_animationtest_init(struct Actor* actor)
 {
-	actor->func_preloadassets = actor_animationtes_preload_assets;
-	actor->func_update = actor_animationtes_update;
-	actor->func_drawworld = actor_animationtes_drawworld;
-	actor->func_destroy = actor_animationtes_destroy;
+	actor->func_preloadassets = actor_animationtest_preload_assets;
+	actor->func_update = actor_animationtest_update;
+	actor->func_drawworld = actor_animationtest_drawworld;
+	actor->func_destroy = actor_animationtest_destroy;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,17 +28,17 @@ void actor_animationtest_init(struct Actor* actor)
 #define MATERIAL_ANIM_TEST ASSET_MATERIALS"/Objects/example.mat"
 #define MODEL_ANIM_TEXT ASSET_MODELS"/Tools/animation_test.glb"
 
-void actor_animationtes_preload_assets(struct Actor* actor)
+void actor_animationtest_preload_assets(struct Actor* actor)
 {
 	LoadAsset_Model(MODEL_ANIM_TEXT, FALSE);
 }
 
-void actor_animationtes_update(struct Actor* actor)
+void actor_animationtest_update(struct Actor* actor)
 {
 
 }
 
-void actor_animationtes_drawworld(struct Actor* actor, double tick_percent)
+void actor_animationtest_drawworld(struct Actor* actor, double tick_percent)
 {
 	Material* mat = AssetGet_Material(MATERIAL_ANIM_TEST);
 
@@ -49,6 +49,7 @@ void actor_animationtes_drawworld(struct Actor* actor, double tick_percent)
 	);
 }
 
-void actor_animationtes_destroy(struct Actor* actor)
+void actor_animationtest_destroy(struct Actor* actor)
 {
+
 }

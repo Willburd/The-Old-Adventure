@@ -10,12 +10,14 @@
 #include "globals.h"
 #include "input.h"
 
+void scene_debug_activate_room(struct Actor* scene, int room_index, int entrance);
 void scene_debug_update(struct Actor* scene);
 void scene_debug_drawhud(struct Actor* scene, double tick_percent);
 
 void scene_debug_init(struct Actor* scene)
 {
 	// Configure scene
+	scene->func_activate_room = scene_debug_activate_room;
 	scene->func_update = scene_debug_update;
 	scene->func_postdrawhud = scene_debug_drawhud;
 
@@ -29,6 +31,14 @@ void scene_debug_init(struct Actor* scene)
 
 	// Set sky color
 	clear_background_color = BLACK;
+}
+
+void scene_debug_activate_room(struct Actor* scene, int room_index, int entrance)
+{
+	// Store the current active subroom of the scene
+	SceneData* data = (SceneData*)scene->data;
+	data->active_room = room_index;
+	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
 }
 
 #define MENUINDEX utilityA1

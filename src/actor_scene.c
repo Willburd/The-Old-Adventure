@@ -31,6 +31,11 @@ void ReloadScene()
 	ACTOR_FACTORY(act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
+struct Actor* GetCurrentScene()
+{
+	return current_scene;
+}
+
 void UnloadScene(int clear_assets)
 {
 	if (current_scene == NULL)

@@ -1,5 +1,6 @@
 #include "gamestate.h"
 #include "game_draw.h"
+#include "actor_scene.h"
 
 void InitGameState()
 {
@@ -9,10 +10,21 @@ void InitGameState()
 
 void UpdateGameState()
 {
-	// Cycle daynight
-	daynight_cycle += daynight_speed;
-	while (daynight_cycle > 1.0f)
-		daynight_cycle -= 1.0f;
+	// Get the scenedata struct so we can get the currently set flags
+	struct Actor* cur_scene = GetCurrentScene();
+	uint64_t scene_config = 0;
+	if (cur_scene != NULL && cur_scene->data != NULL)
+	{
+		SceneData* sdat = cur_scene->data;
+		scene_config = sdat->config_flags;
+	}
+	// Cycle daynight if our scene doesn't pause time.
+	if (!(scene_config & SCENE_CONFIG_TIMEPAUSED))
+	{
+		daynight_cycle += daynight_speed;
+		while (daynight_cycle > 1.0f)
+			daynight_cycle -= 1.0f;
+	}
 }
 
 

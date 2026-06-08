@@ -73,10 +73,15 @@ typedef enum
 
 #define SCENE_ENTRANCE_COUNT 20
 
+#define SCENE_CONFIG_TIMEPAUSED (1 << 0)
+#define SCENE_CONFIG_HOTROOM	(1 << 1)
+#define SCENE_CONFIG_COLDROOM	(1 << 2)
+
 typedef struct {
 	int active_room;
-	uint64_t temp_flags;
-	uint64_t perm_flags;
+	uint64_t config_flags;	// Persistant settings assigned during scene creation or subroom entry
+	uint64_t temp_flags;	// Temp flags set by actors in the scene to preserve state until the scene is unloaded.
+	uint64_t perm_flags;	// Permanent flags set and loaded by the save file. So that state is preserved between scene reloads. 
 	int utilityA1;
 	int utilityA2;
 	int utilityA3;
@@ -91,6 +96,7 @@ typedef struct {
 
 void LoadScene(SceneID id, EntranceID entrance);
 void ReloadScene();
+struct Actor* GetCurrentScene();
 void UnloadScene(int clear_assets);
 
 #endif
