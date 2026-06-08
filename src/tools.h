@@ -34,6 +34,7 @@
 
 Vector4 ColorToVector4(Color col);
 Color Vector4ToColor(Vector4 vec);
+Color Vector3ToColor(Vector3 vec, float alpha);
 
 #endif
 

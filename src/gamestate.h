@@ -25,5 +25,7 @@ float GetDuskIntensity();
 float GetSunIntensity();
 Color GetSunColor();
 Color GetSkyColor();
+float GetFogDistance();
+Color GetFogColor();
 
 #endif

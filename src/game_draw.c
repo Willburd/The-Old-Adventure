@@ -4,6 +4,7 @@
 #include "actor.h"
 #include "rlgl.h"
 #include "tools.h"
+#include "gamestate.h"
 
 int draw_debug_info = FALSE;
 
@@ -55,6 +56,8 @@ void game_draw(double tick_percent)
 		render_tex_hud = LoadRenderTexture(renderWidth, renderHeight);
 	}
 
+	// Clear color affects fog
+	Color draw_clear_col = Vector3ToColor(fog_color, 0.0f);
 
 	////////////////////////////////////////////////////////////////////////
 	// Predraw
@@ -82,7 +85,7 @@ void game_draw(double tick_percent)
 	////////////////////////////////////////////////////////////////////////
 
 	BeginTextureMode(render_tex_main);
-	ClearBackground((Color) { 0xff, 0xff, 0xff, 0x00 });
+	ClearBackground(draw_clear_col);
 	BeginMode3D(cam_main);
 	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
 	BeginBlendMode(BLEND_CUSTOM_SEPARATE);
@@ -103,7 +106,7 @@ void game_draw(double tick_percent)
 	////////////////////////////////////////////////////////////////////////
 
 	BeginTextureMode(render_tex_post);
-	ClearBackground((Color) { 0xff, 0xff, 0xff, 0x00 });
+	ClearBackground(draw_clear_col);
 	BeginMode3D(cam_main);
 	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
 	BeginBlendMode(BLEND_CUSTOM_SEPARATE);
@@ -128,7 +131,7 @@ void game_draw(double tick_percent)
 	Rectangle dest = (Rectangle){ screenWidth / 2.0f, screenHeight / 2.0f, (float)screenWidth, (float)screenHeight };
 
 	BeginTextureMode(render_tex_hud);
-	ClearBackground((Color) { 0xff, 0xff, 0xff, 0x00 });
+	ClearBackground(draw_clear_col);
 	BeginMode2D(cam_hud);
 	{
 		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
@@ -178,7 +181,7 @@ void fog_set(Color col, float power, float dist)
 {
 	fog_distance = dist;
 	fog_power = power;
-	fog_color = (Vector4){ (float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f, (float)col.a / 255.0f };
+	fog_color = (Vector3){ (float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f };
 }
 
 // Lights are updated each frame and do not persist between them. Lights need to be "appended" to the light list each update to render. This is easier than juggling light references when wanting to animate lights.
@@ -222,7 +225,7 @@ void lighting_append_light(Vector3 pos, float radius, Color col, float influence
 void shader_update_fog(Shader shader)
 {
 	int fog_loc = GetShaderLocation(shader, "uFogColor");
-	SetShaderValue(shader, fog_loc, &fog_color, SHADER_UNIFORM_VEC4);
+	SetShaderValue(shader, fog_loc, &fog_color, SHADER_UNIFORM_VEC3);
 	fog_loc = GetShaderLocation(shader, "uFogPower");
 	SetShaderValue(shader, fog_loc, &fog_power, SHADER_UNIFORM_FLOAT);
 	fog_loc = GetShaderLocation(shader, "uFogDistance");

@@ -20,7 +20,7 @@ Vector4 world_light_colors[MAX_LIGHTS];// XYZcolor, Walpha
 
 float fog_distance;
 float fog_power;
-Vector4 fog_color;
+Vector3 fog_color;
 
 Color clear_background_color;
 

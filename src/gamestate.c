@@ -1,6 +1,5 @@
 #include "gamestate.h"
-
-
+#include "game_draw.h"
 
 void InitGameState()
 {
@@ -16,6 +15,11 @@ void UpdateGameState()
 		daynight_cycle -= 1.0f;
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Overworld rendering
+//////////////////////////////////////////////////////////////////////////////////////////
+
 float GetDayIntensity()
 {
 	return Clamp((float)sin(daynight_cycle * (PI * 2.0f)) * 1.43f, 0.0f, 1.0f);
@@ -30,12 +34,12 @@ float GetNightIntensity()
 
 float GetDawnIntensity()
 {
-	return pow((float)sin((daynight_cycle + 0.5f) * PI), SUNRISE_EXPONENT);
+	return (float)pow((float)sin((daynight_cycle + 0.5f) * PI), SUNRISE_EXPONENT);
 }
 
 float GetDuskIntensity()
 {
-	return pow((float)sin(daynight_cycle * PI), SUNRISE_EXPONENT);
+	return (float)pow((float)sin(daynight_cycle * PI), SUNRISE_EXPONENT);
 }
 
 float GetSunIntensity()
@@ -71,4 +75,20 @@ Color GetSkyColor()
 	col = ColorLerp(col,	(Color) { 138, 196, 255, 255 }, dawn_intense); // Dawn
 	col = ColorLerp(col,	(Color) { 224, 195, 114, 255 }, dusk_intense); // Dusk
 	return col;
+}
+
+float GetFogDistance()
+{
+	float day_intense = GetDayIntensity();
+	float dawn_intense = GetDawnIntensity();
+	float dusk_intense = GetDuskIntensity();
+	return Lerp(FOG_DEFAULT_RANGE / 2.0f, FOG_DEFAULT_RANGE, Clamp(day_intense + dawn_intense + dusk_intense, 0.0f, 1.0f));
+}
+
+Color GetFogColor()
+{
+	float day_intense = GetDayIntensity();
+	float dawn_intense = GetDawnIntensity();
+	float dusk_intense = GetDuskIntensity();
+	return ColorLerp(BLACK, GetSkyColor(), day_intense);
 }

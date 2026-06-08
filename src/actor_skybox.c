@@ -36,6 +36,7 @@ void actor_skybox_init(struct Actor* actor)
 void actor_skybox_update(struct Actor* actor)
 {
 	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler( 0.0f, 0.01f * DEG2RAD, 0.0f));
+	fog_set(GetFogColor(), FOG_DEFAULT_POWER, GetFogDistance()); // maintain fog state with sky
 }
 
 void actor_skybox_lights(struct Actor* scene)

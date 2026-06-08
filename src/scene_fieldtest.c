@@ -72,8 +72,7 @@ void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entr
 	// Actor spawns
 	ACTOR_FACTORY(act_skybox, scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 	
-	// Set fog
-	fog_set(SKYBLUE, FOG_DEFAULT_POWER, FOG_DEFAULT_RANGE);
+
 }
 
 void scene_fieldtest_lights(struct Actor* scene)

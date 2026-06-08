@@ -9,3 +9,9 @@ Color Vector4ToColor(Vector4 vec)
 {
     return (Color) { vec.x * 255, vec.y * 255, vec.z * 255, vec.w * 255 };
 }
+
+
+Color Vector3ToColor(Vector3 vec, float alpha)
+{
+    return (Color) { vec.x * 255, vec.y * 255, vec.z * 255, 255 * alpha};
+}
