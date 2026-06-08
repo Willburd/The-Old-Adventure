@@ -43,11 +43,11 @@ void actor_animationtest_drawworld(struct Actor* actor, double tick_percent)
 	Material* mat = AssetGet_Material(MATERIAL_ANIM_TEST);
 
 	Asset* model_asset = AssetGetPackage(MODEL_ANIM_TEST);
+
 	ModelAnimation* anim_extend = GetAnimation(model_asset, "Extend");
 	ModelAnimation* anim_sway = GetAnimation(model_asset, "Sway");
 
-	UpdateModelAnimation(*model_asset->mdl, *anim_sway, rand() % anim_sway->keyframeCount);
-
+	UpdateModelAnimationEx(*model_asset->mdl, *anim_sway, rand() % anim_sway->keyframeCount, *anim_extend, rand() % anim_extend->keyframeCount, 0.5f);
 
 	DrawMesh(
 		model_asset->mdl->meshes[0],
