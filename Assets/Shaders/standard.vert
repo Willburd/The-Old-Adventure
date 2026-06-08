@@ -31,25 +31,24 @@ vec3 solve_lights(vec3 pos)
         vec4 light_col = uLightColors[j];
 
         // Get the amount of influence our light has
-        float rad_influence = 1.0;
+        float rad_influence = light_col.a;
         if(light_pos.w < 9999.0) // Lights larger than 10000 are world lights
         {
-            rad_influence = 1.0 - clamp(distance(light_pos.xyz, pos) / light_pos.w, 0.0, 1.0);
+            rad_influence = 1.0 - clamp(distance(light_pos.xyz, pos) / light_pos.w, 0.0, 1.0) * light_col.a;
+            if(rad_influence < 0.05)
+                continue;
         }
-        rad_influence *= light_col.a;
-        if(rad_influence > 0.01)
+
+        // If we are worth considering, put us into the mix with the other lights
+        float affect_remain = remaining;
+        vec3 light_affect = light_col.rgb;
+        if(light_affect == vec3(0.0,0.0,0.0)) // Special cave darkness handling
         {
-            // If we are worth considering, put us into the mix with the other lights
-            float affect_remain = remaining;
-            vec3 light_affect = light_col.rgb;
-            if(light_affect == vec3(0.0,0.0,0.0)) // Special cave darkness handling
-            {
-                light_affect = vec3(-10.0,-10.0,-10.0);
-                affect_remain = 1.0; // Force full intensity regardless of other lights
-            }
-            total_light_blend += light_affect * rad_influence * affect_remain;
-            remaining *= (1.0 - rad_influence);
+            light_affect = vec3(-10.0,-10.0,-10.0);
+            affect_remain = 1.0; // Force full intensity regardless of other lights
         }
+        total_light_blend += light_affect * rad_influence * affect_remain;
+        remaining *= (1.0 - rad_influence);
     }
     return clamp(total_light_blend, 0.0, 1.0);
 }
