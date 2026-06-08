@@ -8,9 +8,9 @@
 #include "actor_factory.h"
 
 // private header
-void actor_skybox_update(struct Actor* actor);
-void actor_skybox_lights(struct Actor* scene);
-void actor_skybox_predrawworld(struct Actor* actor, double tick_percent);
+static void actor_skybox_update(struct Actor* actor);
+static void actor_skybox_lights(struct Actor* scene);
+static void actor_skybox_predrawworld(struct Actor* actor, double tick_percent);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -33,18 +33,18 @@ void actor_skybox_init(struct Actor* actor)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void actor_skybox_update(struct Actor* actor)
+static void actor_skybox_update(struct Actor* actor)
 {
 	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler( 0.0f, 0.01f * DEG2RAD, 0.0f));
 	fog_set(GetFogColor(), FOG_DEFAULT_POWER, GetFogDistance()); // maintain fog state with sky
 }
 
-void actor_skybox_lights(struct Actor* scene)
+static void actor_skybox_lights(struct Actor* scene)
 {
 	LIGHT_NODE_SKYBOX;
 }
 
-void actor_skybox_predrawworld(struct Actor* actor, double tick_percent)
+static void actor_skybox_predrawworld(struct Actor* actor, double tick_percent)
 {
 	////////////////////////////////////////////////
 	// Skybox shader uniforms

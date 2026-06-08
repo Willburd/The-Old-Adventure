@@ -3,11 +3,11 @@
 #include "actor.h"
 
 // private header
-void actor_player_preload_assets(struct Actor* actor);
-void actor_player_update(struct Actor* actor);
-void actor_player_drawworld(struct Actor* actor, double delta_time);
-void actor_player_drawhud(struct Actor* actor, double delta_time);
-void actor_player_destroy(struct Actor* actor);
+static void actor_player_preload_assets(struct Actor* actor);
+static void actor_player_update(struct Actor* actor);
+static void actor_player_drawworld(struct Actor* actor, double delta_time);
+static void actor_player_drawhud(struct Actor* actor, double delta_time);
+static void actor_player_destroy(struct Actor* actor);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -27,27 +27,27 @@ void actor_player_init(struct Actor* actor)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void actor_player_preload_assets(struct Actor* actor)
+static void actor_player_preload_assets(struct Actor* actor)
 {
 
 }
 
-void actor_player_update(struct Actor* actor)
+static void actor_player_update(struct Actor* actor)
 {
 
 }
 
-void actor_player_drawworld(struct Actor* actor, double tick_percent)
+static void actor_player_drawworld(struct Actor* actor, double tick_percent)
 {
 	DrawCube(actor->position, 0.2f, 0.2f, 0.2f, GREEN);
 }
 
-void actor_player_drawhud(struct Actor* actor, double tick_percent)
+static void actor_player_drawhud(struct Actor* actor, double tick_percent)
 {
 
 }
 
-void actor_player_destroy(struct Actor* actor)
+static void actor_player_destroy(struct Actor* actor)
 {
 
 }

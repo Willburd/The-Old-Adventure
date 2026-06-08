@@ -11,6 +11,8 @@
 #include "tools.h"
 #include "gamestate.h"
 
+#define RAYMATH_USE_SIMD_INTRINSICS 1
+
 #if defined(PLATFORM_DESKTOP)
 #define GLSL_VERSION            330
 #else   // PLATFORM_ANDROID, PLATFORM_WEB

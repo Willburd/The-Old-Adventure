@@ -6,9 +6,9 @@
 #include "game_draw.h"
 
 // private header
-void actor_camera_preupdate(struct Actor* actor);
-void actor_camera_drawworld(struct Actor* actor, double tick_percent);
-void actor_camera_postdrawhud(struct Actor* actor, double tick_percent);
+static void actor_camera_preupdate(struct Actor* actor);
+static void actor_camera_drawworld(struct Actor* actor, double tick_percent);
+static void actor_camera_postdrawhud(struct Actor* actor, double tick_percent);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -56,7 +56,7 @@ void actor_camera_init(struct Actor* actor)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void actor_camera_preupdate(struct Actor* actor)
+static void actor_camera_preupdate(struct Actor* actor)
 {
     CameraData* cam_data = (CameraData*)actor->data;
     if (cam_data->locked)
@@ -83,7 +83,7 @@ void actor_camera_preupdate(struct Actor* actor)
     }
 }
 
-void actor_camera_drawworld(struct Actor* actor, double tick_percent)
+static void actor_camera_drawworld(struct Actor* actor, double tick_percent)
 {
     if (!draw_debug_info)
         return;
@@ -93,7 +93,7 @@ void actor_camera_drawworld(struct Actor* actor, double tick_percent)
         DrawCube(cam_main.target, 0.01f, 0.01f, 0.01f, BLUE);
 }
 
-void actor_camera_postdrawhud(struct Actor* actor, double tick_percent)
+static void actor_camera_postdrawhud(struct Actor* actor, double tick_percent)
 {
     if (!draw_debug_info)
         return;

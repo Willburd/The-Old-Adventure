@@ -6,8 +6,8 @@
 #include "gamestate.h"
 
 // private header
-void actor_debug_drawworld(struct Actor* scene, double tick_percent);
-void actor_debug_postdrawhud(struct Actor* actor, double delta_time);
+static void actor_debug_drawworld(struct Actor* scene, double tick_percent);
+static void actor_debug_postdrawhud(struct Actor* actor, double delta_time);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -24,14 +24,14 @@ void actor_debug_init(struct Actor* actor)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void actor_debug_drawworld(struct Actor* scene, double tick_percent)
+static void actor_debug_drawworld(struct Actor* scene, double tick_percent)
 {
 	if (!draw_debug_info)
 		return;
 	DrawGrid(100, 1.0f);
 }
 
-void actor_debug_postdrawhud(struct Actor* actor, double tick_percent)
+static void actor_debug_postdrawhud(struct Actor* actor, double tick_percent)
 {
 	if (!draw_debug_info)
 		return;

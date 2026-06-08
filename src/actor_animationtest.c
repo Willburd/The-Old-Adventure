@@ -3,10 +3,10 @@
 #include "animation.h"
 
 // private header
-void actor_animationtest_preload_assets(struct Actor* actor);
-void actor_animationtest_update(struct Actor* actor);
-void actor_animationtest_drawworld(struct Actor* actor, double delta_time);
-void actor_animationtest_destroy(struct Actor* actor);
+static void actor_animationtest_preload_assets(struct Actor* actor);
+static void actor_animationtest_update(struct Actor* actor);
+static void actor_animationtest_drawworld(struct Actor* actor, double delta_time);
+static void actor_animationtest_destroy(struct Actor* actor);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -28,17 +28,17 @@ void actor_animationtest_init(struct Actor* actor)
 #define MATERIAL_ANIM_TEST ASSET_MATERIALS"/Objects/example.mat"
 #define MODEL_ANIM_TEST ASSET_MODELS"/Tools/animation_test.glb"
 
-void actor_animationtest_preload_assets(struct Actor* actor)
+static void actor_animationtest_preload_assets(struct Actor* actor)
 {
 	LoadAsset_Model(MODEL_ANIM_TEST, FALSE);
 }
 
-void actor_animationtest_update(struct Actor* actor)
+static void actor_animationtest_update(struct Actor* actor)
 {
 
 }
 
-void actor_animationtest_drawworld(struct Actor* actor, double tick_percent)
+static void actor_animationtest_drawworld(struct Actor* actor, double tick_percent)
 {
 	Material* mat = AssetGet_Material(MATERIAL_ANIM_TEST);
 
@@ -56,7 +56,7 @@ void actor_animationtest_drawworld(struct Actor* actor, double tick_percent)
 	);
 }
 
-void actor_animationtest_destroy(struct Actor* actor)
+static void actor_animationtest_destroy(struct Actor* actor)
 {
 
 }

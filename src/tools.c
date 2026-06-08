@@ -7,11 +7,11 @@ Vector4 ColorToVector4(Color col)
 
 Color Vector4ToColor(Vector4 vec)
 {
-    return (Color) { vec.x * 255, vec.y * 255, vec.z * 255, vec.w * 255 };
+    return (Color) { (char)(vec.x * (float)255), (char)(vec.y * (float)255), (char)(vec.z * (float)255), (char)(vec.w * (float)255) };
 }
 
 
 Color Vector3ToColor(Vector3 vec, float alpha)
 {
-    return (Color) { vec.x * 255, vec.y * 255, vec.z * 255, 255 * alpha};
+    return (Color) { (char)(vec.x * (float)255), (char)(vec.y * (float)255), (char)(vec.z * (float)255), (char)((float)255 * alpha) };
 }

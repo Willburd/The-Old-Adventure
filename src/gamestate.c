@@ -34,24 +34,24 @@ void UpdateGameState()
 
 float GetDayIntensity()
 {
-	return Clamp((float)sin(daynight_cycle * (PI * 2.0f)) * 1.43f, 0.0f, 1.0f);
+	return Clamp(sinf(daynight_cycle * (PI * 2.0f)) * 1.43f, 0.0f, 1.0f);
 }
 
 float GetNightIntensity()
 {
-	return Clamp(1.0f - (float)sin(daynight_cycle * (PI * 2.0f)), 0.0f, 1.0f);
+	return Clamp(1.0f - sinf(daynight_cycle * (PI * 2.0f)), 0.0f, 1.0f);
 }
 
 #define SUNRISE_EXPONENT 40.0f // Higher exponent makes dusk/dawn shorter
 
 float GetDawnIntensity()
 {
-	return (float)pow((float)sin((daynight_cycle + 0.5f) * PI), SUNRISE_EXPONENT);
+	return powf(sinf((daynight_cycle + 0.5f) * PI), SUNRISE_EXPONENT);
 }
 
 float GetDuskIntensity()
 {
-	return (float)pow((float)sin(daynight_cycle * PI), SUNRISE_EXPONENT);
+	return powf((float)sinf(daynight_cycle * PI), SUNRISE_EXPONENT);
 }
 
 float GetSunIntensity()

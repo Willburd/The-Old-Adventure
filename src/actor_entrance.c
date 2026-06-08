@@ -7,10 +7,11 @@
 #include "tools.h"
 
 // private header
-void actor_entrance_drawworld(struct Actor* entrance, double delta_time);
-Vector3 actor_entrance_get_start(struct Actor* entrance);
-Vector3 actor_entrance_get_end(struct Actor* entrance);
-Vector3 actor_entrance_get_camerastart(struct Actor* entrance);
+static void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endpos);
+static void actor_entrance_drawworld(struct Actor* entrance, double delta_time);
+static Vector3 actor_entrance_get_start(struct Actor* entrance);
+static Vector3 actor_entrance_get_end(struct Actor* entrance);
+static Vector3 actor_entrance_get_camerastart(struct Actor* entrance);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -52,15 +53,6 @@ void actor_entrance_startentry(struct Actor* entrance)
 	}
 }
 
-void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endpos)
-{
-	// Stay on same plane for rotations
-	entrance->scale.x = Vector3Distance(startpos, endpos);
-	startpos.y = 0.0f;
-	endpos.y = 0.0f;
-	ACTOR_ROT_SNAP(entrance, QuaternionFromAxisAngle(VEC3UP, QuaternionToEuler(VEC3DIRECTION(startpos, endpos)).y));
-}
-
 struct Actor* ENTRANCE_CREATE(int entrance_id, struct Actor* scene, Vector3 s_pos, Vector3 e_pos)
 {
 	struct Actor* entrance = ACTOR_FACTORY(act_entrance, scene, s_pos, QuaternionIdentity(), Vector3One(), Vector3Zero());
@@ -73,7 +65,17 @@ struct Actor* ENTRANCE_CREATE(int entrance_id, struct Actor* scene, Vector3 s_po
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Vector3 actor_entrance_get_start(struct Actor* entrance)
+
+static void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endpos)
+{
+	// Stay on same plane for rotations
+	entrance->scale.x = Vector3Distance(startpos, endpos);
+	startpos.y = 0.0f;
+	endpos.y = 0.0f;
+	ACTOR_ROT_SNAP(entrance, QuaternionFromAxisAngle(VEC3UP, QuaternionToEuler(VEC3DIRECTION(startpos, endpos)).y));
+}
+
+static Vector3 actor_entrance_get_start(struct Actor* entrance)
 {
 	Ray raycast = {
 		.position = entrance->position,
@@ -85,7 +87,7 @@ Vector3 actor_entrance_get_start(struct Actor* entrance)
 	return raycast.position;
 }
 
-Vector3 actor_entrance_get_end(struct Actor* entrance)
+static Vector3 actor_entrance_get_end(struct Actor* entrance)
 {
 	Ray raycast = {
 		.position = Vector3Add(entrance->position, Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, entrance->scale.x), entrance->rotation)),
@@ -97,14 +99,14 @@ Vector3 actor_entrance_get_end(struct Actor* entrance)
 	return raycast.position;
 }
 
-Vector3 actor_entrance_get_camerastart(struct Actor* entrance)
+static Vector3 actor_entrance_get_camerastart(struct Actor* entrance)
 {
 	Vector3 offset = Vector3Scale(VEC3BACKWARD, 2.0f);
 	offset = Vector3Add(offset, Vector3Scale(VEC3UP, 2.0f));
 	return Vector3Add(entrance->position, Vector3RotateByQuaternion(offset, entrance->rotation));
 }
 
-void actor_entrance_drawworld(struct Actor* entrance, double delta_time)
+static void actor_entrance_drawworld(struct Actor* entrance, double delta_time)
 {
 	DrawCube(entrance->position, 0.2f, 0.2f, 0.2f, PURPLE);
 	Vector3 end_pos = actor_entrance_get_end(entrance);
