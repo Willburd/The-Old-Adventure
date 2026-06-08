@@ -14,6 +14,7 @@ typedef enum
 	// debugging
 	act_debug,
 	act_test,
+	act_animtest,
 	// Gameengine
 	act_scene,
 	act_entrance,
@@ -27,6 +28,7 @@ typedef enum
 
 void actor_debug_init(struct Actor* actor);
 void actor_test_init(struct Actor* actor);
+void actor_animationtest_init(struct Actor* actor);
 void actor_scene_init(struct Actor* scene);
 void actor_entrance_init(struct Actor* actor);
 void actor_skybox_init(struct Actor* actor);
@@ -40,6 +42,7 @@ inline char* actor_name(ActorTypes actor_id)
 		// debugging
 		"Debug",
 		"Test",
+		"Animtest",
 		// Gameengine
 		"Scene",
 		"Entrance",
@@ -58,6 +61,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 	// debugging
 	MAKE_ACTOR_INIT(act_debug, actor_debug_init);
 	MAKE_ACTOR_INIT(act_test, actor_test_init);
+	MAKE_ACTOR_INIT(act_animtest, actor_animationtest_init);
 	// Gameengine
 	MAKE_ACTOR_INIT(act_scene, actor_scene_init);
 	MAKE_ACTOR_INIT(act_entrance, actor_entrance_init);

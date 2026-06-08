@@ -27,11 +27,9 @@ void actor_test_init(struct Actor* actor)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define TEST_ASSET_TEXTURE ASSET_TEXTURES"/Objects/example.png"
-
 void actor_test_preload_assets(struct Actor* actor)
 {
-	LoadAsset_Texture(TEST_ASSET_TEXTURE, FALSE, NULL);
+
 }
 
 void actor_test_update(struct Actor* actor)
@@ -70,7 +68,7 @@ void actor_test_drawworld(struct Actor* actor, double tick_percent)
 void actor_test_drawhud(struct Actor* actor, double tick_percent)
 {
 	Vector3 delta_pos = ACTOR_POS_DELTA(actor, (float)tick_percent);
-	Texture2D resolvetex = *AssetGet_Texture(TEST_ASSET_TEXTURE);
+	Texture2D resolvetex = *AssetGet_Texture(ASSET_TEXTURES"/Objects/example.png");
 	DrawTextureEx(resolvetex, (Vector2) { delta_pos.x, delta_pos.y }, QuaternionToEuler(ACTOR_ROT_DELTA(actor, (float)tick_percent)).x* RAD2DEG, 1, WHITE);
 }
 

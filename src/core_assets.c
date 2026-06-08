@@ -6,15 +6,11 @@ void LoadCoreAssets()
     // Load default textures
     LoadAsset_Texture(ASSET_TEXTURES"/Error/no_texture.png", TRUE, NULL);
     LoadAsset_Texture(ASSET_TEXTURES"/Error/no_material.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Objects/example.png", TRUE, NULL);
 
     // Load default materials
     LoadAsset_Material(ASSET_MATERIALS"/Error/no_material.mat", TRUE);
-
-    LoadAsset_Texture(ASSET_TEXTURES"/Skybox/standard_skybox_day.png", TRUE, NULL);
-    LoadAsset_Texture(ASSET_TEXTURES"/Skybox/standard_skybox_night.png", TRUE, NULL);
-    LoadAsset_Texture(ASSET_TEXTURES"/Skybox/standard_skybox_dusk.png", TRUE, NULL);
-    LoadAsset_Texture(ASSET_TEXTURES"/Skybox/standard_skybox_dayrain.png", TRUE, NULL);
-    LoadAsset_Texture(ASSET_TEXTURES"/Skybox/standard_skybox_nightrain.png", TRUE, NULL);
+    LoadAsset_Material(ASSET_MATERIALS"/Objects/example.mat", TRUE);
     LoadAsset_Material(SKYBOX_MATERIAL_CYCLE, TRUE);
 
     // Load default models
