@@ -31,8 +31,8 @@ double update_ticker = 0;
 uint64_t tick_counter = 0;
 double seconds_counter = 0;
 
-void game_setup();
-void game_shutdown();
+static void game_setup();
+static void game_shutdown();
 
 int main(void)
 {
@@ -80,7 +80,7 @@ int main(void)
     return ERR_SUCCESS;
 }
 
-void game_setup()
+static void game_setup()
 {
     if (world_actors == NULL) {
         perror("Actor array allocation failed!\n");
@@ -108,7 +108,7 @@ void game_setup()
     LoadScene(scene_boot, ent_title);
 }
 
-void game_shutdown()
+static void game_shutdown()
 {
     // Clear the actors entirely
     for (int i = 0; i < ACTOR_LIMIT; i++)

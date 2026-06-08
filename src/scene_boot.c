@@ -6,8 +6,8 @@
 #include "actor_scene.h"
 #include "scene_entry.h"
 
-void scene_boot_activate_room(struct Actor* scene, int room_index, int entrance);
-void scene_boot_update(struct Actor* scene);
+static void scene_boot_activate_room(struct Actor* scene, int room_index, int entrance);
+static void scene_boot_update(struct Actor* scene);
 
 void scene_boot_init(struct Actor* scene)
 {
@@ -20,7 +20,7 @@ void scene_boot_init(struct Actor* scene)
 	SCENEDATA_CLEAR(scene->data);
 }
 
-void scene_boot_activate_room(struct Actor* scene, int room_index, int entrance)
+static void scene_boot_activate_room(struct Actor* scene, int room_index, int entrance)
 {
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
@@ -28,7 +28,7 @@ void scene_boot_activate_room(struct Actor* scene, int room_index, int entrance)
 	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
 }
 
-void scene_boot_update(struct Actor* scene)
+static void scene_boot_update(struct Actor* scene)
 {
 	// Go to title
 	LoadScene(scene_debug, ent_title);

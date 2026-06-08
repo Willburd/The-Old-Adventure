@@ -5,7 +5,7 @@
 #include "actor_scene.h"
 #include "scene_entry.h"
 
-void scene_title_activate_room(struct Actor* scene, int room_index, int entrance);
+static void scene_title_activate_room(struct Actor* scene, int room_index, int entrance);
 
 void scene_title_init(struct Actor* scene)
 {
@@ -17,7 +17,7 @@ void scene_title_init(struct Actor* scene)
 	SCENEDATA_CLEAR(scene->data);
 }
 
-void scene_title_activate_room(struct Actor* scene, int room_index, int entrance)
+static void scene_title_activate_room(struct Actor* scene, int room_index, int entrance)
 {
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;

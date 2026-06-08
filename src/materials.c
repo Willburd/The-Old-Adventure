@@ -8,6 +8,9 @@
 #define ADVANCETOKEN(tag) tag = strtok_s(NULL, " ", &next_token);if (tag == NULL){break;};STRENDLINETERMINATE(tag);
 #define PATH_LEN 100
 
+static void MaterialMapSet(Material * mat, int map_layer, float value, Color col, Texture2D * texture);
+static void MaterialShaderSet(Material * mat, Shader * shader);
+
 ///////////////////////////////////////////////////////////////
 //
 // Materials are the primary system used to draw models.
@@ -112,14 +115,14 @@ Material LoadMaterial(Asset* asset, char* path, int is_core_asset)
 	return mat;
 }
 
-void MaterialMapSet(Material* mat,int map_layer, float value, Color col, Texture2D* texture)
+static void MaterialMapSet(Material* mat,int map_layer, float value, Color col, Texture2D* texture)
 {
 	mat->maps[map_layer].value = value;
 	mat->maps[map_layer].color = col;
 	SetMaterialTexture(mat, map_layer, *texture);
 }
 
-void MaterialShaderSet(Material* mat, Shader* shader)
+static void MaterialShaderSet(Material* mat, Shader* shader)
 {
 	mat->shader = *shader;
 }

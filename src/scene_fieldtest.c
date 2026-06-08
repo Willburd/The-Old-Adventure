@@ -12,11 +12,11 @@
 #include "gamestate.h"
 #include "light_tools.h"
 
-void scene_fieldtest_preloadassets(struct Actor* scene);
-void scene_fieldtest_destroy(struct Actor* scene);
-void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entrance);
-void scene_fieldtest_lights(struct Actor* scene);
-void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent);
+static void scene_fieldtest_preloadassets(struct Actor* scene);
+static void scene_fieldtest_destroy(struct Actor* scene);
+static void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entrance);
+static void scene_fieldtest_lights(struct Actor* scene);
+static void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent);
 
 void scene_fieldtest_init(struct Actor* scene)
 {
@@ -42,7 +42,7 @@ void scene_fieldtest_init(struct Actor* scene)
 #define MAIN_MODEL_MESH_COLLISION 1
 #define MAIN_MODEL_MATERIAL_MAIN 0
 
-void scene_fieldtest_preloadassets(struct Actor* scene)
+static void scene_fieldtest_preloadassets(struct Actor* scene)
 {
 	// Load model
 	Asset* model_asset = LoadAsset_Model(FIELD_ASSET_MAIN_MODEL, FALSE);
@@ -53,13 +53,13 @@ void scene_fieldtest_preloadassets(struct Actor* scene)
 	CollisionRegister(scene, &model_asset->mdl->meshes[MAIN_MODEL_MESH_COLLISION]);
 }
 
-void scene_fieldtest_destroy(struct Actor* scene)
+static void scene_fieldtest_destroy(struct Actor* scene)
 {
 	// clear collision data
 	CollisionResign(scene, &AssetGet_Model(FIELD_ASSET_MAIN_MODEL)->meshes[MAIN_MODEL_MESH_COLLISION]);
 }
 
-void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entrance)
+static void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entrance)
 {
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
@@ -78,13 +78,13 @@ void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entr
 
 }
 
-void scene_fieldtest_lights(struct Actor* scene)
+static void scene_fieldtest_lights(struct Actor* scene)
 {
 	LIGHT_NODE_CAVE(-1.5f, 0.15f, 36.0f, 15.0f);
 	LIGHT_NODE_TORCH(3.0f, 2.0f, 1.0f, 30.0f);
 }
 
-void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)
+static void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)
 {
 	Material* mat = AssetGet_Material(FIELD_ASSET_MAIN_MATERIAL);
 	shader_update_fog(mat->shader);
