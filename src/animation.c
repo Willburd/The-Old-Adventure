@@ -27,7 +27,6 @@ int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate
         layer->current_animation = new_anim;
         layer->frame_rate = framerate;
         layer->single_shot = single_shot;
-        layer->previous_frame = 0;
         layer->current_frame = 0;
         layer->is_playing = is_playing;
         layer->blend_factor = Clamp(blend_factor, 0.0, 1.0);
@@ -66,7 +65,6 @@ void UpdateAnimLayers(struct Actor* actor)
         if (layer->is_playing)
         {
             // Solve the animation frame rate to game tick rate
-            layer->previous_frame = layer->current_frame;
             layer->current_frame += 1.0 / (update_rate / layer->frame_rate); // Solve the animation framerate vs the game's tick rate, then get the per tick change in frame
             unsigned int anim_len = layer->current_animation->keyframeCount;
             // Single shot animations only play once
@@ -77,11 +75,7 @@ void UpdateAnimLayers(struct Actor* actor)
                 continue;
             }
             // Looping animations, push back to within valid ranges. Negative values wrap around when getting frame data.
-            while (layer->current_frame >= anim_len)
-            {
-                layer->current_frame -= anim_len;
-                layer->previous_frame -= anim_len;
-            }
+            layer->current_frame = fmod(layer->current_frame, anim_len);
         }
     }
 }
@@ -89,7 +83,7 @@ void UpdateAnimLayers(struct Actor* actor)
 #define ANIM_MIN_THESHOLD 0.00001f
 #define CHECK_SKIP_LAYER(x) !x->is_playing || x->blend_factor <= ANIM_MIN_THESHOLD
 
-void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
+void ApplyAnimLayers(struct Actor* actor, Model* model)
 {
     if (actor->animlayer_count == -1)
         return;

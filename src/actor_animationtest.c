@@ -54,15 +54,15 @@ static void actor_animationtest_drawworld(struct Actor* actor, double tick_perce
 {
 	Model* model = AssetGet_Model(MODEL_ANIM_TEST);
 	Material* mat = AssetGet_Material(MATERIAL_ANIM_TEST);
-	Matrix solved_mat = GetMatrix(actor);
+	Matrix actor_matrix = GetMatrix(actor);
+	ApplyAnimLayers(actor, model);
 
-	ApplyAnimLayers(actor, model, tick_percent);
 	for (int i = 0; i <= model->meshCount; i++)
 	{
 		DrawMesh(
 			model->meshes[i],
 			*mat,
-			solved_mat
+			actor_matrix
 		);
 	}
 }

@@ -13,8 +13,7 @@ struct AnimationLayer {
 	int is_playing;						// If animation is animating
 	int single_shot;					// If animation plays once
 	float blend_factor;					// Intensity of animation blended over the previous layers
-	double frame_rate;					// Rate animation plays at
-	double previous_frame;					
+	double frame_rate;					// Rate animation plays at				
 	double current_frame;
 };
 
@@ -29,7 +28,7 @@ struct AnimationLayer* FindAnimLayer(struct Actor* actor, char* name);
 // Updates the frame data of all all layers on an actor.
 void UpdateAnimLayers(struct Actor* actor);
 // Blends all layers according to their blending intensity, playing state, order, etc
-void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent);
+void ApplyAnimLayers(struct Actor* actor, Model* model);
 
 // TODO - Replace this someday with gpu skinning or own implimentation
 void SkinModel(Model* model);
