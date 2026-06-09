@@ -10,8 +10,8 @@
 struct AnimationLayer {
 	unsigned int layer_index;
 	ModelAnimation* current_animation;	// current animation pointer
-	int is_playing;						// If animation is animating
-	int single_shot;					// If animation plays once
+	char is_playing;						// If animation is animating
+	char single_shot;					// If animation plays once
 	float blend_factor;					// Intensity of animation blended over the previous layers
 	double frame_rate;					// Rate animation plays at				
 	double current_frame;
@@ -20,7 +20,7 @@ struct AnimationLayer {
 // Gets a stored model's animation from a known animation name
 ModelAnimation* GetAnimation(Asset* asset, char* name);
 // Adds an animation to the next free layer
-int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor);
+int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, char single_shot, char is_playing, float blend_factor);
 // Gets an animation layer by it's index
 struct AnimationLayer* GetAnimLayer(struct Actor* actor, unsigned int index);
 // Gets a animation layer by it's animation name

@@ -6,7 +6,7 @@
 #include "raymath.h"
 #include "animation.h"
 
-#define ANIMATION_LAYER_MAX 32
+#define ANIMATION_LAYER_MAX 24
 
 // Must match gamestate flags
 #define ACTOR_FLAG_TICKDURING_GAME (1 << 0) // Updates during gameplay
@@ -43,7 +43,7 @@ struct Actor {
 	unsigned int actor_flags;
 	unsigned int collision_flags; // Defines in collision.h
 
-	int animlayer_count;
+	char animlayer_count;
 	struct AnimationLayer* animation_layers[ANIMATION_LAYER_MAX];
 
 	// Creation and destruction

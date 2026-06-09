@@ -15,7 +15,7 @@ ModelAnimation* GetAnimation(Asset* asset, char* name)
     return NULL;
 }
 
-int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor)
+int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, char single_shot, char is_playing, float blend_factor)
 {
     for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
     {
