@@ -134,8 +134,8 @@ void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
                 MatrixTranslate(blended.translation.x, blended.translation.y, blended.translation.z));
             model->boneMatrices[boneIndex] = MatrixMultiply(model->boneMatrices[boneIndex], blended_matrix);
         }
-        
-        // Forward bones to gpu
-        SkinModel(model);
     }
+
+    // Forward bones to gpu
+    SkinModel(model);
 }

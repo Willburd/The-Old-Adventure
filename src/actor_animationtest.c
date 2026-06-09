@@ -28,23 +28,23 @@ void actor_animationtest_init(struct Actor* actor)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define MATERIAL_ANIM_TEST ASSET_MATERIALS"/Objects/example.mat"
-#define MODEL_ANIM_TEST ASSET_MODELS"/Tools/animation_test.glb"
+#define MODEL_ANIM_TEST ASSET_MODELS"/Tools/robot.glb"
 
 static void actor_animationtest_preload_assets(struct Actor* actor)
 {
 	Asset* model_asset = LoadAsset_Model(MODEL_ANIM_TEST, FALSE);
-	ModelAnimation* anim_extend = GetAnimation(model_asset, "Extend");
-	ModelAnimation* anim_sway = GetAnimation(model_asset, "Sway");
+	ModelAnimation* anim_idle = GetAnimation(model_asset, "Robot_Idle");
+	ModelAnimation* anim_dance = GetAnimation(model_asset, "Robot_Dance");
 
-	AddAnimLayer(actor, anim_sway, ANIMATION_FRAMERATE, FALSE, TRUE, 1.0f);
-	AddAnimLayer(actor, anim_extend, ANIMATION_FRAMERATE * 10, TRUE, FALSE, 1.0f);
+	AddAnimLayer(actor, anim_idle, ANIMATION_FRAMERATE, FALSE, TRUE, 1.0f);
+	AddAnimLayer(actor, anim_dance, ANIMATION_FRAMERATE, TRUE, FALSE, 1.0f);
 }
 
 static void actor_animationtest_update(struct Actor* actor)
 {
 	if (CHECK_INPUTPRESSED(input_confirm))
 	{
-		struct AnimationLayer* layer = FindAnimLayer(actor, "Extend");
+		struct AnimationLayer* layer = FindAnimLayer(actor, "Robot_Dance");
 		if (!layer->is_playing)
 			layer->is_playing = TRUE;
 	}
@@ -53,12 +53,18 @@ static void actor_animationtest_update(struct Actor* actor)
 static void actor_animationtest_drawworld(struct Actor* actor, double tick_percent)
 {
 	Model* model = AssetGet_Model(MODEL_ANIM_TEST);
+	Material* mat = AssetGet_Material(MATERIAL_ANIM_TEST);
+	Matrix solved_mat = GetMatrix(actor);
+
 	ApplyAnimLayers(actor, model, tick_percent);
-	DrawMesh(
-		model->meshes[0],
-		*AssetGet_Material(MATERIAL_ANIM_TEST),
-		GetMatrix(actor)
-	);
+	for (int i = 0; i <= model->meshCount; i++)
+	{
+		DrawMesh(
+			model->meshes[i],
+			*mat,
+			solved_mat
+		);
+	}
 }
 
 static void actor_animationtest_destroy(struct Actor* actor)

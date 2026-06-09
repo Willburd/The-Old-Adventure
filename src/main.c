@@ -12,6 +12,7 @@
 #include "gamestate.h"
 
 #define RAYMATH_USE_SIMD_INTRINSICS 1
+#define PLATFORM_DESKTOP 1
 
 #if defined(PLATFORM_DESKTOP)
 #define GLSL_VERSION            330
