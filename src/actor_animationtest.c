@@ -1,6 +1,7 @@
 #include "tools.h"
 #include "actor.h"
 #include "animation.h"
+#include "input.h"
 
 // private header
 static void actor_animationtest_preload_assets(struct Actor* actor);
@@ -35,13 +36,18 @@ static void actor_animationtest_preload_assets(struct Actor* actor)
 	ModelAnimation* anim_extend = GetAnimation(model_asset, "Extend");
 	ModelAnimation* anim_sway = GetAnimation(model_asset, "Sway");
 
-	AddAnimLayer(actor, anim_extend, ANIMATION_FRAMERATE, FALSE, TRUE, 1.0f);
 	AddAnimLayer(actor, anim_sway, ANIMATION_FRAMERATE, FALSE, TRUE, 1.0f);
+	AddAnimLayer(actor, anim_extend, ANIMATION_FRAMERATE * 10, TRUE, FALSE, 1.0f);
 }
 
 static void actor_animationtest_update(struct Actor* actor)
 {
-
+	if (CHECK_INPUTPRESSED(input_confirm))
+	{
+		struct AnimationLayer* layer = FindAnimLayer(actor, "Extend");
+		if (!layer->is_playing)
+			layer->is_playing = TRUE;
+	}
 }
 
 static void actor_animationtest_drawworld(struct Actor* actor, double tick_percent)
