@@ -33,16 +33,17 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, V
 	ACTOR_ROT_SNAP(actor, at_rotation);
 	ACTOR_SCALE_SNAP(actor, at_scale);
 	ACTOR_VEL_RESET(actor, initial_velocity);
-	
-	// Configure to type of actor made
-	ACTOR_LIBRARY(actor, actor_type);
-	if (ACTOR_HAS(actor, func_preloadassets))
-		actor->func_preloadassets(actor);
+
 	// Create animation layers
 	for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
 	{
 		actor->animation_layers[i] = NULL;
 	}
+	
+	// Configure to type of actor made
+	ACTOR_LIBRARY(actor, actor_type);
+	if (ACTOR_HAS(actor, func_preloadassets))
+		actor->func_preloadassets(actor);
 
 	// Place in update list
 	for (int i = 0; i < ACTOR_LIMIT; i++)

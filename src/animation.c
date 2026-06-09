@@ -15,7 +15,7 @@ ModelAnimation* GetAnimation(Asset* asset, char* name)
     return NULL;
 }
 
-int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, float framerate, int single_shot)
+int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, float framerate, int single_shot, int is_playing, float blend_factor)
 {
     for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
     {
@@ -25,11 +25,13 @@ int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, float framerate,
         struct AnimationLayer* layer = actor->animation_layers[i];
         layer->layer_index = i;
         layer->current_animation = new_anim;
-        layer->anim_name = new_anim->name;
         layer->frame_rate = framerate;
         layer->single_shot = single_shot;
         layer->previous_frame = 0;
         layer->current_frame = 0;
+        layer->is_playing = is_playing;
+        layer->blend_factor = blend_factor;
+        printf("ANIM: Layer created [%i]:%s\n", i, new_anim->name);
         return i;
     }
     return -1;
@@ -46,7 +48,7 @@ struct AnimationLayer* FindAnimLayer(struct Actor* actor, char* name)
     {
         if (actor->animation_layers[i] == NULL)
             continue;
-        if (strcmp(actor->animation_layers[i]->anim_name, name) == 0)
+        if (strcmp(actor->animation_layers[i]->current_animation->name, name) == 0)
             return actor->animation_layers[i];
     }
     return NULL;
