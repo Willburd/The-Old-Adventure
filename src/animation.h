@@ -30,7 +30,7 @@ struct AnimationLayer {
 // Gets a stored model's animation from a known animation name
 ModelAnimation* GetAnimation(Asset* asset, char* name);
 // Adds an animation to the next free layer
-int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor);
+struct AnimationLayer* AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor);
 // Gets an animation layer by it's index
 struct AnimationLayer* GetAnimLayer(struct Actor* actor, unsigned int index);
 // Gets a animation layer by it's animation name

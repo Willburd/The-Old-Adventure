@@ -9,13 +9,13 @@ ModelAnimation* GetAnimation(Asset* asset, char* name)
         return NULL;
     for (int i = 0; i < asset->anm_count; i++)
     {
-        if (strcmp(asset->anm[i].name, name) == 0)
+        if (STRMATCH(asset->anm[i].name, name))
             return &asset->anm[i];
     }
     return NULL;
 }
 
-int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor)
+struct AnimationLayer* AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor)
 {
     for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
     {
@@ -38,9 +38,9 @@ int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate
         if (i > actor->animlayer_count)
             actor->animlayer_count = i;
         printf("ANIM: Layer created [%i]:%s\n", i, new_anim->name);
-        return i;
+        return layer;
     }
-    return -1;
+    return NULL;
 }
 
 struct AnimationLayer* GetAnimLayer(struct Actor* actor, unsigned int index)
@@ -74,7 +74,7 @@ void AnimLayerFilterBone(Model* model, struct AnimationLayer* layer, const char*
     }
     // If you mess up, lets help out
 #ifdef _DEBUG
-    printf("Bone with filter id did not exist: %s\Bones ids are:\n", bone_name);
+    printf("ANIM: Bone with filter id did not exist: %s\Bones ids are:\n", bone_name);
     for (int boneIndex = 0; boneIndex < boneCount; boneIndex++)
     {
         printf("[%i]:%s\n", boneIndex, model->skeleton.bones[boneIndex].name);
