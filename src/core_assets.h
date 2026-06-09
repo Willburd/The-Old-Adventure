@@ -1,5 +1,5 @@
-#ifndef CORE_ASSETS_HEADER
-#define CORE_ASSETS_HEADER
+#ifndef __CORE_ASSETS_HEADER__
+#define __CORE_ASSETS_HEADER__
 
 #include "raylib.h"
 #include "assets.h"

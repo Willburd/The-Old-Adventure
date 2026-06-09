@@ -1,5 +1,5 @@
-#ifndef GLOBALS_HEADER
-#define GLOBALS_HEADER
+#ifndef __GLOBALS_HEADER__
+#define __GLOBALS_HEADER__
 
 #include <stdint.h>
 

@@ -1,5 +1,5 @@
-#ifndef SCENE_LIBRARY_HEADER
-#define SCENE_LIBRARY_HEADER
+#ifndef __SCENE_LIBRARY_HEADER__
+#define __SCENE_LIBRARY_HEADER__
 
 #include <stdio.h>
 #include "actor.h"

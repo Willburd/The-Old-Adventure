@@ -1,5 +1,5 @@
-#ifndef LIGHT_TOOLS_HEADER
-#define LIGHT_TOOLS_HEADER
+#ifndef __LIGHT_TOOLS_HEADER__
+#define __LIGHT_TOOLS_HEADER__
 
 #include "raymath.h"
 #include "game_draw.h"

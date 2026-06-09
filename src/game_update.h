@@ -1,5 +1,5 @@
-#ifndef GAME_UPDATE_HEADER
-#define GAME_UPDATE_HEADER
+#ifndef __GAME_UPDATE_HEADER__
+#define __GAME_UPDATE_HEADER__
 
 void game_update();
 

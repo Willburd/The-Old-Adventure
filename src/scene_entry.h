@@ -1,5 +1,5 @@
-#ifndef SCENE_ENTRY_HEADER
-#define SCENE_ENTRY_HEADER
+#ifndef __SCENE_ENTRY_HEADER__
+#define __SCENE_ENTRY_HEADER__
 
 #include "stdint.h"
 #include "scene_library.h"

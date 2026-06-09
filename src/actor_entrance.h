@@ -1,5 +1,5 @@
-#ifndef ACTOR_ENTRANCE_HEADER
-#define ACTOR_ENTRANCE_HEADER
+#ifndef __ACTOR_ENTRANCE_HEADER__
+#define __ACTOR_ENTRANCE_HEADER__
 
 #include "raylib.h"
 #include "actor.h"

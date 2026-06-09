@@ -1,5 +1,5 @@
-#ifndef ENTITY_HEADER
-#define ENTITY_HEADER
+#ifndef __ENTITY_HEADER__
+#define __ENTITY_HEADER__
 
 #include <stdint.h>
 #include "actor.h"

@@ -1,5 +1,5 @@
-#ifndef INPUT_HEADER
-#define INPUT_HEADER
+#ifndef __INPUT_HEADER__
+#define __INPUT_HEADER__
 
 #include "raylib.h"
 

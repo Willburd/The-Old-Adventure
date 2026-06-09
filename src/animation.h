@@ -1,5 +1,5 @@
-#ifndef ANIMATION_HEADER
-#define ANIMATION_HEADER
+#ifndef __ANIMATION_HEADER__
+#define __ANIMATION_HEADER__
 
 // Expected animation framerate for ALL model animations
 #define ANIMATION_FRAMERATE 30

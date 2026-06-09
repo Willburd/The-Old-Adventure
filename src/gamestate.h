@@ -1,5 +1,5 @@
-#ifndef GAMESTATE_HEADER
-#define GAMESTATE_HEADER
+#ifndef __GAMESTATE_HEADER__
+#define __GAMESTATE_HEADER__
 
 #include "tools.h"
 #include "raylib.h"

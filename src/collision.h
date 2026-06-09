@@ -1,5 +1,5 @@
-#ifndef COLLISION_HEADER
-#define COLLISION_HEADER
+#ifndef __COLLISION_HEADER__
+#define __COLLISION_HEADER__
 
 #define MAX_COLLIDERS 256
 

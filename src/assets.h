@@ -1,5 +1,5 @@
-#ifndef ASSETS_HEADER
-#define ASSETS_HEADER
+#ifndef __ASSETS_HEADER__
+#define __ASSETS_HEADER__
 
 #include <string.h>
 #include <stdio.h>

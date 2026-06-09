@@ -2,8 +2,8 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file.
 
-#ifndef HASHMAP_H
-#define HASHMAP_H
+#ifndef __HASHMAP_H__
+#define __HASHMAP_H__
 
 #include <stdbool.h>
 #include <stddef.h>

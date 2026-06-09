@@ -70,6 +70,12 @@
     <Filter Include="Source Files\adventure\game">
       <UniqueIdentifier>{cd9a0e50-0966-42ad-9e50-4634f46ef16f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\hashmap">
+      <UniqueIdentifier>{ba968dd7-1a95-4f0b-b197-cf330bb26838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\hashmap">
+      <UniqueIdentifier>{3d37dd40-4d53-46e5-9f6e-8e743bc38e82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -80,9 +86,6 @@
     </ClCompile>
     <ClCompile Include="actor_factory.c">
       <Filter>Source Files\engine\actors</Filter>
-    </ClCompile>
-    <ClCompile Include="hashmap.c">
-      <Filter>Source Files\engine\tools</Filter>
     </ClCompile>
     <ClCompile Include="game_draw.c">
       <Filter>Source Files\engine\game</Filter>
@@ -156,12 +159,12 @@
     <ClCompile Include="animation.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
+    <ClCompile Include="hashmap.c">
+      <Filter>Source Files\hashmap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
-      <Filter>Header Files\engine\tools</Filter>
-    </ClInclude>
-    <ClInclude Include="hashmap.h">
       <Filter>Header Files\engine\tools</Filter>
     </ClInclude>
     <ClInclude Include="actor.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="animation.h">
       <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="hashmap.h">
+      <Filter>Header Files\hashmap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

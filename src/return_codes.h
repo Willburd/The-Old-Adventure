@@ -1,5 +1,5 @@
-#ifndef RETURNCODE_HEADER
-#define RETURNCODE_HEADER
+#ifndef __RETURNCODE_HEADER__
+#define __RETURNCODE_HEADER__
 
 #define ERR_SUCCESS 0
 #define ERR_NOALLOC 1

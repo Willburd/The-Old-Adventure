@@ -1,5 +1,5 @@
-#ifndef ACTOR_LIBRARY_HEADER
-#define ACTOR_LIBRARY_HEADER
+#ifndef __ACTOR_LIBRARY_HEADER__
+#define __ACTOR_LIBRARY_HEADER__
 
 #include "actor.h"
 

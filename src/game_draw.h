@@ -1,5 +1,5 @@
-#ifndef GAME_DRAW_HEADER
-#define GAME_DRAW_HEADER
+#ifndef __GAME_DRAW_HEADER__
+#define __GAME_DRAW_HEADER__
 
 #include "raylib.h"
 

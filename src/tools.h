@@ -1,5 +1,5 @@
-#ifndef TOOLS_HEADER
-#define TOOLS_HEADER
+#ifndef __TOOLS_HEADER__
+#define __TOOLS_HEADER__
 
 #include "raylib.h"
 #include "raymath.h"
