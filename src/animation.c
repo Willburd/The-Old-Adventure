@@ -47,7 +47,7 @@ struct AnimationLayer* GetAnimLayer(struct Actor* actor, unsigned int index)
 struct AnimationLayer* FindAnimLayer(struct Actor* actor, char* name)
 {
     if (actor->animlayer_count == -1)
-        return;
+        return NULL;
     for (int i = 0; i <= actor->animlayer_count; i++)
     {
         if (strcmp(actor->animation_layers[i]->current_animation->name, name) == 0)
@@ -93,17 +93,6 @@ void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
 {
     if (actor->animlayer_count == -1)
         return;
-    // Get the total blending factor of all active layers
-    float total_blend = 0.0f;
-    for (int i = 0; i <= actor->animlayer_count; i++)
-    {
-        if(CHECK_SKIP_LAYER(actor->animation_layers[i]))
-            continue;
-        total_blend += actor->animation_layers[i]->blend_factor;
-    }
-    // Somehow nothing was active...
-    if (total_blend < ANIM_MIN_THESHOLD)
-        return;
     int boneCount = model->skeleton.boneCount;
     if (boneCount == 0)
         return;
@@ -127,7 +116,6 @@ void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
             // Get layer's data
             struct AnimationLayer* layer = actor->animation_layers[i];
             ModelAnimation* anim = layer->current_animation;
-            double layer_blend = layer->blend_factor / total_blend;
 
             // Get current bone's transform at this frame of the animation
             int frame_index = (int)layer->current_frame;
@@ -135,9 +123,9 @@ void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
 
             // Lerp from the bind pose to the desired transform. This will act as our influence of intensity.
             Transform blended = { 0 };
-            blended.translation = Vector3Lerp(bind_transform->translation, anim_transform->translation, layer_blend);
-            blended.rotation = QuaternionSlerp(bind_transform->rotation, anim_transform->rotation, layer_blend);
-            blended.scale = Vector3Lerp(bind_transform->scale, anim_transform->scale, layer_blend);
+            blended.translation = Vector3Lerp(bind_transform->translation, anim_transform->translation, layer->blend_factor);
+            blended.rotation = QuaternionSlerp(bind_transform->rotation, anim_transform->rotation, layer->blend_factor);
+            blended.scale = Vector3Lerp(bind_transform->scale, anim_transform->scale, layer->blend_factor);
 
             // Build and apply the influence scaled matrix to the bone's transform. Happens for each layer cumulatively.
             Matrix blended_matrix = MatrixMultiply(MatrixMultiply(

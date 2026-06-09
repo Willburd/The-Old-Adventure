@@ -1,6 +1,10 @@
 #include "animation.h"
 #include "raymath.h"
 #include "raylib.h"
+#include "rlgl.h"       // Requried for: rlUpdateVertexBuffer() (CPU-skinning)
+#include <stdlib.h>     // Required for: NULL
+
+
 
 /*******************************************************************************************
 *
