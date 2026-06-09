@@ -35,8 +35,8 @@ static void actor_animationtest_preload_assets(struct Actor* actor)
 	ModelAnimation* anim_extend = GetAnimation(model_asset, "Extend");
 	ModelAnimation* anim_sway = GetAnimation(model_asset, "Sway");
 
-	AddAnimLayer(actor, anim_extend, 30, FALSE, TRUE, 1.0f);
-	AddAnimLayer(actor, anim_sway, 30, FALSE, TRUE, 1.0f);
+	AddAnimLayer(actor, anim_extend, ANIMATION_FRAMERATE, FALSE, TRUE, 1.0f);
+	AddAnimLayer(actor, anim_sway, ANIMATION_FRAMERATE, FALSE, TRUE, 1.0f);
 }
 
 static void actor_animationtest_update(struct Actor* actor)

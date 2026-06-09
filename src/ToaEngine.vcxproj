@@ -176,6 +176,7 @@
     <ClCompile Include="scene_fieldtest.c" />
     <ClCompile Include="scene_test.c" />
     <ClCompile Include="scene_title.c" />
+    <ClCompile Include="skinmodel.c" />
     <ClCompile Include="tools.c" />
   </ItemGroup>
   <ItemGroup>

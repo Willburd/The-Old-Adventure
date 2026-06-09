@@ -31,4 +31,7 @@ void UpdateAnimLayers(struct Actor* actor);
 // Blends all layers according to their blending intensity, playing state, order, etc
 void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent);
 
+// TODO - Replace this someday with gpu skinning or own implimentation
+void SkinModel(Model* model);
+
 #endif
