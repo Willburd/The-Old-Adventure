@@ -108,6 +108,13 @@ void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
             MatrixTranslate(bind_transform->translation.x, bind_transform->translation.y, bind_transform->translation.z));
         model->boneMatrices[boneIndex] = MatrixInvert(bind_matrix); // Apply bind pose to bone before we do any transforms
 
+        // Summed transformation of all blended animations
+        Transform blended_transform = {
+            .translation = bind_transform->translation,
+            .rotation = bind_transform->rotation,
+            .scale = bind_transform->scale
+        };
+
         // Blend all active layers by their actual blending percents
         for (int i = 0; i <= actor->animlayer_count; i++)
         {
@@ -122,18 +129,17 @@ void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
             Transform* anim_transform = &anim->keyframePoses[frame_index][boneIndex];
 
             // Lerp from the bind pose to the desired transform. This will act as our influence of intensity.
-            Transform blended = { 0 };
-            blended.translation = Vector3Lerp(bind_transform->translation, anim_transform->translation, layer->blend_factor);
-            blended.rotation = QuaternionSlerp(bind_transform->rotation, anim_transform->rotation, layer->blend_factor);
-            blended.scale = Vector3Lerp(bind_transform->scale, anim_transform->scale, layer->blend_factor);
-
-            // Build and apply the influence scaled matrix to the bone's transform. Happens for each layer cumulatively.
-            Matrix blended_matrix = MatrixMultiply(MatrixMultiply(
-                MatrixScale(blended.scale.x, blended.scale.y, blended.scale.z),
-                QuaternionToMatrix(blended.rotation)),
-                MatrixTranslate(blended.translation.x, blended.translation.y, blended.translation.z));
-            model->boneMatrices[boneIndex] = MatrixMultiply(model->boneMatrices[boneIndex], blended_matrix);
+            blended_transform.translation = Vector3Lerp(blended_transform.translation, anim_transform->translation, layer->blend_factor);
+            blended_transform.rotation = QuaternionSlerp(blended_transform.rotation, anim_transform->rotation, layer->blend_factor);
+            blended_transform.scale = Vector3Lerp(blended_transform.scale, anim_transform->scale, layer->blend_factor);
         }
+
+        // Build and apply the influence scaled matrix to the bone's transform.
+        Matrix blended_matrix = MatrixMultiply(MatrixMultiply(
+            MatrixScale(blended_transform.scale.x, blended_transform.scale.y, blended_transform.scale.z),
+            QuaternionToMatrix(blended_transform.rotation)),
+            MatrixTranslate(blended_transform.translation.x, blended_transform.translation.y, blended_transform.translation.z));
+        model->boneMatrices[boneIndex] = MatrixMultiply(model->boneMatrices[boneIndex], blended_matrix);
     }
 
     // Forward bones to gpu

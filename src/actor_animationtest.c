@@ -33,11 +33,11 @@ void actor_animationtest_init(struct Actor* actor)
 static void actor_animationtest_preload_assets(struct Actor* actor)
 {
 	Asset* model_asset = LoadAsset_Model(MODEL_ANIM_TEST, FALSE);
-	ModelAnimation* anim_idle = GetAnimation(model_asset, "Robot_Idle");
+	ModelAnimation* anim_idle = GetAnimation(model_asset, "Robot_Walking");
 	ModelAnimation* anim_dance = GetAnimation(model_asset, "Robot_Dance");
 
 	AddAnimLayer(actor, anim_idle, ANIMATION_FRAMERATE, FALSE, TRUE, 1.0f);
-	AddAnimLayer(actor, anim_dance, ANIMATION_FRAMERATE, TRUE, FALSE, 1.0f);
+	AddAnimLayer(actor, anim_dance, ANIMATION_FRAMERATE, TRUE, FALSE, 0.5f);
 }
 
 static void actor_animationtest_update(struct Actor* actor)
