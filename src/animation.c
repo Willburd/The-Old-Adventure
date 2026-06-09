@@ -3,6 +3,8 @@
 #include "tools.h"
 #include <string.h>
 
+static void ApplyBlendedAnim(struct Actor* actor, Model* model, struct AnimationLayer* layer, float influence, double tick_percent);
+
 ModelAnimation* GetAnimation(Asset* asset, char* name)
 {
     if (asset->mdl == NULL || asset->anm == NULL)
@@ -15,7 +17,7 @@ ModelAnimation* GetAnimation(Asset* asset, char* name)
     return NULL;
 }
 
-int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, float framerate, int single_shot, int is_playing, float blend_factor)
+int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor)
 {
     for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
     {
@@ -31,6 +33,8 @@ int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, float framerate,
         layer->current_frame = 0;
         layer->is_playing = is_playing;
         layer->blend_factor = blend_factor;
+        if (i > actor->animlayer_count)
+            actor->animlayer_count = i;
         printf("ANIM: Layer created [%i]:%s\n", i, new_anim->name);
         return i;
     }
@@ -44,10 +48,10 @@ struct AnimationLayer* GetAnimLayer(struct Actor* actor, unsigned int index)
 
 struct AnimationLayer* FindAnimLayer(struct Actor* actor, char* name)
 {
-    for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
+    if (actor->animlayer_count == -1)
+        return;
+    for (int i = 0; i <= actor->animlayer_count; i++)
     {
-        if (actor->animation_layers[i] == NULL)
-            continue;
         if (strcmp(actor->animation_layers[i]->current_animation->name, name) == 0)
             return actor->animation_layers[i];
     }
@@ -56,20 +60,21 @@ struct AnimationLayer* FindAnimLayer(struct Actor* actor, char* name)
 
 void UpdateAnimLayers(struct Actor* actor)
 {
-    for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
+    if (actor->animlayer_count == -1)
+        return;
+    for (int i = 0; i <= actor->animlayer_count; i++)
     {
-        if (actor->animation_layers[i] == NULL)
-            continue;
         struct AnimationLayer* layer = actor->animation_layers[i];
         if (layer->is_playing)
         {
+            // Solve the animation frame rate to game tick rate
             layer->previous_frame = layer->current_frame;
-            layer->current_frame += layer->frame_rate;
+            layer->current_frame += 1.0 / (update_rate / layer->frame_rate); // Solve the animation framerate vs the game's tick rate, then get the per tick change in frame
             unsigned int anim_len = layer->current_animation->keyframeCount;
             // Single shot animations only play once
-            if (layer->current_frame > 1.0f && layer->single_shot)
+            if (layer->current_frame > 1.0 && layer->single_shot)
             {
-                layer->current_frame = 0.0f;
+                layer->current_frame = 0.0;
                 layer->is_playing = FALSE;
                 continue;
             }
@@ -83,7 +88,37 @@ void UpdateAnimLayers(struct Actor* actor)
     }
 }
 
-void ApplyAnimLayers(struct Actor* actor, Model* model)
-{
+#define ANIM_MIN_THESHOLD 0.00001f
+#define CHECK_SKIP_LAYER(x) !x->is_playing || x->blend_factor <= ANIM_MIN_THESHOLD
 
+void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
+{
+    if (actor->animlayer_count == -1)
+        return;
+    // Get the total blending factor of all active layers
+    float total_blend = 0.0f;
+    for (int i = 0; i <= actor->animlayer_count; i++)
+    {
+        if(CHECK_SKIP_LAYER(actor->animation_layers[i]))
+            continue;
+        total_blend += actor->animation_layers[i]->blend_factor;
+    }
+    // Somehow nothing was active...
+    if (total_blend < ANIM_MIN_THESHOLD)
+        return;
+    // Blend all active layers by their actual blending percents
+    for (int i = 0; i <= actor->animlayer_count; i++)
+    {
+        if (CHECK_SKIP_LAYER(actor->animation_layers[i]))
+            continue;
+        struct AnimationLayer* layer = actor->animation_layers[i];
+        ApplyBlendedAnim(actor, model, layer, layer->blend_factor / total_blend, tick_percent);
+    }
+}
+
+// Blends animation into model with specific influence
+static void ApplyBlendedAnim(struct Actor* actor, Model* model, struct AnimationLayer* layer, float influence, double tick_percent)
+{
+    // TEMP
+    UpdateModelAnimation(*model, *layer->current_animation, layer->current_frame);
 }

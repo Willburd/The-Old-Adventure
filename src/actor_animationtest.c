@@ -35,8 +35,8 @@ static void actor_animationtest_preload_assets(struct Actor* actor)
 	ModelAnimation* anim_extend = GetAnimation(model_asset, "Extend");
 	ModelAnimation* anim_sway = GetAnimation(model_asset, "Sway");
 
-	AddAnimLayer(actor, anim_extend, 30, FALSE, FALSE, 1.0f);
-	AddAnimLayer(actor, anim_sway, 30, FALSE, FALSE, 1.0f);
+	AddAnimLayer(actor, anim_extend, 30, FALSE, TRUE, 1.0f);
+	AddAnimLayer(actor, anim_sway, 30, FALSE, TRUE, 1.0f);
 }
 
 static void actor_animationtest_update(struct Actor* actor)
@@ -47,7 +47,7 @@ static void actor_animationtest_update(struct Actor* actor)
 static void actor_animationtest_drawworld(struct Actor* actor, double tick_percent)
 {
 	Model* model = AssetGet_Model(MODEL_ANIM_TEST);
-	ApplyAnimLayers(actor, model);
+	ApplyAnimLayers(actor, model, tick_percent);
 	DrawMesh(
 		model->meshes[0],
 		*AssetGet_Material(MATERIAL_ANIM_TEST),

@@ -1,6 +1,9 @@
 #ifndef ANIMATION_HEADER
 #define ANIMATION_HEADER
 
+// Expected animation framerate for ALL model animations
+#define ANIMATION_FRAMERATE 30
+
 #include "actor.h"
 #include "assets.h"
 
@@ -10,15 +13,15 @@ struct AnimationLayer {
 	int is_playing;						// If animation is animating
 	int single_shot;					// If animation plays once
 	float blend_factor;					// Intensity of animation blended over the previous layers
-	float frame_rate;					// Rate animation plays at
-	float previous_frame;					
-	float current_frame;
+	double frame_rate;					// Rate animation plays at
+	double previous_frame;					
+	double current_frame;
 };
 
 // Gets a stored model's animation from a known animation name
 ModelAnimation* GetAnimation(Asset* asset, char* name);
 // Adds an animation to the next free layer
-int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, float framerate, int single_shot, int is_playing, float blend_factor);
+int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor);
 // Gets an animation layer by it's index
 struct AnimationLayer* GetAnimLayer(struct Actor* actor, unsigned int index);
 // Gets a animation layer by it's animation name
@@ -26,6 +29,6 @@ struct AnimationLayer* FindAnimLayer(struct Actor* actor, char* name);
 // Updates the frame data of all all layers on an actor.
 void UpdateAnimLayers(struct Actor* actor);
 // Blends all layers according to their blending intensity, playing state, order, etc
-void ApplyAnimLayers(struct Actor* actor, Model* model);
+void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent);
 
 #endif
