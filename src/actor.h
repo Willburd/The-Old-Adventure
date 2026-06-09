@@ -43,7 +43,7 @@ struct Actor {
 	unsigned int actor_flags;
 	unsigned int collision_flags; // Defines in collision.h
 
-	char animlayer_count;
+	int animlayer_count;
 	struct AnimationLayer* animation_layers[ANIMATION_LAYER_MAX];
 
 	// Creation and destruction

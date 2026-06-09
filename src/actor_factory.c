@@ -7,6 +7,7 @@
 #include "actor_factory.h"
 #include "game_update.h"
 #include "animation.h"
+#include "actor_library.h"
 
 // Creates an actor in the world.
 struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity)
@@ -78,7 +79,7 @@ void ACTOR_DESTROY(struct Actor* actor)
 
 	// Call destroy actions
 #ifdef _DEBUG
-	printf("ACTOR DESTROY: [type: %02x] slot: %i [%llu]\n", actor->actor_type, actor->index, actor->uuid);
+	printf("ACTOR DESTROY: [type: %s] slot: %i [%llu]\n", actor_name(actor->actor_type), actor->index, actor->uuid);
 #endif
 	total_actors--;
 	if (ACTOR_HAS(actor, func_destroy))

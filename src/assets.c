@@ -30,35 +30,39 @@ uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1) {
     return hashmap_sip(asset->filepath, strlen(asset->filepath), seed0, seed1);
 }
 
-void asset_free(const void* item) {
-    const Asset* asset = item;
+void asset_free(void* item) {
+    Asset* asset = item;
     if (asset->tex != NULL && IsTextureValid(*asset->tex))
     {
         UnloadTexture(*asset->tex);
-        free(asset->tex);
+        RELEASE(asset->tex);
         printf("ASSET: texture unloaded %s\n", asset->filepath);
     }
     if (asset->mdl != NULL && IsModelValid(*asset->mdl))
     {
+        // Unload anims
+        if (asset->anm != NULL && IsModelAnimationValid(*asset->mdl, *asset->anm))
+        {
+            UnloadModelAnimations(asset->anm, asset->anm_count);
+            asset->anm = NULL; // Do not free, UnloadModelAnimations above does that.
+            asset->anm_count = 0;
+            printf("ASSET: animations unloaded %s\n", asset->filepath);
+        }
+        // Unload model
         UnloadModel(*asset->mdl);
-        free(asset->mdl);
+        RELEASE(asset->mdl);
         printf("ASSET: model unloaded %s\n", asset->filepath);
-    }
-    if (asset->anm != NULL)
-    {
-        UnloadModelAnimations(asset->anm, asset->anm_count);
-        printf("ASSET: animations unloaded %s\n", asset->filepath);
     }
     if (asset->snd != NULL && IsSoundValid(*asset->snd))
     {
         UnloadSound(*asset->snd);
-        free(asset->snd);
+        RELEASE(asset->snd);
         printf("ASSET: sound unloaded %s\n", asset->filepath);
     }
     if (asset->mus != NULL && IsMusicValid(*asset->mus))
     {
         UnloadMusicStream(*asset->mus);
-        free(asset->mus);
+        RELEASE(asset->mus);
         printf("ASSET: music unloaded %s\n", asset->filepath);
     }
     if (asset->mat != NULL && IsMaterialValid(*asset->mat))
@@ -67,10 +71,10 @@ void asset_free(const void* item) {
 
         // Unload map
         UnloadMaterial(*asset->mat);
-        free(asset->mat);
+        RELEASE(asset->mat);
         printf("ASSET: material unloaded %s\n", asset->filepath);
     }
-    free(asset->filepath); // malloc char* string
+    RELEASE(asset->filepath); // malloc char* string
 }
 
 #define RETURN_EXISTING_ASSET(pth, s_core) Asset* check = AssetGetPackage(pth); if (check){if(s_core){check->core_asset=s_core;};return check;}
@@ -100,13 +104,16 @@ Asset* LoadAsset_Model(char* path, int is_core)
     MALLOC_SET(Model, asset->mdl, FALSE);
     // Load model
     *asset->mdl = LoadModel(path);
-    if (!IsModelValid(*asset->mdl))
-        printf("ASSET: Unable to load model: %s\n", path);
     // Load animation data too
     asset->anm = LoadModelAnimations(path, &asset->anm_count);
     // This uses MEMSET, ensure all data is assigned before hashmapping!
-    hashmap_set(loaded_assets, asset); 
-    printf("ASSET: loaded model: %s\n", asset->filepath);
+    hashmap_set(loaded_assets, asset);
+    if (!IsModelValid(*asset->mdl))
+        printf("ASSET: Unable to load model: %s\n", path);
+    else
+        if (asset->anm != NULL && !IsModelAnimationValid(*asset->mdl, *asset->anm))
+            printf("ASSET: Unable to load animations: %s\n", path);
+        printf("ASSET: loaded model: %s\n", asset->filepath);
     return asset;
 }
 
@@ -116,11 +123,12 @@ Asset* LoadAsset_Sound(char* path, int is_core)
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Sound, asset->snd, FALSE);
     *asset->snd = LoadSound(path);
-    if (!IsSoundValid(*asset->snd))
-        printf("ASSET: Unable to load sound: %s\n", path);
     // This uses MEMSET, ensure all data is assigned before hashmapping!
     hashmap_set(loaded_assets, asset);
-    printf("ASSET: loaded sound: %s\n", asset->filepath);
+    if (!IsSoundValid(*asset->snd))
+        printf("ASSET: Unable to load sound: %s\n", path);
+    else
+        printf("ASSET: loaded sound: %s\n", asset->filepath);
     return asset;
 }
 
@@ -130,11 +138,12 @@ Asset* LoadAsset_Music(char* path, int is_core)
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Music, asset->mus, FALSE);
     *asset->mus = LoadMusicStream(path);
-    if (!IsMusicValid(*asset->mus))
-        printf("ASSET: Unable to load music: %s\n", path);
     // This uses MEMSET, ensure all data is assigned before hashmapping!
     hashmap_set(loaded_assets, asset);
-    printf("ASSET: loaded music: %s\n", asset->filepath);
+    if (!IsMusicValid(*asset->mus))
+        printf("ASSET: Unable to load music: %s\n", path);
+    else
+        printf("ASSET: loaded music: %s\n", asset->filepath);
     return asset;
 }
 
@@ -144,11 +153,12 @@ Asset* LoadAsset_Material(char* path, int is_core)
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Material, asset->mat, FALSE);
     *asset->mat = LoadMaterial(asset, path, is_core);
-    if (!IsMaterialValid(*asset->mat))
-        printf("ASSET: Unable to load material: %s\n", path);
     // This uses MEMSET, ensure all data is assigned before hashmapping!
     hashmap_set(loaded_assets, asset);
-    printf("ASSET: loaded material: %s\n", asset->filepath);
+    if (!IsMaterialValid(*asset->mat))
+        printf("ASSET: Unable to load material: %s\n", path);
+    else
+        printf("ASSET: loaded material: %s\n", asset->filepath);
     return asset;
 }
 

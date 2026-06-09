@@ -15,7 +15,7 @@ ModelAnimation* GetAnimation(Asset* asset, char* name)
     return NULL;
 }
 
-int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, char single_shot, char is_playing, float blend_factor)
+int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor)
 {
     for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
     {
@@ -30,6 +30,11 @@ int AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate
         layer->current_frame = 0;
         layer->is_playing = is_playing;
         layer->blend_factor = Clamp(blend_factor, 0.0, 1.0);
+        for (int b = 0; b < MAX_BONES; b++)
+        {
+            // Automatically disable blending for bones above bone count
+            layer->bone_filter[b] = (b < layer->current_animation->boneCount); 
+        }
         if (i > actor->animlayer_count)
             actor->animlayer_count = i;
         printf("ANIM: Layer created [%i]:%s\n", i, new_anim->name);
@@ -53,6 +58,28 @@ struct AnimationLayer* FindAnimLayer(struct Actor* actor, char* name)
             return actor->animation_layers[i];
     }
     return NULL;
+}
+
+void AnimLayerFilterBone(Model* model, struct AnimationLayer* layer, const char* bone_name, char state)
+{
+    int boneCount = model->skeleton.boneCount;
+    if (boneCount == 0)
+        return;
+    for (int boneIndex = 0; boneIndex < boneCount; boneIndex++)
+    {
+        if (!STRMATCH(model->skeleton.bones[boneIndex].name, bone_name))
+            continue;
+        layer->bone_filter[boneIndex] = state;
+        return;
+    }
+    // If you mess up, lets help out
+#ifdef _DEBUG
+    printf("Bone with filter id did not exist: %s\Bones ids are:\n", bone_name);
+    for (int boneIndex = 0; boneIndex < boneCount; boneIndex++)
+    {
+        printf("[%i]:%s\n", boneIndex, model->skeleton.bones[boneIndex].name);
+    }
+#endif
 }
 
 void UpdateAnimLayers(struct Actor* actor)
@@ -116,6 +143,8 @@ void ApplyAnimLayers(struct Actor* actor, Model* model)
                 continue;
             // Get layer's data
             struct AnimationLayer* layer = actor->animation_layers[i];
+            if (!layer->bone_filter[boneIndex]) // Layer is disabled by this bone
+                continue;
             ModelAnimation* anim = layer->current_animation;
 
             // Get current bone's transform at this frame of the animation
