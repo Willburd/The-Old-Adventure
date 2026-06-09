@@ -16,6 +16,7 @@ static void actor_player_destroy(struct Actor* actor);
 // Setup the player actor. Public function in the header
 void actor_player_init(struct Actor* actor)
 {
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_HAS_ANIMATIONS;
 	actor->func_preloadassets = actor_player_preload_assets;
 	actor->func_update = actor_player_update;
 	actor->func_drawworld = actor_player_drawworld;

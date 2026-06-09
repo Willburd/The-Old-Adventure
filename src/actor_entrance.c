@@ -21,6 +21,7 @@ static Vector3 actor_entrance_get_camerastart(struct Actor* entrance);
 void actor_entrance_init(struct Actor* actor)
 {
     // Configure actor
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_IS_INVISIBLE;
 #ifdef _DEBUG
 	actor->func_drawworld = actor_entrance_drawworld;
 #endif

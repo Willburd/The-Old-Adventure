@@ -23,6 +23,7 @@ void actor_skybox_init(struct Actor* actor)
 	ACTOR_DESTROY_TYPE(act_skybox);
 
     // Configure actor
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE;
 	actor->func_update = actor_skybox_update;
 	actor->func_append_lights = actor_skybox_lights;
     actor->func_predrawworld = actor_skybox_predrawworld;

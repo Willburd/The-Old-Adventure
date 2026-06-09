@@ -6,6 +6,7 @@
 #include "return_codes.h"
 #include "actor_factory.h"
 #include "game_update.h"
+#include "animation.h"
 
 // Creates an actor in the world.
 struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity)
@@ -25,6 +26,7 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, V
 	actor->uuid = ++current_unique_id;
 	actor->actor_type = actor_type;
 	actor->parent = actor_parent;
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_PAUSED; // Default scene flags
 
 	// Set position
 	ACTOR_POS_SNAP(actor, at_position);
@@ -36,6 +38,11 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, V
 	ACTOR_LIBRARY(actor, actor_type);
 	if (ACTOR_HAS(actor, func_preloadassets))
 		actor->func_preloadassets(actor);
+	// Create animation layers
+	for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
+	{
+		actor->animation_layers[i] = NULL;
+	}
 
 	// Place in update list
 	for (int i = 0; i < ACTOR_LIMIT; i++)
@@ -75,6 +82,13 @@ void ACTOR_DESTROY(struct Actor* actor)
 	total_actors--;
 	if (ACTOR_HAS(actor, func_destroy))
 		actor->func_destroy(actor);
+
+	// Clear animation layers
+	for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
+	{
+		if (actor->animation_layers[i] != NULL)
+			RELEASE(actor->animation_layers[i]);
+	}
 
 	// Wipedata
 	world_actors[actor->index] = NULL;

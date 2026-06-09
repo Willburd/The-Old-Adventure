@@ -30,9 +30,6 @@ void scene_fieldtest_init(struct Actor* scene)
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 	SCENEDATA_CLEAR(scene->data);
-
-	// Set scene background
-	clear_background_color = SKYBLUE;
 }
 
 #define FIELD_ASSET_MAIN_MODEL ASSET_MODELS"/Scenes/test_room.glb"
@@ -64,7 +61,7 @@ static void scene_fieldtest_activate_room(struct Actor* scene, int room_index, i
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
 	data->active_room = room_index;
-	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
+	data->config_flags = 0;
 
 	// Entrances
 	ENTRANCE_CREATE(ent_debugentrance, scene, (Vector3) { 0, 0, 2 }, (Vector3) { 1, 0, 2 });

@@ -80,21 +80,21 @@ void game_update()
 		update_actor->last_rotation.z = update_actor->rotation.z;
 		update_actor->last_rotation.w = update_actor->rotation.w;
 
+		// Update the current cap of actors
+		if (update_actor->index > cap_actor)
+			cap_actor = update_actor->index;
+
 		// Handle actor preupdate
+		if (!((update_actor->actor_flags & GAMESTATE_FILTER_MODES) & gameplay_state)) // if can update in this state
+			continue;
 		if (ACTOR_HAS(update_actor, func_preupdate))
 			update_actor->func_preupdate(update_actor);
-
-		// Move actor if they have velocity
-		if (Vector3Distance(Vector3Zero(), update_actor->velocity) > 0.0)
+		if (Vector3Distance(Vector3Zero(), update_actor->velocity) > 0.0) // Move actor if they have velocity
 		{
 			update_actor->position.x += update_actor->velocity.x;
 			update_actor->position.y += update_actor->velocity.y;
 			update_actor->position.z += update_actor->velocity.z;
 		}
-
-		// Update the current cap of actors
-		if (update_actor->index > cap_actor)
-			cap_actor = update_actor->index;
 	}
 	current_actor_cap = cap_actor;
 
@@ -107,6 +107,8 @@ void game_update()
 	{
 		struct Actor * update_actor = world_actors[i];
 		if (!ACTOR_EXISTS(update_actor))
+			continue;
+		if (!((update_actor->actor_flags & GAMESTATE_FILTER_MODES) & gameplay_state)) // if can update in this state
 			continue;
 		if (ACTOR_HAS(update_actor, func_update))
 			update_actor->func_update(update_actor);
@@ -122,6 +124,10 @@ void game_update()
 		struct Actor* update_actor = world_actors[i];
 		if (!ACTOR_EXISTS(update_actor))
 			continue;
+		if (!((update_actor->actor_flags & GAMESTATE_FILTER_MODES) & gameplay_state)) // if can update in this state
+			continue;
+		if (update_actor->actor_flags & ACTOR_FLAG_HAS_ANIMATIONS)
+			UpdateAnimLayers(update_actor);
 		if (ACTOR_HAS(update_actor, func_postupdate))
 			update_actor->func_postupdate(update_actor);
 		if (ACTOR_HAS(update_actor, func_append_lights))

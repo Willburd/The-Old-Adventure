@@ -91,6 +91,9 @@ static void game_setup()
         world_actors[i] = NULL;
     }
 
+    // State
+    gameplay_state = GAMESTATE_GAMEPLAY;
+
     // Setup renderer
     clear_background_color = BLACK;
 

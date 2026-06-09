@@ -16,6 +16,7 @@ static void actor_debug_postdrawhud(struct Actor* actor, double delta_time);
 // Setup the player actor. Public function in the header
 void actor_debug_init(struct Actor* actor)
 {
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_PAUSED;
 	//actor->func_drawworld = actor_debug_drawworld;
 	actor->func_postdrawhud = actor_debug_postdrawhud;
 }

@@ -73,6 +73,8 @@ void game_draw(double tick_percent)
 		struct Actor* draw_actor = world_actors[i];
 		if (!ACTOR_EXISTS(draw_actor))
 			continue;
+		if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
+			continue;
 		if (ACTOR_HAS(draw_actor, func_predrawworld))
 			draw_actor->func_predrawworld(draw_actor, tick_percent);
 	}
@@ -94,6 +96,8 @@ void game_draw(double tick_percent)
 		struct Actor* draw_actor = world_actors[i];
 		if (!ACTOR_EXISTS(draw_actor))
 			continue;
+		if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
+			continue;
 		if (ACTOR_HAS(draw_actor, func_drawworld))
 			draw_actor->func_drawworld(draw_actor, tick_percent);
 	}
@@ -114,6 +118,8 @@ void game_draw(double tick_percent)
 	{
 		struct Actor* draw_actor = world_actors[i];
 		if (!ACTOR_EXISTS(draw_actor))
+			continue;
+		if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
 			continue;
 		if (ACTOR_HAS(draw_actor, func_postdrawworld))
 			draw_actor->func_postdrawworld(draw_actor, tick_percent);
@@ -142,6 +148,8 @@ void game_draw(double tick_percent)
 			struct Actor* draw_actor = world_actors[i];
 			if (!ACTOR_EXISTS(draw_actor))
 				continue;
+			if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
+				continue;
 			if (ACTOR_HAS(draw_actor, func_predrawhud))
 				draw_actor->func_predrawhud(draw_actor, tick_percent);
 		}
@@ -151,6 +159,8 @@ void game_draw(double tick_percent)
 			struct Actor* draw_actor = world_actors[i];
 			if (!ACTOR_EXISTS(draw_actor))
 				continue;
+			if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
+				continue;
 			if (ACTOR_HAS(draw_actor, func_drawhud))
 				draw_actor->func_drawhud(draw_actor, tick_percent);
 		}
@@ -159,6 +169,8 @@ void game_draw(double tick_percent)
 		{
 			struct Actor* draw_actor = world_actors[i];
 			if (!ACTOR_EXISTS(draw_actor))
+				continue;
+			if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
 				continue;
 			if (ACTOR_HAS(draw_actor, func_postdrawhud))
 				draw_actor->func_postdrawhud(draw_actor, tick_percent);

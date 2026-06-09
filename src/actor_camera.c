@@ -23,6 +23,7 @@ typedef struct {
 void actor_camera_init(struct Actor* actor)
 {
     // Configure actor
+    actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE;
     actor->func_preupdate = actor_camera_preupdate;
     actor->func_drawworld = actor_camera_drawworld;
     actor->func_postdrawhud = actor_camera_postdrawhud;

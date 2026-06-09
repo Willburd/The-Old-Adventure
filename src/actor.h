@@ -4,6 +4,22 @@
 #include <stdint.h>
 #include "raylib.h"
 #include "raymath.h"
+#include "animation.h"
+
+#define ANIMATION_LAYER_MAX 16
+
+// Must match gamestate flags
+#define ACTOR_FLAG_TICKDURING_GAME (1 << 0) // Updates during gameplay
+#define ACTOR_FLAG_TICKDURING_TRANSITION (1 << 2) // Updates during room enter/exit animations
+#define ACTOR_FLAG_TICKDURING_CUTSCENE (1 << 3) // Updates cutscenes
+#define ACTOR_FLAG_TICKDURING_PAUSED (1 << 4) // Updates during pause screen
+// RESERVED (1 << 4)
+// RESERVED (1 << 5)
+// RESERVED (1 << 6)
+// RESERVED (1 << 7)
+// End of reserved
+#define ACTOR_FLAG_HAS_ANIMATIONS (1 << 8) // Has animations
+#define ACTOR_FLAG_IS_INVISIBLE (1 << 9) // disable drawing
 
 struct Actor;
 struct Actor {
@@ -24,7 +40,9 @@ struct Actor {
 	Vector3 last_scale;
 	Vector3 last_velocity;
 
+	unsigned int actor_flags;
 	unsigned int collision_flags; // Defines in collision.h
+	struct AnimationLayer* animation_layers[ANIMATION_LAYER_MAX];
 
 	// Creation and destruction
 	void (*func_init)(struct Actor* actor);
@@ -50,6 +68,7 @@ struct Actor {
 #define ACTOR_CLEAR(x) \
 x->uuid = 0; x->index = -1; x->actor_type = 0; \
 x->parent = NULL; \
+x->actor_flags = 0; \
 x->collision_flags = 0; \
 x->func_init = NULL; x->func_preloadassets = NULL; \
 x->func_destroy = NULL; \
