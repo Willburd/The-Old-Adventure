@@ -43,6 +43,12 @@ static void actor_animationtest_preload_assets(struct Actor* actor)
 	AnimLayerFilterBone(model_asset, dance_layer, "UpperLeg.L", FALSE);
 	AnimLayerFilterBone(model_asset, dance_layer, "UpperLeg.R", FALSE);
 	AnimLayerFilterBone(model_asset, dance_layer, "Hips", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "Abdomen", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "Torso", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "Shoulder.L", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "Shoulder.R", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "UpperArm.L", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "UpperArm.R", FALSE);
 }
 
 static void actor_animationtest_update(struct Actor* actor)
