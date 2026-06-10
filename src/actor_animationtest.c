@@ -53,7 +53,7 @@ static void actor_animationtest_preload_assets(struct Actor* actor)
 
 static void actor_animationtest_update(struct Actor* actor)
 {
-	if (CHECK_INPUTPRESSED(input_confirm))
+	if (CHECK_INPUTPRESSED(input_cancel))
 	{
 		struct AnimationLayer* layer = FindAnimLayer(actor, "Robot_Dance");
 		if (layer != NULL && !layer->is_playing)
