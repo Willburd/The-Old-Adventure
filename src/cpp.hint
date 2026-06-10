@@ -4,3 +4,4 @@
 #define NULL
 #define NULL ((void *)0)
 #define ANIMATION_LAYER_MAX
+#define CHECK_SKIP_LAYER(x)
