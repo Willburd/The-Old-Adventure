@@ -36,7 +36,7 @@ struct AnimationLayer* GetAnimLayer(struct Actor* actor, unsigned int index);
 // Gets a animation layer by it's animation name
 struct AnimationLayer* FindAnimLayer(struct Actor* actor, char* name);
 // Enable or disable a bone from affecting a specific animation layer
-void AnimLayerFilterBone(Model* model, struct AnimationLayer* layer, const char* bone_name, char state);
+void AnimLayerFilterBone(Asset* model_asset, struct AnimationLayer* layer, const char* bone_name, char state);
 // Updates the frame data of all all layers on an actor.
 void UpdateAnimLayers(struct Actor* actor);
 // Blends all layers according to their blending intensity, playing state, order, etc

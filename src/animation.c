@@ -60,8 +60,11 @@ struct AnimationLayer* FindAnimLayer(struct Actor* actor, char* name)
     return NULL;
 }
 
-void AnimLayerFilterBone(Model* model, struct AnimationLayer* layer, const char* bone_name, char state)
+void AnimLayerFilterBone(Asset* model_asset, struct AnimationLayer* layer, const char* bone_name, char state)
 {
+    Model* model = model_asset->mdl;
+    if (model == NULL)
+        return;
     int boneCount = model->skeleton.boneCount;
     if (boneCount == 0)
         return;

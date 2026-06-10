@@ -33,17 +33,16 @@ void actor_animationtest_init(struct Actor* actor)
 static void actor_animationtest_preload_assets(struct Actor* actor)
 {
 	Asset* model_asset = LoadAsset_Model(MODEL_ANIM_TEST, FALSE);
-
 	struct AnimationLayer* idle_layer = AddAnimLayer(actor, GetAnimation(model_asset, "Robot_Running"), ANIMATION_FRAMERATE, FALSE, TRUE, 1.0f);
 
 	struct AnimationLayer* dance_layer = AddAnimLayer(actor, GetAnimation(model_asset, "Robot_Dance"), ANIMATION_FRAMERATE, TRUE, FALSE, 0.5f);
-	AnimLayerFilterBone(model_asset->mdl, dance_layer, "Foot.L", FALSE);
-	AnimLayerFilterBone(model_asset->mdl, dance_layer, "Foot.R", FALSE);
-	AnimLayerFilterBone(model_asset->mdl, dance_layer, "LowerLeg.L", FALSE);
-	AnimLayerFilterBone(model_asset->mdl, dance_layer, "LowerLeg.R", FALSE);
-	AnimLayerFilterBone(model_asset->mdl, dance_layer, "UpperLeg.L", FALSE);
-	AnimLayerFilterBone(model_asset->mdl, dance_layer, "UpperLeg.R", FALSE);
-	AnimLayerFilterBone(model_asset->mdl, dance_layer, "Hips", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "Foot.L", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "Foot.R", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "LowerLeg.L", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "LowerLeg.R", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "UpperLeg.L", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "UpperLeg.R", FALSE);
+	AnimLayerFilterBone(model_asset, dance_layer, "Hips", FALSE);
 }
 
 static void actor_animationtest_update(struct Actor* actor)
