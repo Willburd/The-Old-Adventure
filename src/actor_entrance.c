@@ -48,7 +48,7 @@ void actor_entrance_startentry(struct Actor* entrance)
 	if (ACTOR_EXISTS(player))
 	{
 		ACTOR_POS_SNAP(player, entrance->position);
-		ACTOR_ROT_SNAP(player, QuaternionFromAxisAngle(VEC3UP, Vector3Angle(entrance->position, end_pos)));
+		ACTOR_ROT_SNAP(player, entrance->rotation);
 		if (ACTOR_EXISTS(camera)) // Focus on player from camera pos
 			cam_main.target = Vector3Add(entrance->position, VEC3UP);
 	}

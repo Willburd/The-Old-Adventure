@@ -1,6 +1,7 @@
 #include "tools.h"
 #include "assets.h"
 #include "actor.h"
+#include "input.h"
 
 // private header
 static void actor_player_preload_assets(struct Actor* actor);
@@ -35,12 +36,16 @@ static void actor_player_preload_assets(struct Actor* actor)
 
 static void actor_player_update(struct Actor* actor)
 {
-
+	Vector2 move_dir = input_analog;
+	actor->position = Vector3Add(actor->position, Vector3Scale(Vector3RotateByQuaternion((Vector3){ move_dir.x, 0.0f, move_dir.y }, actor->rotation), 0.2f));
 }
+
+
 
 static void actor_player_drawworld(struct Actor* actor, double tick_percent)
 {
-	DrawCube(actor->position, 0.2f, 0.2f, 0.2f, GREEN);
+	DRAWCAPSULE(actor->position, 1.0f, 0.5f, GREEN);
+	DrawSphere(Vector3Add(actor->position, Vector3Add(Vector3Scale(VEC3UP, 1.9f), Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, 0.3f), actor->rotation))), 0.5, BLUE);
 }
 
 static void actor_player_drawhud(struct Actor* actor, double tick_percent)

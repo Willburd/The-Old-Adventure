@@ -32,6 +32,8 @@
 
 #define RELEASE(x) free(x);x = NULL;
 
+#define DRAWCAPSULE(pos, hig, rad, col) DrawCapsule(Vector3Add(pos, Vector3Scale(VEC3UP, rad)), Vector3Add(pos, Vector3Scale(VEC3UP, rad + hig + rad)), rad, 7, 3, col)
+
 Vector4 ColorToVector4(Color col);
 Color Vector4ToColor(Vector4 vec);
 Color Vector3ToColor(Vector3 vec, float alpha);
