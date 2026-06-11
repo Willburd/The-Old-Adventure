@@ -16,7 +16,7 @@ ModelAnimation* GetAnimation(Asset* asset, char* name)
     return NULL;
 }
 
-struct AnimationLayer* AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor)
+struct AnimationLayer* AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor, int blend_type)
 {
     for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
     {
@@ -31,6 +31,7 @@ struct AnimationLayer* AddAnimLayer(struct Actor* actor, ModelAnimation* new_ani
         layer->current_frame = 0;
         layer->is_playing = is_playing;
         layer->blend_factor = Clamp(blend_factor, 0.0, 1.0);
+        layer->blend_type = blend_type;
         for (int b = 0; b < MAX_BONES; b++)
         {
             // Automatically disable blending for bones above bone count
@@ -138,6 +139,20 @@ static inline Transform BuildDeltaTransform(int bone_index, struct AnimationLaye
 
 static inline void ApplyAnimationLayerTransformsToBone(int bone_index, Model* model, struct Actor* actor, double tick_percent)
 {
+    // Get total blending amount
+    double blend_counts[MAX_BONES] = { 0 };
+    for (int i = 0; i <= actor->animlayer_count; i++)
+    {
+        if (CHECK_SKIP_LAYER(actor->animation_layers[i]))
+            continue;
+        // Check if layer is disabled by this bone's filter.
+        struct AnimationLayer* layer = actor->animation_layers[i];
+        ModelAnimation* anim = layer->current_animation;
+        if (!layer->bone_filter[bone_index])
+            continue;
+        blend_counts[bone_index] += 1;
+    }
+
     // Blend all active layers by their actual blending percents
     for (int i = 0; i <= actor->animlayer_count; i++)
     {
@@ -154,6 +169,8 @@ static inline void ApplyAnimationLayerTransformsToBone(int bone_index, Model* mo
 
         // Blend with current animation
         double blend = layer->blend_factor;
+        if(layer->blend_type == BLENDTYPE_MIX)
+            blend /= blend_counts[bone_index];
         model->currentPose[bone_index].translation = Vector3Lerp(model->currentPose[bone_index].translation, frame_transform.translation, blend);
         model->currentPose[bone_index].rotation = QuaternionSlerp(model->currentPose[bone_index].rotation, frame_transform.rotation, blend);
         model->currentPose[bone_index].scale = Vector3Lerp(model->currentPose[bone_index].scale, frame_transform.scale, blend);

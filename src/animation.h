@@ -5,6 +5,9 @@
 #define ANIMATION_FRAMERATE 30
 #define MAX_BONES 255
 
+#define BLENDTYPE_MIX 0
+#define BLENDTYPE_REPLACE 1
+
 #include "actor.h"
 #include "assets.h"
 
@@ -27,12 +30,14 @@ struct AnimationLayer {
 	double current_frame;
 	// Previous animation frame
 	double previous_frame;
+	// Blend type
+	int blend_type;
 };
 
 // Gets a stored model's animation from a known animation name
 ModelAnimation* GetAnimation(Asset* asset, char* name);
 // Adds an animation to the next free layer
-struct AnimationLayer* AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor);
+struct AnimationLayer* AddAnimLayer(struct Actor* actor, ModelAnimation* new_anim, double framerate, int single_shot, int is_playing, float blend_factor, int blend_type);
 // Gets an animation layer by it's index
 struct AnimationLayer* GetAnimLayer(struct Actor* actor, unsigned int index);
 // Gets a animation layer by it's animation name
