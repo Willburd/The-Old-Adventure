@@ -143,7 +143,7 @@ static inline void ApplyAnimationLayerTransformsToBone(int bone_index, Model* mo
     {
         if (CHECK_SKIP_LAYER(actor->animation_layers[i])) 
             continue;
-        // Check if Llayer is disabled by this bone's filter.
+        // Check if layer is disabled by this bone's filter.
         struct AnimationLayer* layer = actor->animation_layers[i];
         ModelAnimation* anim = layer->current_animation;
         if (!layer->bone_filter[bone_index]) 
