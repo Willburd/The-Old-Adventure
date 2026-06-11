@@ -25,6 +25,8 @@ struct AnimationLayer {
 	double frame_rate;					
 	// Current animation frame
 	double current_frame;
+	// Previous animation frame
+	double previous_frame;
 };
 
 // Gets a stored model's animation from a known animation name
@@ -40,7 +42,7 @@ void AnimLayerFilterBone(Asset* model_asset, struct AnimationLayer* layer, const
 // Updates the frame data of all all layers on an actor.
 void UpdateAnimLayers(struct Actor* actor);
 // Blends all layers according to their blending intensity, playing state, order, etc
-void ApplyAnimLayers(struct Actor* actor, Model* model);
+void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent);
 
 // TODO - Replace this someday with gpu skinning or own implimentation
 void SkinModel(Model* model);

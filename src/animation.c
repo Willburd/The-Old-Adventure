@@ -1,6 +1,7 @@
 #include "actor.h"
 #include "animation.h"
 #include "tools.h"
+#include "raymath.h"
 #include <string.h>
 
 ModelAnimation* GetAnimation(Asset* asset, char* name)
@@ -105,85 +106,67 @@ void UpdateAnimLayers(struct Actor* actor)
                 continue;
             }
             // Looping animations, push back to within valid ranges. Negative values wrap around when getting frame data.
+            layer->previous_frame = layer->current_frame;
             layer->current_frame = fmod(layer->current_frame, anim_len);
         }
     }
 }
 
 
-
 #define ANIM_MIN_THESHOLD 0.00001f
 #define CHECK_SKIP_LAYER(x) !x->is_playing || x->blend_factor <= ANIM_MIN_THESHOLD
 
-void ApplyAnimationLayerTransformsToBone(int bone_index, Model* model, struct Actor* actor)
+static void ApplyAnimationLayerTransformsToBone(int bone_index, Model* model, struct Actor* actor, double tick_percent)
 {
-    BoneInfo* bone = &model->skeleton.bones[bone_index];
-
-    // Reset bones to zero by applying the inverse of their bind position
-    Transform* bind_transform = &model->skeleton.bindPose[bone_index];
-    Matrix bind_matrix = MatrixMultiply(MatrixMultiply(
-        MatrixScale(bind_transform->scale.x, bind_transform->scale.y, bind_transform->scale.z),
-        QuaternionToMatrix(bind_transform->rotation)),
-        MatrixTranslate(bind_transform->translation.x, bind_transform->translation.y, bind_transform->translation.z));
-    model->boneMatrices[bone_index] = MatrixInvert(bind_matrix); // Apply bind pose to bone before we do any transforms
-
-    // Summed transformation of all blended animations
-    Transform blended_transform = {
-        .translation = Vector3Zero(),
-        .rotation = QuaternionIdentity(),
-        .scale = Vector3One()
-    };
-
     // Blend all active layers by their actual blending percents
     for (int i = 0; i <= actor->animlayer_count; i++)
     {
-        if (CHECK_SKIP_LAYER(actor->animation_layers[i])) // Layer is innactive.
+        if (CHECK_SKIP_LAYER(actor->animation_layers[i])) 
             continue;
+        // Check if Llayer is disabled by this bone's filter.
         struct AnimationLayer* layer = actor->animation_layers[i];
-        if (!layer->bone_filter[bone_index]) // Layer is disabled by this bone's filter.
+        ModelAnimation* anim = layer->current_animation;
+        if (!layer->bone_filter[bone_index]) 
             continue;
 
-        // Get current bone's transform at this frame of the animation
-        ModelAnimation* anim = layer->current_animation;
-        int frame_index = (int)layer->current_frame;
-        Transform* anim_transform = &anim->keyframePoses[frame_index][bone_index];
+        // Solve the interpolated frame of this animation at the current frame tick
+        int last_frame = (int)layer->previous_frame % layer->current_animation->keyframeCount;
+        int current_frame = (int)layer->current_frame % layer->current_animation->keyframeCount;
+        Vector3 frame_translation = Vector3Lerp(
+            anim->keyframePoses[last_frame][bone_index].translation,
+            anim->keyframePoses[current_frame][bone_index].translation, tick_percent);
+        Quaternion frame_rotation = QuaternionSlerp(
+            anim->keyframePoses[last_frame][bone_index].rotation,
+            anim->keyframePoses[current_frame][bone_index].rotation, tick_percent);
+        Vector3 frame_scale = Vector3Lerp(
+            anim->keyframePoses[last_frame][bone_index].scale,
+            anim->keyframePoses[current_frame][bone_index].scale, tick_percent);
 
-        // Lerp from the prior pose to the desired transform. This will act as our influence of intensity.
-        blended_transform.translation = Vector3Lerp(blended_transform.translation, anim_transform->translation, layer->blend_factor);
-        blended_transform.rotation = QuaternionSlerp(blended_transform.rotation, anim_transform->rotation, layer->blend_factor);
-        blended_transform.scale = Vector3Lerp(blended_transform.scale, anim_transform->scale, layer->blend_factor);
+        // Compute interpolated pose between both animations frames
+        double blend = layer->blend_factor;
+        model->currentPose[bone_index].translation = Vector3Lerp(model->currentPose[bone_index].translation, frame_translation, blend);
+        model->currentPose[bone_index].rotation = QuaternionSlerp(model->currentPose[bone_index].rotation, frame_rotation, blend);
+        model->currentPose[bone_index].scale = Vector3Lerp(model->currentPose[bone_index].scale, frame_scale, blend);
     }
 
-    /*
-    // Parent bones keep the binding pose's affect
-    if (bone->parent != -1)
-    {
-        // Remove binding pose from the final transform
-        blended_transform.translation = Vector3Subtract(blended_transform.translation, bind_transform->translation);
-        blended_transform.rotation = QuaternionMultiply(blended_transform.rotation, QuaternionInvert(bind_transform->rotation));
-        blended_transform.scale = Vector3Multiply(blended_transform.scale, Vector3Scale(bind_transform->scale, -1));
+    // Compute runtime bone matrix from model current pose
+    Transform* bindPoseTransform = &model->skeleton.bindPose[bone_index];
+    Matrix bindPoseMatrix = MatrixMultiply(
+        MatrixMultiply(MatrixScale(bindPoseTransform->scale.x, bindPoseTransform->scale.y, bindPoseTransform->scale.z),
+            QuaternionToMatrix(bindPoseTransform->rotation)),
+        MatrixTranslate(bindPoseTransform->translation.x, bindPoseTransform->translation.y, bindPoseTransform->translation.z));
 
-        // Get parent's transform and merge it in
-        Transform parent_transform;
-        MatrixDecompose(model->boneMatrices[bone->parent], &parent_transform.translation, &parent_transform.rotation, &parent_transform.scale);
+    Transform* currentPoseTransform = &model->currentPose[bone_index];
+    Matrix currentPoseMatrix = MatrixMultiply(
+        MatrixMultiply(MatrixScale(currentPoseTransform->scale.x, currentPoseTransform->scale.y, currentPoseTransform->scale.z),
+            QuaternionToMatrix(currentPoseTransform->rotation)),
+        MatrixTranslate(currentPoseTransform->translation.x, currentPoseTransform->translation.y, currentPoseTransform->translation.z));
 
-        // Apply our transform to parent's to get our real position
-        blended_transform.translation = Vector3Add(blended_transform.translation, parent_transform.translation);
-        blended_transform.rotation = QuaternionMultiply(blended_transform.rotation, parent_transform.rotation);
-        blended_transform.scale = Vector3Multiply(blended_transform.scale, parent_transform.scale);
-    }
-    */
-
-    // Apply the blending matrix to the bone's transform.
-    Matrix blended_matrix = MatrixMultiply(MatrixMultiply(
-        MatrixScale(blended_transform.scale.x, blended_transform.scale.y, blended_transform.scale.z),
-        QuaternionToMatrix(blended_transform.rotation)),
-        MatrixTranslate(blended_transform.translation.x, blended_transform.translation.y, blended_transform.translation.z));
-    model->boneMatrices[bone_index] = MatrixMultiply(model->boneMatrices[bone_index], blended_matrix);
+    model->boneMatrices[bone_index] = MatrixMultiply(MatrixInvert(bindPoseMatrix), currentPoseMatrix);
 }
 
 // Recursively process bones from the root up!
-void CalculateBoneTransform(int bone_index, Model* model, struct Actor* actor, int* solved_bones[])
+static void CalculateBoneTransform(int bone_index, Model* model, struct Actor* actor, int* solved_bones[], double tick_percent)
 {
     // If we are already solved just return
     if (solved_bones[bone_index] == TRUE)
@@ -191,16 +174,16 @@ void CalculateBoneTransform(int bone_index, Model* model, struct Actor* actor, i
     // Time for recursion!
     BoneInfo* bone = &model->skeleton.bones[bone_index];
     if (bone->parent > -1 && !solved_bones[bone->parent]) // Solve from our parent's transform if it hasn't been solved.
-        CalculateBoneTransform(bone->parent, model, actor, solved_bones);
-    ApplyAnimationLayerTransformsToBone(bone_index, model, actor);
+        CalculateBoneTransform(bone->parent, model, actor, solved_bones, tick_percent);
+    ApplyAnimationLayerTransformsToBone(bone_index, model, actor, tick_percent);
     solved_bones[bone_index] = TRUE;
 }
 
-void ApplyAnimLayers(struct Actor* actor, Model* model)
+void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
 {
     if (actor->animlayer_count == -1)
         return;
-    if (model->skeleton.boneCount == 0)
+    if (model->boneMatrices == NULL)
         return;
 
     // Bones need to be calculated from the bottom up.
@@ -208,7 +191,7 @@ void ApplyAnimLayers(struct Actor* actor, Model* model)
     int solved_bones[MAX_BONES] = { FALSE };
     for (int bone_index = 0; bone_index < model->skeleton.boneCount; bone_index++)
     {
-        CalculateBoneTransform(bone_index, model, actor, &solved_bones);
+        CalculateBoneTransform(bone_index, model, actor, &solved_bones, tick_percent);
     }
 
     // Forward bones to gpu
