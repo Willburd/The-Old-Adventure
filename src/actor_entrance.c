@@ -101,8 +101,8 @@ static Vector3 actor_entrance_get_end(struct Actor* entrance)
 
 static Vector3 actor_entrance_get_camerastart(struct Actor* entrance)
 {
-	Vector3 offset = Vector3Scale(VEC3BACKWARD, 2.0f);
-	offset = Vector3Add(offset, Vector3Scale(VEC3UP, 2.0f));
+	Vector3 offset = Vector3Scale(VEC3BACKWARD, 5.0f);
+	offset = Vector3Add(offset, Vector3Scale(VEC3UP, 3.0f));
 	return Vector3Add(entrance->position, Vector3RotateByQuaternion(offset, entrance->rotation));
 }
 
