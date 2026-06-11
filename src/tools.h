@@ -28,7 +28,8 @@
 #define VEC3RIGHT ((Vector3){1,0,0})
 #define VEC3LEFT ((Vector3){-1,0,0})
 
-#define VEC3DIRECTION(s,e) QuaternionNormalize(QuaternionFromVector3ToVector3(Vector3Normalize(Vector3Subtract(e, s)), VEC3BACKWARD))
+#define VEC3DIRECTION(s,e) Vector3Normalize(Vector3Subtract(e, s))
+#define VEC3DIRECTIONQUAT(s,e) QuaternionNormalize(QuaternionFromVector3ToVector3(VEC3DIRECTION(s,e), VEC3BACKWARD))
 
 #define RELEASE(x) free(x);x = NULL;
 

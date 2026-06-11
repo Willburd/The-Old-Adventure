@@ -46,7 +46,7 @@ static void scene_fieldtest_preloadassets(struct Actor* scene)
 	LoadAsset_Material(FIELD_ASSET_MAIN_MATERIAL, FALSE);
 
 	// Set collision data
-	scene->collision_flags |= COL_LAYER_WORLD;
+	scene->collision_flags = COL_LAYER_WORLD;
 	CollisionRegister(scene, &model_asset->mdl->meshes[MAIN_MODEL_MESH_COLLISION]);
 }
 

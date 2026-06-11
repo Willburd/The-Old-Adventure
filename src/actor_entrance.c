@@ -44,13 +44,12 @@ void actor_entrance_startentry(struct Actor* entrance)
 	if (ACTOR_EXISTS(camera))
 	{
 		ACTOR_POS_SNAP(camera, cam_pos);
+		cam_main.position = cam_pos; // snap this too
 	}
 	if (ACTOR_EXISTS(player))
 	{
 		ACTOR_POS_SNAP(player, entrance->position);
 		ACTOR_ROT_SNAP(player, entrance->rotation);
-		if (ACTOR_EXISTS(camera)) // Focus on player from camera pos
-			cam_main.target = Vector3Add(entrance->position, VEC3UP);
 	}
 }
 
@@ -73,7 +72,7 @@ static void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vecto
 	entrance->scale.x = Vector3Distance(startpos, endpos);
 	startpos.y = 0.0f;
 	endpos.y = 0.0f;
-	ACTOR_ROT_SNAP(entrance, QuaternionFromAxisAngle(VEC3UP, QuaternionToEuler(VEC3DIRECTION(startpos, endpos)).y));
+	ACTOR_ROT_SNAP(entrance, QuaternionFromAxisAngle(VEC3UP, QuaternionToEuler(VEC3DIRECTIONQUAT(startpos, endpos)).y));
 }
 
 static Vector3 actor_entrance_get_start(struct Actor* entrance)
@@ -82,7 +81,7 @@ static Vector3 actor_entrance_get_start(struct Actor* entrance)
 		.position = entrance->position,
 		.direction = VEC3DOWN
 	};
-	RayCollision collision = CollisionGetNearest(raycast, COL_LAYER_WORLD);
+	RayCollision collision = CollisionGetNearest(raycast, 1.0f, COL_LAYER_WORLD);
 	if (collision.hit)
 		return collision.point;
 	return raycast.position;
@@ -94,7 +93,7 @@ static Vector3 actor_entrance_get_end(struct Actor* entrance)
 		.position = Vector3Add(entrance->position, Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, entrance->scale.x), entrance->rotation)),
 		.direction = VEC3DOWN
 	};
-	RayCollision collision = CollisionGetNearest(raycast, COL_LAYER_WORLD);
+	RayCollision collision = CollisionGetNearest(raycast, 1.0f, COL_LAYER_WORLD);
 	if (collision.hit)
 		return collision.point;
 	return raycast.position;

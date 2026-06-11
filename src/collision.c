@@ -63,7 +63,7 @@ void CollisionResign(struct Actor* owner, Mesh* collider)
 }
 
 // Get a list of collisions, tested against all active colliders.
-void CollisionTest(RayCollision* collisions, int max_collisions, Ray raycast, unsigned int mask)
+void CollisionTest(RayCollision* collisions, int max_collisions, Ray raycast, float max_dist, unsigned int mask)
 {
 	int detected_collisions = 0;
 	for (int i = 0; i <= max_collision; i++)
@@ -73,6 +73,8 @@ void CollisionTest(RayCollision* collisions, int max_collisions, Ray raycast, un
 		RayCollision hit = GetRayCollisionMesh(raycast, *world_colliders[i].mesh, GetMatrix(world_colliders[i].owner));
 		if (!hit.hit)
 			continue;
+		if (hit.distance > max_dist)
+			continue;
 		collisions[detected_collisions++] = hit;
 	}
 }
@@ -80,10 +82,10 @@ void CollisionTest(RayCollision* collisions, int max_collisions, Ray raycast, un
 #define QUICK_SEARCH_MAX 50
 
 // Get the nearest point. May not return a valid collision.
-RayCollision CollisionGetNearest(Ray raycast, unsigned int mask)
+RayCollision CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask)
 {
 	RayCollision test_list[QUICK_SEARCH_MAX] = { 0 };
-	CollisionTest(test_list, QUICK_SEARCH_MAX, raycast, mask);
+	CollisionTest(test_list, QUICK_SEARCH_MAX, raycast, max_dist, mask);
 	// Search for the nearest hit
 	float nearest_point = INFINITY;
 	RayCollision nearest = { 0 };
@@ -103,10 +105,10 @@ RayCollision CollisionGetNearest(Ray raycast, unsigned int mask)
 }
 
 // Get the furthest point. May not return a valid collision.
-RayCollision CollisionGetFurthest(Ray raycast, unsigned int mask)
+RayCollision CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask)
 {
 	RayCollision test_list[QUICK_SEARCH_MAX] = { 0 };
-	CollisionTest(test_list, QUICK_SEARCH_MAX, raycast, mask);
+	CollisionTest(test_list, QUICK_SEARCH_MAX, raycast, max_dist, mask);
 	// Search for the furthest hit
 	float furthest_point = 0;
 	RayCollision furthest = { 0 };
