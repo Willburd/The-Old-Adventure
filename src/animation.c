@@ -115,6 +115,7 @@ void UpdateAnimLayers(struct Actor* actor)
 
 #define ANIM_MIN_THESHOLD 0.00001f
 #define CHECK_SKIP_LAYER(x) !x->is_playing || x->blend_factor <= ANIM_MIN_THESHOLD
+#define MATRIX_ASSEMBLE(transform) MatrixMultiply(MatrixMultiply(MatrixScale(transform->scale.x, transform->scale.y, transform->scale.z), QuaternionToMatrix(transform->rotation)), MatrixTranslate(transform->translation.x, transform->translation.y, transform->translation.z));
 
 static void ApplyAnimationLayerTransformsToBone(int bone_index, Model* model, struct Actor* actor, double tick_percent)
 {
@@ -150,18 +151,8 @@ static void ApplyAnimationLayerTransformsToBone(int bone_index, Model* model, st
     }
 
     // Compute runtime bone matrix from model current pose
-    Transform* bindPoseTransform = &model->skeleton.bindPose[bone_index];
-    Matrix bindPoseMatrix = MatrixMultiply(
-        MatrixMultiply(MatrixScale(bindPoseTransform->scale.x, bindPoseTransform->scale.y, bindPoseTransform->scale.z),
-            QuaternionToMatrix(bindPoseTransform->rotation)),
-        MatrixTranslate(bindPoseTransform->translation.x, bindPoseTransform->translation.y, bindPoseTransform->translation.z));
-
-    Transform* currentPoseTransform = &model->currentPose[bone_index];
-    Matrix currentPoseMatrix = MatrixMultiply(
-        MatrixMultiply(MatrixScale(currentPoseTransform->scale.x, currentPoseTransform->scale.y, currentPoseTransform->scale.z),
-            QuaternionToMatrix(currentPoseTransform->rotation)),
-        MatrixTranslate(currentPoseTransform->translation.x, currentPoseTransform->translation.y, currentPoseTransform->translation.z));
-
+    Matrix bindPoseMatrix = MATRIX_ASSEMBLE((&model->skeleton.bindPose[bone_index]));
+    Matrix currentPoseMatrix = MATRIX_ASSEMBLE((&model->currentPose[bone_index]));
     model->boneMatrices[bone_index] = MatrixMultiply(MatrixInvert(bindPoseMatrix), currentPoseMatrix);
 }
 

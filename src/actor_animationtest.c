@@ -40,7 +40,6 @@ static void actor_animationtest_preload_assets(struct Actor* actor)
 	struct AnimationLayer* idle_layer = AddAnimLayer(actor, GetAnimation(model_asset, "Robot_Running"), ANIMATION_FRAMERATE, FALSE, TRUE, 1.0f);
 
 	struct AnimationLayer* dance_layer = AddAnimLayer(actor, GetAnimation(model_asset, "Robot_Dance"), ANIMATION_FRAMERATE, TRUE, FALSE, 1.0f);
-	/*
 	AnimLayerFilterBone(model_asset, dance_layer, "Foot.L", FALSE);
 	AnimLayerFilterBone(model_asset, dance_layer, "Foot.R", FALSE);
 	AnimLayerFilterBone(model_asset, dance_layer, "LowerLeg.L", FALSE);
@@ -54,7 +53,6 @@ static void actor_animationtest_preload_assets(struct Actor* actor)
 	AnimLayerFilterBone(model_asset, dance_layer, "Shoulder.R", FALSE);
 	AnimLayerFilterBone(model_asset, dance_layer, "UpperArm.L", FALSE);
 	AnimLayerFilterBone(model_asset, dance_layer, "UpperArm.R", FALSE);
-	*/
 }
 
 static void actor_animationtest_update(struct Actor* actor)
