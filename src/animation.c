@@ -117,7 +117,7 @@ void UpdateAnimLayers(struct Actor* actor)
 #define CHECK_SKIP_LAYER(x) !x->is_playing || x->blend_factor <= ANIM_MIN_THESHOLD
 #define MATRIX_ASSEMBLE(transform) MatrixMultiply(MatrixMultiply(MatrixScale(transform->scale.x, transform->scale.y, transform->scale.z), QuaternionToMatrix(transform->rotation)), MatrixTranslate(transform->translation.x, transform->translation.y, transform->translation.z));
 
-static Transform BuildDeltaTransform(int bone_index, struct AnimationLayer* layer, double tick_percent)
+static inline Transform BuildDeltaTransform(int bone_index, struct AnimationLayer* layer, double tick_percent)
 {
     ModelAnimation* anim = layer->current_animation;
     int last_frame = (int)layer->previous_frame % layer->current_animation->keyframeCount;
@@ -136,7 +136,7 @@ static Transform BuildDeltaTransform(int bone_index, struct AnimationLayer* laye
     };
 }
 
-static void ApplyAnimationLayerTransformsToBone(int bone_index, Model* model, struct Actor* actor, double tick_percent)
+static inline void ApplyAnimationLayerTransformsToBone(int bone_index, Model* model, struct Actor* actor, double tick_percent)
 {
     // Blend all active layers by their actual blending percents
     for (int i = 0; i <= actor->animlayer_count; i++)
