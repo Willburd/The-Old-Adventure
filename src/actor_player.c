@@ -38,13 +38,13 @@ static void actor_player_preload_assets(struct Actor* actor)
 static void actor_player_update(struct Actor* actor)
 {
 	struct Actor* camera = FINDACTORTYPE(act_camera);
+	CameraData* cam_data = (CameraData*)camera->data;
+
+	if (cam_data->camera_mode == CAMERA_MODE_FREEMOVE)
+		return;
 
 	Vector2 move_dir = input_analog;
 	float test_angle = Vector3GetTopDownAngle(VEC3DIRECTION(cam_main.position, actor->position));
-	printf("DIR: %f\n", test_angle * RAD2DEG);
-
-
-
 	actor->position = Vector3Add(actor->position, Vector3Scale(Vector3RotateByQuaternion((Vector3){ move_dir.x, 0.0f, move_dir.y }, actor->rotation), 0.2f));
 }
 

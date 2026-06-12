@@ -20,13 +20,6 @@ static void actor_camera_postdrawhud(struct Actor* actor, double tick_percent);
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-typedef struct {
-    int locked;
-    int camera_mode;
-    Vector3 previous_lookpos;
-    Vector3 current_look_pos;
-} CameraData;
-
 void UpdateCameraTargetPosition(struct Actor* actor, Vector3 target_pos)
 {
     CameraData* cam_data = (CameraData*)actor->data;
@@ -65,12 +58,19 @@ void actor_camera_init(struct Actor* actor)
     MALLOC_ACTOR_DATA(CameraData, actor->data);
     CameraData* cam_data = (CameraData*)actor->data;
     cam_data->locked = FALSE;
-    cam_data->camera_mode = CAMERA_MODE_FOLLOW;
+    cam_data->camera_mode = CAMERA_MODE_FREEMOVE;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static Vector3 CameraFollowPos(struct Actor* player)
+{
+    Vector3 follow_goal = Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_HEIGHT_DIST));
+    follow_goal = Vector3Add(follow_goal, Vector3Scale(VEC3DIRECTION(follow_goal, cam_main.position), CAMERA_FOLLOW_DISTANCE));
+    return follow_goal;
+}
 
 static void actor_camera_preupdate(struct Actor* actor)
 {
@@ -91,15 +91,11 @@ static void actor_camera_preupdate(struct Actor* actor)
                 break;
 
             // Behind player target position
-            Vector3 follow_goal = Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_HEIGHT_DIST));
-            follow_goal = Vector3Add(follow_goal, Vector3Scale(VEC3DIRECTION(follow_goal, cam_main.position), CAMERA_FOLLOW_DISTANCE));
-            actor->position = Vector3MoveTowards(actor->position, follow_goal, CAMERA_FOLLOW_SPEED);
-
+            actor->position = CameraFollowPos(player);
             // Aim camera at player then solve where the camera should be 
             Vector3 look_pos = Vector3Add(player->position, VEC3UP);
             UpdateCameraTargetPosition(actor, look_pos);
 
-            /*
             // Raycast from lookpos to the camera and retract if it needs to to avoid being stuck in a wall
             Ray check_ray = {
                 .position = look_pos,
@@ -107,8 +103,9 @@ static void actor_camera_preupdate(struct Actor* actor)
             };
             RayCollision ray_col = CollisionGetNearest(check_ray, 20.0f, COL_LAYER_WORLD);
             if (ray_col.hit) // Hit a wall, bump out from it!
-                actor->position = Vector3Add(ray_col.point, Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, 0.01f), VEC3DIRECTIONQUAT(ray_col.point, look_pos)));
-            */
+            {
+                actor->position = ray_col.point;
+            }
         }
         break;
 
@@ -145,8 +142,32 @@ static void actor_camera_drawworld(struct Actor* actor, double tick_percent)
         return;
     // Handle camera lock
     CameraData* cam_data = (CameraData*)actor->data;
-    if (cam_data->camera_mode == CAMERA_MODE_FREEMOVE)
-        DrawCube(cam_main.target, 0.01f, 0.01f, 0.01f, BLUE);
+    switch (cam_data->camera_mode)
+    {
+        case CAMERA_MODE_FREEMOVE:
+        {
+            DrawCube(cam_main.target, 0.01f, 0.01f, 0.01f, BLUE);
+
+            // Raycast from lookpos to the camera and retract if it needs to to avoid being stuck in a wall
+            Ray check_ray = {
+                .position = cam_main.position,
+                .direction = VEC3DIRECTION(cam_main.position, cam_main.target)
+            };
+            RayCollision ray_col = CollisionGetNearest(check_ray, 10.0f, COL_LAYER_WORLD);
+            if (ray_col.hit) // Hit a wall, bump out from it!
+            {
+                DrawSphere(ray_col.point, 0.06f, YELLOW);
+            }
+        }
+        break;
+
+        case CAMERA_MODE_FOLLOW:
+        {
+            struct Actor* player = FINDACTORTYPE(act_player);
+            DrawCube(CameraFollowPos(player), 1.0f, 1.0f, 1.0f, BLUE);
+        }
+        break;
+    }
 }
 
 static void actor_camera_postdrawhud(struct Actor* actor, double tick_percent)
