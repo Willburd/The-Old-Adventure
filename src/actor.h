@@ -90,10 +90,10 @@ x->data = NULL;
 #define ACTOR_EXISTS(x) (x != NULL && x->index > -1)
 #define ACTOR_HAS(x, func) (x->func != NULL)
 
-#define ACTOR_POS_DELTA(x, delta) Vector3Lerp(x->last_position, x->position, delta)
-#define ACTOR_ROT_DELTA(x, delta) QuaternionLerp(x->last_rotation, x->rotation, delta)
-#define ACTOR_SCALE_DELTA(x, delta) Vector3Lerp(x->last_scale, x->scale, delta)
-#define ACTOR_VEL_DELTA(x, delta) Vector3Lerp(x->last_velocity, x->velocity, delta)
+#define ACTOR_POS_DELTA(x, delta) Vector3Lerp(x->last_position, x->position, (float)delta)
+#define ACTOR_ROT_DELTA(x, delta) QuaternionLerp(x->last_rotation, x->rotation, (float)delta)
+#define ACTOR_SCALE_DELTA(x, delta) Vector3Lerp(x->last_scale, x->scale, (float)delta)
+#define ACTOR_VEL_DELTA(x, delta) Vector3Lerp(x->last_velocity, x->velocity, (float)delta)
 
 #define ACTOR_PARENT(x) (x->parent)
 

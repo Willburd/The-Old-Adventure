@@ -76,6 +76,12 @@
     <Filter Include="Source Files\hashmap">
       <UniqueIdentifier>{3d37dd40-4d53-46e5-9f6e-8e743bc38e82}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\adventure\actors\player_states">
+      <UniqueIdentifier>{fe66cc40-e27c-4593-bb87-77f81c75ea48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\adventure\actors\player_states">
+      <UniqueIdentifier>{92bbfbf4-8b37-4fe9-88f5-4ccabfead260}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -165,6 +171,15 @@
     <ClCompile Include="skinmodel.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
+    <ClCompile Include="player_state_grounded.c">
+      <Filter>Source Files\adventure\actors\player_states</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_generic.c">
+      <Filter>Source Files\adventure\actors\player_states</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_air.c">
+      <Filter>Source Files\adventure\actors\player_states</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -226,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="hashmap.h">
       <Filter>Header Files\hashmap</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Header Files\adventure\actors\player_states</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

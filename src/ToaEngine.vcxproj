@@ -170,6 +170,9 @@
     <ClCompile Include="input.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="materials.c" />
+    <ClCompile Include="player_state_air.c" />
+    <ClCompile Include="player_state_grounded.c" />
+    <ClCompile Include="player_state_generic.c" />
     <ClCompile Include="return_codes.h" />
     <ClCompile Include="scene_boot.c" />
     <ClCompile Include="scene_debug.c" />
@@ -196,6 +199,7 @@
     <ClInclude Include="hashmap.h" />
     <ClInclude Include="light_tools.h" />
     <ClInclude Include="materials.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="scene_entry.h" />
     <ClInclude Include="scene_library.h" />
     <ClInclude Include="gamestate.h" />

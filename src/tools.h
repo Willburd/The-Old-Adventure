@@ -15,7 +15,7 @@
 #define ARRAY_LENGTH(x) (sizeof(x) / sizeof((x)[0]))
 
 #define RAND_RANGE(l,h) ((l) + (rand() % ((h)-(l))))
-#define RAND_FRANGE(l,h) ((l) + (fmod((float)rand()/1000.0f,((h)-(l)))))
+#define RAND_FRANGE(l,h) ((l) + ((float)fmod((float)rand()/1000.0f,((h)-(l)))))
 
 #define STRMATCH(x,y) (strcmp(x,y)==0)
 

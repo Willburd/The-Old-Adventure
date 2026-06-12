@@ -22,7 +22,7 @@ struct AnimationLayer* AddAnimLayer(struct Actor* actor, ModelAnimation* new_ani
     {
         if (actor->animation_layers[i] != NULL)
             continue;
-        MALLOC_SET(struct AnimationLayer, actor->animation_layers[i], -1);
+        MALLOC_SET(struct AnimationLayer, actor->animation_layers[i], NULL);
         struct AnimationLayer* layer = actor->animation_layers[i];
         layer->layer_index = i;
         layer->current_animation = new_anim;
@@ -79,7 +79,7 @@ void AnimLayerFilterBone(Asset* model_asset, struct AnimationLayer* layer, const
     }
     // If you mess up, lets help out
 #ifdef _DEBUG
-    printf("ANIM: Bone with filter id did not exist: %s\Bones ids are:\n", bone_name);
+    printf("ANIM: Bone with filter id did not exist: %s\nBones ids are:\n", bone_name);
     for (int boneIndex = 0; boneIndex < boneCount; boneIndex++)
     {
         printf("[%i]:%s\n", boneIndex, model->skeleton.bones[boneIndex].name);
@@ -142,13 +142,13 @@ static inline Transform BuildDeltaTransform(int bone_index, struct AnimationLaye
     return (Transform){
         .translation = Vector3Lerp(
         anim->keyframePoses[last_frame][bone_index].translation,
-        anim->keyframePoses[current_frame][bone_index].translation, tick_percent),
+        anim->keyframePoses[current_frame][bone_index].translation, (float)tick_percent),
         .rotation = QuaternionSlerp(
         anim->keyframePoses[last_frame][bone_index].rotation,
-        anim->keyframePoses[current_frame][bone_index].rotation, tick_percent),
+        anim->keyframePoses[current_frame][bone_index].rotation, (float)tick_percent),
         .scale = Vector3Lerp(
         anim->keyframePoses[last_frame][bone_index].scale,
-        anim->keyframePoses[current_frame][bone_index].scale, tick_percent)
+        anim->keyframePoses[current_frame][bone_index].scale, (float)tick_percent)
     };
 }
 
@@ -186,9 +186,9 @@ static inline void ApplyAnimationLayerTransformsToBone(int bone_index, Model* mo
         double blend = layer->bone_filter[bone_index] * layer->blend_factor;
         if(layer->blend_type == BLENDTYPE_MIX)
             blend /= blend_total[bone_index];
-        model->currentPose[bone_index].translation = Vector3Lerp(model->currentPose[bone_index].translation, frame_transform.translation, blend);
-        model->currentPose[bone_index].rotation = QuaternionSlerp(model->currentPose[bone_index].rotation, frame_transform.rotation, blend);
-        model->currentPose[bone_index].scale = Vector3Lerp(model->currentPose[bone_index].scale, frame_transform.scale, blend);
+        model->currentPose[bone_index].translation = Vector3Lerp(model->currentPose[bone_index].translation, frame_transform.translation, (float)blend);
+        model->currentPose[bone_index].rotation = QuaternionSlerp(model->currentPose[bone_index].rotation, frame_transform.rotation, (float)blend);
+        model->currentPose[bone_index].scale = Vector3Lerp(model->currentPose[bone_index].scale, frame_transform.scale, (float)blend);
     }
 
     // Compute runtime bone matrix from model current pose

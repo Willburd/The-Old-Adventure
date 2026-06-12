@@ -16,7 +16,7 @@
 void CollisionRegister(struct Actor* owner, Mesh* collider);
 void CollisionResign(struct Actor* owner, Mesh* collider);
 
-void CollisionTest(RayCollision* collisions, int max_collisions, float max_dist, Ray raycast, unsigned int mask);
+void CollisionTest(RayCollision* collisions, int max_collisions, Ray raycast, float max_dist, unsigned int mask);
 RayCollision CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask);
 RayCollision CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask);
 

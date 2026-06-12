@@ -169,7 +169,7 @@ static void actor_camera_preupdate(struct Actor* camera)
 static void actor_camera_predrawworld(struct Actor* camera, double tick_percent)
 {
     CameraData* cam_data = (CameraData*)camera->data;
-    cam_main.target = Vector3Lerp(cam_data->previous_lookpos, cam_data->current_look_pos, tick_percent);
+    cam_main.target = Vector3Lerp(cam_data->previous_lookpos, cam_data->current_look_pos, (float)tick_percent);
     cam_main.position = ACTOR_POS_DELTA(camera, tick_percent);
 }
 
