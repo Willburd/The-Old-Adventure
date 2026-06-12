@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define PLAYER_GROUND_ACCELERATION 0.03f
-#define PLAYER_GROUND_MAXSPEED 0.1f
+#define PLAYER_GROUND_MAXSPEED 0.20f
 #define PLAYER_GROUND_STOP_FRICTION 0.2f
 #define PLAYER_GROUND_SNAPTURN_FRICTION 0.7f
 
@@ -34,22 +34,27 @@ void PlayerState_Grounded_Update(struct Actor* player)
 
 		if (Vector3Length(move_velocity) > 0.01f)
 		{
-			float direction_moving_dot = 0.0f;
-			if (Vector2Length((Vector2) { player->velocity.x, player->velocity.z }) >= PLAYER_GROUND_MAXSPEED)
+			float direction_moving_dot = Vector2DotProduct((Vector2) { move_velocity.x, move_velocity.z }, (Vector2) { player->velocity.x, player->velocity.z });
+			if (direction_moving_dot < -0.25) // Hard stop, changing direction.
+				ApplyFriction(player, PLAYER_GROUND_SNAPTURN_FRICTION);
+			else
+				ApplyFriction(player, 0.02); // Always apply some slowing.
+
+			// Accelerate up to full!
+			player->velocity = Vector3Add(player->velocity, move_velocity);
+
+			// Slow the player back down if they go over the cap speed.
+			Vector2 flat_velocity = (Vector2){ player->velocity.x, player->velocity.z };
+			if (Vector2Length(flat_velocity) > PLAYER_GROUND_MAXSPEED)
 			{
-				direction_moving_dot = Vector2DotProduct((Vector2) { move_velocity.x, move_velocity.z }, (Vector2) { player->velocity.x, player->velocity.z });
-				if (direction_moving_dot < 0) // Hard stop
-				{
-					ApplyFriction(player, PLAYER_GROUND_SNAPTURN_FRICTION);
-				}
+				Vector2 dirvec = Vector2Scale(Vector2Normalize(flat_velocity), PLAYER_GROUND_MAXSPEED);
+				player->velocity.x = dirvec.x;
+				player->velocity.z = dirvec.y;
 			}
-			// Apply velocity, if we are at maximum speed, only apply a fraction of it based on if we are moving toward the velocity already
-			direction_moving_dot = Clamp(direction_moving_dot, 0.0f, 1.0f); // Only care about if we are moving in the same direction
-			player->velocity = Vector3Add(player->velocity, Vector3Scale(move_velocity, 1.0f - direction_moving_dot));
 		}
 		else
 		{
-			// Slowdown pver time if not moving
+			// Slowdown over time if not moving.
 			ApplyFriction(player, PLAYER_GROUND_STOP_FRICTION);
 		}
 	}

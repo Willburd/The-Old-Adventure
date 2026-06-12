@@ -52,7 +52,6 @@ static void actor_player_drawworld(struct Actor* actor, double tick_percent)
 	// Draw the player and handle animations
 	DRAWCAPSULE(ACTOR_POS_DELTA(actor, tick_percent), 1.0f, 0.5f, GREEN);
 	DrawSphere(Vector3Add(ACTOR_POS_DELTA(actor, tick_percent), Vector3Add(Vector3Scale(VEC3UP, 1.9f), Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, 0.3f), ACTOR_ROT_DELTA(actor, tick_percent)))), 0.5, BLUE);
-	DrawLine3D(actor->position, Vector3Add(actor->position, VEC3FORWARD), RED);
 
 	// Additional drawing the state wants
 	PlayerData* player_data = (PlayerData*)actor->data;
