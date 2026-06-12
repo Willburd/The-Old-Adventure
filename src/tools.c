@@ -1,3 +1,4 @@
+#include "actor.h"
 #include "tools.h"
 
 Vector4 ColorToVector4(Color col)
@@ -19,3 +20,24 @@ float Vector3GetTopDownAngle(Vector3 direction)
 {
     return Vector2Angle((Vector2){ 0.0f, -1.0f }, (Vector2) { direction.x, direction.z });
 }
+
+#define APPLY_FRICTION(component) \
+if (actor->velocity.component > 0.0f) \
+{ \
+    actor->velocity.component -= amount; \
+    if (actor->velocity.component < 0.0f) \
+        actor->velocity.component = 0.0f; \
+} \
+else \
+{ \
+    actor->velocity.component += amount; \
+    if (actor->velocity.component > 0.0f) \
+        actor->velocity.component = 0.0f; \
+}
+void ApplyFriction(struct Actor* actor, float amount)
+{
+    APPLY_FRICTION(x);
+    APPLY_FRICTION(y);
+    APPLY_FRICTION(z);
+}
+#undef APPLY_FRICTION

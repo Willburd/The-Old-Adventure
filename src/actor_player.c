@@ -42,17 +42,12 @@ static void actor_player_preload_assets(struct Actor* actor)
 
 static void actor_player_update(struct Actor* actor)
 {
+	// Update our current state each tick
 	PlayerData* player_data = (PlayerData*)actor->data;
 	player_data->func_state_update(actor);
 }
 
 static void actor_player_drawworld(struct Actor* actor, double tick_percent)
-{
-	PlayerData* player_data = (PlayerData*)actor->data;
-	player_data->func_state_drawworld(actor, tick_percent);
-}
-
-static void actor_player_drawhud(struct Actor* actor, double tick_percent)
 {
 	// Draw the player and handle animations
 	DRAWCAPSULE(ACTOR_POS_DELTA(actor, tick_percent), 1.0f, 0.5f, GREEN);
@@ -60,6 +55,13 @@ static void actor_player_drawhud(struct Actor* actor, double tick_percent)
 	DrawLine3D(actor->position, Vector3Add(actor->position, VEC3FORWARD), RED);
 
 	// Additional drawing the state wants
+	PlayerData* player_data = (PlayerData*)actor->data;
+	player_data->func_state_drawworld(actor, tick_percent);
+}
+
+static void actor_player_drawhud(struct Actor* actor, double tick_percent)
+{
+	// Handle the hud in the state
 	PlayerData* player_data = (PlayerData*)actor->data;
 	player_data->func_state_drawhud(actor, tick_percent);
 

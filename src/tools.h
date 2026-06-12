@@ -16,6 +16,7 @@
 
 #define RAND_RANGE(l,h) ((l) + (rand() % ((h)-(l))))
 #define RAND_FRANGE(l,h) ((l) + ((float)fmod((float)rand()/1000.0f,((h)-(l)))))
+#define SIGN(x) ((x > 0) - (x < 0))
 
 #define STRMATCH(x,y) (strcmp(x,y)==0)
 
@@ -37,6 +38,7 @@ Vector4 ColorToVector4(Color col);
 Color Vector4ToColor(Vector4 vec);
 Color Vector3ToColor(Vector3 vec, float alpha);
 float Vector3GetTopDownAngle(Vector3 direction);
+void ApplyFriction(struct Actor* actor, float amount);
 
 #endif
 
