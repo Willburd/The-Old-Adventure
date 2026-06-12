@@ -123,8 +123,8 @@ static void actor_camera_preupdate(struct Actor* camera)
             // Lock in bounds
             if (cam_data->pitch_angle < -4.2f)
                 cam_data->pitch_angle = -4.2f;
-            if (cam_data->pitch_angle > -1.6f)
-                cam_data->pitch_angle = -1.6f;
+            if (cam_data->pitch_angle > -1.8f)
+                cam_data->pitch_angle = -1.8f;
 
             // Aim camera at player then solve where the camera should be 
             Vector3 look_pos = CameraPlayerLookPos(camera, player);

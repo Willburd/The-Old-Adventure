@@ -4,11 +4,12 @@
 // Grounded player state
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define PLAYER_GROUND_ACCELERATION 0.03f
-#define PLAYER_GROUND_MAXSPEED 0.20f
+#define PLAYER_GROUND_ACCELERATION 0.08f
+#define PLAYER_GROUND_MAXSPEED 0.21f
+#define PLAYER_GROUND_FRICTION 0.05f
 #define PLAYER_GROUND_STOP_FRICTION 0.2f
 #define PLAYER_GROUND_SNAPTURN_FRICTION 0.7f
-#define PLAYER_GROUND_TURN_RATE 0.3f
+#define PLAYER_GROUND_TURN_RATE 0.2f
 
 void PlayerState_Grounded_Update(struct Actor* player);
 void PlayerState_Grounded_DrawWorld(struct Actor* player, double tick_percent);
@@ -42,11 +43,17 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	}
 
 	// Move as directed
+	int snap_turn = FALSE;
 	float direction_moving_dot = Vector2DotProduct((Vector2) { move_velocity.x, move_velocity.z }, (Vector2) { player->velocity.x, player->velocity.z });
 	if (direction_moving_dot < -0.25) // Hard stop, changing direction.
+	{
 		ApplyFriction(player, PLAYER_GROUND_SNAPTURN_FRICTION);
+		snap_turn = TRUE;
+	}
 	else
-		ApplyFriction(player, 0.02); // Always apply some slowing.
+	{
+		ApplyFriction(player, PLAYER_GROUND_FRICTION); // Always apply some slowing.
+	}
 
 	// Accelerate up to full!
 	player->velocity = Vector3Add(player->velocity, move_velocity);
@@ -70,11 +77,9 @@ void PlayerState_Grounded_Update(struct Actor* player)
 
 		float turn_modifier = 1.0f;
 		float angle_modifier = Vector2Angle(dirvec, flat_facing);
-		if (abs(angle_modifier * RAD2DEG) <= 10.0f) // Slower rotation when almost facing the angle
-			turn_modifier *= 0.5f;
-		if (abs(angle_modifier * RAD2DEG) <= 5.0f) // Even slower
-			turn_modifier *= 0.5f;
-		if (abs(angle_modifier * RAD2DEG) > 1.0f) // We're on target
+		if (snap_turn || abs(angle_modifier * RAD2DEG) < 9.0f)
+			player->rotation = QuaternionMultiply(player->rotation, QuaternionFromAxisAngle(VEC3UP, angle_modifier)); // Snap to
+		else
 			player->rotation = QuaternionMultiply(player->rotation, QuaternionFromAxisAngle(VEC3UP, SIGN(angle_modifier) * turn_modifier * PLAYER_GROUND_TURN_RATE));
 	}
 }
