@@ -9,6 +9,7 @@
 #define COL_LAYER_PLAYER (1 << 3)	// Player hurtbox
 #define COL_LAYER_ENEMY (1 << 4)	// Enemy hitboxes
 #define COL_LAYER_WATER (1 << 5)	// Water geometry
+#define COL_LAYER_MOVINGPLATFORM (1 << 6)	// Moving platforms
 #define COL_LAYER_ALL (~0)
 
 #include "tools.h"

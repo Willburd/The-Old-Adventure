@@ -90,7 +90,7 @@ void PlayerState_Grounded_Update(struct Actor* player)
 		.position = Vector3Add(player->position, Vector3Scale(VEC3UP, PLAYER_GROUND_STEP_HEIGHT)),
 		.direction = VEC3DOWN
 	};
-	RayCollision collision = CollisionGetNearest(downray, PLAYER_GROUND_STEP_HEIGHT + PLAYER_GROUND_FLOOR_SNAP, COL_LAYER_WORLD);
+	RayCollision collision = CollisionGetNearest(downray, PLAYER_GROUND_STEP_HEIGHT + PLAYER_GROUND_FLOOR_SNAP, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
 	if (collision.hit) 
 	{
 		// Snap to floors and go up steps
