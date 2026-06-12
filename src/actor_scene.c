@@ -88,8 +88,6 @@ void actor_scene_init(struct Actor* scene)
 			ACTOR_FACTORY(act_player, scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 		if (entrance != NULL) // Enter the scene from this entrance if we have one
 			actor_entrance_startentry(entrance);
-
-		
 	}
 }
 

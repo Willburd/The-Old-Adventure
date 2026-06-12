@@ -12,22 +12,24 @@ typedef struct {
 int max_collision = -1;
 ColliderData world_colliders[MAX_COLLIDERS] = { NULL };
 
+// Allocate collision to the game's collision system. DO NOT FORGET TO RESIGN IT.
 void CollisionRegister(struct Actor* owner, Mesh* collider)
 {
 	for (int i = 0; i < MAX_COLLIDERS; i++)
 	{
-		if (world_colliders[i].mesh == NULL)
-		{
-			world_colliders[i].owner = owner;
-			world_colliders[i].mesh = collider;
-			if (max_collision < i)
-				max_collision = i;
-			return;
-		}
+		if (world_colliders[i].mesh != NULL)
+			continue;
+		// Assign a new collider to this slot
+		world_colliders[i].owner = owner;
+		world_colliders[i].mesh = collider;
+		if (max_collision < i)
+			max_collision = i;
+		return;
 	}
 	printf("Unable to allocate collider");
 }
 
+// Resigns a collision from the game's collision system. MUST be done during unload if you registered any meshes to collide.
 void CollisionResign(struct Actor* owner, Mesh* collider)
 {
 	// Find and remove the matching entry

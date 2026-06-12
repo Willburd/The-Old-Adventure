@@ -39,15 +39,16 @@ void actor_entrance_startentry(struct Actor* entrance)
 
 	struct Actor* player = FINDACTORTYPE(act_player);
 	struct Actor* camera = FINDACTORTYPE(act_camera);
-	if (ACTOR_EXISTS(camera))
-	{
-		ACTOR_POS_SNAP(camera, cam_pos);
-		cam_main.position = cam_pos; // snap this too
-	}
 	if (ACTOR_EXISTS(player))
 	{
 		ACTOR_POS_SNAP(player, entrance->position);
 		ACTOR_ROT_SNAP(player, entrance->rotation);
+	}
+	if (ACTOR_EXISTS(camera))
+	{
+		ACTOR_POS_SNAP(camera, cam_pos);
+		cam_main.position = cam_pos; // snap this too
+		CameraRecalculateAngleToTarget(camera);
 	}
 }
 

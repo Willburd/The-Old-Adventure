@@ -64,6 +64,17 @@ void actor_camera_init(struct Actor* actor)
     cam_data->pitch_angle = 0.0f;
 }
 
+void CameraRecalculateAngleToTarget(struct Actor* camera)
+{
+    struct Actor* player = FINDACTORTYPE(act_player);
+    if (!ACTOR_EXISTS(player))
+        return;
+
+    CameraData* cam_data = (CameraData*)camera->data;
+    cam_data->follow_angle = Vector3GetTopDownAngle(VEC3DIRECTION(camera->position, player->position));
+    cam_data->pitch_angle = -3.0f;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,6 +120,11 @@ static void actor_camera_preupdate(struct Actor* camera)
             // Rotate camera around player
             cam_data->follow_angle += input_camera.x;
             cam_data->pitch_angle += input_camera.y;
+            // Lock in bounds
+            if (cam_data->pitch_angle < -4.2f)
+                cam_data->pitch_angle = -4.2f;
+            if (cam_data->pitch_angle > -1.6f)
+                cam_data->pitch_angle = -1.6f;
 
             // Aim camera at player then solve where the camera should be 
             Vector3 look_pos = CameraPlayerLookPos(camera, player);

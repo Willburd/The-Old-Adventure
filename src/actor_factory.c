@@ -43,7 +43,7 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, V
 	
 	// Configure to type of actor made
 	ACTOR_LIBRARY(actor, actor_type);
-	if (ACTOR_HAS(actor, func_preloadassets))
+	if (actor_type != act_scene && ACTOR_HAS(actor, func_preloadassets)) // Scenes handle preload assets themselves at a much earlier point
 		actor->func_preloadassets(actor);
 
 	// Place in update list
