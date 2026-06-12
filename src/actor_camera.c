@@ -9,20 +9,21 @@
 #define CAMERA_FOLLOW_SPEED 0.5f
 #define CAMERA_FOLLOW_DISTANCE 6.5f
 #define CAMERA_HEIGHT_DIST 3.0f
+#define CAMERA_BUBBLE_RADIUS 0.4f
 
 // private header
-static void actor_camera_preupdate(struct Actor* actor);
-static void actor_camera_predrawworld(struct Actor* actor, double tick_percent);
-static void actor_camera_drawworld(struct Actor* actor, double tick_percent);
-static void actor_camera_postdrawhud(struct Actor* actor, double tick_percent);
+static void actor_camera_preupdate(struct Actor* camera);
+static void actor_camera_predrawworld(struct Actor* camera, double tick_percent);
+static void actor_camera_drawworld(struct Actor* camera, double tick_percent);
+static void actor_camera_postdrawhud(struct Actor* camera, double tick_percent);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void UpdateCameraTargetPosition(struct Actor* actor, Vector3 target_pos)
+void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos)
 {
-    CameraData* cam_data = (CameraData*)actor->data;
+    CameraData* cam_data = (CameraData*)camera->data;
     cam_data->current_look_pos = target_pos;
 }
 
@@ -58,24 +59,39 @@ void actor_camera_init(struct Actor* actor)
     MALLOC_ACTOR_DATA(CameraData, actor->data);
     CameraData* cam_data = (CameraData*)actor->data;
     cam_data->locked = FALSE;
-    cam_data->camera_mode = CAMERA_MODE_FREEMOVE;
+    cam_data->camera_mode = CAMERA_MODE_FOLLOW;
+    cam_data->follow_angle = 0.0f;
+    cam_data->pitch_angle = 0.0f;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static Vector3 CameraFollowPos(struct Actor* player)
+static Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player)
 {
-    Vector3 follow_goal = Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_HEIGHT_DIST));
-    follow_goal = Vector3Add(follow_goal, Vector3Scale(VEC3DIRECTION(follow_goal, cam_main.position), CAMERA_FOLLOW_DISTANCE));
-    return follow_goal;
+    return Vector3Add(player->position, VEC3UP);
 }
 
-static void actor_camera_preupdate(struct Actor* actor)
+static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player)
+{
+    Vector3 player_target_pos = CameraPlayerLookPos(camera, player);
+
+    // Rotate up and down, all around the target using an offset
+    CameraData* cam_data = (CameraData*)camera->data;
+    Vector3 follow_offset = Vector3RotateByQuaternion(VEC3BACKWARD, QuaternionFromAxisAngle(VEC3RIGHT, cam_data->pitch_angle));
+    follow_offset = Vector3RotateByQuaternion(follow_offset, QuaternionFromAxisAngle(VEC3UP, cam_data->follow_angle));
+    follow_offset = Vector3Scale(follow_offset, CAMERA_FOLLOW_DISTANCE);
+
+    // Apply offset
+    Vector3 follow_goal = Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_HEIGHT_DIST));
+    return Vector3Add(follow_goal, follow_offset);
+}
+
+static void actor_camera_preupdate(struct Actor* camera)
 {
     // Update camera delta target
-    CameraData* cam_data = (CameraData*)actor->data;
+    CameraData* cam_data = (CameraData*)camera->data;
     cam_data->previous_lookpos = cam_data->current_look_pos;
 
     if (cam_data->locked)
@@ -90,58 +106,63 @@ static void actor_camera_preupdate(struct Actor* actor)
             if (player == NULL) // Nothing to look at
                 break;
 
-            // Behind player target position
-            actor->position = CameraFollowPos(player);
-            // Aim camera at player then solve where the camera should be 
-            Vector3 look_pos = Vector3Add(player->position, VEC3UP);
-            UpdateCameraTargetPosition(actor, look_pos);
+            // Rotate camera around player
+            cam_data->follow_angle += input_camera.x;
+            cam_data->pitch_angle += input_camera.y;
 
-            // Raycast from lookpos to the camera and retract if it needs to to avoid being stuck in a wall
+            // Aim camera at player then solve where the camera should be 
+            Vector3 look_pos = CameraPlayerLookPos(camera, player);
+            UpdateCameraTargetPosition(camera, look_pos);
+
+            // Raycast from lookpos to the camera's follow position and retract if it needs to to avoid being stuck in a wall
+            Vector3 follow_pos = CameraPlayerFollowPos(camera, player);
             Ray check_ray = {
                 .position = look_pos,
-                .direction = VEC3DIRECTION(look_pos, cam_main.target)
+                .direction = VEC3DIRECTION(look_pos, follow_pos)
             };
-            RayCollision ray_col = CollisionGetNearest(check_ray, 20.0f, COL_LAYER_WORLD);
+            RayCollision ray_col = CollisionGetNearest(check_ray, Vector3Distance(look_pos, follow_pos), COL_LAYER_WORLD);
             if (ray_col.hit) // Hit a wall, bump out from it!
             {
-                actor->position = ray_col.point;
+                follow_pos = Vector3Add(check_ray.position, Vector3Scale(check_ray.direction, ray_col.distance - CAMERA_BUBBLE_RADIUS));
             }
+            // Apply position to camera
+            camera->position = follow_pos;
         }
         break;
 
         case CAMERA_MODE_FREEMOVE:
         {
             // Identity vectors
-            Vector3 right = Vector3RotateByQuaternion(VEC3RIGHT, actor->rotation);
+            Vector3 right = Vector3RotateByQuaternion(VEC3RIGHT, camera->rotation);
             // Rotate actor
             Quaternion cam_rot = QuaternionFromAxisAngle(VEC3UP, input_camera.x); // Stationary vertical axis
             cam_rot = QuaternionMultiply(cam_rot, QuaternionFromAxisAngle(right, input_camera.y)); // Relative horizontal axis to camera
-            actor->rotation = QuaternionNormalize(QuaternionMultiply(cam_rot, actor->rotation)); // Apply and normalize
+            camera->rotation = QuaternionNormalize(QuaternionMultiply(cam_rot, camera->rotation)); // Apply and normalize
             // Move actor
             Vector3 axis_move = { -input_analog.x, 0, input_analog.y }; // TODO - Find out why I need to invert the x axis.
-            axis_move = Vector3RotateByQuaternion(axis_move, actor->rotation);
+            axis_move = Vector3RotateByQuaternion(axis_move, camera->rotation);
             axis_move = Vector3Scale(axis_move, 0.1f);
-            actor->position = Vector3Add(actor->position, axis_move);
+            camera->position = Vector3Add(camera->position, axis_move);
             // Focus camera ahead
-            UpdateCameraTargetPosition(actor, Vector3Add(actor->position, Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation)));
+            UpdateCameraTargetPosition(camera, Vector3Add(camera->position, Vector3RotateByQuaternion(VEC3FORWARD, camera->rotation)));
         }
         break;
     }
 }
 
-static void actor_camera_predrawworld(struct Actor* actor, double tick_percent)
+static void actor_camera_predrawworld(struct Actor* camera, double tick_percent)
 {
-    CameraData* cam_data = (CameraData*)actor->data;
+    CameraData* cam_data = (CameraData*)camera->data;
     cam_main.target = Vector3Lerp(cam_data->previous_lookpos, cam_data->current_look_pos, tick_percent);
-    cam_main.position = ACTOR_POS_DELTA(actor, tick_percent);
+    cam_main.position = ACTOR_POS_DELTA(camera, tick_percent);
 }
 
-static void actor_camera_drawworld(struct Actor* actor, double tick_percent)
+static void actor_camera_drawworld(struct Actor* camera, double tick_percent)
 {
     if (!draw_debug_info)
         return;
     // Handle camera lock
-    CameraData* cam_data = (CameraData*)actor->data;
+    CameraData* cam_data = (CameraData*)camera->data;
     switch (cam_data->camera_mode)
     {
         case CAMERA_MODE_FREEMOVE:
@@ -164,7 +185,7 @@ static void actor_camera_drawworld(struct Actor* actor, double tick_percent)
         case CAMERA_MODE_FOLLOW:
         {
             struct Actor* player = FINDACTORTYPE(act_player);
-            DrawCube(CameraFollowPos(player), 1.0f, 1.0f, 1.0f, BLUE);
+            DrawCube(CameraPlayerFollowPos(camera, player), 1.0f, 1.0f, 1.0f, BLUE);
         }
         break;
     }

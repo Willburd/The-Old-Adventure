@@ -9,6 +9,8 @@
 typedef struct {
     int locked;
     int camera_mode;
+    float follow_angle;
+    float pitch_angle;
     Vector3 previous_lookpos;
     Vector3 current_look_pos;
 } CameraData;
