@@ -7,6 +7,7 @@
 #include "input.h"
 #include "camera.h"
 #include "gamestate.h"
+#include "collision.h"
 
 
 enum PlayerState
