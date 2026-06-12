@@ -21,10 +21,8 @@ static Vector3 actor_entrance_get_camerastart(struct Actor* entrance);
 void actor_entrance_init(struct Actor* actor)
 {
     // Configure actor
-	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_IS_INVISIBLE;
-#ifdef _DEBUG
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE;
 	actor->func_drawworld = actor_entrance_drawworld;
-#endif
 
 	// Set data
 	MALLOC_ACTOR_DATA(EntranceData, actor->data);
@@ -70,9 +68,7 @@ static void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vecto
 {
 	// Stay on same plane for rotations
 	entrance->scale.x = Vector3Distance(startpos, endpos);
-	startpos.y = 0.0f;
-	endpos.y = 0.0f;
-	ACTOR_ROT_SNAP(entrance, QuaternionFromAxisAngle(VEC3UP, QuaternionToEuler(VEC3DIRECTIONQUAT(startpos, endpos)).y));
+	ACTOR_ROT_SNAP(entrance, QuaternionFromAxisAngle(VEC3UP, Vector3GetTopDownAngle(VEC3DIRECTION(startpos, endpos))));
 }
 
 static Vector3 actor_entrance_get_start(struct Actor* entrance)

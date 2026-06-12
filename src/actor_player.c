@@ -1,7 +1,8 @@
 #include "tools.h"
 #include "assets.h"
-#include "actor.h"
+#include "actor_factory.h"
 #include "input.h"
+#include "camera.h"
 
 // private header
 static void actor_player_preload_assets(struct Actor* actor);
@@ -36,7 +37,14 @@ static void actor_player_preload_assets(struct Actor* actor)
 
 static void actor_player_update(struct Actor* actor)
 {
+	struct Actor* camera = FINDACTORTYPE(act_camera);
+
 	Vector2 move_dir = input_analog;
+	float test_angle = Vector3GetTopDownAngle(VEC3DIRECTION(cam_main.position, actor->position));
+	printf("DIR: %f\n", test_angle * RAD2DEG);
+
+
+
 	actor->position = Vector3Add(actor->position, Vector3Scale(Vector3RotateByQuaternion((Vector3){ move_dir.x, 0.0f, move_dir.y }, actor->rotation), 0.2f));
 }
 
@@ -46,6 +54,8 @@ static void actor_player_drawworld(struct Actor* actor, double tick_percent)
 {
 	DRAWCAPSULE(ACTOR_POS_DELTA(actor, tick_percent), 1.0f, 0.5f, GREEN);
 	DrawSphere(Vector3Add(ACTOR_POS_DELTA(actor, tick_percent), Vector3Add(Vector3Scale(VEC3UP, 1.9f), Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, 0.3f), ACTOR_ROT_DELTA(actor, tick_percent)))), 0.5, BLUE);
+
+	DrawLine3D(actor->position, Vector3Add(actor->position, VEC3FORWARD), RED);
 }
 
 static void actor_player_drawhud(struct Actor* actor, double tick_percent)

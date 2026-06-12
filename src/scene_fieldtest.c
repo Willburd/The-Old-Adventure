@@ -64,7 +64,7 @@ static void scene_fieldtest_activate_room(struct Actor* scene, int room_index, i
 	data->config_flags = 0;
 
 	// Entrances
-	ENTRANCE_CREATE(ent_debugentrance, scene, (Vector3) { 0, 0, 2 }, (Vector3) { 1, 0, 2 });
+	ENTRANCE_CREATE(ent_debugentrance, scene, (Vector3) { 0, 0, 2 }, (Vector3) { -1, 0, 2 });
 	ENTRANCE_CREATE(ent_caveA, scene, (Vector3) { -0.2f, -1.1f, 21.5f }, (Vector3) { -0.2f, -1.1f, 19.0f });
 
 	// Actor spawns

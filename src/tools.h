@@ -27,9 +27,7 @@
 #define VEC3BACKWARD ((Vector3){0,0,1})
 #define VEC3RIGHT ((Vector3){1,0,0})
 #define VEC3LEFT ((Vector3){-1,0,0})
-
 #define VEC3DIRECTION(s,e) Vector3Normalize(Vector3Subtract(e, s))
-#define VEC3DIRECTIONQUAT(s,e) QuaternionNormalize(QuaternionFromVector3ToVector3(VEC3DIRECTION(s,e), VEC3BACKWARD))
 
 #define RELEASE(x) free(x);x = NULL;
 
@@ -38,6 +36,7 @@
 Vector4 ColorToVector4(Color col);
 Color Vector4ToColor(Vector4 vec);
 Color Vector3ToColor(Vector3 vec, float alpha);
+float Vector3GetTopDownAngle(Vector3 direction);
 
 #endif
 
