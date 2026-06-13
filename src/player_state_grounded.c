@@ -10,8 +10,10 @@
 #define PLAYER_GROUND_STOP_FRICTION 0.2f
 #define PLAYER_GROUND_SNAPTURN_FRICTION 0.7f
 #define PLAYER_GROUND_TURN_RATE 0.2f
-#define PLAYER_GROUND_STEP_HEIGHT 0.15f
-#define PLAYER_GROUND_FLOOR_SNAP 0.1f
+#define PLAYER_GROUND_STEP_HEIGHT 0.4f
+#define PLAYER_GROUND_MID_HEIGHT 0.50f
+#define PLAYER_GROUND_TOP_HEIGHT 1.0f
+#define PLAYER_GROUND_COLLISION_RADIUS 0.45f
 
 void PlayerState_Grounded_Update(struct Actor* player);
 void PlayerState_Grounded_DrawWorld(struct Actor* player, double tick_percent);
@@ -85,12 +87,17 @@ void PlayerState_Grounded_Update(struct Actor* player)
 			player->rotation = QuaternionMultiply(player->rotation, QuaternionFromAxisAngle(VEC3UP, SIGN(angle_modifier) * turn_modifier * PLAYER_GROUND_TURN_RATE));
 	}
 
+	// Handle wall collision
+	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_GROUND_STEP_HEIGHT), PLAYER_GROUND_COLLISION_RADIUS);
+	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_GROUND_MID_HEIGHT), PLAYER_GROUND_COLLISION_RADIUS);
+	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_GROUND_TOP_HEIGHT), PLAYER_GROUND_COLLISION_RADIUS);
+
 	// Handle gravity
 	Ray downray = {
-		.position = Vector3Add(player->position, Vector3Scale(VEC3UP, PLAYER_GROUND_STEP_HEIGHT)),
+		.position = Vector3Add(player->position, Vector3Scale(VEC3UP, PLAYER_GROUND_STEP_HEIGHT*2.0f)),
 		.direction = VEC3DOWN
 	};
-	RayCollision collision = CollisionGetNearest(downray, PLAYER_GROUND_STEP_HEIGHT + PLAYER_GROUND_FLOOR_SNAP, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
+	RayCollision collision = CollisionGetNearest(downray, PLAYER_GROUND_STEP_HEIGHT * 3.0f, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
 	if (collision.hit) 
 	{
 		// Snap to floors and go up steps

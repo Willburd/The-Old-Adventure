@@ -1,5 +1,7 @@
 #include "player.h"
 
+#define PLAYER_FLOOR_SLOPE_DOTTHRESHOLD 0.6
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Player state control
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,3 +93,34 @@ int PlayerCanAcceptInput(struct Actor* player)
 
 	return can_accept_player_input;
 }
+
+int PlayerCollisionEject(struct Actor* player, Vector3 start_offset, Vector3 dirvec, float radius)
+{
+	Ray check_ray = {
+		.position = Vector3Add(player->position, start_offset),
+		.direction = dirvec
+	};
+	RayCollision collision = CollisionGetNearest(check_ray, radius, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
+	if (!collision.hit)
+		return FALSE;
+	float slope_check = Vector3DotProduct(VEC3UP, collision.normal);
+	if (slope_check >= PLAYER_FLOOR_SLOPE_DOTTHRESHOLD) // It's a floor, we're probably going up steps
+		return FALSE;
+	// Eject player by the remaining distance of the hit
+	float remaining_dist = radius - collision.distance;
+	player->position = Vector3Subtract(player->position, Vector3Scale(dirvec, remaining_dist));
+	return TRUE;
+}
+
+#define TOTAL_ANGLES 10.0f
+int PlayerStandardRadialEjection(struct Actor* player, Vector3 start_offset, float radius)
+{
+	float angle_divisions = (360.0f / TOTAL_ANGLES) * DEG2RAD;
+	int collisions = 0;
+	for (int i = 0; i < TOTAL_ANGLES; i++)
+	{
+		collisions += PlayerCollisionEject(player, start_offset, Vector3RotateByQuaternion(VEC3FORWARD, QuaternionMultiply(player->rotation, QuaternionFromAxisAngle(VEC3UP, angle_divisions * i))), radius);
+	}
+	return collisions;
+}
+#undef TOTAL_ANGLES
