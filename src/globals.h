@@ -6,6 +6,8 @@
 #define TRUE 1
 #define FALSE 0
 
+#define GRAVITY -0.026f;
+
 const double update_rate;
 
 int frame_rate;

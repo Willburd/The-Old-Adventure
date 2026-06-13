@@ -11,9 +11,6 @@
 #define PLAYER_GROUND_SNAPTURN_FRICTION 0.7f
 #define PLAYER_GROUND_TURN_RATE 0.2f
 #define PLAYER_GROUND_STEP_HEIGHT 0.4f
-#define PLAYER_GROUND_MID_HEIGHT 0.50f
-#define PLAYER_GROUND_TOP_HEIGHT 1.0f
-#define PLAYER_GROUND_COLLISION_RADIUS 0.45f
 
 void PlayerState_Grounded_Update(struct Actor* player);
 void PlayerState_Grounded_DrawWorld(struct Actor* player, double tick_percent);
@@ -27,6 +24,9 @@ void PlayerState_Grounded_Enter(struct Actor* player, PlayerData* player_data, i
 	player_data->func_state_drawworld = PlayerState_Grounded_DrawWorld;
 	player_data->func_state_drawhud = PlayerState_Grounded_DrawHud;
 	player_data->func_state_exitstate = PlayerState_Grounded_Exit;
+
+	// Stop falling
+	player->velocity.y = 0.0f;
 }
 
 void PlayerState_Grounded_Update(struct Actor* player)
@@ -88,9 +88,9 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	}
 
 	// Handle wall collision
-	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_GROUND_STEP_HEIGHT), PLAYER_GROUND_COLLISION_RADIUS);
-	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_GROUND_MID_HEIGHT), PLAYER_GROUND_COLLISION_RADIUS);
-	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_GROUND_TOP_HEIGHT), PLAYER_GROUND_COLLISION_RADIUS);
+	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_GROUND_STEP_HEIGHT), PLAYER_COLLISION_RADIUS);
+	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT), PLAYER_COLLISION_RADIUS);
+	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_TOP_HEIGHT), PLAYER_COLLISION_RADIUS);
 
 	// Handle gravity
 	Ray downray = {
@@ -106,7 +106,7 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	else
 	{
 		// We must fall...
-
+		PlayerChangeState(player, plysta_air);
 	}
 }
 

@@ -40,4 +40,10 @@ void ApplyFriction(struct Actor* actor, float amount)
     APPLY_FRICTION(y);
     APPLY_FRICTION(z);
 }
+
+void ApplyFlatFriction(struct Actor* actor, float amount)
+{
+    APPLY_FRICTION(x);
+    APPLY_FRICTION(z);
+}
 #undef APPLY_FRICTION

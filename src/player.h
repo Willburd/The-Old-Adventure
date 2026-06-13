@@ -9,6 +9,11 @@
 #include "gamestate.h"
 #include "collision.h"
 
+#define PLAYER_COLLISION_MID_HEIGHT 0.50f
+#define PLAYER_COLLISION_TOP_HEIGHT 1.0f
+#define PLAYER_COLLISION_RADIUS 0.45f
+
+#define PLAYER_TERMINAL_VELOCITY -1.6f
 
 enum PlayerState
 {
