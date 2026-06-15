@@ -124,3 +124,8 @@ int PlayerStandardRadialEjection(struct Actor* player, Vector3 start_offset, flo
 	return collisions;
 }
 #undef TOTAL_ANGLES
+
+void PlayerStandardHudDraw(struct Actor* player)
+{
+	DrawText("HUD HERE", 10, 10, 10, WHITE);
+}

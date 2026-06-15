@@ -55,7 +55,7 @@ void PlayerState_Air_DrawWorld(struct Actor* player, double tick_percent)
 
 void PlayerState_Air_DrawHud(struct Actor* player, double tick_percent)
 {
-
+	PlayerStandardHudDraw(player);
 }
 
 void PlayerState_Air_Exit(struct Actor* player)
