@@ -1,4 +1,5 @@
 #include "player.h"
+#include "inventory.h"
 
 #define PLAYER_FLOOR_SLOPE_DOTTHRESHOLD 0.6
 
@@ -125,7 +126,45 @@ int PlayerStandardRadialEjection(struct Actor* player, Vector3 start_offset, flo
 }
 #undef TOTAL_ANGLES
 
-void PlayerStandardHudDraw(struct Actor* player)
+void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 {
-	DrawText("HUD HERE", 10, 10, 10, WHITE);
+	Texture* backing_tex = AssetGet_Texture(ASSET_TEXTURES"/Hud/HealthBack.png");
+	Texture* quarter_tex = AssetGet_Texture(ASSET_TEXTURES"/Hud/HealthQuarter.png");
+	Texture* half_tex = AssetGet_Texture(ASSET_TEXTURES"/Hud/HealthHalf.png");
+	Texture* threequart_tex = AssetGet_Texture(ASSET_TEXTURES"/Hud/HealthThreeQuarter.png");
+	Texture* full_tex = AssetGet_Texture(ASSET_TEXTURES"/Hud/HealthFull.png");
+
+	// Draw health
+	const int heart_gap = 12;
+	int heart_count = 0;
+	int health_remaining = player_inventory.health;
+	while (heart_count < player_inventory.max_hearts) {
+		// Put on hud
+		int xpos = 5 + ((heart_count % 10) * heart_gap);
+		int ypos = 5 + ((heart_count / 10)) * heart_gap;
+		Vector2 pos = (Vector2){ xpos, ypos };
+
+		// Animate the heart beating
+		float draw_scale = 0.8f;
+		if (health_remaining > 0 && health_remaining <= HEALTH_PER_HEART)
+		{
+			float pulse = (float)(tick_counter + tick_percent) * 0.03f;
+			draw_scale = draw_scale + 0.09f + (sin(pulse) * 0.06f);
+			pos.x -= (draw_scale * 0.5f);
+			pos.y -= (draw_scale * 0.5f);
+		}
+
+		// Draw segments
+		DrawTextureEx(*backing_tex, pos, 0.0f, draw_scale, WHITE);
+		if (health_remaining >= HEALTH_PER_HEART)
+			DrawTextureEx(*full_tex, pos, 0.0f, draw_scale, WHITE);
+		else if (health_remaining >= (int)((float)HEALTH_PER_HEART * 0.75f))
+			DrawTextureEx(*threequart_tex, pos, 0.0f, draw_scale, WHITE);
+		else if (health_remaining >= (int)((float)HEALTH_PER_HEART * 0.5f))
+			DrawTextureEx(*half_tex, pos, 0.0f, draw_scale, WHITE);
+		else if (health_remaining > 0)
+			DrawTextureEx(*quarter_tex, pos, 0.0f, draw_scale, WHITE);
+		health_remaining -= HEALTH_PER_HEART;
+		heart_count++;
+	}
 }

@@ -10,6 +10,7 @@
 #include "core_assets.h"
 #include "tools.h"
 #include "gamestate.h"
+#include "inventory.h"
 
 #define RAYMATH_USE_SIMD_INTRINSICS 1
 #define PLATFORM_DESKTOP 1
@@ -97,6 +98,9 @@ static void game_setup()
 
     // Setup renderer
     clear_background_color = BLACK;
+
+    // Init inventory
+    MALLOC(Inventory, player_inventory, ERR_NOALLOC);
 
     // Set worldstate up temporarily
     InitGameState();

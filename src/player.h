@@ -38,6 +38,6 @@ void PlayerChangeState(struct Actor* player, int new_state);
 int PlayerCanAcceptInput(struct Actor* player);
 int PlayerCollisionEject(struct Actor* player, Vector3 start_offset, Vector3 dirvec, float radius);
 int PlayerStandardRadialEjection(struct Actor* player, Vector3 start_offset, float radius);
-void PlayerStandardHudDraw(struct Actor* player);
+void PlayerStandardHudDraw(struct Actor* player, double tick_percent);
 
 #endif

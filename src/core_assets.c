@@ -7,6 +7,13 @@ void LoadCoreAssets()
     LoadAsset_Texture(ASSET_TEXTURES"/Error/no_texture.png", TRUE, NULL);
     LoadAsset_Texture(ASSET_TEXTURES"/Error/no_material.png", TRUE, NULL);
     LoadAsset_Texture(ASSET_TEXTURES"/Objects/example.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Hud/HealthBack.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Hud/HealthQuarter.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Hud/HealthHalf.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Hud/HealthThreeQuarter.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Hud/HealthFull.png", TRUE, NULL);
+
+
 
     // Load default materials
     LoadAsset_Material(ASSET_MATERIALS"/Error/no_material.mat", TRUE);

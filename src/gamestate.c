@@ -1,11 +1,19 @@
 #include "gamestate.h"
+#include "inventory.h"
 #include "game_draw.h"
 #include "actor_scene.h"
 
 void InitGameState()
 {
-	daynight_cycle = 0.2f;
+	// Start of game daynight cycle
+	daynight_cycle = TIME_DAWN;
 	daynight_speed = DEFAULT_DAYNIGHT_SPEED;
+
+	// Setup inventory
+	player_inventory.max_hearts = HEALTH_STARTING_HEARTS;
+	player_inventory.health = player_inventory.max_hearts * HEALTH_PER_HEART;
+
+
 }
 
 void UpdateGameState()

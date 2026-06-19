@@ -117,7 +117,7 @@ void PlayerState_Grounded_DrawWorld(struct Actor* player, double tick_percent)
 
 void PlayerState_Grounded_DrawHud(struct Actor* player, double tick_percent)
 {
-	PlayerStandardHudDraw(player);
+	PlayerStandardHudDraw(player, tick_percent);
 }
 
 void PlayerState_Grounded_Exit(struct Actor* player)

@@ -168,6 +168,7 @@
       </DisableSpecificWarnings>
     </ClCompile>
     <ClCompile Include="input.c" />
+    <ClCompile Include="inventory.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="materials.c" />
     <ClCompile Include="player_state_air.c" />
@@ -197,6 +198,7 @@
     <ClInclude Include="game_update.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="hashmap.h" />
+    <ClInclude Include="inventory.h" />
     <ClInclude Include="light_tools.h" />
     <ClInclude Include="materials.h" />
     <ClInclude Include="player.h" />

@@ -180,6 +180,9 @@
     <ClCompile Include="player_state_air.c">
       <Filter>Source Files\adventure\actors\player_states</Filter>
     </ClCompile>
+    <ClCompile Include="inventory.c">
+      <Filter>Source Files\adventure\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>Header Files\adventure\actors\player_states</Filter>
+    </ClInclude>
+    <ClInclude Include="inventory.h">
+      <Filter>Header Files\adventure\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
