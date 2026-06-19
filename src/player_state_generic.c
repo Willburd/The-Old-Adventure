@@ -120,7 +120,7 @@ int PlayerStandardRadialEjection(struct Actor* player, Vector3 start_offset, flo
 	int collisions = 0;
 	for (int i = 0; i < TOTAL_ANGLES; i++)
 	{
-		collisions += PlayerCollisionEject(player, start_offset, Vector3RotateByQuaternion(VEC3FORWARD, QuaternionMultiply(player->rotation, QuaternionFromAxisAngle(VEC3UP, angle_divisions * i))), radius);
+		collisions += PlayerCollisionEject(player, start_offset, Vector3RotateByQuaternion(VEC3FORWARD, QuaternionFromAxisAngle(VEC3UP, angle_divisions * i)), radius);
 	}
 	return collisions;
 }
