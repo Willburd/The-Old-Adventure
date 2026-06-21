@@ -124,12 +124,13 @@ void game_update()
 		struct Actor* update_actor = world_actors[i];
 		if (!ACTOR_EXISTS(update_actor))
 			continue;
-		if (!((update_actor->actor_flags & GAMESTATE_FILTER_MODES) & gameplay_state)) // if can update in this state
-			continue;
-		if (update_actor->actor_flags & ACTOR_FLAG_HAS_ANIMATIONS)
-			UpdateAnimLayers(update_actor);
-		if (ACTOR_HAS(update_actor, func_postupdate))
-			update_actor->func_postupdate(update_actor);
+		if (((update_actor->actor_flags & GAMESTATE_FILTER_MODES) & gameplay_state)) // if can update in this state
+		{
+			if (update_actor->actor_flags & ACTOR_FLAG_HAS_ANIMATIONS)
+				UpdateAnimLayers(update_actor);
+			if (ACTOR_HAS(update_actor, func_postupdate))
+				update_actor->func_postupdate(update_actor);
+		}
 		if (ACTOR_HAS(update_actor, func_append_lights))
 			update_actor->func_append_lights(update_actor);
 	}

@@ -22,6 +22,7 @@ typedef enum
 	act_skybox,
 	// Adventure
 	act_player,
+	act_pause_box,
 	LAST_ACTOR
 
 } ActorTypes;
@@ -31,9 +32,10 @@ void actor_test_init(struct Actor* actor);
 void actor_animationtest_init(struct Actor* actor);
 void actor_scene_init(struct Actor* scene);
 void actor_entrance_init(struct Actor* actor);
+void actor_camera_init(struct Actor* player);
 void actor_skybox_init(struct Actor* actor);
 void actor_player_init(struct Actor* player);
-void actor_camera_init(struct Actor* player);
+void actor_pause_init(struct Actor* actor);
 
 inline char* actor_name(ActorTypes actor_id)
 {
@@ -49,7 +51,8 @@ inline char* actor_name(ActorTypes actor_id)
 		"Camera",
 		"Skybox",
 		// Adventure
-		"Player"
+		"Player",
+		"PauseBox"
 	};
 	return actor_names[actor_id];
 }
@@ -69,6 +72,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 	MAKE_ACTOR_INIT(act_skybox, actor_skybox_init);
 	// Adventure
 	MAKE_ACTOR_INIT(act_player, actor_player_init);
+	MAKE_ACTOR_INIT(act_pause_box, actor_pause_init);
 }
 
 #endif

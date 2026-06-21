@@ -15,6 +15,7 @@ typedef enum
 	input_camdown,
 	input_confirm,
 	input_cancel,
+	input_pause,
 	INPUT_LAST
 
 } InputID;
@@ -41,6 +42,8 @@ const int inputkeys[];
 const int inputpads[];
 
 void UpdateInputState();
+void ClearInputState(int specific_input);
+void ClearAllInputStates();
 
 #define CHECK_INPUTHELD(x) (input_state[x] == INPUT_STATE_PRESSED || input_state[x] == INPUT_STATE_HELD)
 #define CHECK_INPUTPRESSED(x) (input_state[x] == INPUT_STATE_PRESSED)

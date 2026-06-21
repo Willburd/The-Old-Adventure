@@ -108,6 +108,12 @@ void PlayerState_Grounded_Update(struct Actor* player)
 		// We must fall...
 		PlayerChangeState(player, plysta_air);
 	}
+
+	// Pausing
+	if (CHECK_INPUTPRESSED(input_pause))
+	{
+		PlayerStandardPauseActivate(player);
+	}
 }
 
 void PlayerState_Grounded_DrawWorld(struct Actor* player, double tick_percent)

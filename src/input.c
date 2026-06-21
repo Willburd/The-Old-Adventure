@@ -14,6 +14,7 @@ const int inputkeys[INPUT_LAST] = {
 	KEY_KP_2,
 	KEY_Z,							// confirm
 	KEY_X,							// cancel
+	KEY_ENTER,						// pause
 };
 
 const int inputpads[INPUT_LAST] = { 
@@ -27,6 +28,7 @@ const int inputpads[INPUT_LAST] = {
 	0,
 	GAMEPAD_BUTTON_RIGHT_FACE_DOWN,	// confirm
 	GAMEPAD_BUTTON_RIGHT_FACE_RIGHT,// cancel
+	GAMEPAD_BUTTON_MIDDLE_RIGHT,	// pause
 };
 
 int current_gamepad = 0;
@@ -217,5 +219,23 @@ void UpdateInputState()
 				break;
 			}
 		}
+	}
+}
+
+// Reset the input state entirely. Useful for situations where multiple objects listen to the same input, but we only want one to respond to it.
+void ClearInputState(int specific_input)
+{
+	if (specific_input > -1)
+	{
+		input_state[specific_input] = INPUT_STATE_NOP;
+		return;
+	}
+}
+
+void ClearAllInputStates()
+{
+	for (int inp = 0; inp < INPUT_LAST; inp++)
+	{
+		input_state[inp] = INPUT_STATE_NOP;
 	}
 }

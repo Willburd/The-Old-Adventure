@@ -22,7 +22,7 @@ void PlayerState_Air_Enter(struct Actor* player, PlayerData* player_data, int pr
 void PlayerState_Air_Update(struct Actor* player)
 {
 	// slowdown air drift
-	ApplyFlatFriction( player, 0.02f);
+	ApplyFlatFriction(player, 0.02f);
 
 	// Handle wall collision
 	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, 0.1f), PLAYER_COLLISION_RADIUS);
@@ -40,12 +40,19 @@ void PlayerState_Air_Update(struct Actor* player)
 		// Snap to floor on landing
 		player->position = collision.point;
 		PlayerChangeState(player, plysta_grounded);
-		return;
+	}
+	else
+	{
+		// Falling down!
+		if (player->velocity.y > PLAYER_TERMINAL_VELOCITY)
+			player->velocity.y += GRAVITY;
 	}
 
-	// Falling down!
-	if(player->velocity.y > PLAYER_TERMINAL_VELOCITY)
-		player->velocity.y += GRAVITY;
+	// Pausing
+	if (CHECK_INPUTPRESSED(input_pause))
+	{
+		PlayerStandardPauseActivate(player);
+	}
 }
 
 void PlayerState_Air_DrawWorld(struct Actor* player, double tick_percent)

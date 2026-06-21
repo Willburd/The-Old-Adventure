@@ -180,3 +180,10 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 	DrawTextureEx(*button_tex, (Vector2) { item_start_x + 25.0f, HUD_TOP + 20.0f }, 0.0f, 0.40f, YELLOW);
 	DrawTextureEx(*button_tex, (Vector2) { item_start_x + 50.0f, HUD_TOP + 10.0f }, 0.0f, 0.40f, YELLOW);
 }
+
+void PlayerStandardPauseActivate(struct Actor* player)
+{
+	if (FINDACTORTYPE(act_pause_box))
+		return;
+	ACTOR_FACTORY(act_pause_box, GETSCENE(player), Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+}

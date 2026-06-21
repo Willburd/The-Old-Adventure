@@ -183,6 +183,9 @@
     <ClCompile Include="inventory.c">
       <Filter>Source Files\adventure\game</Filter>
     </ClCompile>
+    <ClCompile Include="actor_pause.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">

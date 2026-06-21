@@ -31,7 +31,7 @@ void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos)
 void actor_camera_init(struct Actor* actor)
 {
     // Configure actor
-    actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE;
+    actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_PAUSED;
     actor->func_preupdate = actor_camera_preupdate;
     actor->func_predrawworld = actor_camera_predrawworld;
     actor->func_drawworld = actor_camera_drawworld;

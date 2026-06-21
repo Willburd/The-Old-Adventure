@@ -151,6 +151,7 @@
     <ClCompile Include="actor_camera.c" />
     <ClCompile Include="actor_debug.c" />
     <ClCompile Include="actor_entrance.c" />
+    <ClCompile Include="actor_pause.c" />
     <ClCompile Include="actor_player.c" />
     <ClCompile Include="actor_factory.c" />
     <ClCompile Include="actor_scene.c" />
