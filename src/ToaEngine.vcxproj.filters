@@ -251,6 +251,9 @@
     <ClInclude Include="inventory.h">
       <Filter>Header Files\adventure\game</Filter>
     </ClInclude>
+    <ClInclude Include="hud.h">
+      <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

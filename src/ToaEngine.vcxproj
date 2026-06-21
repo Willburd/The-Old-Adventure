@@ -198,6 +198,7 @@
     <ClInclude Include="game_update.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="hashmap.h" />
+    <ClInclude Include="hud.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="light_tools.h" />
     <ClInclude Include="materials.h" />

@@ -1,4 +1,5 @@
 #include "player.h"
+#include "hud.h"
 #include "inventory.h"
 
 #define PLAYER_FLOOR_SLOPE_DOTTHRESHOLD 0.6
@@ -133,6 +134,7 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 	Texture* half_tex = AssetGet_Texture(ASSET_TEXTURES"/Hud/HealthHalf.png");
 	Texture* threequart_tex = AssetGet_Texture(ASSET_TEXTURES"/Hud/HealthThreeQuarter.png");
 	Texture* full_tex = AssetGet_Texture(ASSET_TEXTURES"/Hud/HealthFull.png");
+	Texture* button_tex = AssetGet_Texture(ASSET_TEXTURES"/Hud/HudButton.png");
 
 	// Draw health
 	const int heart_gap = 12;
@@ -140,8 +142,8 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 	int health_remaining = player_inventory.health;
 	while (heart_count < player_inventory.max_hearts) {
 		// Put on hud
-		int xpos = 5 + ((heart_count % 10) * heart_gap);
-		int ypos = 5 + ((heart_count / 10)) * heart_gap;
+		int xpos = HUD_LEFT + 5 + ((heart_count % 10) * heart_gap);
+		int ypos = HUD_TOP + 5 + ((heart_count / 10)) * heart_gap;
 		Vector2 pos = (Vector2){ xpos, ypos };
 
 		// Animate the heart beating
@@ -167,4 +169,7 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 		health_remaining -= HEALTH_PER_HEART;
 		heart_count++;
 	}
+
+	// Action button
+	DrawTextureEx(*button_tex, (Vector2){ HUD_RIGHT - HUD_WIDTHQUARTER, HUD_TOP + 5.0f }, 0.0f, 0.5f, WHITE);
 }
