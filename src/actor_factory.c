@@ -27,7 +27,7 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, V
 	actor->uuid = ++current_unique_id;
 	actor->actor_type = actor_type;
 	actor->parent = actor_parent;
-	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_PAUSED; // Default scene flags
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE; // Default scene flags
 
 	// Set position
 	ACTOR_POS_SNAP(actor, at_position);

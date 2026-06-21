@@ -61,7 +61,6 @@ static void actor_pause_update(struct Actor* actor)
 	// Don't allow unpausing during the animation
 	PauseData* pause_data = (PauseData*)actor->data;
 	pause_data->pause_time += 1;
-	printf("time %i\n", pause_data->pause_time);
 	if (pause_data->pause_time < 20)
 		return;
 
