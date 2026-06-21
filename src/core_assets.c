@@ -22,4 +22,7 @@ void LoadCoreAssets()
     // Load default models
     LoadAsset_Model(CUBEMAP_MODEL, TRUE);
     LoadAsset_Model(SKYSPHERE_MODEL, TRUE);
+    LoadAsset_Model(QUAD_MODEL, TRUE);
+    LoadAsset_Model(SPRITE_MODEL, TRUE);
+    LoadAsset_Model(PAUSEBOX_MODEL, TRUE);
 }

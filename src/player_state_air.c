@@ -21,6 +21,12 @@ void PlayerState_Air_Enter(struct Actor* player, PlayerData* player_data, int pr
 
 void PlayerState_Air_Update(struct Actor* player)
 {
+	// Pausing
+	if (CHECK_INPUTPRESSED(input_pause))
+	{
+		PlayerStandardPauseActivate(player);
+	}
+
 	// slowdown air drift
 	ApplyFlatFriction(player, 0.02f);
 
@@ -46,12 +52,6 @@ void PlayerState_Air_Update(struct Actor* player)
 		// Falling down!
 		if (player->velocity.y > PLAYER_TERMINAL_VELOCITY)
 			player->velocity.y += GRAVITY;
-	}
-
-	// Pausing
-	if (CHECK_INPUTPRESSED(input_pause))
-	{
-		PlayerStandardPauseActivate(player);
 	}
 }
 

@@ -31,6 +31,12 @@ void PlayerState_Grounded_Enter(struct Actor* player, PlayerData* player_data, i
 
 void PlayerState_Grounded_Update(struct Actor* player)
 {
+	// Pausing
+	if (CHECK_INPUTPRESSED(input_pause))
+	{
+		PlayerStandardPauseActivate(player);
+	}
+
 	// Handle player inputs
 	Vector3 move_velocity = { 0 };
 	if (PlayerCanAcceptInput(player))
@@ -81,7 +87,7 @@ void PlayerState_Grounded_Update(struct Actor* player)
 
 		float turn_modifier = 1.0f;
 		float angle_modifier = Vector2Angle(dirvec, flat_facing);
-		if (snap_turn || abs(angle_modifier * RAD2DEG) < 9.0f)
+		if (snap_turn || abs(angle_modifier * (float)RAD2DEG) < 9.0f)
 			player->rotation = QuaternionMultiply(player->rotation, QuaternionFromAxisAngle(VEC3UP, angle_modifier)); // Snap to
 		else
 			player->rotation = QuaternionMultiply(player->rotation, QuaternionFromAxisAngle(VEC3UP, SIGN(angle_modifier) * turn_modifier * PLAYER_GROUND_TURN_RATE));
@@ -102,18 +108,10 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	{
 		// Snap to floors and go up steps
 		player->position = collision.point;
+		return;
 	}
-	else
-	{
-		// We must fall...
-		PlayerChangeState(player, plysta_air);
-	}
-
-	// Pausing
-	if (CHECK_INPUTPRESSED(input_pause))
-	{
-		PlayerStandardPauseActivate(player);
-	}
+	// We must fall...
+	PlayerChangeState(player, plysta_air);
 }
 
 void PlayerState_Grounded_DrawWorld(struct Actor* player, double tick_percent)

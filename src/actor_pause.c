@@ -4,6 +4,7 @@
 #include "input.h"
 #include "gamestate.h"
 #include "camera.h"
+#include "core_assets.h"
 
 // private header
 static void actor_pause_preload_assets(struct Actor* actor);
@@ -77,7 +78,30 @@ static void actor_pause_update(struct Actor* actor)
 
 static void actor_pause_postdrawworld(struct Actor* actor, double tick_percent)
 {
-	DrawCube(Vector3Add(Vector3Scale(VEC3FORWARD, 5.0f), Vector3Scale(ACTOR_POS_DELTA(actor, (float)tick_percent), 0.01f)), 0.2f, 0.2f, 0.2f, RED);
+	Material* mat = AssetGet_Material(ASSET_MATERIALS"/Error/no_material.mat");
+	Material* mat_f = AssetGet_Material(ASSET_MATERIALS"/Objects/example.mat");
+	Matrix box_mat = MatrixCompose(cam_main.position, QuaternionLookAt(cam_main.position, cam_main.target, VEC3UP), (Vector3) { 1.0f, 0.92f, 1.0f});
+
+	DrawMesh( // Forward
+		AssetGet_Model(PAUSEBOX_MODEL)->meshes[2],
+		*mat_f,
+		box_mat
+	);
+	DrawMesh( // Right
+		AssetGet_Model(PAUSEBOX_MODEL)->meshes[3],
+		*mat,
+		box_mat
+	);
+	DrawMesh( // Back
+		AssetGet_Model(PAUSEBOX_MODEL)->meshes[0],
+		*mat,
+		box_mat
+	);
+	DrawMesh( // Left
+		AssetGet_Model(PAUSEBOX_MODEL)->meshes[1],
+		*mat,
+		box_mat
+	);
 }
 
 static void actor_pause_destroy(struct Actor* actor)

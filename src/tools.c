@@ -21,6 +21,11 @@ float Vector3GetTopDownAngle(Vector3 direction)
     return Vector2Angle((Vector2){ 0.0f, -1.0f }, (Vector2) { direction.x, direction.z });
 }
 
+Quaternion QuaternionLookAt(Vector3 start, Vector3 end, Vector3 up)
+{
+    return QuaternionFromMatrix(MatrixInvert(MatrixLookAt(start, end, up)));
+}
+
 #define APPLY_FRICTION(component) \
 if (actor->velocity.component > 0.0f) \
 { \

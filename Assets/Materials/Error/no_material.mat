@@ -2,4 +2,4 @@
 #ALBED /Error/no_material.png FILT_POINT WRAP_REPEAT
 
 // Shader
-#SHADR /standard.vert /standard.frag
+#SHADR /unshaded.vert /unshaded.frag

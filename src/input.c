@@ -139,7 +139,7 @@ void UpdateInputState()
 	for (int inp = 0; inp < INPUT_LAST; inp++)
 	{
 		int is_pressed = FALSE;
-		if (inp <= input_down)
+		if (inp <= input_camdown)
 		{
 			switch (inp)
 			{

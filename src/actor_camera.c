@@ -75,6 +75,31 @@ void CameraRecalculateAngleToTarget(struct Actor* camera)
     cam_data->pitch_angle = -3.0f;
 }
 
+Matrix GetActorCameraMatrix()
+{
+    struct Actor* camera = FINDACTORTYPE(act_camera);
+    if (!camera)
+        return MatrixIdentity();
+    return MatrixCompose(camera->position, camera->rotation, camera->scale);
+}
+
+Matrix GetActorCameraMatrixInverseRotation()
+{
+    struct Actor* camera = FINDACTORTYPE(act_camera);
+    if (!camera)
+        return MatrixIdentity();
+    return MatrixCompose(camera->position, QuaternionInvert(camera->rotation), camera->scale);
+}
+
+Transform GetActorCameraTransform()
+{
+    struct Actor* camera = FINDACTORTYPE(act_camera);
+    if (!camera)
+        return (Transform) { 0 };
+    return (Transform) { camera->position, camera->rotation, camera->scale };
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
