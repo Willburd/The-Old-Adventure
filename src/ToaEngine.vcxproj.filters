@@ -189,6 +189,9 @@
     <ClCompile Include="actor_trigger_exit.c">
       <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_fadein.c">
+      <Filter>Source Files\engine\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -261,6 +264,9 @@
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
     <ClInclude Include="actor_trigger_exit.h">
+      <Filter>Header Files\engine\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_fadein.h">
       <Filter>Header Files\engine\actors</Filter>
     </ClInclude>
   </ItemGroup>

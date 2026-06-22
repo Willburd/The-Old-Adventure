@@ -151,6 +151,7 @@
     <ClCompile Include="actor_camera.c" />
     <ClCompile Include="actor_debug.c" />
     <ClCompile Include="actor_entrance.c" />
+    <ClCompile Include="actor_fadein.c" />
     <ClCompile Include="actor_pause.c" />
     <ClCompile Include="actor_player.c" />
     <ClCompile Include="actor_factory.c" />
@@ -188,6 +189,7 @@
   <ItemGroup>
     <ClInclude Include="actor.h" />
     <ClInclude Include="actor_entrance.h" />
+    <ClInclude Include="actor_fadein.h" />
     <ClInclude Include="actor_library.h" />
     <ClInclude Include="actor_factory.h" />
     <ClInclude Include="actor_scene.h" />

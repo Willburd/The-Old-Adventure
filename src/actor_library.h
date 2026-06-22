@@ -19,6 +19,7 @@ typedef enum
 	act_scene,
 	act_entrance,
 	act_trigger_exit,
+	act_fadein,
 	act_camera,
 	act_skybox,
 	// Adventure
@@ -34,6 +35,7 @@ void actor_animationtest_init(struct Actor* actor);
 void actor_scene_init(struct Actor* scene);
 void actor_entrance_init(struct Actor* actor);
 void actor_trigger_exit_init(struct Actor* actor);
+void actor_fadein_init(struct Actor* actor);
 void actor_camera_init(struct Actor* player);
 void actor_skybox_init(struct Actor* actor);
 void actor_player_init(struct Actor* player);
@@ -51,6 +53,7 @@ inline char* actor_name(ActorTypes actor_id)
 		"Scene",
 		"Entrance",
 		"TriggerExit",
+		"Fadein",
 		"Camera",
 		"Skybox",
 		// Adventure
@@ -60,7 +63,7 @@ inline char* actor_name(ActorTypes actor_id)
 	return actor_names[actor_id];
 }
 
-#define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y; if(actor->func_init != NULL) actor->func_init(actor);}
+#define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y;if(actor->func_init != NULL) actor->func_init(actor);return;}
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 {
 	MAKE_ACTOR_INIT(act_error, NULL);
@@ -72,6 +75,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 	MAKE_ACTOR_INIT(act_scene, actor_scene_init);
 	MAKE_ACTOR_INIT(act_entrance, actor_entrance_init);
 	MAKE_ACTOR_INIT(act_trigger_exit, actor_trigger_exit_init);
+	MAKE_ACTOR_INIT(act_fadein, actor_fadein_init);
 	MAKE_ACTOR_INIT(act_camera, actor_camera_init);
 	MAKE_ACTOR_INIT(act_skybox, actor_skybox_init);
 	// Adventure

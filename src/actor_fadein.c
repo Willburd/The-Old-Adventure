@@ -1,0 +1,62 @@
+#include "tools.h"
+#include "assets.h"
+#include "actor_factory.h"
+#include "actor_fadein.h"
+
+// private header
+static void actor_fadein_update(struct Actor* actor);
+static void actor_fadein_postdrawhud(struct Actor* actor, double tick_percent);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Public functions
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Setup the player actor. Public function in the header
+void actor_fadein_init(struct Actor* actor)
+{
+	// Remove previous fades if somehow multiple happen
+	ACTOR_DESTROY_TYPE(act_fadein);
+
+	// Configure actor
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_PAUSED;
+	actor->func_update = actor_fadein_update;
+	actor->func_postdrawhud = actor_fadein_postdrawhud;
+
+	// Set data
+	MALLOC_ACTOR_DATA(FadeInData, actor->data);
+	FadeInData* fadein_data = (FadeInData*)actor->data;
+
+	fadein_data->blend_color = BLACK;
+	fadein_data->fadeout = 255;
+	fadein_data->previous_fadeout = 255;
+}
+
+struct Actor* FADEIN_CREATE(Color color)
+{
+	struct Actor* fadein = ACTOR_FACTORY(act_fadein, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	FadeInData* fadein_data = (FadeInData*)fadein->data;
+	fadein_data->blend_color = color;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Private functions
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void actor_fadein_update(struct Actor* actor)
+{
+	// Fade into the scene
+	FadeInData* fadein_data = (FadeInData*)actor->data;
+	fadein_data->previous_fadeout = fadein_data->fadeout;
+	fadein_data->fadeout -= 5;
+	if (fadein_data->fadeout >= 0)
+		return;
+	// end the fade
+	fadein_data->fadeout = 0;
+	ACTOR_DESTROY(actor);
+}
+
+static void actor_fadein_postdrawhud(struct Actor* actor, double tick_percent)
+{
+	FadeInData* fadein_data = (FadeInData*)actor->data;
+	DrawRectangle(0, 0, renderWidth, renderHeight, (Color) { fadein_data->blend_color.r, fadein_data->blend_color.g, fadein_data->blend_color.b, Clamp(Lerp(fadein_data->previous_fadeout, fadein_data->fadeout, tick_percent), 0, 255) });
+}

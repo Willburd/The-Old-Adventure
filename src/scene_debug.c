@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "globals.h"
 #include "input.h"
+#include "actor_fadein.h"
 
 static void scene_debug_activate_room(struct Actor* scene, int room_index, int entrance);
 static void scene_debug_update(struct Actor* scene);
@@ -60,6 +61,7 @@ static void scene_debug_update(struct Actor* scene)
 
 	if (CHECK_INPUTPRESSED(input_confirm))
 	{
+		FADEIN_CREATE(BLACK);
 		TransferScene(our_data->MENUINDEX, ent_debugentrance);
 		return;
 	}

@@ -6,6 +6,7 @@
 #include "gamestate.h"
 #include "player.h"
 #include "game_draw.h"
+#include "actor_fadein.h"
 
 // private header
 static void actor_trigger_exit_preupdate(struct Actor* actor);
@@ -121,5 +122,7 @@ static void actor_exit_finishleaving(struct Actor* exit)
 	gameplay_state |= GAMESTATE_GAMEPLAY;
 	printf("EXIT FINISHED\n");
 
+	// Create transition fade into new room, it's not tied to any scenes, so it fades out on it's own
+	FADEIN_CREATE(BLACK);
 	TransferScene(exit_data->dest_scene, exit_data->dest_entrance);
 }
