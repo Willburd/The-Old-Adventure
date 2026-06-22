@@ -37,7 +37,7 @@ void actor_animationtest_init(struct Actor* actor)
 static void actor_animationtest_preload_assets(struct Actor* actor)
 {
 	Asset* model_asset = LoadAsset_Model(MODEL_ANIM_TEST, FALSE);
-	struct AnimationLayer* idle_layer = AddAnimLayer(actor, GetAnimation(model_asset, "Robot_Walking"), ANIMATION_FRAMERATE, FALSE, TRUE, 1.0f, BLENDTYPE_MIX);
+	struct AnimationLayer* idle_layer = AddAnimLayer(actor, GetAnimation(model_asset, "Robot_Walking"), ANIMATION_FRAMERATE, ANIM_LOOP, TRUE, 1.0f, BLENDTYPE_MIX);
 	AnimLayerFilterAllBones(model_asset, idle_layer, 0.6f); // Low influence on everything except legs
 	AnimLayerFilterBone(model_asset, idle_layer, "Foot.L", 1.0f);
 	AnimLayerFilterBone(model_asset, idle_layer, "Foot.R", 1.0f);
@@ -46,7 +46,7 @@ static void actor_animationtest_preload_assets(struct Actor* actor)
 	AnimLayerFilterBone(model_asset, idle_layer, "UpperLeg.L", 1.0f);
 	AnimLayerFilterBone(model_asset, idle_layer, "UpperLeg.R", 1.0f);
 
-	struct AnimationLayer* dance_layer = AddAnimLayer(actor, GetAnimation(model_asset, "Robot_Dance"), ANIMATION_FRAMERATE, FALSE, TRUE, 1.0f, BLENDTYPE_MIX);
+	struct AnimationLayer* dance_layer = AddAnimLayer(actor, GetAnimation(model_asset, "Robot_Dance"), ANIMATION_FRAMERATE, ANIM_LOOP, TRUE, 1.0f, BLENDTYPE_MIX);
 	AnimLayerFilterBone(model_asset, dance_layer, "Foot.L", 0.1f); // Low mix with anything else
 	AnimLayerFilterBone(model_asset, dance_layer, "Foot.R", 0.1f);
 	AnimLayerFilterBone(model_asset, dance_layer, "LowerLeg.L", 0.1f);

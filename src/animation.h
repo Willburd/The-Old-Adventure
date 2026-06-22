@@ -2,11 +2,14 @@
 #define __ANIMATION_HEADER__
 
 // Expected animation framerate for ALL model animations
-#define ANIMATION_FRAMERATE 30
+#define ANIMATION_FRAMERATE 60
 #define MAX_BONES 255
 
 #define BLENDTYPE_MIX 0
 #define BLENDTYPE_REPLACE 1
+
+#define ANIM_LOOP 0
+#define ANIM_SINGLE 1
 
 #include "actor.h"
 #include "assets.h"
