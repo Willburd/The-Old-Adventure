@@ -109,6 +109,9 @@ void UpdateAnimLayers(struct Actor* actor)
     for (int i = 0; i <= actor->animlayer_count; i++)
     {
         struct AnimationLayer* layer = actor->animation_layers[i];
+
+        if (actor->is_destroying) // Destroyed by animation
+            break;
         if (layer->is_playing)
         {
             // Solve the animation frame rate to game tick rate
