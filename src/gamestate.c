@@ -27,7 +27,7 @@ void UpdateGameState()
 		scene_config = sdat->config_flags;
 	}
 	// Cycle daynight if our scene doesn't pause time.
-	if (!(scene_config & SCENE_CONFIG_TIMEPAUSED))
+	if ((gameplay_state & GAMESTATE_GAMEPLAY) && !(scene_config & SCENE_CONFIG_TIMEPAUSED))
 	{
 		daynight_cycle += daynight_speed;
 		while (daynight_cycle > 1.0f)

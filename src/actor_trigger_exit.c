@@ -39,6 +39,7 @@ struct Actor* EXIT_TRIGGER_CREATE(int destination_scene, int destination_entranc
 	exit_data->dest_entrance = destination_entrance;
 	exit_data->radius = radius;
 	exit_data->is_triggered = FALSE;
+	exit_data->previous_fadeout = 0;
 	exit_data->fadeout = 0;
 	return exit;
 }
@@ -57,6 +58,7 @@ static void actor_trigger_exit_preupdate(struct Actor* exit)
 	if (exit_data->is_triggered)
 	{
 		// Wait for fadeout before entering the new scene
+		exit_data->previous_fadeout = exit_data->fadeout;
 		exit_data->fadeout += MAX_FADEOUT_RATE;
 		if (exit_data->fadeout >= MAX_FADEOUT_TIME)
 		{
@@ -85,7 +87,7 @@ static void actor_trigger_exit_drawworld(struct Actor* exit, double tick_percent
 static void actor_trigger_exit_postdrawhud(struct Actor* exit, double tick_percent)
 {
 	TriggerExitData* exit_data = exit->data;
-	DrawRectangle(0, 0, renderWidth, renderHeight, (Color) { 0, 0, 0, Clamp(exit_data->fadeout,0,255) });
+	DrawRectangle(0, 0, renderWidth, renderHeight, (Color) { 0, 0, 0, Clamp( Lerp(exit_data->previous_fadeout, exit_data->fadeout, tick_percent),0,255) });
 }
 
 static void actor_exit_startleaving(struct Actor* exit, struct Actor* player)
