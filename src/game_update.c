@@ -145,14 +145,6 @@ void game_update()
 		if (!ACTOR_EXISTS(finalize_actor))
 		{
 			total_actors--;
-			if (ACTOR_HAS(finalize_actor, func_destroy))
-				finalize_actor->func_destroy(finalize_actor);
-			// Clear animation layers
-			for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
-			{
-				if (finalize_actor->animation_layers[i] != NULL)
-					RELEASE(finalize_actor->animation_layers[i]);
-			}
 			// Wipedata
 			world_actors[finalize_actor->index] = NULL;
 			if (ACTOR_HAS(finalize_actor, data))

@@ -72,7 +72,7 @@ struct Actor {
 };
 #define ACTOR_CLEAR(x) \
 x->uuid = 0; x->index = -1; x->actor_type = 0; \
-x->is_destroying = 0; \
+x->is_destroying = FALSE; \
 x->parent = NULL; \
 x->actor_flags = 0; \
 x->actor_flags = 0; \

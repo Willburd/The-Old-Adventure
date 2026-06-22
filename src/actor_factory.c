@@ -74,6 +74,14 @@ void ACTOR_DESTROY(struct Actor* actor)
 		return;
 	ACTOR_DESTROY_CHILDREN(actor);
 	actor->is_destroying = TRUE;
+	if (ACTOR_HAS(actor, func_destroy))
+		actor->func_destroy(actor);
+	// Clear animation layers
+	for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
+	{
+		if (actor->animation_layers[i] != NULL)
+			RELEASE(actor->animation_layers[i]);
+	}
 }
 
 void ACTOR_DESTROY_UUID(uint64_t uuid)
