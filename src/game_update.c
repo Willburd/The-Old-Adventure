@@ -116,7 +116,7 @@ void game_update()
 
 
 	////////////////////////////////////////////////////////////////////////
-	// Post update, update lights
+	// Post update
 	////////////////////////////////////////////////////////////////////////
 
 	for (int i = 0; i <= current_actor_cap; i++)
@@ -124,14 +124,45 @@ void game_update()
 		struct Actor* update_actor = world_actors[i];
 		if (!ACTOR_EXISTS(update_actor))
 			continue;
-		if (((update_actor->actor_flags & GAMESTATE_FILTER_MODES) & gameplay_state)) // if can update in this state
+		if (!((update_actor->actor_flags & GAMESTATE_FILTER_MODES) & gameplay_state)) // if can update in this state
+			continue;
+		if (ACTOR_HAS(update_actor, func_postupdate))
+			update_actor->func_postupdate(update_actor);
+		if (update_actor->actor_flags & ACTOR_FLAG_HAS_ANIMATIONS)
+			UpdateAnimLayers(update_actor);
+	}
+
+	////////////////////////////////////////////////////////////////////////
+	// Finalize before draw
+	////////////////////////////////////////////////////////////////////////
+
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* finalize_actor = world_actors[i];
+		if (finalize_actor == NULL)
+			continue;
+		// Fully delete actors that no longer exist
+		if (!ACTOR_EXISTS(finalize_actor))
 		{
-			if (update_actor->actor_flags & ACTOR_FLAG_HAS_ANIMATIONS)
-				UpdateAnimLayers(update_actor);
-			if (ACTOR_HAS(update_actor, func_postupdate))
-				update_actor->func_postupdate(update_actor);
+			total_actors--;
+			if (ACTOR_HAS(finalize_actor, func_destroy))
+				finalize_actor->func_destroy(finalize_actor);
+			// Clear animation layers
+			for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
+			{
+				if (finalize_actor->animation_layers[i] != NULL)
+					RELEASE(finalize_actor->animation_layers[i]);
+			}
+			// Wipedata
+			world_actors[finalize_actor->index] = NULL;
+			if (ACTOR_HAS(finalize_actor, data))
+				RELEASE(finalize_actor->data);
+			ACTOR_CLEAR(finalize_actor);
+			RELEASE(finalize_actor);
+			continue;
 		}
-		if (ACTOR_HAS(update_actor, func_append_lights))
-			update_actor->func_append_lights(update_actor);
+		// Light update
+		if (ACTOR_HAS(finalize_actor, func_append_lights))
+			finalize_actor->func_append_lights(finalize_actor);
 	}
 }

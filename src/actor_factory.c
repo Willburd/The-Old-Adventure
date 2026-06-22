@@ -70,34 +70,10 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, V
 // Removes an actor from the world.
 void ACTOR_DESTROY(struct Actor* actor)
 {
-	// No recursive destroy
-	if (actor->index == -1)
+	if (!ACTOR_EXISTS(actor))
 		return;
-
-	// Remove all children
 	ACTOR_DESTROY_CHILDREN(actor);
-
-	// Call destroy actions
-#ifdef _DEBUG
-	printf("ACTOR DESTROY: [type: %s] slot: %i [%llu]\n", actor_name(actor->actor_type), actor->index, actor->uuid);
-#endif
-	total_actors--;
-	if (ACTOR_HAS(actor, func_destroy))
-		actor->func_destroy(actor);
-
-	// Clear animation layers
-	for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
-	{
-		if (actor->animation_layers[i] != NULL)
-			RELEASE(actor->animation_layers[i]);
-	}
-
-	// Wipedata
-	world_actors[actor->index] = NULL;
-	if (ACTOR_HAS(actor, data))
-		RELEASE(actor->data);
-	ACTOR_CLEAR(actor);
-	RELEASE(actor);
+	actor->is_destroying = TRUE;
 }
 
 void ACTOR_DESTROY_UUID(uint64_t uuid)

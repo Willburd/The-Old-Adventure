@@ -26,6 +26,7 @@ struct Actor {
 	int index;
 	uint64_t uuid;
 	int actor_type;
+	int is_destroying;
 
 	struct Actor* parent;
 	void* data;
@@ -71,6 +72,7 @@ struct Actor {
 };
 #define ACTOR_CLEAR(x) \
 x->uuid = 0; x->index = -1; x->actor_type = 0; \
+x->is_destroying = 0; \
 x->parent = NULL; \
 x->actor_flags = 0; \
 x->actor_flags = 0; \
@@ -90,7 +92,7 @@ x->data = NULL;
 #define ACTOR_ROT_SNAP(x, rot) x->rotation = rot;x->last_rotation = rot;
 #define ACTOR_SCALE_SNAP(x, scl) x->scale = scl;x->last_scale = scl;
 #define ACTOR_VEL_RESET(x, vel) x->velocity = vel;x->last_velocity = vel;
-#define ACTOR_EXISTS(x) (x != NULL && x->index > -1)
+#define ACTOR_EXISTS(x) (x != NULL && !x->is_destroying)
 #define ACTOR_HAS(x, func) (x->func != NULL)
 
 #define ACTOR_POS_DELTA(x, delta) Vector3Lerp(x->last_position, x->position, (float)delta)

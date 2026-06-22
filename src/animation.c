@@ -117,16 +117,14 @@ void UpdateAnimLayers(struct Actor* actor)
             // Single shot animations only play once
             if (layer->current_frame >= anim_len)
             {
+                if (ACTOR_HAS(actor, func_animation_ended))
+                    actor->func_animation_ended(actor, layer->current_animation->name);
                 if (layer->single_shot)
                 {
                     layer->current_frame = 0.0;
                     layer->is_playing = FALSE;
+                    continue;
                 }
-                if (ACTOR_HAS(actor, func_animation_ended))
-                {
-                    actor->func_animation_ended(actor, layer->current_animation->name);
-                }
-                continue;
             }
             // Looping animations, push back to within valid ranges. Negative values wrap around when getting frame data.
             layer->previous_frame = layer->current_frame;
