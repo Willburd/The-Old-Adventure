@@ -115,10 +115,17 @@ void UpdateAnimLayers(struct Actor* actor)
             layer->current_frame += 1.0 / (update_rate / layer->frame_rate); // Solve the animation framerate vs the game's tick rate, then get the per tick change in frame
             unsigned int anim_len = layer->current_animation->keyframeCount;
             // Single shot animations only play once
-            if (layer->current_frame >= anim_len && layer->single_shot)
+            if (layer->current_frame >= anim_len)
             {
-                layer->current_frame = 0.0;
-                layer->is_playing = FALSE;
+                if (layer->single_shot)
+                {
+                    layer->current_frame = 0.0;
+                    layer->is_playing = FALSE;
+                }
+                if (ACTOR_HAS(actor, func_animation_ended))
+                {
+                    actor->func_animation_ended(actor, layer->current_animation->name);
+                }
                 continue;
             }
             // Looping animations, push back to within valid ranges. Negative values wrap around when getting frame data.

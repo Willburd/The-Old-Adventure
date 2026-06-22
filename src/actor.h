@@ -66,6 +66,8 @@ struct Actor {
 	// Subrooms in scenes
 	void (*func_activate_room)(struct Actor* actor, int room_index, int entrance);
 	void (*func_deactivate_room)(struct Actor* actor, int room_index);
+	// Animation
+	void (*func_animation_ended)(struct Actor* actor, char* anim_name);
 };
 #define ACTOR_CLEAR(x) \
 x->uuid = 0; x->index = -1; x->actor_type = 0; \
@@ -81,6 +83,7 @@ x->func_append_lights = NULL; \
 x->func_predrawworld = NULL; x->func_drawworld = NULL; x->func_postdrawworld = NULL; \
 x->func_predrawhud = NULL; x->func_drawhud = NULL; x->func_postdrawhud = NULL; \
 x->func_activate_room = NULL; x->func_deactivate_room = NULL; \
+x->func_animation_ended = NULL; \
 x->data = NULL;
 
 #define ACTOR_POS_SNAP(x, pos) x->position = pos;x->last_position = pos;

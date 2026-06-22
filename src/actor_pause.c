@@ -11,6 +11,7 @@ static void actor_pause_preload_assets(struct Actor* actor);
 static void actor_pause_update(struct Actor* actor);
 static void actor_pause_postdrawworld(struct Actor* actor, double delta_time);
 static void actor_pause_destroy(struct Actor* actor);
+static void actor_pause_animation_ended(struct Actor* actor, char* animation);
 
 typedef struct {
 	int pause_time;
@@ -29,6 +30,7 @@ void actor_pause_init(struct Actor* actor)
 	actor->func_update = actor_pause_update;
 	actor->func_postdrawworld = actor_pause_postdrawworld;
 	actor->func_destroy = actor_pause_destroy;
+	actor->func_animation_ended = actor_pause_animation_ended;
 
 	// Set data
 	MALLOC_ACTOR_DATA(PauseData, actor->data);
@@ -64,20 +66,31 @@ static void actor_pause_preload_assets(struct Actor* actor)
 static void actor_pause_update(struct Actor* actor)
 {
 	// Don't allow unpausing during the animation
-	PauseData* pause_data = (PauseData*)actor->data;
-	pause_data->pause_time += 1;
-	if (pause_data->pause_time < 20)
+	struct AnimationLayer* opening_layer = FindAnimLayer(actor, "OpenMenu");
+	struct AnimationLayer* closing_layer = FindAnimLayer(actor, "CloseMenu");
+	if (opening_layer->is_playing || closing_layer->is_playing)
 		return;
 
 	// Check if unpausing
 	if (CHECK_INPUTPRESSED(input_pause))
 	{
 		printf("UNPAUSE\n");
-		ACTOR_DESTROY(actor);
+		struct AnimationLayer* hold_close = FindAnimLayer(actor, "HoldClosed");
+		struct AnimationLayer* hold_open = FindAnimLayer(actor, "HoldOpen");
+		hold_close->is_playing = TRUE;
+		hold_open->is_playing = FALSE;
+		opening_layer->is_playing = FALSE;
+		closing_layer->is_playing = TRUE; // Start closing animation
 		return;
 	}
 
 	// Handle inventory
+}
+
+static void actor_pause_animation_ended(struct Actor* actor, char* animation)
+{
+	if(STRMATCH(animation, "CloseMenu"))
+		ACTOR_DESTROY(actor);
 }
 
 static void actor_pause_postdrawworld(struct Actor* actor, double tick_percent)
