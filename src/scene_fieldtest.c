@@ -65,11 +65,11 @@ static void scene_fieldtest_activate_room(struct Actor* scene, int room_index, i
 	data->config_flags = 0;
 
 	// Exits
-	EXIT_TRIGGER_CREATE(scene_fieldtest, ent_caveA, scene, (Vector3) { 0.0f, 0.0f, 36.0f }, 10.0f);
+	EXIT_TRIGGER_CREATE(scene_fieldtest, ent_caveA, scene, (Vector3) { 0.0f, 0.0f, 36.0f }, 18.0f);
 
 	// Entrances
 	ENTRANCE_CREATE(ent_debugentrance, scene, (Vector3) { 0, 0, 2 }, (Vector3) { -1, 0, 2 });
-	ENTRANCE_CREATE(ent_caveA, scene, (Vector3) { -0.2f, -1.1f, 21.5f }, (Vector3) { -0.2f, -1.1f, 19.0f });
+	ENTRANCE_CREATE(ent_caveA, scene, (Vector3) { -0.2f, -1.1f, 17.5f }, (Vector3) { -0.2f, -1.1f, 15.0f });
 
 	// Actor spawns
 	ACTOR_FACTORY(act_skybox, scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());

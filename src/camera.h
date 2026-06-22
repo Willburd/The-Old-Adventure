@@ -4,7 +4,8 @@
 #include "raylib.h"
 
 #define CAMERA_MODE_FOLLOW 0
-#define CAMERA_MODE_FREEMOVE 1
+#define CAMERA_MODE_ONLYWATCH 1
+#define CAMERA_MODE_FREEMOVE 2
 
 typedef struct {
     int locked;

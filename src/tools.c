@@ -21,6 +21,13 @@ float Vector3GetTopDownAngle(Vector3 direction)
     return Vector2Angle((Vector2){ 0.0f, -1.0f }, (Vector2) { direction.x, direction.z });
 }
 
+Vector3 Vector3FlatDirection(Vector3 start, Vector3 end)
+{
+    start.y = 0;
+    end.y = 0;
+    return VEC3DIRECTION(start, end);
+}
+
 Quaternion QuaternionLookAt(Vector3 start, Vector3 end, Vector3 up)
 {
     return QuaternionFromMatrix(MatrixInvert(MatrixLookAt(start, end, up)));

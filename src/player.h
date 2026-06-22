@@ -27,6 +27,8 @@ typedef struct {
 	void (*func_state_drawworld)(struct Actor* player, double tick_percent);
 	void (*func_state_drawhud)(struct Actor* player, double tick_percent);
 	void (*func_state_exitstate)(struct Actor* player);
+	Vector3 cutscene_run_goal;
+	float cutscene_run_factor;
 } PlayerData;
 
 

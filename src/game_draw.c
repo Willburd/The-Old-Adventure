@@ -137,7 +137,7 @@ void game_draw(double tick_percent)
 	Rectangle dest = (Rectangle){ screenWidth / 2.0f, screenHeight / 2.0f, (float)screenWidth, (float)screenHeight };
 
 	BeginTextureMode(render_tex_hud);
-	ClearBackground((Color) {60,60,60,0}); // Slightly gray
+	ClearBackground((Color) {20,20,20,0}); // Slightly gray
 	BeginMode2D(cam_hud);
 	{
 		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);

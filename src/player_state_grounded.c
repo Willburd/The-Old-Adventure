@@ -31,18 +31,25 @@ void PlayerState_Grounded_Enter(struct Actor* player, PlayerData* player_data, i
 
 void PlayerState_Grounded_Update(struct Actor* player)
 {
-	// Pausing
-	if (CHECK_INPUTPRESSED(input_pause))
-	{
-		PlayerStandardPauseActivate(player);
-	}
-
-	// Handle player inputs
 	Vector3 move_velocity = { 0 };
 	if (PlayerCanAcceptInput(player))
 	{
+		// Pausing
+		if (CHECK_INPUTPRESSED(input_pause))
+		{
+			PlayerStandardPauseActivate(player);
+		}
+
+		// Handle player inputs
 		Quaternion input_rotator = QuaternionFromAxisAngle(VEC3UP, -Vector3GetTopDownAngle(VEC3DIRECTION(cam_main.position, player->position)));
 		move_velocity = Vector3Scale(Vector3RotateByQuaternion((Vector3) { input_analog.x, 0.0f, input_analog.y }, input_rotator), PLAYER_GROUND_ACCELERATION);
+	}
+	else if(gameplay_state & (GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE))
+	{
+		// Cutscene movement, use the rungoal vector
+		PlayerData* player_data = (PlayerData*)player->data;
+		if(player_data->cutscene_run_goal.x != 0 || player_data->cutscene_run_goal.z != 0)
+			move_velocity = Vector3Scale(Vector3FlatDirection(player->position, player_data->cutscene_run_goal), PLAYER_GROUND_ACCELERATION * player_data->cutscene_run_factor);
 	}
 
 	// Slowdown over time if not moving.

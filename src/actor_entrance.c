@@ -4,7 +4,7 @@
 #include "actor_entrance.h"
 #include "camera.h"
 #include "collision.h"
-#include "tools.h"
+#include "game_draw.h"
 
 // private header
 static void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endpos);
@@ -46,9 +46,13 @@ void actor_entrance_startentry(struct Actor* entrance)
 	}
 	if (ACTOR_EXISTS(camera))
 	{
+		// Snap behind player at entrance
 		ACTOR_POS_SNAP(camera, cam_pos);
 		cam_main.position = cam_pos; // snap this too
 		CameraRecalculateAngleToTarget(camera);
+		// Restore camera to default state
+		CameraData* cam_data = (CameraData*)camera->data;
+		cam_data->camera_mode = CAMERA_MODE_FOLLOW;
 	}
 }
 
@@ -105,6 +109,8 @@ static Vector3 actor_entrance_get_camerastart(struct Actor* entrance)
 
 static void actor_entrance_drawworld(struct Actor* entrance, double delta_time)
 {
+	if (!draw_debug_info)
+		return;
 	DrawCube(entrance->position, 0.2f, 0.2f, 0.2f, PURPLE);
 	Vector3 end_pos = actor_entrance_get_end(entrance);
 	DrawLine3D(entrance->position, end_pos, PURPLE);

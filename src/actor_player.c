@@ -27,6 +27,8 @@ void actor_player_init(struct Actor* actor)
 	PlayerData* player_data = (PlayerData*)actor->data;
 	player_data->current_state = plysta_grounded;
 	PlayerChangeState(actor, plysta_grounded);
+	player_data->cutscene_run_goal = Vector3Zero();
+	player_data->cutscene_run_factor = 1.0f;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

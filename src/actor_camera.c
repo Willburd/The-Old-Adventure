@@ -171,6 +171,16 @@ static void actor_camera_preupdate(struct Actor* camera)
         }
         break;
 
+        case CAMERA_MODE_ONLYWATCH:
+        {
+            if (player == NULL) // Nothing to look at
+                break;
+            // Aim camera at player
+            Vector3 look_pos = CameraPlayerLookPos(camera, player);
+            UpdateCameraTargetPosition(camera, look_pos);
+        }
+        break;
+
         case CAMERA_MODE_FREEMOVE:
         {
             // Identity vectors
