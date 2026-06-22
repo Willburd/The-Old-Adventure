@@ -186,6 +186,9 @@
     <ClCompile Include="actor_pause.c">
       <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_trigger_exit.c">
+      <Filter>Source Files\engine\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -256,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="hud.h">
       <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_trigger_exit.h">
+      <Filter>Header Files\engine\actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@
 #include "materials.h"
 #include "game_draw.h"
 #include "actor_entrance.h"
+#include "actor_trigger_exit.h"
 #include "collision.h"
 #include "gamestate.h"
 #include "light_tools.h"
@@ -63,6 +64,9 @@ static void scene_fieldtest_activate_room(struct Actor* scene, int room_index, i
 	data->active_room = room_index;
 	data->config_flags = 0;
 
+	// Exits
+	EXIT_TRIGGER_CREATE(scene_fieldtest, ent_caveA, scene, (Vector3) { 0.0f, 0.0f, 36.0f }, 10.0f);
+
 	// Entrances
 	ENTRANCE_CREATE(ent_debugentrance, scene, (Vector3) { 0, 0, 2 }, (Vector3) { -1, 0, 2 });
 	ENTRANCE_CREATE(ent_caveA, scene, (Vector3) { -0.2f, -1.1f, 21.5f }, (Vector3) { -0.2f, -1.1f, 19.0f });
@@ -72,7 +76,6 @@ static void scene_fieldtest_activate_room(struct Actor* scene, int room_index, i
 	
 	// Debug
 	ACTOR_FACTORY(act_animtest, scene, (Vector3){ 3.0f, 3.0f, 0.0f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
-
 }
 
 static void scene_fieldtest_lights(struct Actor* scene)
