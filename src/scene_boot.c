@@ -31,5 +31,5 @@ static void scene_boot_activate_room(struct Actor* scene, int room_index, int en
 static void scene_boot_update(struct Actor* scene)
 {
 	// Go to title
-	LoadScene(scene_debug, ent_title);
+	TransferScene(scene_debug, ent_title);
 }

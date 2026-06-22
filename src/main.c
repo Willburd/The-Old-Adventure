@@ -64,7 +64,10 @@ int main(void)
             if (frame_rate < 100) frame_rate = 9999; else frame_rate = 60;
             SetTargetFPS(frame_rate);
         }
-        if (IsKeyPressed(KEY_F4)) LoadScene(scene_debug, ent_title); // Debug warp
+        if (IsKeyPressed(KEY_F4))
+        {
+            TransferScene(scene_debug, ent_title); // Debug warp
+        }
 #endif
 
         ticker_rate = 1.0 / update_rate;

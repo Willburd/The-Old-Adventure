@@ -9,6 +9,8 @@ typedef struct
 	int dest_scene;
 	int dest_entrance;
 	int radius;
+	int is_triggered;
+	int fadeout;
 } TriggerExitData;
 
 struct Actor* EXIT_TRIGGER_CREATE(int destination_scene, int destination_entrance, struct Actor* scene, Vector3 pos, float radius);

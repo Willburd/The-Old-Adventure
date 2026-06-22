@@ -60,7 +60,7 @@ static void scene_debug_update(struct Actor* scene)
 
 	if (CHECK_INPUTPRESSED(input_confirm))
 	{
-		LoadScene(our_data->MENUINDEX, ent_debugentrance);
+		TransferScene(our_data->MENUINDEX, ent_debugentrance);
 		return;
 	}
 }

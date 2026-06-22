@@ -1,6 +1,6 @@
 #include "tools.h"
 #include "assets.h"
-#include "actor_library.h"
+#include "actor_factory.h"
 #include "actor_scene.h"
 #include "game_draw.h"
 #include "gamestate.h"
@@ -45,7 +45,7 @@ static void actor_debug_postdrawhud(struct Actor* actor, double tick_percent)
 		room_index = scene_data->active_room;
 	}
 	DrawFPS(5, 5);
-
+	/*
 	float day_intensity = GetDayIntensity();
 	float night_intensity = GetNightIntensity();
 	float dawn_intensity = GetDawnIntensity();
@@ -54,4 +54,13 @@ static void actor_debug_postdrawhud(struct Actor* actor, double tick_percent)
 	DrawText(TextFormat("Actor Total: [%i]\nSeconds [%f]\nTicks [%i]\nDelta [%f]\nCurrent room: %i\n\n\nday: %f\nnight: %f\ndawn: %f\ndusk: %f\nrain: %f\n", 
 		total_actors, seconds_counter, tick_counter, tick_percent, room_index, day_intensity, night_intensity, dawn_intensity, dusk_intensity, rain_intensity),
 		5, 20, 4, GRAY);
+	*/
+
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* draw_actor = world_actors[i];
+		if (!ACTOR_EXISTS(draw_actor))
+			continue;
+		DrawText(TextFormat("[%i] %s", i, actor_name(draw_actor->actor_type)), 5, 25 + (i*12), 4, WHITE);
+	}
 }

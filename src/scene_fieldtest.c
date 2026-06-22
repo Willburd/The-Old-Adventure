@@ -75,7 +75,7 @@ static void scene_fieldtest_activate_room(struct Actor* scene, int room_index, i
 	ACTOR_FACTORY(act_skybox, scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 	
 	// Debug
-	ACTOR_FACTORY(act_animtest, scene, (Vector3){ 3.0f, 3.0f, 0.0f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	//ACTOR_FACTORY(act_animtest, scene, (Vector3){ 3.0f, 3.0f, 0.0f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 static void scene_fieldtest_lights(struct Actor* scene)

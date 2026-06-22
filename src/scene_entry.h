@@ -95,8 +95,9 @@ typedef struct {
 #define SCENEDATA_CLEAR(x) {SceneData* __dat = (SceneData*)x;__dat->temp_flags = 0;__dat->perm_flags = 0;__dat->utilityA1 = 0;__dat->utilityA2 = 0;__dat->utilityA3 = 0;__dat->utilityA4 = 0;__dat->utilityB1 = 0.0f;__dat->utilityB2 = 0.0f;__dat->utilityB3 = 0.0f;__dat->utilityB4 = 0.0f;}
 
 void LoadScene(SceneID id, EntranceID entrance);
-void ReloadScene();
+void TransferScene(SceneID id, EntranceID entrance);
 struct Actor* GetCurrentScene();
+void HandleLoadNextScene();
 void UnloadScene(int clear_assets);
 
 #endif

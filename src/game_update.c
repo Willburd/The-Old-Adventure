@@ -3,7 +3,7 @@
 #include "return_codes.h"
 #include "raylib.h"
 #include "raymath.h"
-#include "actor.h"
+#include "actor_factory.h"
 #include "game_update.h"
 #include "game_draw.h"
 #include "scene_entry.h"
@@ -25,13 +25,13 @@ void game_update()
 	screenWidth = GetScreenWidth();
 	screenHeight = GetScreenHeight();
 
-
 	////////////////////////////////////////////////////////////////////////
 	// Prepare world and render
 	////////////////////////////////////////////////////////////////////////
 
 	light_count = 0;
 	UpdateGameState();
+	HandleLoadNextScene();
 
 	////////////////////////////////////////////////////////////////////////
 	// Preupdate and state control
@@ -98,7 +98,6 @@ void game_update()
 	}
 	current_actor_cap = cap_actor;
 
-
 	////////////////////////////////////////////////////////////////////////
 	// Primary update
 	////////////////////////////////////////////////////////////////////////
@@ -142,7 +141,7 @@ void game_update()
 		if (finalize_actor == NULL)
 			continue;
 		// Fully delete actors that no longer exist
-		if (!ACTOR_EXISTS(finalize_actor))
+		if (finalize_actor->is_destroying)
 		{
 			total_actors--;
 			// Wipedata
