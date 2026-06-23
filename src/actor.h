@@ -122,6 +122,8 @@ x->data = NULL;
 
 #define ACTOR_LIMIT 8192
 
+#define ACTOR_INTERACTION_RANGE 0.8f
+
 /// Array of all actors
 struct Actor* world_actors[ACTOR_LIMIT];	
 /// Current highest actor array slot in memory. Shifts up and down as actors are reallocated to blank spots to close gaps from deletion.
