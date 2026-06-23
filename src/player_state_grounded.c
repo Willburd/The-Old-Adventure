@@ -126,12 +126,12 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	if (can_accept_input)
 	{
 		// Get the nearest interactable actor and update the hud with it
-
-
-		// Check if player wants to do anything
-		if (CHECK_INPUTPRESSED(input_interact))
+		Vector3 ahead_pos = Vector3Add(player->position, Vector3RotateByQuaternion(VEC3FORWARD, player->rotation));
+		struct Actor* nearest_actor = FINDINTERACTIONNEAREST(ahead_pos, player);
+		if (CHECK_INPUTPRESSED(input_interact) && ACTOR_HAS(nearest_actor, func_player_interact) && Vector3Distance(player->position, nearest_actor->position) < 0.8f)
 		{
-
+			nearest_actor->func_player_interact(nearest_actor, player);
+			return;
 		}
 	}
 }

@@ -79,6 +79,65 @@ void FINDALLACTORTYPE(const struct Actor* found_group[], int max_count, int acto
 	}
 }
 
+struct Actor* FINDACTORNEAREST(Vector3 at_pos, struct Actor* ignored_actor)
+{
+	float distance = FP_INFINITE;
+	struct Actor* nearest_actor = NULL;
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL || find_actor == ignored_actor)
+			continue;
+		float found_dist = Vector3Distance(find_actor->position, at_pos);
+		if(found_dist < distance)
+		{
+			distance = found_dist;
+			nearest_actor = find_actor;
+		}
+	}
+	return nearest_actor;
+}
+
+struct Actor* FINDACTORFURTHEST(Vector3 at_pos, struct Actor* ignored_actor)
+{
+	float distance = -1;
+	struct Actor* furthest_actor = NULL;
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL || find_actor == ignored_actor)
+			continue;
+		float found_dist = Vector3Distance(find_actor->position, at_pos);
+		if (found_dist > distance)
+		{
+			distance = found_dist;
+			furthest_actor = find_actor;
+		}
+	}
+	return furthest_actor;
+}
+
+struct Actor* FINDINTERACTIONNEAREST(Vector3 at_pos, struct Actor* ignored_actor)
+{
+	float distance = FP_INFINITE;
+	struct Actor* nearest_actor = NULL;
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL || find_actor == ignored_actor)
+			continue;
+		if (!(find_actor->actor_flags & ACTOR_FLAG_INTERACTIVE))
+			continue;
+		float found_dist = Vector3Distance(find_actor->position, at_pos);
+		if (found_dist < distance)
+		{
+			distance = found_dist;
+			nearest_actor = find_actor;
+		}
+	}
+	return nearest_actor;
+}
+
 int ACTORCOUNT(int actor_type)
 {
 	int count = 0;

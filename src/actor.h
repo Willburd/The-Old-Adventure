@@ -20,6 +20,7 @@
 // End of reserved
 #define ACTOR_FLAG_HAS_ANIMATIONS (1 << 8) // Has animations
 #define ACTOR_FLAG_IS_INVISIBLE (1 << 9) // disable drawing
+#define ACTOR_FLAG_INTERACTIVE (1 << 10) // player can trigger interacts with
 
 struct Actor;
 struct Actor {
@@ -139,6 +140,12 @@ void FINDACTORGROUP(const struct Actor* found_group[], int max_count, const uint
 struct Actor* FINDACTORTYPE(int actor_type);
 // Get all actors of a specific type
 void FINDALLACTORTYPE(const struct Actor* found_group[], int max_count, int actor_type);
+// Find actor nearest to a specified point, also allows filtering out a specified actor during the search
+struct Actor* FINDACTORNEAREST(Vector3 at_pos, struct Actor* ignored_actor);
+// Find the actor furthest from a specified point, also allows filtering out a specified actor during the search
+struct Actor* FINDACTORFURTHEST(Vector3 at_pos, struct Actor* ignored_actor);
+// Find the nearest actor that allows interaction, also allows filtering out a specified actor during the search
+struct Actor* FINDINTERACTIONNEAREST(Vector3 at_pos, struct Actor* ignored_actor);
 // Number of actors of this type
 int ACTORCOUNT(int actor_type);
 // Get first child of parent
