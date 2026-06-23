@@ -35,6 +35,9 @@ static void actor_debug_drawworld(struct Actor* scene, double tick_percent)
 	DrawCube(VEC3BACKWARD, 0.1f, 0.1f, 0.1f, BLUE);
 	DrawCube(VEC3LEFT, 1.0f, 1.0f, 1.0f, GREEN);
 	DrawCube(VEC3RIGHT, 0.1f, 0.1f, 0.1f, GREEN);
+
+	DrawCube(Vector3RotateByQuaternion(VEC3FORWARD, QuaternionFromAxisAngle(VEC3UP, 0.0f)), 0.25f, 2.5f, 0.25f, RED); // Should be forward
+	DrawCube(Vector3RotateByQuaternion(VEC3FORWARD, QuaternionFromAxisAngle(VEC3UP, 90.0f * DEG2RAD)), 0.25f, 2.5f, 0.25f, YELLOW); // Should be left
 }
 
 static void actor_debug_postdrawhud(struct Actor* actor, double tick_percent)

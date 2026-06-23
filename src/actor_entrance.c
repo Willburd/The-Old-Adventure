@@ -49,7 +49,8 @@ void actor_entrance_startentry(struct Actor* entrance)
 		// Snap behind player at entrance
 		ACTOR_POS_SNAP(camera, cam_pos);
 		cam_main.position = cam_pos; // snap this too
-		CameraRecalculateAngleToTarget(camera);
+		float point_angle =	QuaternionToEuler(entrance->rotation).y + (180.0f * DEG2RAD);
+		CameraResetAngleToTarget(camera, point_angle);
 		// Restore camera to default state
 		CameraData* cam_data = (CameraData*)camera->data;
 		cam_data->camera_mode = CAMERA_MODE_FOLLOW;

@@ -19,7 +19,7 @@ typedef struct {
 Camera cam_main;
 Camera2D cam_hud;
 
-void CameraRecalculateAngleToTarget(struct Actor* camera);
+void CameraResetAngleToTarget(struct Actor* camera, float angle);
 Matrix GetActorCameraMatrix();
 Matrix GetActorCameraMatrixInverseRotation();
 Transform GetActorCameraTransform();

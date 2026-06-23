@@ -15,6 +15,7 @@
 static void actor_camera_preupdate(struct Actor* camera);
 static void actor_camera_predrawworld(struct Actor* camera, double tick_percent);
 static void actor_camera_drawworld(struct Actor* camera, double tick_percent);
+static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -62,15 +63,12 @@ void actor_camera_init(struct Actor* actor)
     cam_data->pitch_angle = 0.0f;
 }
 
-void CameraRecalculateAngleToTarget(struct Actor* camera)
+void CameraResetAngleToTarget(struct Actor* camera, float angle)
 {
-    struct Actor* player = FINDACTORTYPE(act_player);
-    if (!ACTOR_EXISTS(player))
-        return;
-
     CameraData* cam_data = (CameraData*)camera->data;
-    cam_data->follow_angle = Vector3GetTopDownAngle(VEC3DIRECTION(camera->position, player->position));
+    cam_data->follow_angle = angle;
     cam_data->pitch_angle = -3.0f;
+    printf("Recalculated camera angle: %f\n", cam_data->follow_angle);
 }
 
 Matrix GetActorCameraMatrix()
@@ -119,6 +117,7 @@ static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player)
 
     // Apply offset
     Vector3 follow_goal = Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_HEIGHT_DIST));
+    //printf("camera offset: a:%f x:%f z:%f \n", cam_data->follow_angle * RAD2DEG, follow_offset.x, follow_offset.z);
     return Vector3Add(follow_goal, follow_offset);
 }
 
