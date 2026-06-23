@@ -18,7 +18,7 @@ Color Vector3ToColor(Vector3 vec, float alpha)
 
 float Vector3GetTopDownAngle(Vector3 direction)
 {
-    return Vector2Angle((Vector2){ 0.0f, -1.0f }, (Vector2) { direction.x, direction.z });
+    return fmod(365.0f - (Vector2LineAngle(Vector2Zero(), (Vector2) { -direction.z, direction.x }) * RAD2DEG), 365.0f) * DEG2RAD;
 }
 
 Vector3 Vector3FlatDirection(Vector3 start, Vector3 end)

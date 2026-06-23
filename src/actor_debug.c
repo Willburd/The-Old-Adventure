@@ -17,7 +17,7 @@ static void actor_debug_postdrawhud(struct Actor* actor, double delta_time);
 void actor_debug_init(struct Actor* actor)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_PAUSED;
-	//actor->func_drawworld = actor_debug_drawworld;
+	actor->func_drawworld = actor_debug_drawworld;
 	actor->func_postdrawhud = actor_debug_postdrawhud;
 }
 
@@ -30,6 +30,11 @@ static void actor_debug_drawworld(struct Actor* scene, double tick_percent)
 	if (!draw_debug_info)
 		return;
 	DrawGrid(100, 1.0f);
+
+	DrawCube(VEC3FORWARD, 1.0f, 1.0f, 1.0f, BLUE);
+	DrawCube(VEC3BACKWARD, 0.1f, 0.1f, 0.1f, BLUE);
+	DrawCube(VEC3LEFT, 1.0f, 1.0f, 1.0f, GREEN);
+	DrawCube(VEC3RIGHT, 0.1f, 0.1f, 0.1f, GREEN);
 }
 
 static void actor_debug_postdrawhud(struct Actor* actor, double tick_percent)

@@ -15,7 +15,6 @@
 static void actor_camera_preupdate(struct Actor* camera);
 static void actor_camera_predrawworld(struct Actor* camera, double tick_percent);
 static void actor_camera_drawworld(struct Actor* camera, double tick_percent);
-static void actor_camera_postdrawhud(struct Actor* camera, double tick_percent);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -35,7 +34,6 @@ void actor_camera_init(struct Actor* actor)
     actor->func_preupdate = actor_camera_preupdate;
     actor->func_predrawworld = actor_camera_predrawworld;
     actor->func_drawworld = actor_camera_drawworld;
-    actor->func_postdrawhud = actor_camera_postdrawhud;
 
     // Configure camera
     cam_main = (Camera)
@@ -240,11 +238,4 @@ static void actor_camera_drawworld(struct Actor* camera, double tick_percent)
         }
         break;
     }
-}
-
-static void actor_camera_postdrawhud(struct Actor* actor, double tick_percent)
-{
-    if (!draw_debug_info)
-        return;
-    DrawText(TextFormat("X:%f\nY:%f\nZ:%f", cam_main.target.x, cam_main.target.y, cam_main.target.z), renderWidth / 2, renderHeight / 2, 4, WHITE);
 }
