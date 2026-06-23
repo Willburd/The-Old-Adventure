@@ -12,9 +12,10 @@ const int inputkeys[INPUT_LAST] = {
 	KEY_KP_6,
 	KEY_KP_8,
 	KEY_KP_2,
-	KEY_Z,							// confirm
-	KEY_X,							// cancel
+	KEY_E,							// confirm
+	KEY_BACKSPACE,					// cancel
 	KEY_ENTER,						// pause
+	KEY_E,							// interact
 };
 
 const int inputpads[INPUT_LAST] = { 
@@ -29,6 +30,7 @@ const int inputpads[INPUT_LAST] = {
 	GAMEPAD_BUTTON_RIGHT_FACE_DOWN,	// confirm
 	GAMEPAD_BUTTON_RIGHT_FACE_RIGHT,// cancel
 	GAMEPAD_BUTTON_MIDDLE_RIGHT,	// pause
+	GAMEPAD_BUTTON_RIGHT_FACE_DOWN, // interact
 };
 
 int current_gamepad = 0;

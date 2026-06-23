@@ -32,7 +32,8 @@ void PlayerState_Grounded_Enter(struct Actor* player, PlayerData* player_data, i
 void PlayerState_Grounded_Update(struct Actor* player)
 {
 	Vector3 move_velocity = { 0 };
-	if (PlayerCanAcceptInput(player))
+	int can_accept_input = PlayerCanAcceptInput(player);
+	if (can_accept_input)
 	{
 		// Pausing
 		if (CHECK_INPUTPRESSED(input_pause))
@@ -111,14 +112,28 @@ void PlayerState_Grounded_Update(struct Actor* player)
 		.direction = VEC3DOWN
 	};
 	RayCollision collision = CollisionGetNearest(downray, PLAYER_GROUND_STEP_HEIGHT * 3.0f, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
-	if (collision.hit) 
+	if (!collision.hit) 
 	{
-		// Snap to floors and go up steps
-		player->position = collision.point;
+		// We must fall...
+		PlayerChangeState(player, plysta_air);
 		return;
 	}
-	// We must fall...
-	PlayerChangeState(player, plysta_air);
+
+	// Snap to floors and go up steps
+	player->position = collision.point;
+
+	// Interact with other actors
+	if (can_accept_input)
+	{
+		// Get the nearest interactable actor and update the hud with it
+
+
+		// Check if player wants to do anything
+		if (CHECK_INPUTPRESSED(input_interact))
+		{
+
+		}
+	}
 }
 
 void PlayerState_Grounded_DrawWorld(struct Actor* player, double tick_percent)

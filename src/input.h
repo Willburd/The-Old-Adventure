@@ -16,6 +16,7 @@ typedef enum
 	input_confirm,
 	input_cancel,
 	input_pause,
+	input_interact,
 	INPUT_LAST
 
 } InputID;

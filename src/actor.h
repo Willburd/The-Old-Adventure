@@ -47,28 +47,44 @@ struct Actor {
 	int animlayer_count;
 	struct AnimationLayer* animation_layers[ANIMATION_LAYER_MAX];
 
-	// Creation and destruction
+	// Actor setup and function assignment
 	void (*func_init)(struct Actor* actor);
+	// Load assets when actor is created
 	void (*func_preloadassets)(struct Actor* actor);
+	// Actor cleanup during ACTOR_DESTROY()
 	void (*func_destroy)(struct Actor* actor);
-	// Update tick
+	// Actor update tick before primary update
 	void (*func_preupdate)(struct Actor* actor);
+	// Actor update tick
 	void (*func_update)(struct Actor* actor);
+	// Actor update tick after primary update
 	void (*func_postupdate)(struct Actor* actor);
+	// Add the lights of this object to the light queue
 	void (*func_append_lights)(struct Actor* actor);
-	// Drawing in world
+	// Actor draw world before primary draw
 	void (*func_predrawworld)(struct Actor* actor, double tick_percent);
+	// Actor draw world
 	void (*func_drawworld)(struct Actor* actor, double tick_percent);
+	// Actor draw world after primary draw
 	void (*func_postdrawworld)(struct Actor* actor, double tick_percent);
-	// Drawing on hud
+	// Actor draw hud before primary draw
 	void (*func_predrawhud)(struct Actor* actor, double tick_percent);
+	// Actor draw hud
 	void (*func_drawhud)(struct Actor* actor, double tick_percent);
+	// Actor draw hud after primary draw
 	void (*func_postdrawhud)(struct Actor* actor, double tick_percent);
-	// Subrooms in scenes
+	// Handle activating a room within a scene
 	void (*func_activate_room)(struct Actor* actor, int room_index, int entrance);
+	// Handle deactivating a room within a scene
 	void (*func_deactivate_room)(struct Actor* actor, int room_index);
-	// Animation
+	// Handle animation end/loop actions
 	void (*func_animation_ended)(struct Actor* actor, char* anim_name);
+	// Handle interactions from the player
+	void (*func_player_interact)(struct Actor* actor, struct Actor* player);
+	// Handle interactions from other actors
+	void (*func_remote_interact)(struct Actor* actor, struct Actor* other_actor);
+	// Handle collisions
+	void (*func_touch)(struct Actor* actor, struct Actor* other);
 };
 #define ACTOR_CLEAR(x) \
 x->uuid = 0; x->index = -1; x->actor_type = 0; \
@@ -86,6 +102,7 @@ x->func_predrawworld = NULL; x->func_drawworld = NULL; x->func_postdrawworld = N
 x->func_predrawhud = NULL; x->func_drawhud = NULL; x->func_postdrawhud = NULL; \
 x->func_activate_room = NULL; x->func_deactivate_room = NULL; \
 x->func_animation_ended = NULL; \
+x->func_player_interact = NULL;x->func_remote_interact = NULL;x->func_touch = NULL; \
 x->data = NULL;
 
 #define ACTOR_POS_SNAP(x, pos) x->position = pos;x->last_position = pos;

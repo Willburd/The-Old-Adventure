@@ -1,3 +1,4 @@
+#include "game_draw.h"
 #include "player.h"
 
 // private header
@@ -66,6 +67,8 @@ static void actor_player_drawhud(struct Actor* actor, double tick_percent)
 	PlayerData* player_data = (PlayerData*)actor->data;
 	player_data->func_state_drawhud(actor, tick_percent);
 
+	if (!draw_debug_info)
+		return;
 	DrawText(TextFormat("X:%f\nY:%f\nZ:%f\nA:%f\n", actor->position.x, actor->position.y, actor->position.z, Vector3GetTopDownAngle(Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation)) * RAD2DEG), renderWidth / 2, renderHeight / 2, 4, WHITE);
 }
 

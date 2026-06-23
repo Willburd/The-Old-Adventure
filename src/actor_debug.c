@@ -29,7 +29,7 @@ static void actor_debug_drawworld(struct Actor* scene, double tick_percent)
 {
 	if (!draw_debug_info)
 		return;
-	DrawGrid(100, 1.0f);
+	DrawGrid(100, 10.0f);
 
 	DrawCube(VEC3FORWARD, 1.0f, 1.0f, 1.0f, BLUE);
 	DrawCube(VEC3BACKWARD, 0.1f, 0.1f, 0.1f, BLUE);
