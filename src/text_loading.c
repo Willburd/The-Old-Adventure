@@ -15,7 +15,11 @@ uint64_t text_hash(const void* item, uint64_t seed0, uint64_t seed1) {
     return hashmap_sip(entry->key, strlen(entry->key), seed0, seed1);
 }
 
-void text_free(void* item) { }
+void text_free(void* item) { 
+    TextEntry* entry = item;
+    RELEASE(entry->key);
+    RELEASE(entry->data);
+}
 
 static void AddEntry(char* string_id, char* string_data)
 {
@@ -27,7 +31,6 @@ static void AddEntry(char* string_id, char* string_data)
 
 void LoadBuiltinText()
 {
-    AddEntry(TEXT_ID(error), "?");
 	AddEntry(TEXT_ID(debug), "The Old Adventure");
 }
 
