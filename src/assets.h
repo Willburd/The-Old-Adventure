@@ -19,8 +19,15 @@
 #define ASSET_MODELS ASSET_PATH"/Models"
 #define ASSET_MATERIALS ASSET_PATH"/Materials"
 #define ASSET_SHADERS ASSET_PATH"/Shaders"
+#define ASSET_TEXT ASSET_PATH"/Text"
 
 #define ASSET_LIMIT 2048
+
+enum GameLanguages
+{
+    lang_EN,
+};
+int current_game_language;
 
 struct hashmap* loaded_assets;
 

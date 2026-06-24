@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "assets.h"
 #include "text_loading.h"
 #include "hashmap.h"
 #include "tools.h"
@@ -31,14 +32,42 @@ static void AddEntry(char* string_id, char* string_data)
 
 void LoadBuiltinText()
 {
-	AddEntry(TEXT_ID(debug), "The Old Adventure");
-    AddEntry(TEXT_ID(test_arabic), "أبجدية عربية");
-    AddEntry(TEXT_ID(test_russian), "Кириллица");
+	AddEntry("debug", "The Old Adventure");
+    AddEntry("test_arabic", "أبجدية عربية");
+    AddEntry("test_russian", "Кириллица");
 }
 
-void LoadTextData(char* text_file_path)
+void LoadTextData(char* text_id)
 {
+    // Solve the language folder
+    char* file_path;
+    switch (current_game_language)
+    {
+    default:
+    case lang_EN:
+        file_path = TextFormat("%s/EN/%s.txt", ASSET_TEXT, text_id);
+        break;
+    }
 
+    // Get the entire file as a single long string
+    FILE* fptr = fopen(file_path, "r");
+    char cur_line[256];
+    if (fptr == NULL) {
+        printf("Asset: failed to open text data definition: %s\n", file_path);
+        return;
+    }
+    unsigned int index = 0;
+    char final_string[MAX_TEXT_ENTRY_LENGTH] = { '\0'};
+    while (fgets(cur_line, 256, fptr)) {
+        for (int i = 0; i < strlen(cur_line); i++)
+        {
+            final_string[index++] = cur_line[i];
+        }
+    }
+    fclose(fptr);
+
+    // Append the string to the database of text entries
+    AddEntry(text_id, final_string);
 }
 
 void DumpTextData()

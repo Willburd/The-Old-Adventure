@@ -28,5 +28,8 @@ void LoadCoreAssets()
     LoadAsset_Model(PAUSEBOX_MODEL, TRUE);
 
     // Load text
-    // LoadTextData(char* text_file_path);
+    current_game_language = lang_EN;
+    LoadTextData(TEXT_ACTIONBUTTON_READ);
+
+    DumpTextData();
 }

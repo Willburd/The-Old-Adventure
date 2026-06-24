@@ -15,4 +15,7 @@
 
 void LoadCoreAssets();
 
+// Text entries
+#define TEXT_ACTIONBUTTON_READ "ActionButton_Read"
+
 #endif

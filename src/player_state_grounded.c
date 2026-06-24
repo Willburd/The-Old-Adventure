@@ -135,13 +135,9 @@ void PlayerState_Grounded_Update(struct Actor* player)
 			can_interact = nearest_actor->func_can_interact(nearest_actor, player);
 		PlayerData* player_data = (PlayerData*)player->data;
 		if (can_interact) // Update hud
-		{
-
-		}
+			player_data->current_action_button_text = nearest_actor->func_interaction_text(nearest_actor, player);
 		else
-		{
-			player_data->current_action_button_text_id = 0;
-		}
+			player_data->current_action_button_text = "";
 		// Handle interaction button pressed
 		if (can_interact && CHECK_INPUTPRESSED(input_interact) && Vector3Distance(player->position, nearest_actor->position) <= ACTOR_INTERACTION_RANGE)
 		{

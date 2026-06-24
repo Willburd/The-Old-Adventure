@@ -171,9 +171,11 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 	}
 
 	// Action button
+	PlayerData* player_data = (PlayerData*)player->data;
 	float button_start_x = HUD_RIGHT - 164.0f;
 	DrawTextureEx(*button_tex, (Vector2){ button_start_x, HUD_TOP + 5.0f }, 0.0f, 0.5f, GREEN);
 	DrawTextureEx(*button_tex, (Vector2) { button_start_x + 35.0f, HUD_TOP + 10.0f }, 0.0f, 0.5f, BLUE);
+	DrawText(player_data->current_action_button_text, button_start_x + 35.0f, HUD_TOP + 10.0f, 12, WHITE);
 
 	float item_start_x = button_start_x + 80.0f;
 	DrawTextureEx(*button_tex, (Vector2) { item_start_x, HUD_TOP + 10.0f }, 0.0f, 0.40f, YELLOW);

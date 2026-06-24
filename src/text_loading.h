@@ -9,8 +9,7 @@ typedef struct {
 } TextEntry;
 
 #define MAX_TEXT_ENTRIES 4096
-
-#define TEXT_ID(x) "ID_"#x"_"
+#define MAX_TEXT_ENTRY_LENGTH 4096
 
 struct hashmap* loaded_text;
 
