@@ -156,6 +156,7 @@
     <ClCompile Include="actor_player.c" />
     <ClCompile Include="actor_factory.c" />
     <ClCompile Include="actor_scene.c" />
+    <ClCompile Include="actor_sign.c" />
     <ClCompile Include="actor_skybox.c" />
     <ClCompile Include="actor_test.c" />
     <ClCompile Include="actor_trigger_exit.c" />

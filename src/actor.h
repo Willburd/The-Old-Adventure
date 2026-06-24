@@ -126,7 +126,7 @@ x->data = NULL;
 
 #define ACTOR_LIMIT 8192
 
-#define ACTOR_INTERACTION_RANGE 0.8f
+#define ACTOR_INTERACTION_RANGE 1.5f
 
 /// Array of all actors
 struct Actor* world_actors[ACTOR_LIMIT];	

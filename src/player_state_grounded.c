@@ -1,4 +1,5 @@
 #include "player.h"
+#include "text_loading.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Grounded player state
@@ -55,10 +56,7 @@ void PlayerState_Grounded_Update(struct Actor* player)
 
 	// Slowdown over time if not moving.
 	if (Vector3Length(move_velocity) < 0.01f)
-	{
 		ApplyFriction(player, PLAYER_GROUND_STOP_FRICTION);
-		return;
-	}
 
 	// Move as directed
 	int snap_turn = FALSE;
@@ -127,19 +125,19 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	struct Actor* nearest_actor = FINDINTERACTIONNEAREST(ahead_pos, player);
 
 	// Interact with other actors
+	PlayerData* player_data = (PlayerData*)player->data;
+	player_data->current_action_button_text = ""; // Reset hud text
 	if (ACTOR_EXISTS(nearest_actor) && can_accept_input)
 	{
 		// Check if this actor can be interacted with, if there is no set can_interact function, assume it can because it has ACTOR_FLAG_INTERACTIVE on. 
-		int can_interact = ACTOR_HAS(nearest_actor, func_player_interact);
+		int can_interact = ACTOR_HAS(nearest_actor, func_player_interact) && Vector3Distance(player->position, nearest_actor->position) <= ACTOR_INTERACTION_RANGE;
 		if (can_interact && ACTOR_HAS(nearest_actor, func_can_interact))
 			can_interact = nearest_actor->func_can_interact(nearest_actor, player);
-		PlayerData* player_data = (PlayerData*)player->data;
-		if (can_interact) // Update hud
-			player_data->current_action_button_text = nearest_actor->func_interaction_text(nearest_actor, player);
-		else
-			player_data->current_action_button_text = "";
+		// Update hud
+		if (can_interact)
+			player_data->current_action_button_text = GetText(nearest_actor->func_interaction_text(nearest_actor, player));
 		// Handle interaction button pressed
-		if (can_interact && CHECK_INPUTPRESSED(input_interact) && Vector3Distance(player->position, nearest_actor->position) <= ACTOR_INTERACTION_RANGE)
+		if (can_interact && CHECK_INPUTPRESSED(input_interact))
 		{
 			nearest_actor->func_player_interact(nearest_actor, player);
 			return;
