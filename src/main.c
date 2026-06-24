@@ -109,16 +109,12 @@ static void game_setup()
     // Set worldstate up temporarily
     InitGameState();
 
-    // Load text data
-    loaded_text = hashmap_new(sizeof(void*), MAX_TEXT_ENTRIES, 0, 0, text_hash, text_compare, text_free, NULL);
-    LoadBuiltinText();
-    // Show Loaded Text
-    DumpTextData();
-
     // Create asset cache
     loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
     LoadCoreAssets();
-
+    // Load text data
+    loaded_text = hashmap_new(sizeof(TextEntry), MAX_TEXT_ENTRIES, 0, 0, text_hash, text_compare, text_free, NULL);
+    LoadBuiltinText();
 
     // Spawn camera
     ACTOR_FACTORY(act_camera, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());

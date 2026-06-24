@@ -3,9 +3,12 @@
 
 #include <stdint.h>
 
+typedef struct {
+    char* key;
+    char* data;
+} TextEntry;
+
 #define MAX_TEXT_ENTRIES 4096
-#define MAX_KEY_LEN 128
-#define MAX_ENTRY_CHARS 2048
 
 #define TEXT_ID(x) "ID_"#x"_"
 
