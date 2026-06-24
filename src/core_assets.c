@@ -1,4 +1,5 @@
 #include "core_assets.h"
+#include "text_loading.h"
 
 // Loads all core assets, and flags them as core assets.
 void LoadCoreAssets()
@@ -25,4 +26,7 @@ void LoadCoreAssets()
     LoadAsset_Model(QUAD_MODEL, TRUE);
     LoadAsset_Model(SPRITE_MODEL, TRUE);
     LoadAsset_Model(PAUSEBOX_MODEL, TRUE);
+
+    // Load text
+    // LoadTextData(char* text_file_path);
 }

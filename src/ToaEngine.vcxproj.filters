@@ -82,6 +82,12 @@
     <Filter Include="Source Files\adventure\actors\player_states">
       <UniqueIdentifier>{92bbfbf4-8b37-4fe9-88f5-4ccabfead260}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\engine\localization">
+      <UniqueIdentifier>{3df59ec4-67f3-4fbb-a231-e72e26ada154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine\localization">
+      <UniqueIdentifier>{da819f6d-f6ca-47b9-9c56-a9e10bb9d4c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -192,6 +198,9 @@
     <ClCompile Include="actor_fadein.c">
       <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
+    <ClCompile Include="text_loading.c">
+      <Filter>Source Files\engine\localization</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -268,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="actor_fadein.h">
       <Filter>Header Files\engine\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="text_loading.h">
+      <Filter>Header Files\engine\localization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

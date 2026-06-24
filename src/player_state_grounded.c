@@ -122,13 +122,28 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	// Snap to floors and go up steps
 	player->position = collision.point;
 
+	// Get the nearest interactable actor and update the hud with it
+	Vector3 ahead_pos = Vector3Add(player->position, Vector3RotateByQuaternion(VEC3FORWARD, player->rotation));
+	struct Actor* nearest_actor = FINDINTERACTIONNEAREST(ahead_pos, player);
+
 	// Interact with other actors
-	if (can_accept_input)
+	if (ACTOR_EXISTS(nearest_actor) && can_accept_input)
 	{
-		// Get the nearest interactable actor and update the hud with it
-		Vector3 ahead_pos = Vector3Add(player->position, Vector3RotateByQuaternion(VEC3FORWARD, player->rotation));
-		struct Actor* nearest_actor = FINDINTERACTIONNEAREST(ahead_pos, player);
-		if (CHECK_INPUTPRESSED(input_interact) && ACTOR_HAS(nearest_actor, func_player_interact) && Vector3Distance(player->position, nearest_actor->position) <= ACTOR_INTERACTION_RANGE)
+		// Check if this actor can be interacted with, if there is no set can_interact function, assume it can because it has ACTOR_FLAG_INTERACTIVE on. 
+		int can_interact = ACTOR_HAS(nearest_actor, func_player_interact);
+		if (can_interact && ACTOR_HAS(nearest_actor, func_can_interact))
+			can_interact = nearest_actor->func_can_interact(nearest_actor, player);
+		PlayerData* player_data = (PlayerData*)player->data;
+		if (can_interact) // Update hud
+		{
+
+		}
+		else
+		{
+			player_data->current_action_button_text_id = 0;
+		}
+		// Handle interaction button pressed
+		if (can_interact && CHECK_INPUTPRESSED(input_interact) && Vector3Distance(player->position, nearest_actor->position) <= ACTOR_INTERACTION_RANGE)
 		{
 			nearest_actor->func_player_interact(nearest_actor, player);
 			return;

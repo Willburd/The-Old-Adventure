@@ -184,6 +184,7 @@
     <ClCompile Include="scene_test.c" />
     <ClCompile Include="scene_title.c" />
     <ClCompile Include="skinmodel.c" />
+    <ClCompile Include="text_loading.c" />
     <ClCompile Include="tools.c" />
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +212,7 @@
     <ClInclude Include="scene_entry.h" />
     <ClInclude Include="scene_library.h" />
     <ClInclude Include="gamestate.h" />
+    <ClInclude Include="text_loading.h" />
     <ClInclude Include="tools.h" />
   </ItemGroup>
   <ItemGroup>

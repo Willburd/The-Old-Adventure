@@ -82,6 +82,8 @@ struct Actor {
 	void (*func_animation_ended)(struct Actor* actor, char* anim_name);
 	// Handle interactions from the player
 	void (*func_player_interact)(struct Actor* actor, struct Actor* player);
+	// Handle if actor allows interactions with the player. If not set it will assume true.
+	int (*func_can_interact)(struct Actor* actor, struct Actor* player);
 	// Handle interactions from other actors
 	void (*func_remote_interact)(struct Actor* actor, struct Actor* other_actor);
 	// Handle collisions
@@ -103,7 +105,7 @@ x->func_predrawworld = NULL; x->func_drawworld = NULL; x->func_postdrawworld = N
 x->func_predrawhud = NULL; x->func_drawhud = NULL; x->func_postdrawhud = NULL; \
 x->func_activate_room = NULL; x->func_deactivate_room = NULL; \
 x->func_animation_ended = NULL; \
-x->func_player_interact = NULL;x->func_remote_interact = NULL;x->func_touch = NULL; \
+x->func_player_interact = NULL;x->func_can_interact = NULL;x->func_remote_interact = NULL;x->func_touch = NULL; \
 x->data = NULL;
 
 #define ACTOR_POS_SNAP(x, pos) x->position = pos;x->last_position = pos;
