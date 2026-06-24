@@ -7,7 +7,7 @@
 
 SCENE_ACTIVATE_ROOM(title);
 
-void scene_title_init(struct Actor* scene)
+SCENE_INIT(title)
 {
 	// Configure scene
 	SCENE_REGISTER_ACTIVATE_ROOM(title);

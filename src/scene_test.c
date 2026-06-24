@@ -7,7 +7,7 @@
 
 SCENE_ACTIVATE_ROOM(test);
 
-void scene_test_init(struct Actor* scene)
+SCENE_INIT(test)
 {
 	// Configure scene
 	SCENE_REGISTER_ACTIVATE_ROOM(test);

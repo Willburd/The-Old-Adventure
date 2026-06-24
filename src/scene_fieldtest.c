@@ -19,7 +19,7 @@ SCENE_ACTIVATE_ROOM(fieldtest);
 SCENE_LIGHTNODES(fieldtest);
 SCENE_DRAWWORLD(fieldtest);
 
-void scene_fieldtest_init(struct Actor* scene)
+SCENE_INIT(fieldtest)
 {
 	// Configure scene
 	SCENE_REGISTER_PRELOADASSETS(fieldtest);
