@@ -11,7 +11,6 @@ ACTOR_POSTDRAWHUD(fadein);
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Setup the player actor. Public function in the header
 ACTOR_INIT(fadein)
 {
 	// Remove previous fades if somehow multiple happen

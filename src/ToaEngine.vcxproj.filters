@@ -204,6 +204,9 @@
     <ClCompile Include="actor_sign.c">
       <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_textbox.c">
+      <Filter>Source Files\engine\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -283,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="text_loading.h">
       <Filter>Header Files\engine\localization</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_textbox.h">
+      <Filter>Header Files\engine\actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

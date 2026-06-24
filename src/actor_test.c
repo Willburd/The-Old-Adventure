@@ -13,7 +13,6 @@ ACTOR_CLEANUP(test);
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Setup the player actor. Public function in the header
 ACTOR_INIT(test)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;

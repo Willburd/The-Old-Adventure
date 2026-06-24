@@ -20,7 +20,6 @@ static void actor_exit_finishleaving(struct Actor* exit);
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Setup the player actor. Public function in the header
 ACTOR_INIT(trigger_exit)
 {
 	// Configure actor

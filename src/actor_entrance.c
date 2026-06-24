@@ -17,7 +17,6 @@ static Vector3 actor_entrance_get_camerastart(struct Actor* entrance);
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Setup the player actor. Public function in the header
 ACTOR_INIT(entrance)
 {
     // Configure actor

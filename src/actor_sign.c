@@ -1,6 +1,7 @@
 #include "core_assets.h"
 #include "actor.h"
 #include "tools.h"
+#include "actor_textbox.h"
 
 // private header
 ACTOR_PRELOADASSETS(sign);
@@ -13,7 +14,6 @@ ACTOR_DRAWWORLD(sign);
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Setup the player actor. Public function in the header
 ACTOR_INIT(sign)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_INTERACTIVE;
@@ -44,7 +44,7 @@ ACTOR_INTERACT_TEXT(sign)
 
 ACTOR_PLAYER_INTERACT(sign)
 {
-	printf("Interaction!");
+	TEXTBOX_CREATE(actor, player, "debug");
 }
 
 ACTOR_DRAWWORLD(sign)

@@ -10,10 +10,10 @@
 
 // Must match gamestate flags
 #define ACTOR_FLAG_TICKDURING_GAME (1 << 0) // Updates during gameplay
-#define ACTOR_FLAG_TICKDURING_TRANSITION (1 << 1) // Updates during room enter/exit animations
-#define ACTOR_FLAG_TICKDURING_CUTSCENE (1 << 2) // Updates cutscenes
-#define ACTOR_FLAG_TICKDURING_PAUSED (1 << 3) // Updates during pause screen
-// RESERVED (1 << 4)
+#define ACTOR_FLAG_TICKDURING_TEXTBOX (1 << 1) // Updates during textboxes
+#define ACTOR_FLAG_TICKDURING_TRANSITION (1 << 2) // Updates during room enter/exit animations
+#define ACTOR_FLAG_TICKDURING_CUTSCENE (1 << 3) // Updates during cutscenes
+#define ACTOR_FLAG_TICKDURING_PAUSED (1 << 4) // Updates during pause screen
 // RESERVED (1 << 5)
 // RESERVED (1 << 6)
 // RESERVED (1 << 7)

@@ -21,7 +21,6 @@ static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player)
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Setup the player actor. Public function in the header
 ACTOR_INIT(camera)
 {
     // Configure actor

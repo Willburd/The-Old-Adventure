@@ -159,6 +159,7 @@
     <ClCompile Include="actor_sign.c" />
     <ClCompile Include="actor_skybox.c" />
     <ClCompile Include="actor_test.c" />
+    <ClCompile Include="actor_textbox.c" />
     <ClCompile Include="actor_trigger_exit.c" />
     <ClCompile Include="animation.c" />
     <ClCompile Include="assets.c" />
@@ -195,6 +196,7 @@
     <ClInclude Include="actor_library.h" />
     <ClInclude Include="actor_factory.h" />
     <ClInclude Include="actor_scene.h" />
+    <ClInclude Include="actor_textbox.h" />
     <ClInclude Include="actor_trigger_exit.h" />
     <ClInclude Include="animation.h" />
     <ClInclude Include="assets.h" />

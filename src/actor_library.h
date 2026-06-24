@@ -22,6 +22,7 @@ typedef enum
 	act_fadein,
 	act_camera,
 	act_skybox,
+	act_textbox,
 	// Adventure
 	act_player,
 	act_pause_box,
@@ -39,6 +40,7 @@ ACTOR_INIT(trigger_exit);
 ACTOR_INIT(fadein);
 ACTOR_INIT(camera);
 ACTOR_INIT(skybox);
+ACTOR_INIT(textbox);
 ACTOR_INIT(player);
 ACTOR_INIT(pause);
 ACTOR_INIT(sign);
@@ -58,6 +60,7 @@ inline char* actor_name(ActorTypes actor_id)
 		"Fadein",
 		"Camera",
 		"Skybox",
+		"Textbox",
 		// Adventure
 		"Player",
 		"PauseBox",
@@ -81,6 +84,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 	MAKE_ACTOR_INIT(act_fadein, actor_fadein_init);
 	MAKE_ACTOR_INIT(act_camera, actor_camera_init);
 	MAKE_ACTOR_INIT(act_skybox, actor_skybox_init);
+	MAKE_ACTOR_INIT(act_textbox, actor_textbox_init);
 	// Adventure
 	MAKE_ACTOR_INIT(act_player, actor_player_init);
 	MAKE_ACTOR_INIT(act_pause_box, actor_pause_init);
