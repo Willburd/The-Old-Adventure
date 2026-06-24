@@ -138,8 +138,8 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 
 	// Draw health
 	const int heart_gap = 12;
-	int heart_count = 0;
-	int health_remaining = player_inventory.health;
+	unsigned int heart_count = 0;
+	unsigned int health_remaining = player_inventory.health;
 	while (heart_count < player_inventory.max_hearts) {
 		// Put on hud
 		int xpos = HUD_LEFT + 5 + ((heart_count % 10) * heart_gap);
@@ -151,7 +151,7 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 		if (health_remaining > 0 && health_remaining <= HEALTH_PER_HEART)
 		{
 			float pulse = (float)(tick_counter + tick_percent) * 0.03f;
-			draw_scale = draw_scale + 0.09f + (sin(pulse) * 0.06f);
+			draw_scale = draw_scale + 0.09f + ((float)sin(pulse) * 0.06f);
 			pos.x -= (draw_scale * 0.5f);
 			pos.y -= (draw_scale * 0.5f);
 		}
@@ -172,15 +172,15 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 
 	// Action button
 	PlayerData* player_data = (PlayerData*)player->data;
-	float button_start_x = HUD_RIGHT - 164.0f;
-	DrawTextureEx(*button_tex, (Vector2){ button_start_x, HUD_TOP + 5.0f }, 0.0f, 0.5f, GREEN);
-	DrawTextureEx(*button_tex, (Vector2) { button_start_x + 35.0f, HUD_TOP + 10.0f }, 0.0f, 0.5f, BLUE);
-	DrawText(player_data->current_action_button_text, button_start_x + 35.0f, HUD_TOP + 10.0f, 12, WHITE);
+	int button_start_x = HUD_RIGHT - 164;
+	DrawTextureEx(*button_tex, (Vector2){ (float)(button_start_x), (float)(HUD_TOP + 5) }, 0.0f, 0.5f, GREEN);
+	DrawTextureEx(*button_tex, (Vector2) { (float)(button_start_x + 35), (float)(HUD_TOP + 10) }, 0.0f, 0.5f, BLUE);
+	DrawText(player_data->current_action_button_text, (float)(button_start_x + 35), (float)(HUD_TOP + 10), 12, WHITE);
 
-	float item_start_x = button_start_x + 80.0f;
-	DrawTextureEx(*button_tex, (Vector2) { item_start_x, HUD_TOP + 10.0f }, 0.0f, 0.40f, YELLOW);
-	DrawTextureEx(*button_tex, (Vector2) { item_start_x + 25.0f, HUD_TOP + 20.0f }, 0.0f, 0.40f, YELLOW);
-	DrawTextureEx(*button_tex, (Vector2) { item_start_x + 50.0f, HUD_TOP + 10.0f }, 0.0f, 0.40f, YELLOW);
+	int item_start_x = button_start_x + 80;
+	DrawTextureEx(*button_tex, (Vector2) { (float)(item_start_x), (float)(HUD_TOP + 10) }, 0.0f, 0.40f, YELLOW);
+	DrawTextureEx(*button_tex, (Vector2) { (float)(item_start_x + 25), (float)(HUD_TOP + 20) }, 0.0f, 0.40f, YELLOW);
+	DrawTextureEx(*button_tex, (Vector2) { (float)(item_start_x + 50), (float)(HUD_TOP + 10) }, 0.0f, 0.40f, YELLOW);
 }
 
 void PlayerStandardPauseActivate(struct Actor* player)

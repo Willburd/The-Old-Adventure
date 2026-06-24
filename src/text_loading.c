@@ -22,12 +22,13 @@ void text_free(void* item) {
     RELEASE(entry->data);
 }
 
-static void AddEntry(char* string_id, char* string_data)
+static int AddEntry(char* string_id, char* string_data)
 {
-    MALLOC(TextEntry, entry, NULL);
-    CHAR_STR_COPY(entry->key, string_id, NULL);
-    CHAR_STR_COPY(entry->data, string_data, NULL);
+    MALLOC(TextEntry, entry, ERR_NOALLOC);
+    CHAR_STR_COPY(entry->key, string_id, ERR_NOALLOC);
+    CHAR_STR_COPY(entry->data, string_data, ERR_NOALLOC);
     hashmap_set(loaded_text, entry);
+    return 0;
 }
 
 void LoadBuiltinText()

@@ -8,7 +8,7 @@ typedef struct
 {
 	int dest_scene;
 	int dest_entrance;
-	int radius;
+	float radius;
 	int is_triggered;
 	int fadeout;
 	int previous_fadeout;

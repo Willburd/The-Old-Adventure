@@ -36,6 +36,7 @@ struct Actor* FADEIN_CREATE(Color color)
 	struct Actor* fadein = ACTOR_FACTORY(act_fadein, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 	FadeInData* fadein_data = (FadeInData*)fadein->data;
 	fadein_data->blend_color = color;
+	return fadein;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,5 +59,5 @@ ACTOR_UPDATE(fadein)
 ACTOR_POSTDRAWHUD(fadein)
 {
 	FadeInData* fadein_data = (FadeInData*)actor->data;
-	DrawRectangle(0, 0, renderWidth, renderHeight, (Color) { fadein_data->blend_color.r, fadein_data->blend_color.g, fadein_data->blend_color.b, Clamp(Lerp(fadein_data->previous_fadeout, fadein_data->fadeout, tick_percent), 0, 255) });
+	DrawRectangle(0, 0, renderWidth, renderHeight, (Color) { fadein_data->blend_color.r, fadein_data->blend_color.g, fadein_data->blend_color.b, (int)Clamp(Lerp((float)fadein_data->previous_fadeout, (float)fadein_data->fadeout, (float)tick_percent), 0, 255) });
 }

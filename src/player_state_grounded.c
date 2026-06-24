@@ -93,7 +93,7 @@ void PlayerState_Grounded_Update(struct Actor* player)
 
 		float turn_modifier = 1.0f;
 		float angle_modifier = Vector2Angle(dirvec, flat_facing);
-		if (snap_turn || abs(angle_modifier * (float)RAD2DEG) < 9.0f)
+		if (snap_turn || (float)fabs(angle_modifier * (float)RAD2DEG) < 9.0f)
 			player->rotation = QuaternionMultiply(player->rotation, QuaternionFromAxisAngle(VEC3UP, angle_modifier)); // Snap to
 		else
 			player->rotation = QuaternionMultiply(player->rotation, QuaternionFromAxisAngle(VEC3UP, SIGN(angle_modifier) * turn_modifier * PLAYER_GROUND_TURN_RATE));

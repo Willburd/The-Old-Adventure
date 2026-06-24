@@ -3,8 +3,8 @@
 
 #include "globals.h"
 
-#define HUD_LEFT 0.0f
-#define HUD_TOP 0.0f
+#define HUD_LEFT 0
+#define HUD_TOP 0
 #define HUD_RIGHT renderWidth
 #define HUD_BOTTOM renderHeight
 

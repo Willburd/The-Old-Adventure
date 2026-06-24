@@ -89,7 +89,7 @@ ACTOR_DRAWWORLD(trigger_exit)
 ACTOR_POSTDRAWHUD(trigger_exit)
 {
 	TriggerExitData* exit_data = actor->data;
-	DrawRectangle(0, 0, renderWidth, renderHeight, (Color) { 0, 0, 0, Clamp( Lerp(exit_data->previous_fadeout, exit_data->fadeout, tick_percent),0,255) });
+	DrawRectangle(0, 0, renderWidth, renderHeight, (Color) { 0, 0, 0, (int)Clamp( Lerp((float)exit_data->previous_fadeout, (float)exit_data->fadeout, (float)tick_percent),0,255) });
 }
 
 static void actor_exit_startleaving(struct Actor* exit, struct Actor* player)
