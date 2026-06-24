@@ -5,19 +5,19 @@
 #include "actor_scene.h"
 #include "scene_entry.h"
 
-static void scene_title_activate_room(struct Actor* scene, int room_index, int entrance);
+SCENE_ACTIVATE_ROOM(title);
 
 void scene_title_init(struct Actor* scene)
 {
 	// Configure scene
-	scene->func_activate_room = scene_title_activate_room;
+	SCENE_REGISTER_ACTIVATE_ROOM(title);
 
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 	SCENEDATA_CLEAR(scene->data);
 }
 
-static void scene_title_activate_room(struct Actor* scene, int room_index, int entrance)
+SCENE_ACTIVATE_ROOM(title)
 {
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;

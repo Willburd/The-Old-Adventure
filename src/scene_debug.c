@@ -11,40 +11,40 @@
 #include "input.h"
 #include "actor_fadein.h"
 
-static void scene_debug_activate_room(struct Actor* scene, int room_index, int entrance);
-static void scene_debug_update(struct Actor* scene);
-static void scene_debug_drawhud(struct Actor* scene, double tick_percent);
+SCENE_ACTIVATE_ROOM(debug);
+SCENE_UPDATE(debug);
+SCENE_DRAWHUD(debug);
 
-void scene_debug_init(struct Actor* scene)
+SCENE_INIT(debug)
 {
 	// Configure scene
-	scene->func_activate_room = scene_debug_activate_room;
-	scene->func_update = scene_debug_update;
-	scene->func_postdrawhud = scene_debug_drawhud;
+	SCENE_REGISTER_ACTIVATE_ROOM(debug);
+	SCENE_REGISTER_UPDATE(debug);
+	SCENE_REGISTER_DRAWHUD(debug);
 
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 	SCENEDATA_CLEAR(scene->data);
-
-	// Debug info actor
-	if(!FINDACTORTYPE(act_debug))
-		ACTOR_FACTORY(act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
-
-	// Set sky color
-	clear_background_color = BLACK;
 }
 
-static void scene_debug_activate_room(struct Actor* scene, int room_index, int entrance)
+SCENE_ACTIVATE_ROOM(debug)
 {
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
 	data->active_room = room_index;
 	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
+
+	// Set sky color
+	clear_background_color = BLACK;
+
+	// Debug info actor
+	if (!FINDACTORTYPE(act_debug))
+		ACTOR_FACTORY(act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 #define MENUINDEX utilityA1
 
-static void scene_debug_update(struct Actor* scene)
+SCENE_UPDATE(debug)
 {
 	SceneData* our_data = (SceneData*)scene->data;
 
@@ -67,7 +67,7 @@ static void scene_debug_update(struct Actor* scene)
 	}
 }
 
-static void scene_debug_drawhud(struct Actor* scene, double tick_percent)
+SCENE_DRAWHUD(debug)
 {
 	SceneData* our_data = (SceneData*)scene->data;
 

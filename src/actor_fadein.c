@@ -4,23 +4,23 @@
 #include "actor_fadein.h"
 
 // private header
-static void actor_fadein_update(struct Actor* actor);
-static void actor_fadein_postdrawhud(struct Actor* actor, double tick_percent);
+ACTOR_UPDATE(fadein);
+ACTOR_POSTDRAWHUD(fadein);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Setup the player actor. Public function in the header
-void actor_fadein_init(struct Actor* actor)
+ACTOR_INIT(fadein)
 {
 	// Remove previous fades if somehow multiple happen
 	ACTOR_DESTROY_TYPE(act_fadein);
 
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_PAUSED;
-	actor->func_update = actor_fadein_update;
-	actor->func_postdrawhud = actor_fadein_postdrawhud;
+	ACTOR_REGISTER_UPDATE(fadein);
+	ACTOR_REGISTER_POSTDRAWHUD(fadein);
 
 	// Set data
 	MALLOC_ACTOR_DATA(FadeInData, actor->data);
@@ -42,7 +42,7 @@ struct Actor* FADEIN_CREATE(Color color)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void actor_fadein_update(struct Actor* actor)
+ACTOR_UPDATE(fadein)
 {
 	// Fade into the scene
 	FadeInData* fadein_data = (FadeInData*)actor->data;
@@ -55,7 +55,7 @@ static void actor_fadein_update(struct Actor* actor)
 	ACTOR_DESTROY(actor);
 }
 
-static void actor_fadein_postdrawhud(struct Actor* actor, double tick_percent)
+ACTOR_POSTDRAWHUD(fadein)
 {
 	FadeInData* fadein_data = (FadeInData*)actor->data;
 	DrawRectangle(0, 0, renderWidth, renderHeight, (Color) { fadein_data->blend_color.r, fadein_data->blend_color.g, fadein_data->blend_color.b, Clamp(Lerp(fadein_data->previous_fadeout, fadein_data->fadeout, tick_percent), 0, 255) });

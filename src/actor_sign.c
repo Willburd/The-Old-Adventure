@@ -3,45 +3,51 @@
 #include "tools.h"
 
 // private header
-static void actor_sign_preload_assets(struct Actor* actor);
-static void actor_sign_interaction_text(struct Actor* actor, struct Actor* player);
-static void actor_sign_player_interact(struct Actor* actor, struct Actor* player);
-static void actor_sign_drawworld(struct Actor* actor, double tick_percent);
+ACTOR_PRELOADASSETS(sign);
+ACTOR_INTERACT_TEXT(sign);
+ACTOR_PLAYER_INTERACT(sign);
+ACTOR_DRAWWORLD(sign);
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Setup the player actor. Public function in the header
-void actor_sign_init(struct Actor* actor)
+ACTOR_INIT(sign)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_INTERACTIVE;
-	actor->func_preloadassets = actor_sign_preload_assets;
-	actor->func_drawworld = actor_sign_drawworld;
-	actor->func_player_interact = actor_sign_player_interact;
-	actor->func_interaction_text = actor_sign_interaction_text;
+	ACTOR_REGISTER_PRELOADASSETS(sign);
+	ACTOR_REGISTER_DRAWWORLD(sign);
+	ACTOR_REGISTER_PLAYER_INTERACT(sign);
+	ACTOR_REGISTER_INTERACT_TEXT(sign);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void actor_sign_preload_assets(struct Actor* actor)
+ACTOR_PRELOADASSETS(sign)
 {
 
 }
 
-static void actor_sign_interaction_text(struct Actor* actor, struct Actor* player)
+ACTOR_CAN_INTERACT(sign)
+{
+	return TRUE;
+}
+
+ACTOR_INTERACT_TEXT(sign)
 {
 	return TEXT_ACTIONBUTTON_READ;
 }
 
-static void actor_sign_player_interact(struct Actor* actor, struct Actor* player)
+ACTOR_PLAYER_INTERACT(sign)
 {
 	printf("Interaction!");
 }
 
-static void actor_sign_drawworld(struct Actor* actor, double tick_percent)
+ACTOR_DRAWWORLD(sign)
 {
 	DrawSphereWires(actor->position, ACTOR_INTERACTION_RANGE, 5, 5, WHITE);
 }

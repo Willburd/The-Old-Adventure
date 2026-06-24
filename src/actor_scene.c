@@ -57,8 +57,11 @@ void UnloadScene(int clear_assets)
 	current_scene = NULL;
 }
 
-void actor_scene_init(struct Actor* scene)
+ACTOR_INIT(scene)
 {
+	// Use this for clarity
+	struct Actor* scene = actor; 
+
 	// Unload previous scene
 	current_scene = scene;
 

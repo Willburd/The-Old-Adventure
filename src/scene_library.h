@@ -23,11 +23,11 @@ typedef enum
 
 } SceneID;
 
-void scene_debug_init(struct Actor* scene);
-void scene_boot_init(struct Actor* scene);
-void scene_title_init(struct Actor* scene);
-void scene_test_init(struct Actor* scene);
-void scene_fieldtest_init(struct Actor* scene);
+SCENE_INIT(debug);
+SCENE_INIT(boot);
+SCENE_INIT(title);
+SCENE_INIT(test);
+SCENE_INIT(fieldtest);
 
 inline char* scene_name(SceneID scene_id)
 {

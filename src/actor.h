@@ -167,4 +167,76 @@ Matrix GetMatrix(struct Actor* actor);
 // Get transform of model
 Transform GetTransform(struct Actor* actor);
 
+
+// definition boilerplate for actors
+#define ACTOR_INIT(x) void actor_## x ##_init(struct Actor* actor)
+#define ACTOR_PRELOADASSETS(x) actor_## x ##_preload_assets(struct Actor* actor)
+#define ACTOR_CLEANUP(x) actor_## x ##_cleanup(struct Actor* actor)
+
+#define ACTOR_PREUPDATE(x) static void actor_## x ##_preupdate(struct Actor* actor)
+#define ACTOR_UPDATE(x) static void actor_## x ##_update(struct Actor* actor)
+#define ACTOR_POSTUPDATE(x) static void actor_## x ##_postupdate(struct Actor* actor)
+
+#define ACTOR_LIGHTNODES(x) static void actor_## x ##_lights(struct Actor* actor)
+#define ACTOR_ANIMATION_END(x) actor_## x ##_animation_ended(struct Actor* actor, char* animation)
+
+#define ACTOR_PLAYER_INTERACT(x) static void actor_## x ##_player_interact(struct Actor* actor, struct Actor* player)
+#define ACTOR_CAN_INTERACT(x) static int actor_## x ##_can_interact(struct Actor* actor, struct Actor* player)
+#define ACTOR_INTERACT_TEXT(x) static char* actor_## x ##_interaction_text(struct Actor* actor, struct Actor* player)
+#define ACTOR_REMOTE_INTERACT(x) static void actor_## x ##_remote_interact(struct Actor* actor, struct Actor* other)
+
+#define ACTOR_PREDRAWWORLD(x) static void actor_## x ##_predrawworld(struct Actor* actor, double tick_percent)
+#define ACTOR_DRAWWORLD(x) static void actor_## x ##_drawworld(struct Actor* actor, double tick_percent)
+#define ACTOR_POSTDRAWWORLD(x) static void actor_## x ##_postdrawworld(struct Actor* actor, double tick_percent)
+
+#define ACTOR_PREDRAWHUD(x) static void actor_## x ##_predrawhud(struct Actor* actor, double tick_percent)
+#define ACTOR_DRAWHUD(x) static void actor_## x ##_drawhud(struct Actor* actor, double tick_percent)
+#define ACTOR_POSTDRAWHUD(x) static void actor_## x ##_postdrawhud(struct Actor* actor, double tick_percent)
+
+// registration boilerplate for actors
+#define ACTOR_REGISTER_PRELOADASSETS(x) actor->func_preloadassets = actor_## x ##_preload_assets
+#define ACTOR_REGISTER_CLEANUP(x) actor->func_destroy = actor_## x ##_cleanup
+
+#define ACTOR_REGISTER_PREUPDATE(x) actor->func_preupdate = actor_## x ##_preupdate
+#define ACTOR_REGISTER_UPDATE(x) actor->func_update = actor_## x ##_update
+#define ACTOR_REGISTER_POSTUPDATE(x) actor->func_postupdate = actor_## x ##_postupdate
+
+#define ACTOR_REGISTER_LIGHTNODES(x) actor->func_append_lights = actor_## x ##_lights
+#define ACTOR_REGISTER_ANIMATION_END(x) actor->func_animation_ended = actor_## x ##_animation_ended
+
+#define ACTOR_REGISTER_PLAYER_INTERACT(x) actor->func_player_interact = actor_## x ##_player_interact
+#define ACTOR_REGISTER_CAN_INTERACT(x) actor->func_can_interact = actor_## x ##_can_interact
+#define ACTOR_REGISTER_INTERACT_TEXT(x) actor->func_interaction_text = actor_## x ##_interaction_text
+#define ACTOR_REGISTER_REMOTE_INTERACT(x) actor->func_remote_interact = actor_## x ##_remote_interact
+
+#define ACTOR_REGISTER_PREDRAWWORLD(x) actor->func_predrawworld = actor_## x ##_predrawworld
+#define ACTOR_REGISTER_DRAWWORLD(x) actor->func_drawworld = actor_## x ##_drawworld
+#define ACTOR_REGISTER_POSTDRAWWORLD(x) actor->func_postdrawworld = actor_## x ##_postdrawworld
+
+#define ACTOR_REGISTER_PREDRAWHUD(x) actor->func_predrawhud = actor_## x ##_predrawhud
+#define ACTOR_REGISTER_DRAWHUD(x) actor->func_drawhud = actor_## x ##_drawhud
+#define ACTOR_REGISTER_POSTDRAWHUD(x) actor->func_postdrawhud = actor_## x ##_postdrawhud
+
+// definition boilerplate for scenes
+#define SCENE_INIT(x) void scene_## x ##_init(struct Actor* scene)
+#define SCENE_PRELOADASSETS(x) static void scene_## x ##_preload_assets(struct Actor* scene)
+#define SCENE_ACTIVATE_ROOM(x) static void scene_## x ##_activate_room(struct Actor* scene, int room_index, int entrance)
+#define SCENE_CLEANUP(x) static void scene_## x ##_cleanup(struct Actor* scene)
+
+#define SCENE_UPDATE(x) static void scene_## x ##_update(struct Actor* scene)
+#define SCENE_DRAWWORLD(x) static void scene_## x ##_drawworld(struct Actor* scene, double tick_percent)
+#define SCENE_DRAWHUD(x) static void scene_## x ##_drawhud(struct Actor* scene, double tick_percent)
+#define SCENE_LIGHTNODES(x) static void scene_## x ##_lights(struct Actor* scene)
+
+// registration boilerplate for scenes
+#define SCENE_REGISTER_PRELOADASSETS(x) scene->func_preloadassets = scene_## x ##_preload_assets
+#define SCENE_REGISTER_ACTIVATE_ROOM(x) scene->func_activate_room = scene_## x ##_activate_room
+#define SCENE_REGISTER_CLEANUP(x) scene->func_destroy = scene_## x ##_cleanup
+
+#define SCENE_REGISTER_UPDATE(x) scene->func_update = scene_## x ##_update
+#define SCENE_REGISTER_DRAWWORLD(x) scene->func_drawworld = scene_## x ##_drawworld
+#define SCENE_REGISTER_DRAWHUD(x) scene->func_drawhud = scene_## x ##_drawhud
+#define SCENE_REGISTER_LIGHTNODES(x) scene->func_append_lights = scene_## x ##_lights
+
+
 #endif

@@ -3,37 +3,37 @@
 #include "actor.h"
 
 // private header
-static void actor_test_preload_assets(struct Actor* actor);
-static void actor_test_update(struct Actor* actor);
-static void actor_test_drawworld(struct Actor* actor, double delta_time);
-static void actor_test_drawhud(struct Actor* actor, double delta_time);
-static void actor_test_destroy(struct Actor* actor);
+ACTOR_PRELOADASSETS(test);
+ACTOR_UPDATE(test);
+ACTOR_DRAWWORLD(test);
+ACTOR_DRAWHUD(test);
+ACTOR_CLEANUP(test);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Setup the player actor. Public function in the header
-void actor_test_init(struct Actor* actor)
+ACTOR_INIT(test)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;
-	actor->func_preloadassets = actor_test_preload_assets;
-	actor->func_update = actor_test_update;
-	actor->func_drawworld = actor_test_drawworld;
-	actor->func_drawhud = actor_test_drawhud;
-	actor->func_destroy = actor_test_destroy;
+	ACTOR_REGISTER_PRELOADASSETS(test);
+	ACTOR_REGISTER_UPDATE(test);
+	ACTOR_REGISTER_DRAWWORLD(test);
+	ACTOR_REGISTER_DRAWHUD(test);
+	ACTOR_REGISTER_CLEANUP(test);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void actor_test_preload_assets(struct Actor* actor)
+ACTOR_PRELOADASSETS(test)
 {
 
 }
 
-static void actor_test_update(struct Actor* actor)
+ACTOR_UPDATE(test)
 {
 	const boundary = 600;
 	const ply_speed = 10;
@@ -61,19 +61,19 @@ static void actor_test_update(struct Actor* actor)
 	//actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler(15 * DEG2RAD, 0, 0));
 }
 
-static void actor_test_drawworld(struct Actor* actor, double tick_percent)
+ACTOR_DRAWWORLD(test)
 {
 	DrawCube(Vector3Add(Vector3Scale(VEC3FORWARD, 5.0f), Vector3Scale(ACTOR_POS_DELTA(actor, (float)tick_percent), 0.01f)), 0.2f, 0.2f, 0.2f, RED);
 }
 
-static void actor_test_drawhud(struct Actor* actor, double tick_percent)
+ACTOR_DRAWHUD(test)
 {
 	Vector3 delta_pos = ACTOR_POS_DELTA(actor, (float)tick_percent);
 	Texture2D resolvetex = *AssetGet_Texture(ASSET_TEXTURES"/Objects/example.png");
 	DrawTextureEx(resolvetex, (Vector2) { delta_pos.x, delta_pos.y }, QuaternionToEuler(ACTOR_ROT_DELTA(actor, (float)tick_percent)).x* RAD2DEG, 1, WHITE);
 }
 
-static void actor_test_destroy(struct Actor* actor)
+ACTOR_CLEANUP(test)
 {
 
 }

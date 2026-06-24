@@ -7,11 +7,11 @@
 #include "core_assets.h"
 
 // private header
-static void actor_pause_preload_assets(struct Actor* actor);
-static void actor_pause_update(struct Actor* actor);
-static void actor_pause_postdrawworld(struct Actor* actor, double delta_time);
-static void actor_pause_destroy(struct Actor* actor);
-static void actor_pause_animation_ended(struct Actor* actor, char* animation);
+ACTOR_PRELOADASSETS(pause);
+ACTOR_UPDATE(pause);
+ACTOR_ANIMATION_END(pause);
+ACTOR_POSTDRAWWORLD(pause);
+ACTOR_CLEANUP(pause);
 
 typedef struct {
 	int pause_time;
@@ -22,15 +22,15 @@ typedef struct {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Setup the player actor. Public function in the header
-void actor_pause_init(struct Actor* actor)
+ACTOR_INIT(pause)
 {
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_PAUSED | ACTOR_FLAG_HAS_ANIMATIONS;
-	actor->func_preloadassets = actor_pause_preload_assets;
-	actor->func_update = actor_pause_update;
-	actor->func_postdrawworld = actor_pause_postdrawworld;
-	actor->func_destroy = actor_pause_destroy;
-	actor->func_animation_ended = actor_pause_animation_ended;
+	ACTOR_REGISTER_PRELOADASSETS(pause);
+	ACTOR_REGISTER_UPDATE(pause);
+	ACTOR_REGISTER_ANIMATION_END(pause);
+	ACTOR_REGISTER_POSTDRAWWORLD(pause);
+	ACTOR_REGISTER_CLEANUP(pause);
 
 	// Set data
 	MALLOC_ACTOR_DATA(PauseData, actor->data);
@@ -54,7 +54,7 @@ void actor_pause_init(struct Actor* actor)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void actor_pause_preload_assets(struct Actor* actor)
+ACTOR_PRELOADASSETS(pause)
 {
 	Asset* model_asset = AssetGetPackage(PAUSEBOX_MODEL);
 	AddAnimLayer(actor, GetAnimation(model_asset, "HoldOpen"), ANIMATION_FRAMERATE, ANIM_LOOP, TRUE, 1.0f, BLENDTYPE_REPLACE);
@@ -63,7 +63,7 @@ static void actor_pause_preload_assets(struct Actor* actor)
 	AddAnimLayer(actor, GetAnimation(model_asset, "OpenMenu"), ANIMATION_FRAMERATE, ANIM_SINGLE, TRUE, 1.0f, BLENDTYPE_REPLACE);
 }
 
-static void actor_pause_update(struct Actor* actor)
+ACTOR_UPDATE(pause)
 {
 	// Don't allow unpausing during the animation
 	struct AnimationLayer* opening_layer = FindAnimLayer(actor, "OpenMenu");
@@ -87,13 +87,13 @@ static void actor_pause_update(struct Actor* actor)
 	// Handle inventory
 }
 
-static void actor_pause_animation_ended(struct Actor* actor, char* animation)
+ACTOR_ANIMATION_END(pause)
 {
 	if(STRMATCH(animation, "CloseMenu"))
 		ACTOR_DESTROY(actor);
 }
 
-static void actor_pause_postdrawworld(struct Actor* actor, double tick_percent)
+ACTOR_POSTDRAWWORLD(pause)
 {
 	Material* mat = AssetGet_Material(ASSET_MATERIALS"/Error/no_material.mat");
 	Material* mat_f = AssetGet_Material(ASSET_MATERIALS"/Objects/example.mat");
@@ -124,7 +124,7 @@ static void actor_pause_postdrawworld(struct Actor* actor, double tick_percent)
 	);
 }
 
-static void actor_pause_destroy(struct Actor* actor)
+ACTOR_CLEANUP(pause)
 {
 	// Unpause the game
 	gameplay_state &= ~GAMESTATE_PAUSED;

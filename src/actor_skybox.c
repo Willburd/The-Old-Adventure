@@ -8,25 +8,25 @@
 #include "actor_factory.h"
 
 // private header
-static void actor_skybox_update(struct Actor* actor);
-static void actor_skybox_lights(struct Actor* scene);
-static void actor_skybox_predrawworld(struct Actor* actor, double tick_percent);
+ACTOR_UPDATE(skybox);
+ACTOR_LIGHTNODES(skybox);
+ACTOR_PREDRAWWORLD(skybox);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Setup the player actor. Public function in the header
-void actor_skybox_init(struct Actor* actor)
+ACTOR_INIT(skybox)
 {
 	// Remove previous skyboxes
 	ACTOR_DESTROY_TYPE(act_skybox);
 
     // Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE;
-	actor->func_update = actor_skybox_update;
-	actor->func_append_lights = actor_skybox_lights;
-    actor->func_predrawworld = actor_skybox_predrawworld;
+	ACTOR_REGISTER_UPDATE(skybox);
+	ACTOR_REGISTER_LIGHTNODES(skybox);
+	ACTOR_REGISTER_PREDRAWWORLD(skybox);
 	actor->scale = Vector3Scale(actor->scale, 1200.0f);
 }
 
@@ -34,18 +34,18 @@ void actor_skybox_init(struct Actor* actor)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void actor_skybox_update(struct Actor* actor)
+ACTOR_UPDATE(skybox)
 {
 	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler( 0.0f, 0.01f * DEG2RAD, 0.0f));
 	fog_set(GetFogColor(), FOG_DEFAULT_POWER, GetFogDistance()); // maintain fog state with sky
 }
 
-static void actor_skybox_lights(struct Actor* scene)
+ACTOR_LIGHTNODES(skybox)
 {
 	LIGHT_NODE_SKYBOX;
 }
 
-static void actor_skybox_predrawworld(struct Actor* actor, double tick_percent)
+ACTOR_PREDRAWWORLD(skybox)
 {
 	////////////////////////////////////////////////
 	// Skybox shader uniforms

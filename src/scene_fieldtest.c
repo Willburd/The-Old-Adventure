@@ -13,20 +13,20 @@
 #include "gamestate.h"
 #include "light_tools.h"
 
-static void scene_fieldtest_preloadassets(struct Actor* scene);
-static void scene_fieldtest_destroy(struct Actor* scene);
-static void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entrance);
-static void scene_fieldtest_lights(struct Actor* scene);
-static void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent);
+SCENE_PRELOADASSETS(fieldtest);
+SCENE_CLEANUP(fieldtest);
+SCENE_ACTIVATE_ROOM(fieldtest);
+SCENE_LIGHTNODES(fieldtest);
+SCENE_DRAWWORLD(fieldtest);
 
 void scene_fieldtest_init(struct Actor* scene)
 {
 	// Configure scene
-	scene->func_preloadassets = scene_fieldtest_preloadassets;
-	scene->func_destroy = scene_fieldtest_destroy;
-	scene->func_append_lights = scene_fieldtest_lights;
-	scene->func_activate_room = scene_fieldtest_activate_room;
-	scene->func_drawworld = scene_fieldtest_drawworld;
+	SCENE_REGISTER_PRELOADASSETS(fieldtest);
+	SCENE_REGISTER_CLEANUP(fieldtest);
+	SCENE_REGISTER_LIGHTNODES(fieldtest);
+	SCENE_REGISTER_ACTIVATE_ROOM(fieldtest);
+	SCENE_REGISTER_DRAWWORLD(fieldtest);
 
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
@@ -40,7 +40,7 @@ void scene_fieldtest_init(struct Actor* scene)
 #define MAIN_MODEL_MESH_COLLISION 1
 #define MAIN_MODEL_MATERIAL_MAIN 0
 
-static void scene_fieldtest_preloadassets(struct Actor* scene)
+SCENE_PRELOADASSETS(fieldtest)
 {
 	// Load model
 	Asset* model_asset = LoadAsset_Model(FIELD_ASSET_MAIN_MODEL, FALSE);
@@ -51,13 +51,13 @@ static void scene_fieldtest_preloadassets(struct Actor* scene)
 	CollisionRegister(scene, &model_asset->mdl->meshes[MAIN_MODEL_MESH_COLLISION]);
 }
 
-static void scene_fieldtest_destroy(struct Actor* scene)
+SCENE_CLEANUP(fieldtest)
 {
 	// clear collision data
 	CollisionResign(scene, &AssetGet_Model(FIELD_ASSET_MAIN_MODEL)->meshes[MAIN_MODEL_MESH_COLLISION]);
 }
 
-static void scene_fieldtest_activate_room(struct Actor* scene, int room_index, int entrance)
+SCENE_ACTIVATE_ROOM(fieldtest)
 {
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
@@ -79,13 +79,13 @@ static void scene_fieldtest_activate_room(struct Actor* scene, int room_index, i
 	//ACTOR_FACTORY(act_animtest, scene, (Vector3){ 3.0f, 3.0f, 0.0f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
-static void scene_fieldtest_lights(struct Actor* scene)
+SCENE_LIGHTNODES(fieldtest)
 {
 	LIGHT_NODE_CAVE(-1.5f, 0.15f, 36.0f, 15.0f);
 	LIGHT_NODE_TORCH(3.0f, 2.0f, 1.0f, 30.0f);
 }
 
-static void scene_fieldtest_drawworld(struct Actor* scene, double tick_percent)
+SCENE_DRAWWORLD(fieldtest)
 {
 	Material* mat = AssetGet_Material(FIELD_ASSET_MAIN_MATERIAL);
 	shader_update_fog(mat->shader);

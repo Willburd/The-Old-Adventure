@@ -8,7 +8,7 @@
 
 // private header
 static void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endpos);
-static void actor_entrance_drawworld(struct Actor* entrance, double delta_time);
+ACTOR_DRAWWORLD(entrance);
 static Vector3 actor_entrance_get_start(struct Actor* entrance);
 static Vector3 actor_entrance_get_end(struct Actor* entrance);
 static Vector3 actor_entrance_get_camerastart(struct Actor* entrance);
@@ -18,11 +18,11 @@ static Vector3 actor_entrance_get_camerastart(struct Actor* entrance);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Setup the player actor. Public function in the header
-void actor_entrance_init(struct Actor* actor)
+ACTOR_INIT(entrance)
 {
     // Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE;
-	actor->func_drawworld = actor_entrance_drawworld;
+	ACTOR_REGISTER_DRAWWORLD(entrance);
 
 	// Set data
 	MALLOC_ACTOR_DATA(EntranceData, actor->data);
@@ -108,13 +108,13 @@ static Vector3 actor_entrance_get_camerastart(struct Actor* entrance)
 	return Vector3Add(entrance->position, Vector3RotateByQuaternion(offset, entrance->rotation));
 }
 
-static void actor_entrance_drawworld(struct Actor* entrance, double delta_time)
+ACTOR_DRAWWORLD(entrance)
 {
 	if (!draw_debug_info)
 		return;
-	DrawCube(entrance->position, 0.2f, 0.2f, 0.2f, PURPLE);
-	Vector3 end_pos = actor_entrance_get_end(entrance);
-	DrawLine3D(entrance->position, end_pos, PURPLE);
-	Vector3 cam_pos = actor_entrance_get_camerastart(entrance);
-	DrawLine3D(entrance->position, cam_pos, GREEN);
+	DrawCube(actor->position, 0.2f, 0.2f, 0.2f, PURPLE);
+	Vector3 end_pos = actor_entrance_get_end(actor);
+	DrawLine3D(actor->position, end_pos, PURPLE);
+	Vector3 cam_pos = actor_entrance_get_camerastart(actor);
+	DrawLine3D(actor->position, cam_pos, GREEN);
 }

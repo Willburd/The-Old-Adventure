@@ -6,21 +6,21 @@
 #include "actor_scene.h"
 #include "scene_entry.h"
 
-static void scene_boot_activate_room(struct Actor* scene, int room_index, int entrance);
-static void scene_boot_update(struct Actor* scene);
+SCENE_ACTIVATE_ROOM(boot);
+SCENE_UPDATE(boot);
 
-void scene_boot_init(struct Actor* scene)
+SCENE_INIT(boot)
 {
 	// Configure 
-	scene->func_activate_room = scene_boot_activate_room;
-	scene->func_update = scene_boot_update;
+	SCENE_REGISTER_ACTIVATE_ROOM(boot);
+	SCENE_REGISTER_UPDATE(boot);
 
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 	SCENEDATA_CLEAR(scene->data);
 }
 
-static void scene_boot_activate_room(struct Actor* scene, int room_index, int entrance)
+SCENE_ACTIVATE_ROOM(boot)
 {
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
@@ -28,7 +28,7 @@ static void scene_boot_activate_room(struct Actor* scene, int room_index, int en
 	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
 }
 
-static void scene_boot_update(struct Actor* scene)
+SCENE_UPDATE(boot)
 {
 	// Go to title
 	TransferScene(scene_debug, ent_title);

@@ -4,27 +4,28 @@
 #include "input.h"
 
 // private header
-static void actor_animationtest_preload_assets(struct Actor* actor);
-static void actor_animationtest_update(struct Actor* actor);
-static void actor_animationtest_drawworld(struct Actor* actor, double delta_time);
-static void actor_animationtest_postdrawworld(struct Actor* actor, double delta_time);
-static void actor_animationtest_postdrawhud(struct Actor* actor, double delta_time);
-static void actor_animationtest_destroy(struct Actor* actor);
+ACTOR_PRELOADASSETS(animationtest);
+ACTOR_UPDATE(animationtest);
+ACTOR_DRAWWORLD(animationtest);
+ACTOR_POSTDRAWWORLD(animationtest);
+ACTOR_DRAWHUD(animationtest);
+ACTOR_CLEANUP(animationtest);
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Setup the player actor. Public function in the header
-void actor_animationtest_init(struct Actor* actor)
+ACTOR_INIT(animationtest)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_HAS_ANIMATIONS;
-	actor->func_preloadassets = actor_animationtest_preload_assets;
-	actor->func_update = actor_animationtest_update;
-	actor->func_drawworld = actor_animationtest_drawworld;
-	//actor->func_postdrawworld = actor_animationtest_postdrawworld;
-	//actor->func_postdrawhud = actor_animationtest_postdrawhud;
-	actor->func_destroy = actor_animationtest_destroy;
+	ACTOR_REGISTER_PRELOADASSETS(animationtest);
+	ACTOR_REGISTER_UPDATE(animationtest);
+	ACTOR_REGISTER_DRAWWORLD(animationtest);
+	//ACTOR_REGISTER_POSTDRAWWORLD(animationtest);
+	//ACTOR_REGISTER_DRAWHUD(animationtest);
+	ACTOR_REGISTER_CLEANUP(animationtest);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +35,7 @@ void actor_animationtest_init(struct Actor* actor)
 #define MATERIAL_ANIM_TEST ASSET_MATERIALS"/Objects/example.mat"
 #define MODEL_ANIM_TEST ASSET_MODELS"/Tools/robot.glb"
 
-static void actor_animationtest_preload_assets(struct Actor* actor)
+ACTOR_PRELOADASSETS(animationtest)
 {
 	Asset* model_asset = LoadAsset_Model(MODEL_ANIM_TEST, FALSE);
 	struct AnimationLayer* idle_layer = AddAnimLayer(actor, GetAnimation(model_asset, "Robot_Walking"), ANIMATION_FRAMERATE, ANIM_LOOP, TRUE, 1.0f, BLENDTYPE_MIX);
@@ -55,7 +56,7 @@ static void actor_animationtest_preload_assets(struct Actor* actor)
 	AnimLayerFilterBone(model_asset, dance_layer, "UpperLeg.R", 0.1f);
 }
 
-static void actor_animationtest_update(struct Actor* actor)
+ACTOR_UPDATE(animationtest)
 {
 	if (CHECK_INPUTPRESSED(input_cancel))
 	{
@@ -65,7 +66,7 @@ static void actor_animationtest_update(struct Actor* actor)
 	}
 }
 
-static void actor_animationtest_drawworld(struct Actor* actor, double tick_percent)
+ACTOR_DRAWWORLD(animationtest)
 {
 	Model* model = AssetGet_Model(MODEL_ANIM_TEST);
 	Material* mat = AssetGet_Material(MATERIAL_ANIM_TEST);
@@ -82,12 +83,12 @@ static void actor_animationtest_drawworld(struct Actor* actor, double tick_perce
 	}
 }
 
-static void actor_animationtest_postdrawworld(struct Actor* actor, double tick_percent)
+ACTOR_POSTDRAWWORLD(animationtest)
 {
 	
 }
 
-static void actor_animationtest_postdrawhud(struct Actor* actor, double tick_percent)
+ACTOR_DRAWHUD(animationtest)
 {
 	Model* model = AssetGet_Model(MODEL_ANIM_TEST);
 	for (int bone_index = 0; bone_index < model->skeleton.boneCount; bone_index++)
@@ -111,7 +112,7 @@ static void actor_animationtest_postdrawhud(struct Actor* actor, double tick_per
 	}
 }
 
-static void actor_animationtest_destroy(struct Actor* actor)
+ACTOR_CLEANUP(animationtest)
 {
 
 }

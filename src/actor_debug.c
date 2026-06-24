@@ -6,26 +6,26 @@
 #include "gamestate.h"
 
 // private header
-static void actor_debug_drawworld(struct Actor* scene, double tick_percent);
-static void actor_debug_postdrawhud(struct Actor* actor, double delta_time);
+ACTOR_DRAWWORLD(debug);
+ACTOR_POSTDRAWHUD(debug);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Setup the player actor. Public function in the header
-void actor_debug_init(struct Actor* actor)
+ACTOR_INIT(debug)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_PAUSED;
-	actor->func_drawworld = actor_debug_drawworld;
-	actor->func_postdrawhud = actor_debug_postdrawhud;
+	ACTOR_REGISTER_DRAWWORLD(debug);
+	ACTOR_REGISTER_POSTDRAWHUD(debug);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void actor_debug_drawworld(struct Actor* scene, double tick_percent)
+ACTOR_DRAWWORLD(debug)
 {
 	if (!draw_debug_info)
 		return;
@@ -40,7 +40,7 @@ static void actor_debug_drawworld(struct Actor* scene, double tick_percent)
 	DrawCube(Vector3RotateByQuaternion(VEC3FORWARD, QuaternionFromAxisAngle(VEC3UP, 90.0f * DEG2RAD)), 0.25f, 2.5f, 0.25f, YELLOW); // Should be left
 }
 
-static void actor_debug_postdrawhud(struct Actor* actor, double tick_percent)
+ACTOR_POSTDRAWHUD(debug)
 {
 	if (!draw_debug_info)
 		return;

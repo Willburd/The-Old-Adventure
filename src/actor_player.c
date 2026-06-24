@@ -2,26 +2,26 @@
 #include "player.h"
 
 // private header
-static void actor_player_preload_assets(struct Actor* actor);
-static void actor_player_update(struct Actor* actor);
-static void actor_player_drawworld(struct Actor* actor, double delta_time);
-static void actor_player_drawhud(struct Actor* actor, double delta_time);
-static void actor_player_destroy(struct Actor* actor);
+ACTOR_PRELOADASSETS(player);
+ACTOR_UPDATE(player);
+ACTOR_DRAWWORLD(player);
+ACTOR_DRAWHUD(player);
+ACTOR_CLEANUP(player);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Setup the player actor. Public function in the header
-void actor_player_init(struct Actor* actor)
+ACTOR_INIT(player)
 {
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_HAS_ANIMATIONS;
-	actor->func_preloadassets = actor_player_preload_assets;
-	actor->func_update = actor_player_update;
-	actor->func_drawworld = actor_player_drawworld;
-	actor->func_drawhud = actor_player_drawhud;
-	actor->func_destroy = actor_player_destroy;
+	ACTOR_REGISTER_PRELOADASSETS(player);
+	ACTOR_REGISTER_UPDATE(player);
+	ACTOR_REGISTER_DRAWWORLD(player);
+	ACTOR_REGISTER_DRAWHUD(player);
+	ACTOR_REGISTER_CLEANUP(player);
 
 	// Set data
 	MALLOC_ACTOR_DATA(PlayerData, actor->data);
@@ -39,19 +39,19 @@ void actor_player_init(struct Actor* actor)
 // The player is a multilayer state machine of polymorphs. It changes behaviors and swaps out functions to suit those states.
 // Shared player code is in the Generic playerstate. For things like huds or shared state checks.
 
-static void actor_player_preload_assets(struct Actor* actor)
+ACTOR_PRELOADASSETS(player)
 {
 
 }
 
-static void actor_player_update(struct Actor* actor)
+ACTOR_UPDATE(player)
 {
 	// Update our current state each tick
 	PlayerData* player_data = (PlayerData*)actor->data;
 	player_data->func_state_update(actor);
 }
 
-static void actor_player_drawworld(struct Actor* actor, double tick_percent)
+ACTOR_DRAWWORLD(player)
 {
 	// Draw the player and handle animations
 	DRAWCAPSULE(ACTOR_POS_DELTA(actor, tick_percent), 1.0f, 0.5f, GREEN);
@@ -62,7 +62,7 @@ static void actor_player_drawworld(struct Actor* actor, double tick_percent)
 	player_data->func_state_drawworld(actor, tick_percent);
 }
 
-static void actor_player_drawhud(struct Actor* actor, double tick_percent)
+ACTOR_DRAWHUD(player)
 {
 	// Handle the hud in the state
 	PlayerData* player_data = (PlayerData*)actor->data;
@@ -73,7 +73,7 @@ static void actor_player_drawhud(struct Actor* actor, double tick_percent)
 	DrawText(TextFormat("X:%f\nY:%f\nZ:%f\nA:%f\n", actor->position.x, actor->position.y, actor->position.z, Vector3GetTopDownAngle(Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation)) * RAD2DEG), renderWidth / 2, renderHeight / 2, 4, WHITE);
 }
 
-static void actor_player_destroy(struct Actor* actor)
+ACTOR_CLEANUP(player)
 {
 
 }

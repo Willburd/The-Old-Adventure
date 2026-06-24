@@ -30,18 +30,18 @@ typedef enum
 
 } ActorTypes;
 
-void actor_debug_init(struct Actor* actor);
-void actor_test_init(struct Actor* actor);
-void actor_animationtest_init(struct Actor* actor);
-void actor_scene_init(struct Actor* scene);
-void actor_entrance_init(struct Actor* actor);
-void actor_trigger_exit_init(struct Actor* actor);
-void actor_fadein_init(struct Actor* actor);
-void actor_camera_init(struct Actor* player);
-void actor_skybox_init(struct Actor* actor);
-void actor_player_init(struct Actor* player);
-void actor_pause_init(struct Actor* actor);
-void actor_sign_init(struct Actor* actor);
+ACTOR_INIT(debug);
+ACTOR_INIT(test);
+ACTOR_INIT(animationtest);
+ACTOR_INIT(scene);
+ACTOR_INIT(entrance);
+ACTOR_INIT(trigger_exit);
+ACTOR_INIT(fadein);
+ACTOR_INIT(camera);
+ACTOR_INIT(skybox);
+ACTOR_INIT(player);
+ACTOR_INIT(pause);
+ACTOR_INIT(sign);
 
 inline char* actor_name(ActorTypes actor_id)
 {
