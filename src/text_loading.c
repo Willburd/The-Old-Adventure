@@ -32,6 +32,8 @@ static void AddEntry(char* string_id, char* string_data)
 void LoadBuiltinText()
 {
 	AddEntry(TEXT_ID(debug), "The Old Adventure");
+    AddEntry(TEXT_ID(test_arabic), "أبجدية عربية");
+    AddEntry(TEXT_ID(test_russian), "Кириллица");
 }
 
 void LoadTextData(char* text_file_path)
