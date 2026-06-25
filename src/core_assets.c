@@ -29,7 +29,6 @@ void LoadCoreAssets()
 
     // Set font
     default_font = LoadFontEx(ASSET_FONT"/LinBiolinum_Rah.ttf", 16, NULL, 0);
-    //default_font = LoadFontEx(ASSET_FONT"/arial.ttf", 16, NULL, 0);
     
     // Load text
     LoadCoreTextAssets();
