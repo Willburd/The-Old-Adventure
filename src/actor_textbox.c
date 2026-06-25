@@ -5,10 +5,13 @@
 #include "gamestate.h"
 #include "hud.h"
 #include "input.h"
+#include "text_loading.h"
 
 typedef struct
 {
 	int counter;
+	int page_index;
+	char* current_text;
 } TextboxData;
 
 // private header
@@ -39,11 +42,15 @@ ACTOR_INIT(textbox)
 	MALLOC_ACTOR_DATA(TextboxData, actor->data);
 	TextboxData* textbox_data = (TextboxData*)actor->data;
 	textbox_data->counter = 0;
+	textbox_data->page_index = 0;
+	textbox_data->current_text = "?";
 }
 
 struct Actor* TEXTBOX_CREATE(struct Actor* owner, struct Actor* player, char* text_id)
 {
 	struct Actor* textbox = ACTOR_FACTORY(act_textbox, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	TextboxData* textbox_data = (TextboxData*)textbox->data;
+	textbox_data->current_text = GetText(text_id);
 	return textbox;
 }
 
@@ -72,8 +79,12 @@ ACTOR_CLEANUP(textbox)
 
 ACTOR_POSTDRAWHUD(textbox)
 {
+	TextboxData* textbox_data = (TextboxData*)actor->data;
 	const int text_box_width = 310;
 	const int text_box_height = 80;
+	int left = HUD_WIDTHHALF - (text_box_width / 2);
+	int top = HUD_HEIGHT - (text_box_height + 5);
 
-	DrawRectangle(HUD_WIDTHHALF - (text_box_width / 2), HUD_HEIGHT - (text_box_height + 5), text_box_width, text_box_height, BLACK);
+	DrawRectangle(left, top, text_box_width, text_box_height, BLACK);
+	DrawText(textbox_data->current_text, left + 5, top + 5, 12, WHITE);
 }
