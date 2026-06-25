@@ -1,9 +1,9 @@
-In the vast, deep forest of somewhere...
-|A
+[SIn the vast, deep forest of somewhere...
+[A
 Кириллица
-|A
+[A
 Line 1: ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Line 2: ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Line 3: ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Line 4: ABCDEFGHIJKLMNOPQRSTUVWXYZ
-|E
+[E
