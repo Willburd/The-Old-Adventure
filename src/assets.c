@@ -17,6 +17,10 @@ void UnloadAllAssets(int including_core)
         hashmap_delete(loaded_assets, asset);
         asset_free(asset);
     }
+    if (including_core)
+    {
+        UnloadFont(default_font);
+    }
 }
 
 int asset_compare(const void* a, const void* b, void* udata) {

@@ -4,6 +4,8 @@
 #include "raylib.h"
 #include "actor.h"
 
+#define TEXTBOX_DEFAULT_SIZE 16
+
 struct Actor* TEXTBOX_CREATE(struct Actor* owner, struct Actor* player, char* text_id);
 
 #endif

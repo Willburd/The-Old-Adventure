@@ -44,7 +44,7 @@ ACTOR_INTERACT_TEXT(sign)
 
 ACTOR_PLAYER_INTERACT(sign)
 {
-	TEXTBOX_CREATE(actor, player, "debug");
+	TEXTBOX_CREATE(actor, player, TEXT_TEST_DEBUG);
 }
 
 ACTOR_DRAWWORLD(sign)

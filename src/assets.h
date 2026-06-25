@@ -20,8 +20,11 @@
 #define ASSET_MATERIALS ASSET_PATH"/Materials"
 #define ASSET_SHADERS ASSET_PATH"/Shaders"
 #define ASSET_TEXT ASSET_PATH"/Text"
+#define ASSET_FONT ASSET_PATH"/Font"
 
 #define ASSET_LIMIT 2048
+
+Font default_font;
 
 enum GameLanguages
 {

@@ -14,8 +14,10 @@
 #define PAUSEBOX_MODEL				ASSET_MODELS"/Tools/pausebox.glb"
 
 void LoadCoreAssets();
+void LoadCoreTextAssets();
 
 // Text entries
+#define TEXT_TEST_DEBUG "Test_Debug"
 #define TEXT_ACTIONBUTTON_READ "ActionButton_Read"
 
 #endif

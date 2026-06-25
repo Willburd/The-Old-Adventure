@@ -56,18 +56,24 @@ int main(void)
         seconds_counter += delta_time;
 
 #ifdef _DEBUG 
-        if (IsKeyPressed(KEY_F2))
+        if (IsKeyPressed(KEY_F2)) // Debug info
         {
             draw_debug_info = !draw_debug_info;
         }
-        if (IsKeyPressed(KEY_F3))
+        if (IsKeyPressed(KEY_F3)) // Uncap frames
         {
             if (frame_rate < 100) frame_rate = 9999; else frame_rate = 60;
             SetTargetFPS(frame_rate);
         }
-        if (IsKeyPressed(KEY_F4))
+        if (IsKeyPressed(KEY_F4)) // Debug warp
         {
-            TransferScene(scene_debug, ent_title); // Debug warp
+            TransferScene(scene_debug, ent_title);
+        }
+        if (IsKeyPressed(KEY_F5)) // Reload text assets
+        {
+            hashmap_clear(loaded_text, FALSE);
+            LoadBuiltinText();
+            LoadCoreTextAssets();
         }
 #endif
 

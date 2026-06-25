@@ -27,9 +27,17 @@ void LoadCoreAssets()
     LoadAsset_Model(SPRITE_MODEL, TRUE);
     LoadAsset_Model(PAUSEBOX_MODEL, TRUE);
 
+    // Set font
+    default_font = LoadFontEx(ASSET_FONT"/LinBiolinum_Rah.ttf", 16, NULL, 0);
+    //default_font = LoadFontEx(ASSET_FONT"/arial.ttf", 16, NULL, 0);
+    
     // Load text
-    current_game_language = lang_EN;
-    LoadTextData(TEXT_ACTIONBUTTON_READ);
+    LoadCoreTextAssets();
+}
 
-    DumpTextData();
+void LoadCoreTextAssets()
+{
+    current_game_language = lang_EN;
+    LoadTextData(TEXT_TEST_DEBUG);
+    LoadTextData(TEXT_ACTIONBUTTON_READ);
 }
