@@ -7,13 +7,14 @@
 #include "input.h"
 #include <string.h>
 #include "text_loading.h"
+#include "camera.h"
 
 typedef struct
 {
 	unsigned int text_start_index;
 	unsigned int text_end_index;
+	unsigned int token_index;
 	char* current_text;
-	char current_token;
 	float text_progress;
 	float text_speed;
 } TextboxData;
@@ -51,7 +52,7 @@ ACTOR_INIT(textbox)
 	textbox_data->text_start_index = 0;
 	textbox_data->text_end_index = 0;
 	textbox_data->current_text = "?";
-	textbox_data->current_token = 'A';
+	textbox_data->token_index = 0;
 	textbox_data->text_progress = 0.0f;
 	textbox_data->text_speed = TEXTBOX_DEFAULT_SPEED;
 }
@@ -114,7 +115,7 @@ ACTOR_POSTDRAWHUD(textbox)
 	unsigned int segment_length = GetSegmentLength(actor);
 	unsigned int draw_length = min(segment_length, textbox_data->text_progress);
 
-	char substr[2048] = { 0 };
+	char substr[255] = { 0 }; // Only needs to contain the current segment, lets not blow out the size of the heap
 	memcpy(substr, textbox_data->current_text + (sizeof(char) * textbox_data->text_start_index), sizeof(char) * draw_length);
 	DrawTextEx(default_font, substr, (Vector2) { left + 10, top + 5 }, TEXTBOX_DEFAULT_SIZE, 1, WHITE);
 }
@@ -128,16 +129,34 @@ int GetSegmentLength(struct Actor* textbox)
 void ProcessToken(struct Actor* textbox)
 {
 	TextboxData* textbox_data = (TextboxData*)textbox->data;
-	switch (textbox_data->current_token)
+	char token = 'A';
+	if(textbox_data->token_index > 0) // starting a textbox will always use default
+		token = textbox_data->current_text[textbox_data->token_index];
+
+	printf("Current textbox token: %c\n", token);
+	switch (token)
 	{
 		default:
 		case 'A': // Advance
+		{
 			AdvanceText(textbox);
-			break;
+		}
+		break;
 
 		case 'E': // End
+		{
+			struct Actor* camera = FINDACTORTYPE(act_camera);
+			CameraSetMode(camera, CAMERA_MODE_FOLLOW);
 			ACTOR_DESTROY(textbox);
-			break;
+		}
+		break;
+
+		case 'C': // Start cutscene
+		{
+			gameplay_state |= GAMESTATE_CUTSCENE; // engage cutscene mode
+			ACTOR_DESTROY(textbox);
+		}
+		break;
 	}
 }
 
@@ -159,9 +178,8 @@ void AdvanceText(struct Actor* textbox)
 
 			case '|': // Process a token for custom text effects
 				textbox_data->text_end_index++; // Skip token indicator
-				textbox_data->current_token = textbox_data->current_text[textbox_data->text_end_index];
-				textbox_data->text_end_index++; // skip the token itself
-				textbox_data->text_end_index++; // skip the eol char
+				textbox_data->token_index = textbox_data->text_end_index++; // Store the token
+				textbox_data->text_end_index++; // skip the new line char
 				return;
 
 			default: // Next character

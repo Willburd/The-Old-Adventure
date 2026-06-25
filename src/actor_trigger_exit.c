@@ -108,10 +108,7 @@ static void actor_exit_startleaving(struct Actor* exit, struct Actor* player)
 	// Lock the camera in place
 	struct Actor* camera = FINDACTORTYPE(act_camera);
 	if (camera)
-	{
-		CameraData* cam_data = (CameraData*)camera->data;
-		cam_data->camera_mode = CAMERA_MODE_ONLYWATCH;
-	}
+		CameraSetMode(camera, CAMERA_MODE_ONLYWATCH);
 }
 
 static void actor_exit_finishleaving(struct Actor* exit)

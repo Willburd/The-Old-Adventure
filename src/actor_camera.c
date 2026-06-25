@@ -15,6 +15,8 @@
 ACTOR_PREUPDATE(camera);
 ACTOR_PREDRAWWORLD(camera);
 ACTOR_DRAWWORLD(camera);
+static void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos);
+static Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player);
 static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,12 +58,6 @@ ACTOR_INIT(camera)
     cam_data->pitch_angle = 0.0f;
 }
 
-void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos)
-{
-    CameraData* cam_data = (CameraData*)camera->data;
-    cam_data->current_look_pos = target_pos;
-}
-
 void CameraResetAngleToTarget(struct Actor* camera, float angle)
 {
     CameraData* cam_data = (CameraData*)camera->data;
@@ -94,31 +90,23 @@ Transform GetActorCameraTransform()
     return (Transform) { camera->position, camera->rotation, camera->scale };
 }
 
+void SetCutsceneCameraLookPos(struct Actor* camera, Vector3 pos)
+{
+    CameraData* cam_data = (CameraData*)camera->data;
+    cam_data->cutscene_look_pos = pos;
+}
+
+void CameraSetMode(struct Actor* camera, int mode)
+{
+    CameraData* cam_data = (CameraData*)camera->data;
+    cam_data->camera_mode = mode;
+}
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player)
-{
-    return Vector3Add(player->position, VEC3UP);
-}
-
-static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player)
-{
-    Vector3 player_target_pos = CameraPlayerLookPos(camera, player);
-
-    // Rotate up and down, all around the target using an offset
-    CameraData* cam_data = (CameraData*)camera->data;
-    Vector3 follow_offset = Vector3RotateByQuaternion(VEC3BACKWARD, QuaternionFromAxisAngle(VEC3RIGHT, cam_data->pitch_angle));
-    follow_offset = Vector3RotateByQuaternion(follow_offset, QuaternionFromAxisAngle(VEC3UP, cam_data->follow_angle));
-    follow_offset = Vector3Scale(follow_offset, CAMERA_FOLLOW_DISTANCE);
-
-    // Apply offset
-    Vector3 follow_goal = Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_HEIGHT_DIST));
-    //printf("camera offset: a:%f x:%f z:%f \n", cam_data->follow_angle * RAD2DEG, follow_offset.x, follow_offset.z);
-    return Vector3Add(follow_goal, follow_offset);
-}
 
 ACTOR_PREUPDATE(camera)
 {
@@ -177,6 +165,20 @@ ACTOR_PREUPDATE(camera)
         }
         break;
 
+        case CAMERA_MODE_FOCUS_CUTSCENE_SLOW:
+        {
+            Vector3 look_pos = Vector3MoveTowards(cam_data->current_look_pos, cam_data->cutscene_look_pos, 0.4f);
+            UpdateCameraTargetPosition(actor, look_pos);
+        }
+        break;
+
+        case CAMERA_MODE_FOCUS_CUTSCENE_FAST:
+        {
+            Vector3 look_pos = Vector3MoveTowards(cam_data->current_look_pos, cam_data->cutscene_look_pos, 1.2f);
+            UpdateCameraTargetPosition(actor, look_pos);
+        }
+        break;
+
         case CAMERA_MODE_FREEMOVE:
         {
             // Identity vectors
@@ -228,12 +230,32 @@ ACTOR_DRAWWORLD(camera)
             }
         }
         break;
-
-        case CAMERA_MODE_FOLLOW:
-        {
-            struct Actor* player = FINDACTORTYPE(act_player);
-            DrawCube(CameraPlayerFollowPos(actor, player), 1.0f, 1.0f, 1.0f, BLUE);
-        }
-        break;
     }
+}
+
+static void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos)
+{
+    CameraData* cam_data = (CameraData*)camera->data;
+    cam_data->current_look_pos = target_pos;
+}
+
+static Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player)
+{
+    return Vector3Add(player->position, VEC3UP);
+}
+
+static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player)
+{
+    Vector3 player_target_pos = CameraPlayerLookPos(camera, player);
+
+    // Rotate up and down, all around the target using an offset
+    CameraData* cam_data = (CameraData*)camera->data;
+    Vector3 follow_offset = Vector3RotateByQuaternion(VEC3BACKWARD, QuaternionFromAxisAngle(VEC3RIGHT, cam_data->pitch_angle));
+    follow_offset = Vector3RotateByQuaternion(follow_offset, QuaternionFromAxisAngle(VEC3UP, cam_data->follow_angle));
+    follow_offset = Vector3Scale(follow_offset, CAMERA_FOLLOW_DISTANCE);
+
+    // Apply offset
+    Vector3 follow_goal = Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_HEIGHT_DIST));
+    //printf("camera offset: a:%f x:%f z:%f \n", cam_data->follow_angle * RAD2DEG, follow_offset.x, follow_offset.z);
+    return Vector3Add(follow_goal, follow_offset);
 }

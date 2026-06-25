@@ -51,8 +51,7 @@ void actor_entrance_startentry(struct Actor* entrance)
 		float point_angle =	QuaternionToEuler(entrance->rotation).y + (180.0f * DEG2RAD);
 		CameraResetAngleToTarget(camera, point_angle);
 		// Restore camera to default state
-		CameraData* cam_data = (CameraData*)camera->data;
-		cam_data->camera_mode = CAMERA_MODE_FOLLOW;
+		CameraSetMode(camera, CAMERA_MODE_FOLLOW);
 	}
 }
 

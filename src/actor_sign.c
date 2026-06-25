@@ -1,7 +1,8 @@
 #include "core_assets.h"
-#include "actor.h"
+#include "actor_factory.h"
 #include "tools.h"
 #include "actor_textbox.h"
+#include "camera.h"
 
 // private header
 ACTOR_PRELOADASSETS(sign);
@@ -44,6 +45,11 @@ ACTOR_INTERACT_TEXT(sign)
 
 ACTOR_PLAYER_INTERACT(sign)
 {
+	// Start camera focus
+	struct Actor* camera = FINDACTORTYPE(act_camera);
+	CameraSetMode(camera, CAMERA_MODE_FOCUS_CUTSCENE_SLOW);
+	SetCutsceneCameraLookPos(camera, Vector3Add(actor->position, VEC3UP));
+	// Textbox display
 	TEXTBOX_CREATE(actor, player, TEXT_TEST_DEBUG, TEXTBOX_DEFAULT_SPEED);
 }
 
