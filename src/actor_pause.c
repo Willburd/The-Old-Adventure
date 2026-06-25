@@ -6,6 +6,9 @@
 #include "camera.h"
 #include "core_assets.h"
 
+// Assets
+#define PAUSEBOX_MODEL				ASSET_MODELS"/Tools/pausebox.glb"
+
 // private header
 ACTOR_PRELOADASSETS(pause);
 ACTOR_UPDATE(pause);
@@ -55,7 +58,7 @@ ACTOR_INIT(pause)
 
 ACTOR_PRELOADASSETS(pause)
 {
-	Asset* model_asset = AssetGetPackage(PAUSEBOX_MODEL);
+	Asset* model_asset = LoadAsset_Model(PAUSEBOX_MODEL, FALSE);
 	AddAnimLayer(actor, GetAnimation(model_asset, "HoldOpen"), ANIMATION_FRAMERATE, ANIM_LOOP, TRUE, 1.0f, BLENDTYPE_REPLACE);
 	AddAnimLayer(actor, GetAnimation(model_asset, "HoldClosed"), ANIMATION_FRAMERATE, ANIM_LOOP, FALSE, 1.0f, BLENDTYPE_REPLACE);
 	AddAnimLayer(actor, GetAnimation(model_asset, "CloseMenu"), ANIMATION_FRAMERATE, ANIM_SINGLE, FALSE, 1.0f, BLENDTYPE_REPLACE);

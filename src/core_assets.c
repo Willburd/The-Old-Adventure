@@ -18,14 +18,11 @@ void LoadCoreAssets()
     // Load default materials
     LoadAsset_Material(ASSET_MATERIALS"/Error/no_material.mat", TRUE);
     LoadAsset_Material(ASSET_MATERIALS"/Objects/example.mat", TRUE);
-    LoadAsset_Material(SKYBOX_MATERIAL_CYCLE, TRUE);
 
     // Load default models
     LoadAsset_Model(CUBEMAP_MODEL, TRUE);
-    LoadAsset_Model(SKYSPHERE_MODEL, TRUE);
     LoadAsset_Model(QUAD_MODEL, TRUE);
     LoadAsset_Model(SPRITE_MODEL, TRUE);
-    LoadAsset_Model(PAUSEBOX_MODEL, TRUE);
 
     // Set font
     default_font = LoadFontEx(ASSET_FONT"/LinBiolinum_Rah.ttf", 16, NULL, 0);

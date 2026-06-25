@@ -139,7 +139,6 @@ void UpdateAnimLayers(struct Actor* actor)
 
 #define ANIM_MIN_THESHOLD 0.00001f
 #define CHECK_SKIP_LAYER(x) !x->is_playing || x->blend_factor <= ANIM_MIN_THESHOLD
-#define MATRIX_ASSEMBLE(transform) MatrixMultiply(MatrixMultiply(MatrixScale(transform->scale.x, transform->scale.y, transform->scale.z), QuaternionToMatrix(transform->rotation)), MatrixTranslate(transform->translation.x, transform->translation.y, transform->translation.z));
 
 static inline Transform BuildDeltaTransform(int bone_index, struct AnimationLayer* layer, double tick_percent)
 {
@@ -200,8 +199,8 @@ static inline void ApplyAnimationLayerTransformsToBone(int bone_index, Model* mo
     }
 
     // Compute runtime bone matrix from model current pose
-    Matrix bindPoseMatrix = MATRIX_ASSEMBLE((&model->skeleton.bindPose[bone_index]));
-    Matrix currentPoseMatrix = MATRIX_ASSEMBLE((&model->currentPose[bone_index]));
+    Matrix bindPoseMatrix = MATRIX_ASSEMBLE((model->skeleton.bindPose[bone_index]));
+    Matrix currentPoseMatrix = MATRIX_ASSEMBLE((model->currentPose[bone_index]));
     model->boneMatrices[bone_index] = MatrixMultiply(MatrixInvert(bindPoseMatrix), currentPoseMatrix);
 }
 

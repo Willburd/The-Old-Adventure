@@ -3,6 +3,10 @@
 #include "animation.h"
 #include "input.h"
 
+// Assets
+#define MATERIAL_ANIM_TEST ASSET_MATERIALS"/Objects/example.mat"
+#define MODEL_ANIM_TEST ASSET_MODELS"/Tools/robot.glb"
+
 // private header
 ACTOR_PRELOADASSETS(animationtest);
 ACTOR_UPDATE(animationtest);
@@ -30,9 +34,6 @@ ACTOR_INIT(animationtest)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#define MATERIAL_ANIM_TEST ASSET_MATERIALS"/Objects/example.mat"
-#define MODEL_ANIM_TEST ASSET_MODELS"/Tools/robot.glb"
 
 ACTOR_PRELOADASSETS(animationtest)
 {
