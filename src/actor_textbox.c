@@ -15,16 +15,19 @@ typedef struct
 	unsigned int text_end_index;
 	unsigned int token_index;
 	char* current_text;
+	unsigned int current_segment_index;
+	char* current_segment_buffer;
 	float text_progress;
 	float text_speed;
 } TextboxData;
+
+#define SEGMENT_BUFFER_SIZE 300
 
 // private header
 ACTOR_UPDATE(textbox);
 ACTOR_POSTDRAWHUD(textbox);
 ACTOR_CLEANUP(textbox);
-int GetSegmentLength(struct Actor* textbox);
-void ProcessToken(struct Actor* textbox);
+void ProgressSegment(struct Actor* textbox);
 void AdvanceText(struct Actor* textbox);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,6 +58,8 @@ ACTOR_INIT(textbox)
 	textbox_data->token_index = 0;
 	textbox_data->text_progress = 0.0f;
 	textbox_data->text_speed = TEXTBOX_DEFAULT_SPEED;
+	textbox_data->current_segment_index = 0;
+	MALLOC_SET_SIZE(char, SEGMENT_BUFFER_SIZE, textbox_data->current_segment_buffer, '\0', NULL);
 }
 
 struct Actor* TEXTBOX_CREATE(struct Actor* owner, struct Actor* player, char* text_id, float text_speed)
@@ -63,7 +68,7 @@ struct Actor* TEXTBOX_CREATE(struct Actor* owner, struct Actor* player, char* te
 	TextboxData* textbox_data = (TextboxData*)textbox->data;
 	textbox_data->current_text = GetText(text_id);
 	textbox_data->text_speed = text_speed;
-	ProcessToken(textbox);
+	ProgressSegment(textbox);
 	return textbox;
 }
 
@@ -80,7 +85,7 @@ ACTOR_UPDATE(textbox)
 
 	if (CHECK_INPUTPRESSED(input_interact))
 	{
-		unsigned int segment_length = GetSegmentLength(actor);
+		unsigned int segment_length = textbox_data->current_segment_index;
 		if (textbox_data->text_progress < segment_length)
 		{
 			// Text skip
@@ -89,13 +94,17 @@ ACTOR_UPDATE(textbox)
 		else
 		{
 			// Next
-			ProcessToken(actor);
+			ProgressSegment(actor);
 		}
 	}
 }
 
 ACTOR_CLEANUP(textbox)
 {
+	// Clear the malloced buffer
+	TextboxData* textbox_data = (TextboxData*)actor->data;
+	RELEASE(textbox_data->current_segment_buffer);
+	// Return gameplay
 	gameplay_state &= ~GAMESTATE_TEXTBOX;
 	if(!(gameplay_state & GAMESTATE_CUTSCENE)) // If we are not in a cutscene
 		gameplay_state |= GAMESTATE_GAMEPLAY; // Return to normal gameplay
@@ -112,42 +121,33 @@ ACTOR_POSTDRAWHUD(textbox)
 	DrawRectangle(left, top, text_box_width, text_box_height, BLACK);
 
 	// Draw the current text segment
-	unsigned int segment_length = GetSegmentLength(actor);
+	unsigned int segment_length = textbox_data->current_segment_index;
 	if (textbox_data->text_progress > segment_length)
 		textbox_data->text_progress = segment_length;
 	unsigned int draw_length = (unsigned int)textbox_data->text_progress;
 
-	char substr[255] = { 0 }; // Only needs to contain the current segment, lets not blow out the size of the heap
-	memcpy(substr, textbox_data->current_text + (sizeof(char) * textbox_data->text_start_index), sizeof(char) * draw_length);
+	char substr[SEGMENT_BUFFER_SIZE] = { 0 }; // Only needs to contain the current segment, lets not blow out the size of the heap
+	memcpy(substr, textbox_data->current_segment_buffer, sizeof(char) * draw_length);
 	DrawTextEx(default_font, substr, (Vector2) { left + 10, top + 5 }, TEXTBOX_DEFAULT_SIZE, 1, WHITE);
 }
 
-// Gets the length of the current text segment. Correcting for some hidden characters.
-int GetSegmentLength(struct Actor* textbox)
-{
-	TextboxData* textbox_data = (TextboxData*)textbox->data;
-	return (textbox_data->text_end_index - textbox_data->text_start_index) - 3; // 3 chars are from token + eol
-}
-
 // Processes the current token stored to perform an action. If the textbox isn't closed it will set the next text segment bounds.
-void ProcessToken(struct Actor* textbox)
+void ProgressSegment(struct Actor* textbox)
 {
 	TextboxData* textbox_data = (TextboxData*)textbox->data;
 	char token = 'A';
 	// starting a textbox will always use default unless first entry is a token
 	if(textbox_data->token_index > 0) 
 		token = textbox_data->current_text[textbox_data->token_index];
-	else if (textbox_data->current_text[0] == '[')
-	{
-		token = textbox_data->current_text[++textbox_data->token_index];
-	}
 
-	printf("Current textbox token: %c\n", token);
+	printf("Activate token: %c\n", token);
 	switch (token)
 	{
 		default:
 		case 'A': // Advance
 		{
+			textbox_data->text_progress = 0.0f;
+			textbox_data->current_segment_index = 0;
 			AdvanceText(textbox);
 		}
 		break;
@@ -166,45 +166,35 @@ void ProcessToken(struct Actor* textbox)
 			ACTOR_DESTROY(textbox);
 		}
 		break;
-
-		case 'S': // Slow text speed
-		{
-			textbox_data->text_speed = TEXTBOX_DEFAULT_SPEED / 3.0f;
-			AdvanceText(textbox);
-		}
-		break;
-
-		case 'N': // Normal text speed
-		{
-			textbox_data->text_speed = TEXTBOX_DEFAULT_SPEED;
-			AdvanceText(textbox);
-		}
-		break;
-
-		case 'F': // Fast text speed
-		{
-			textbox_data->text_speed = 10.0f;
-			AdvanceText(textbox);
-		}
-		break;
 	}
 }
 
-// Returns true if the token ends the current text segment
+// Returns true if the token ends the current text segment. Handles mid-text token behaviors like speeding up or slowing down text speed.
 int ScanToken(struct Actor* textbox, unsigned int index)
 {
 	TextboxData* textbox_data = (TextboxData*)textbox->data;
 	textbox_data->token_index = index;
 	char token = textbox_data->current_text[index];
+	printf("Processed token: %c\n", token);
 
 	switch (token)
 	{
 	case 'A': // Advance
 	case 'E': // End
 	case 'C': // Start cutscene
+		textbox_data->current_segment_buffer[textbox_data->current_segment_index++] = '\0'; // ensure current buffer is ended
 		return TRUE;
 
 	default:
+		return FALSE;
+	case 'S': // Slow text speed
+		textbox_data->text_speed = TEXTBOX_DEFAULT_SPEED / 4.0f;
+		return FALSE;
+	case 'N': // Normal text speed
+		textbox_data->text_speed = TEXTBOX_DEFAULT_SPEED;
+		return FALSE;
+	case 'F': // Fast text speed
+		textbox_data->text_speed = 10.0f;
 		return FALSE;
 	}
 }
@@ -223,6 +213,7 @@ void AdvanceText(struct Actor* textbox)
 		switch (character)
 		{
 			case '\0': // Dropout we reached the end
+				textbox_data->current_segment_buffer[textbox_data->current_segment_index++] = '\0'; // ensure buffer is ended
 				return;
 
 			case '[': // Process a token for custom text effects
@@ -237,6 +228,7 @@ void AdvanceText(struct Actor* textbox)
 				break;
 
 			default: // Next character
+				textbox_data->current_segment_buffer[textbox_data->current_segment_index++] = character;
 				textbox_data->text_end_index++;
 				break;
 		}
