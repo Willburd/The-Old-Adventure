@@ -73,6 +73,16 @@ ACTOR_PREDRAWWORLD(skybox)
 		*AssetGet_Material(SKYBOX_MATERIAL_CYCLE),
 		GetMatrix(actor)
 	);
-
 	EndShaderMode();
+
+	// Sun and moon orbit the world
+	float orbit_angle = (daynight_cycle * 365.0f) * DEG2RAD;
+	float orbit_distance = 1000.0f;
+	Transform sun_pos = { 0 };
+	sun_pos.translation = Vector3Scale(Vector3RotateByQuaternion(VEC3RIGHT, QuaternionFromEuler(0.0f, 0.0f, orbit_angle)), orbit_distance);
+	Transform moon_pos = { 0 };
+	moon_pos.translation = Vector3Scale(Vector3RotateByQuaternion(VEC3LEFT, QuaternionFromEuler(0.0f, 0.0f, orbit_angle)), orbit_distance);
+
+	DrawSphere(sun_pos.translation, 50.0f, RED);
+	DrawSphere(moon_pos.translation, 50.0f, BLUE);
 }
