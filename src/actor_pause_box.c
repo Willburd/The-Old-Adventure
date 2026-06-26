@@ -2,7 +2,7 @@
 #include "assets.h"
 #include "actor_factory.h"
 #include "input.h"
-#include "world_state.h"
+#include "game_state.h"
 #include "camera.h"
 #include "core_assets.h"
 

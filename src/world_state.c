@@ -1,6 +1,7 @@
-#include "world_state.h"
 #include "inventory.h"
 #include "game_draw.h"
+#include "world_state.h"
+#include "game_state.h"
 #include "actor_scene.h"
 
 void InitWorldState()

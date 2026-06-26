@@ -9,6 +9,7 @@
 #include "scene_entry.h"
 #include "globals.h"
 #include "input.h"
+#include "game_state.h"
 #include "world_state.h"
 
 

@@ -1,7 +1,6 @@
 #ifndef __WORLDSTATE_HEADER__
 #define __WORLDSTATE_HEADER__
 
-#include "globals.h" // Includes the base gamestate
 #include "tools.h"
 #include "raylib.h"
 

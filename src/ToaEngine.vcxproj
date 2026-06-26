@@ -205,6 +205,7 @@
     <ClInclude Include="collision.h" />
     <ClInclude Include="core_assets.h" />
     <ClInclude Include="game_draw.h" />
+    <ClInclude Include="game_state.h" />
     <ClInclude Include="game_update.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="hashmap.h" />

@@ -9,7 +9,7 @@
 #include "scene_entry.h"
 #include "core_assets.h"
 #include "tools.h"
-#include "world_state.h"
+#include "game_state.h"
 #include "inventory.h"
 #include "text_loading.h"
 

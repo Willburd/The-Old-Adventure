@@ -284,6 +284,9 @@
     <ClInclude Include="core_assets.h">
       <Filter>Header Files\adventure</Filter>
     </ClInclude>
+    <ClInclude Include="game_state.h">
+      <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
