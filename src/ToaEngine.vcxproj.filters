@@ -55,17 +55,8 @@
     <Filter Include="Source Files\adventure\scenes">
       <UniqueIdentifier>{a644b98c-514b-4081-8a68-7d3dc5b56d5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\adventure\scenes">
-      <UniqueIdentifier>{8bb89acc-e637-4242-8459-cd48d45e31ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\adventure\assets">
       <UniqueIdentifier>{d02f349d-0f27-4f7b-b9f6-ee4898d2923b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\adventure\assets">
-      <UniqueIdentifier>{9dc72926-71e7-4416-9bb6-68ea5280ae3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\adventure\game">
-      <UniqueIdentifier>{5d1f3ef7-3d0a-4436-9a0e-8b9a609b2428}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\adventure\game">
       <UniqueIdentifier>{cd9a0e50-0966-42ad-9e50-4634f46ef16f}</UniqueIdentifier>
@@ -242,26 +233,14 @@
     <ClInclude Include="camera.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
-    <ClInclude Include="scene_library.h">
-      <Filter>Header Files\adventure\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="actor_library.h">
-      <Filter>Header Files\adventure\actors</Filter>
-    </ClInclude>
     <ClInclude Include="materials.h">
       <Filter>Header Files\engine\game</Filter>
-    </ClInclude>
-    <ClInclude Include="core_assets.h">
-      <Filter>Header Files\adventure\assets</Filter>
     </ClInclude>
     <ClInclude Include="actor_entrance.h">
       <Filter>Header Files\engine\actors</Filter>
     </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>Header Files\engine\game</Filter>
-    </ClInclude>
-    <ClInclude Include="gamestate.h">
-      <Filter>Header Files\adventure\game</Filter>
     </ClInclude>
     <ClInclude Include="light_tools.h">
       <Filter>Header Files\engine\tools</Filter>
@@ -274,9 +253,6 @@
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>Header Files\adventure\actors\player_states</Filter>
-    </ClInclude>
-    <ClInclude Include="inventory.h">
-      <Filter>Header Files\adventure\game</Filter>
     </ClInclude>
     <ClInclude Include="hud.h">
       <Filter>Header Files\engine\game</Filter>
@@ -292,6 +268,21 @@
     </ClInclude>
     <ClInclude Include="actor_textbox.h">
       <Filter>Header Files\engine\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_library.h">
+      <Filter>Header Files\adventure</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_library.h">
+      <Filter>Header Files\adventure</Filter>
+    </ClInclude>
+    <ClInclude Include="inventory.h">
+      <Filter>Header Files\adventure</Filter>
+    </ClInclude>
+    <ClInclude Include="gamestate.h">
+      <Filter>Header Files\adventure</Filter>
+    </ClInclude>
+    <ClInclude Include="core_assets.h">
+      <Filter>Header Files\adventure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
