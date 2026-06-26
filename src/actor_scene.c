@@ -14,48 +14,10 @@ EntranceID next_entrance;
 struct Actor* current_scene = NULL;
 int unload_previous_scene = TRUE;
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Sets the next scene to be loaded. Will be actually loaded before the pre-update loop next gametick. DOES NOT LOAD THE SCENE ITSELF. Happens next tick, this is safe to call with ACTORY_DESTORY actions happening.
-void LoadScene(SceneID id, EntranceID entrance)
-{
-	next_scene = id;
-	next_entrance = entrance;
-}
-
-// Sets the next scene to be loaded while unloading the previous scene. See LoadScene() for details.
-void TransferScene(SceneID id, EntranceID entrance)
-{
-	UnloadScene(TRUE);
-	LoadScene(id, entrance);
-}
-
-struct Actor* GetCurrentScene()
-{
-	return current_scene;
-}
-
-// Loads the next scene. Called before the preupdate loop in gametick to avoid being mangled by unloading assets.
-void HandleLoadNextScene()
-{
-	if (next_scene < 0)
-		return;
-	ACTOR_FACTORY(act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
-	next_scene = -1;
-}
-
-// Destroys all actors that are children of the current scene, and the scene itself. Optionally unloading all non-core loaded assets with it.
-void UnloadScene(int clear_assets)
-{
-	if (current_scene == NULL)
-		return;
-	ACTOR_DESTROY(current_scene);
-	if(clear_assets)
-		UnloadAllAssets(FALSE);
-	current_scene = NULL;
-}
 
 ACTOR_INIT(scene)
 {
@@ -103,6 +65,46 @@ ACTOR_INIT(scene)
 			actor_entrance_startentry(entrance);
 	}
 }
+
+// Sets the next scene to be loaded. Will be actually loaded before the pre-update loop next gametick. DOES NOT LOAD THE SCENE ITSELF. Happens next tick, this is safe to call with ACTORY_DESTORY actions happening.
+void LoadScene(SceneID id, EntranceID entrance)
+{
+	next_scene = id;
+	next_entrance = entrance;
+}
+
+// Sets the next scene to be loaded while unloading the previous scene. See LoadScene() for details.
+void TransferScene(SceneID id, EntranceID entrance)
+{
+	UnloadScene(TRUE);
+	LoadScene(id, entrance);
+}
+
+struct Actor* GetCurrentScene()
+{
+	return current_scene;
+}
+
+// Loads the next scene. Called before the preupdate loop in gametick to avoid being mangled by unloading assets.
+void HandleLoadNextScene()
+{
+	if (next_scene < 0)
+		return;
+	ACTOR_FACTORY(act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	next_scene = -1;
+}
+
+// Destroys all actors that are children of the current scene, and the scene itself. Optionally unloading all non-core loaded assets with it.
+void UnloadScene(int clear_assets)
+{
+	if (current_scene == NULL)
+		return;
+	ACTOR_DESTROY(current_scene);
+	if (clear_assets)
+		UnloadAllAssets(FALSE);
+	current_scene = NULL;
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions

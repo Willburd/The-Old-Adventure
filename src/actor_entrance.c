@@ -68,6 +68,17 @@ struct Actor* ENTRANCE_CREATE(int entrance_id, struct Actor* scene, Vector3 s_po
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+ACTOR_DRAWWORLD(entrance)
+{
+	if (!draw_debug_info)
+		return;
+	DrawCube(actor->position, 0.2f, 0.2f, 0.2f, PURPLE);
+	Vector3 end_pos = actor_entrance_get_end(actor);
+	DrawLine3D(actor->position, end_pos, PURPLE);
+	Vector3 cam_pos = actor_entrance_get_camerastart(actor);
+	DrawLine3D(actor->position, cam_pos, GREEN);
+}
+
 static void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endpos)
 {
 	// Stay on same plane for rotations
@@ -104,15 +115,4 @@ static Vector3 actor_entrance_get_camerastart(struct Actor* entrance)
 	Vector3 offset = Vector3Scale(VEC3BACKWARD, 5.0f);
 	offset = Vector3Add(offset, Vector3Scale(VEC3UP, 3.0f));
 	return Vector3Add(entrance->position, Vector3RotateByQuaternion(offset, entrance->rotation));
-}
-
-ACTOR_DRAWWORLD(entrance)
-{
-	if (!draw_debug_info)
-		return;
-	DrawCube(actor->position, 0.2f, 0.2f, 0.2f, PURPLE);
-	Vector3 end_pos = actor_entrance_get_end(actor);
-	DrawLine3D(actor->position, end_pos, PURPLE);
-	Vector3 cam_pos = actor_entrance_get_camerastart(actor);
-	DrawLine3D(actor->position, cam_pos, GREEN);
 }

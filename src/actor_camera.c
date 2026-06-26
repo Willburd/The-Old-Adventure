@@ -6,6 +6,7 @@
 #include "game_draw.h"
 #include "collision.h"
 
+// Utility
 #define CAMERA_FOLLOW_SPEED 0.5f
 #define CAMERA_FOLLOW_DISTANCE 6.5f
 #define CAMERA_HEIGHT_DIST 3.0f
@@ -101,7 +102,6 @@ void CameraSetMode(struct Actor* camera, int mode)
     CameraData* cam_data = (CameraData*)camera->data;
     cam_data->camera_mode = mode;
 }
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

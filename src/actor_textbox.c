@@ -21,14 +21,15 @@ typedef struct
 	float text_speed;
 } TextboxData;
 
+// Utility
 #define SEGMENT_BUFFER_SIZE 300
 
 // private header
 ACTOR_UPDATE(textbox);
 ACTOR_POSTDRAWHUD(textbox);
 ACTOR_CLEANUP(textbox);
-void ProgressSegment(struct Actor* textbox);
-void AdvanceText(struct Actor* textbox);
+static void ProgressSegment(struct Actor* textbox);
+static void AdvanceText(struct Actor* textbox);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -132,7 +133,7 @@ ACTOR_POSTDRAWHUD(textbox)
 }
 
 // Processes the current token stored to perform an action. If the textbox isn't closed it will set the next text segment bounds.
-void ProgressSegment(struct Actor* textbox)
+static void ProgressSegment(struct Actor* textbox)
 {
 	TextboxData* textbox_data = (TextboxData*)textbox->data;
 	char token = 'A';
@@ -170,7 +171,7 @@ void ProgressSegment(struct Actor* textbox)
 }
 
 // Returns true if the token ends the current text segment. Handles mid-text token behaviors like speeding up or slowing down text speed.
-int ScanToken(struct Actor* textbox, unsigned int index)
+static int ScanToken(struct Actor* textbox, unsigned int index)
 {
 	TextboxData* textbox_data = (TextboxData*)textbox->data;
 	textbox_data->token_index = index;

@@ -8,6 +8,10 @@
 #include "game_draw.h"
 #include "actor_fadein.h"
 
+// Utility
+#define MAX_FADEOUT_RATE 6
+#define MAX_FADEOUT_TIME 300
+
 // private header
 ACTOR_PREUPDATE(trigger_exit);
 ACTOR_DRAWWORLD(trigger_exit);
@@ -48,9 +52,6 @@ struct Actor* EXIT_TRIGGER_CREATE(int destination_scene, int destination_entranc
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#define MAX_FADEOUT_RATE 6
-#define MAX_FADEOUT_TIME 300
 
 ACTOR_PREUPDATE(trigger_exit)
 {
