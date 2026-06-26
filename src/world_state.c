@@ -103,7 +103,7 @@ float GetFogDistance()
 	float day_intense = GetDayIntensity();
 	float dawn_intense = GetDawnIntensity();
 	float dusk_intense = GetDuskIntensity();
-	return Lerp(FOG_DEFAULT_RANGE / 2.0f, FOG_DEFAULT_RANGE, Clamp(day_intense + dawn_intense + dusk_intense, 0.0f, 1.0f));
+	return Lerp(FOG_DEFAULT_RANGE * FOG_NIGHT_MULTIPLIER, FOG_DEFAULT_RANGE, Clamp(day_intense + dawn_intense + dusk_intense, 0.0f, 1.0f));
 }
 
 Color GetFogColor()

@@ -91,12 +91,12 @@ ACTOR_PREDRAWWORLD(skybox)
 	float orbit_angle = (daynight_cycle * 365.0f) * DEG2RAD;
 	float orbit_distance = 500.0f;
 	Transform sun_transform = {
-		.translation = Vector3Scale(Vector3RotateByQuaternion(VEC3RIGHT, QuaternionFromEuler(0.0f, 0.0f, orbit_angle)), orbit_distance),
+		.translation = Vector3Add(actor->position, Vector3Scale(Vector3RotateByQuaternion(VEC3RIGHT, QuaternionFromEuler(0.0f, 0.0f, orbit_angle)), orbit_distance)),
 		.rotation = QuaternionFromVector3ToVector3(VEC3BACKWARD, VEC3DIRECTION(sun_transform.translation, Vector3Zero())),
 		.scale = (Vector3){ 160, 160, 160 }
 	};
 	Transform moon_transform = {
-		.translation = Vector3Scale(Vector3RotateByQuaternion(VEC3LEFT, QuaternionFromEuler(0.0f, 0.0f, orbit_angle)), orbit_distance),
+		.translation = Vector3Add(actor->position, Vector3Scale(Vector3RotateByQuaternion(VEC3LEFT, QuaternionFromEuler(0.0f, 0.0f, orbit_angle)), orbit_distance)),
 		.rotation = QuaternionFromVector3ToVector3(VEC3BACKWARD, VEC3DIRECTION(moon_transform.translation, Vector3Zero())),
 		.scale = (Vector3){ 70, 70, 70 }
 	};

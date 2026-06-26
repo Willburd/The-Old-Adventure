@@ -15,8 +15,9 @@ int light_count;
 Vector4 world_light_positions[MAX_LIGHTS]; // XYZpos, Wradiance
 Vector4 world_light_colors[MAX_LIGHTS];// XYZcolor, Walpha
 
-#define FOG_DEFAULT_RANGE 320.0f
-#define FOG_DEFAULT_POWER 4.0f
+#define FOG_DEFAULT_RANGE 1150.0f
+#define FOG_NIGHT_MULTIPLIER 0.85f
+#define FOG_DEFAULT_POWER 5.0f
 
 float fog_distance;
 float fog_power;
