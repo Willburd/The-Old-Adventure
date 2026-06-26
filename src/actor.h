@@ -7,6 +7,7 @@
 #include "animation.h"
 
 #define ANIMATION_LAYER_MAX 24
+#define DEFAULT_MAX_RENDER_RANGE 200.0f
 
 // Must match gamestate flags
 #define ACTOR_FLAG_TICKDURING_GAME (1 << 0) // Updates during gameplay
@@ -44,6 +45,7 @@ struct Actor {
 
 	unsigned int actor_flags;
 	unsigned int collision_flags; // Defines in collision.h
+	float draw_range;
 
 	int animlayer_count;
 	struct AnimationLayer* animation_layers[ANIMATION_LAYER_MAX];
@@ -100,6 +102,7 @@ x->parent = NULL; \
 x->actor_flags = 0; \
 x->actor_flags = 0; \
 x->collision_flags = 0; \
+x->draw_range = DEFAULT_MAX_RENDER_RANGE; \
 x->animlayer_count = -1; \
 x->func_init = NULL; x->func_preloadassets = NULL; \
 x->func_destroy = NULL; \
@@ -168,7 +171,8 @@ struct Actor* GETSCENE(struct Actor* actor);
 Matrix GetMatrix(struct Actor* actor);
 // Get transform of model
 Transform GetTransform(struct Actor* actor);
-
+// Check if we are in range of the camera before drawing
+int OutOfRenderRange(struct Actor* actor);
 
 // definition boilerplate for actors
 #define ACTOR_INIT(x) void actor_## x ##_init(struct Actor* actor)

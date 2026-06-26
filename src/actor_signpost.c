@@ -38,6 +38,8 @@ ACTOR_PRELOADASSETS(signpost)
 
 ACTOR_CAN_INTERACT(signpost)
 {
+	if (OutOfRenderRange(actor))
+		return FALSE;
 	return TRUE;
 }
 
@@ -58,5 +60,7 @@ ACTOR_PLAYER_INTERACT(signpost)
 
 ACTOR_DRAWWORLD(signpost)
 {
+	if (OutOfRenderRange(actor))
+		return;
 	DrawSphereWires(actor->position, ACTOR_INTERACTION_RANGE, 5, 5, WHITE);
 }

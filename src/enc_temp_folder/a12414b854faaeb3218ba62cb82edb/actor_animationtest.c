@@ -60,6 +60,7 @@ ACTOR_UPDATE(animationtest)
 {
 	if (OutOfRenderRange(actor))
 		return;
+
 	if (CHECK_INPUTPRESSED(input_cancel))
 	{
 		struct AnimationLayer* layer = FindAnimLayer(actor, "Robot_Dance");
@@ -72,6 +73,7 @@ ACTOR_DRAWWORLD(animationtest)
 {
 	if(OutOfRenderRange(actor))
 		return;
+
 	Model* model = AssetGet_Model(MODEL_ANIM_TEST);
 	Material* mat = AssetGet_Material(MATERIAL_ANIM_TEST);
 	Matrix actor_matrix = GetMatrix(actor);

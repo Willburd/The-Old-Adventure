@@ -37,11 +37,15 @@ ACTOR_PRELOADASSETS(fire)
 
 ACTOR_LIGHTNODES(fire)
 {
+	if (OutOfRenderRange(actor))
+		return;
 	LIGHT_NODE_TORCH(actor->position.x, actor->position.y, actor->position.z, 20.0f);
 }
 
 ACTOR_TRANSPARENTDRAWWORLD(fire)
 {
+	if (OutOfRenderRange(actor))
+		return;
 	Transform fire_transform = {
 		.translation = actor->position,
 		.rotation = QuaternionLookAt( cam_main.position, actor->position, VEC3UP),

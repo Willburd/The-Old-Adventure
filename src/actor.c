@@ -1,4 +1,5 @@
 #include "actor.h"
+#include "camera.h"
 #include "tools.h"
 
 struct Actor* FINDACTOR(uint64_t find_uuid)
@@ -227,4 +228,9 @@ Matrix GetMatrix(struct Actor* actor)
 Transform GetTransform(struct Actor* actor)
 {
 	return (Transform) { actor->position, actor->rotation, actor->scale };
+}
+
+int OutOfRenderRange(struct Actor* actor)
+{
+	return (Vector3Distance(cam_main.position, actor->position) > actor->draw_range);
 }

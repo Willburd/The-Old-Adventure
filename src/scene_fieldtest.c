@@ -19,7 +19,7 @@
 
 // Utility
 #define MAIN_MODEL_MESH_MAIN 0
-#define MAIN_MODEL_MESH_COLLISION 1
+#define MAIN_MODEL_MESH_COLLISION 0
 #define MAIN_MODEL_MATERIAL_MAIN 0
 
 // private header
@@ -81,7 +81,7 @@ SCENE_ACTIVATE_ROOM(fieldtest)
 	EXIT_TRIGGER_CREATE(scene_fieldtest, ent_caveA, scene, (Vector3) { 0.0f, 0.0f, 36.0f }, 18.0f);
 
 	// Entrances
-	ENTRANCE_CREATE(ent_debugentrance, scene, (Vector3) { 0, 0, 2 }, (Vector3) { -1, 0, 2 });
+	ENTRANCE_CREATE(ent_debugentrance, scene, (Vector3) { 2.0, 0, 2 }, (Vector3) { -1, 0, 2 });
 	ENTRANCE_CREATE(ent_caveA, scene, (Vector3) { -0.2f, -1.1f, 17.5f }, (Vector3) { -0.21f, -1.1f, 15.0f });
 
 	// Actor spawns
