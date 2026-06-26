@@ -9,7 +9,7 @@
 #include "scene_entry.h"
 #include "globals.h"
 #include "input.h"
-#include "gamestate.h"
+#include "world_state.h"
 
 
 int current_actor_cap = 0;
@@ -30,7 +30,7 @@ void game_update()
 	////////////////////////////////////////////////////////////////////////
 
 	light_count = 0;
-	UpdateGameState();
+	UpdateWorldState();
 	HandleLoadNextScene();
 
 	////////////////////////////////////////////////////////////////////////

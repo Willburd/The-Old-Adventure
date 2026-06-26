@@ -153,7 +153,7 @@
     <ClCompile Include="collision.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
-    <ClCompile Include="gamestate.c">
+    <ClCompile Include="world_state.c">
       <Filter>Source Files\adventure\game</Filter>
     </ClCompile>
     <ClCompile Include="actor_animationtest.c">
@@ -278,7 +278,7 @@
     <ClInclude Include="inventory.h">
       <Filter>Header Files\adventure</Filter>
     </ClInclude>
-    <ClInclude Include="gamestate.h">
+    <ClInclude Include="world_state.h">
       <Filter>Header Files\adventure</Filter>
     </ClInclude>
     <ClInclude Include="core_assets.h">

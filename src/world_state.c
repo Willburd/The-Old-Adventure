@@ -1,9 +1,9 @@
-#include "gamestate.h"
+#include "world_state.h"
 #include "inventory.h"
 #include "game_draw.h"
 #include "actor_scene.h"
 
-void InitGameState()
+void InitWorldState()
 {
 	// Start of game daynight cycle
 	daynight_cycle = TIME_DAWN;
@@ -16,7 +16,7 @@ void InitGameState()
 
 }
 
-void UpdateGameState()
+void UpdateWorldState()
 {
 	// Get the scenedata struct so we can get the currently set flags
 	struct Actor* cur_scene = GetCurrentScene();

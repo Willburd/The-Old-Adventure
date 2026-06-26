@@ -2,7 +2,7 @@
 #include "assets.h"
 #include "actor_factory.h"
 #include "actor_textbox.h"
-#include "gamestate.h"
+#include "world_state.h"
 #include "hud.h"
 #include "input.h"
 #include <string.h>

@@ -3,7 +3,7 @@
 #include "actor_trigger_exit.h"
 #include "actor_factory.h"
 #include "scene_entry.h"
-#include "gamestate.h"
+#include "world_state.h"
 #include "player.h"
 #include "game_draw.h"
 #include "actor_fadein.h"

@@ -3,7 +3,7 @@
 #include "actor_factory.h"
 #include "actor_scene.h"
 #include "game_draw.h"
-#include "gamestate.h"
+#include "world_state.h"
 
 // private header
 ACTOR_DRAWWORLD(debug);

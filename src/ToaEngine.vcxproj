@@ -166,7 +166,7 @@
     <ClCompile Include="assets.c" />
     <ClCompile Include="collision.c" />
     <ClCompile Include="core_assets.c" />
-    <ClCompile Include="gamestate.c" />
+    <ClCompile Include="world_state.c" />
     <ClCompile Include="game_draw.c" />
     <ClCompile Include="game_update.c" />
     <ClCompile Include="hashmap.c">
@@ -215,7 +215,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="scene_entry.h" />
     <ClInclude Include="scene_library.h" />
-    <ClInclude Include="gamestate.h" />
+    <ClInclude Include="world_state.h" />
     <ClInclude Include="text_loading.h" />
     <ClInclude Include="tools.h" />
   </ItemGroup>

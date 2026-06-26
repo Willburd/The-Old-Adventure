@@ -6,7 +6,7 @@
 #include "actor_factory.h"
 #include "input.h"
 #include "camera.h"
-#include "gamestate.h"
+#include "world_state.h"
 #include "collision.h"
 
 #define PLAYER_COLLISION_MID_HEIGHT 0.50f

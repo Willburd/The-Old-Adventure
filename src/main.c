@@ -9,7 +9,7 @@
 #include "scene_entry.h"
 #include "core_assets.h"
 #include "tools.h"
-#include "gamestate.h"
+#include "world_state.h"
 #include "inventory.h"
 #include "text_loading.h"
 
@@ -113,7 +113,7 @@ static void game_setup()
     MALLOC(Inventory, player_inventory, ERR_NOALLOC);
 
     // Set worldstate up temporarily
-    InitGameState();
+    InitWorldState();
 
     // Load text data
     loaded_text = hashmap_new(sizeof(TextEntry), MAX_TEXT_ENTRIES, 0, 0, text_hash, text_compare, text_free, NULL);

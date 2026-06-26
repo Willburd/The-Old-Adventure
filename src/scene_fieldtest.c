@@ -10,7 +10,7 @@
 #include "actor_entrance.h"
 #include "actor_trigger_exit.h"
 #include "collision.h"
-#include "gamestate.h"
+#include "world_state.h"
 #include "light_tools.h"
 
 // Assets
