@@ -86,11 +86,19 @@ SCENE_ACTIVATE_ROOM(fieldtest)
 	// Actor spawns
 	ACTOR_FACTORY(act_skybox, scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 
+	// Spawn area torches
 	ACTOR_FACTORY(act_signpost, scene, (Vector3){ 2.0f, 0.0f, 0.0f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 8.3f, -1.3f, 12.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { -10.3f, -1.0f, 13.04f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { -6.67f, 0.16f, -14.74f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 6.11f, 0.16f, -14.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+
+	// Path of torches
+	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 48.96f, -9.88f, 2.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 115.01f, -16.04f, 95.63f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 185.43f, -14.75f, -28.19f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 285.25f, -9.91f, -63.23f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+
 }
 
 SCENE_LIGHTNODES(fieldtest)
