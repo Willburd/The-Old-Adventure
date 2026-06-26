@@ -23,9 +23,6 @@ Camera cam_main;
 Camera2D cam_hud;
 
 void CameraResetAngleToTarget(struct Actor* camera, float angle);
-Matrix GetActorCameraMatrix();
-Matrix GetActorCameraMatrixInverseRotation();
-Transform GetActorCameraTransform();
 void SetCutsceneCameraLookPos(struct Actor* camera, Vector3 pos);
 void CameraSetMode(struct Actor* camera, int mode);
 

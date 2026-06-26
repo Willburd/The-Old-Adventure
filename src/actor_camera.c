@@ -67,30 +67,6 @@ void CameraResetAngleToTarget(struct Actor* camera, float angle)
     printf("Recalculated camera angle: %f\n", cam_data->follow_angle);
 }
 
-Matrix GetActorCameraMatrix()
-{
-    struct Actor* camera = FINDACTORTYPE(act_camera);
-    if (!camera)
-        return MatrixIdentity();
-    return MatrixCompose(camera->position, camera->rotation, camera->scale);
-}
-
-Matrix GetActorCameraMatrixInverseRotation()
-{
-    struct Actor* camera = FINDACTORTYPE(act_camera);
-    if (!camera)
-        return MatrixIdentity();
-    return MatrixCompose(camera->position, QuaternionInvert(camera->rotation), camera->scale);
-}
-
-Transform GetActorCameraTransform()
-{
-    struct Actor* camera = FINDACTORTYPE(act_camera);
-    if (!camera)
-        return (Transform) { 0 };
-    return (Transform) { camera->position, camera->rotation, camera->scale };
-}
-
 void SetCutsceneCameraLookPos(struct Actor* camera, Vector3 pos)
 {
     CameraData* cam_data = (CameraData*)camera->data;
