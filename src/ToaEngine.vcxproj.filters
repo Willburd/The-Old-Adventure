@@ -189,7 +189,7 @@
     <ClCompile Include="inventory.c">
       <Filter>Source Files\adventure\game</Filter>
     </ClCompile>
-    <ClCompile Include="actor_pause.c">
+    <ClCompile Include="actor_pause_box.c">
       <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
     <ClCompile Include="actor_trigger_exit.c">
@@ -201,11 +201,14 @@
     <ClCompile Include="text_loading.c">
       <Filter>Source Files\engine\localization</Filter>
     </ClCompile>
-    <ClCompile Include="actor_sign.c">
+    <ClCompile Include="actor_signpost.c">
       <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
     <ClCompile Include="actor_textbox.c">
       <Filter>Source Files\engine\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_fire.c">
+      <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -170,15 +170,15 @@ Transform GetTransform(struct Actor* actor);
 
 // definition boilerplate for actors
 #define ACTOR_INIT(x) void actor_## x ##_init(struct Actor* actor)
-#define ACTOR_PRELOADASSETS(x) actor_## x ##_preload_assets(struct Actor* actor)
-#define ACTOR_CLEANUP(x) actor_## x ##_cleanup(struct Actor* actor)
+#define ACTOR_PRELOADASSETS(x) static void actor_## x ##_preload_assets(struct Actor* actor)
+#define ACTOR_CLEANUP(x) static void actor_## x ##_cleanup(struct Actor* actor)
 
 #define ACTOR_PREUPDATE(x) static void actor_## x ##_preupdate(struct Actor* actor)
 #define ACTOR_UPDATE(x) static void actor_## x ##_update(struct Actor* actor)
 #define ACTOR_POSTUPDATE(x) static void actor_## x ##_postupdate(struct Actor* actor)
 
 #define ACTOR_LIGHTNODES(x) static void actor_## x ##_lights(struct Actor* actor)
-#define ACTOR_ANIMATION_END(x) actor_## x ##_animation_ended(struct Actor* actor, char* animation)
+#define ACTOR_ANIMATION_END(x) static void actor_## x ##_animation_ended(struct Actor* actor, char* animation)
 
 #define ACTOR_PLAYER_INTERACT(x) static void actor_## x ##_player_interact(struct Actor* actor, struct Actor* player)
 #define ACTOR_CAN_INTERACT(x) static int actor_## x ##_can_interact(struct Actor* actor, struct Actor* player)

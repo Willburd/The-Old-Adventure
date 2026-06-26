@@ -14,7 +14,7 @@ typedef enum
 	// debugging
 	act_debug,
 	act_test,
-	act_animtest,
+	act_animationtest,
 	// Gameengine
 	act_scene,
 	act_entrance,
@@ -27,6 +27,7 @@ typedef enum
 	act_player,
 	act_pause_box,
 	act_signpost,
+	act_fire,
 	LAST_ACTOR
 
 } ActorTypes;
@@ -42,8 +43,9 @@ ACTOR_INIT(camera);
 ACTOR_INIT(skybox);
 ACTOR_INIT(textbox);
 ACTOR_INIT(player);
-ACTOR_INIT(pause);
-ACTOR_INIT(sign);
+ACTOR_INIT(pause_box);
+ACTOR_INIT(signpost);
+ACTOR_INIT(fire);
 
 inline char* actor_name(ActorTypes actor_id)
 {
@@ -64,31 +66,32 @@ inline char* actor_name(ActorTypes actor_id)
 		// Adventure
 		"Player",
 		"PauseBox",
-		"Signpost"
+		"Signpost",
+		"Fire"
 	};
 	return actor_names[actor_id];
 }
 
-#define MAKE_ACTOR_INIT(x,y) if(actor_type == x){actor->func_init = y;if(actor->func_init != NULL) actor->func_init(actor);return;}
+#define MAKE_ACTOR_INIT(x) if(actor_type == act_## x){actor->func_init = actor_## x ##_init;if(actor->func_init != NULL) actor->func_init(actor);return;}
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 {
-	MAKE_ACTOR_INIT(act_error, NULL);
 	// debugging
-	MAKE_ACTOR_INIT(act_debug, actor_debug_init);
-	MAKE_ACTOR_INIT(act_test, actor_test_init);
-	MAKE_ACTOR_INIT(act_animtest, actor_animationtest_init);
+	MAKE_ACTOR_INIT(debug);
+	MAKE_ACTOR_INIT(test);
+	MAKE_ACTOR_INIT(animationtest);
 	// Gameengine
-	MAKE_ACTOR_INIT(act_scene, actor_scene_init);
-	MAKE_ACTOR_INIT(act_entrance, actor_entrance_init);
-	MAKE_ACTOR_INIT(act_trigger_exit, actor_trigger_exit_init);
-	MAKE_ACTOR_INIT(act_fadein, actor_fadein_init);
-	MAKE_ACTOR_INIT(act_camera, actor_camera_init);
-	MAKE_ACTOR_INIT(act_skybox, actor_skybox_init);
-	MAKE_ACTOR_INIT(act_textbox, actor_textbox_init);
+	MAKE_ACTOR_INIT(scene);
+	MAKE_ACTOR_INIT(entrance);
+	MAKE_ACTOR_INIT(trigger_exit);
+	MAKE_ACTOR_INIT(fadein);
+	MAKE_ACTOR_INIT(camera);
+	MAKE_ACTOR_INIT(skybox);
+	MAKE_ACTOR_INIT(textbox);
 	// Adventure
-	MAKE_ACTOR_INIT(act_player, actor_player_init);
-	MAKE_ACTOR_INIT(act_pause_box, actor_pause_init);
-	MAKE_ACTOR_INIT(act_signpost, actor_sign_init);
+	MAKE_ACTOR_INIT(player);
+	MAKE_ACTOR_INIT(pause_box);
+	MAKE_ACTOR_INIT(signpost);
+	MAKE_ACTOR_INIT(fire);
 }
 
 #endif

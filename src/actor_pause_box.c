@@ -10,11 +10,11 @@
 #define PAUSEBOX_MODEL				ASSET_MODELS"/Tools/pausebox.glb"
 
 // private header
-ACTOR_PRELOADASSETS(pause);
-ACTOR_UPDATE(pause);
-ACTOR_ANIMATION_END(pause);
-ACTOR_POSTDRAWWORLD(pause);
-ACTOR_CLEANUP(pause);
+ACTOR_PRELOADASSETS(pause_box);
+ACTOR_UPDATE(pause_box);
+ACTOR_ANIMATION_END(pause_box);
+ACTOR_POSTDRAWWORLD(pause_box);
+ACTOR_CLEANUP(pause_box);
 
 typedef struct {
 	int pause_time;
@@ -24,15 +24,15 @@ typedef struct {
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ACTOR_INIT(pause)
+ACTOR_INIT(pause_box)
 {
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_PAUSED | ACTOR_FLAG_HAS_ANIMATIONS;
-	ACTOR_REGISTER_PRELOADASSETS(pause);
-	ACTOR_REGISTER_UPDATE(pause);
-	ACTOR_REGISTER_ANIMATION_END(pause);
-	ACTOR_REGISTER_POSTDRAWWORLD(pause);
-	ACTOR_REGISTER_CLEANUP(pause);
+	ACTOR_REGISTER_PRELOADASSETS(pause_box);
+	ACTOR_REGISTER_UPDATE(pause_box);
+	ACTOR_REGISTER_ANIMATION_END(pause_box);
+	ACTOR_REGISTER_POSTDRAWWORLD(pause_box);
+	ACTOR_REGISTER_CLEANUP(pause_box);
 
 	// Set data
 	MALLOC_ACTOR_DATA(PauseData, actor->data);
@@ -56,7 +56,7 @@ ACTOR_INIT(pause)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ACTOR_PRELOADASSETS(pause)
+ACTOR_PRELOADASSETS(pause_box)
 {
 	Asset* model_asset = LoadAsset_Model(PAUSEBOX_MODEL, FALSE);
 	AddAnimLayer(actor, GetAnimation(model_asset, "HoldOpen"), ANIMATION_FRAMERATE, ANIM_LOOP, TRUE, 1.0f, BLENDTYPE_REPLACE);
@@ -65,7 +65,7 @@ ACTOR_PRELOADASSETS(pause)
 	AddAnimLayer(actor, GetAnimation(model_asset, "OpenMenu"), ANIMATION_FRAMERATE, ANIM_SINGLE, TRUE, 1.0f, BLENDTYPE_REPLACE);
 }
 
-ACTOR_UPDATE(pause)
+ACTOR_UPDATE(pause_box)
 {
 	// Don't allow unpausing during the animation
 	struct AnimationLayer* opening_layer = FindAnimLayer(actor, "OpenMenu");
@@ -89,13 +89,13 @@ ACTOR_UPDATE(pause)
 	// Handle inventory
 }
 
-ACTOR_ANIMATION_END(pause)
+ACTOR_ANIMATION_END(pause_box)
 {
 	if(STRMATCH(animation, "CloseMenu"))
 		ACTOR_DESTROY(actor);
 }
 
-ACTOR_POSTDRAWWORLD(pause)
+ACTOR_POSTDRAWWORLD(pause_box)
 {
 	Material* mat = AssetGet_Material(ASSET_MATERIALS"/Error/no_material.mat");
 	Material* mat_f = AssetGet_Material(ASSET_MATERIALS"/Objects/example.mat");
@@ -126,7 +126,7 @@ ACTOR_POSTDRAWWORLD(pause)
 	);
 }
 
-ACTOR_CLEANUP(pause)
+ACTOR_CLEANUP(pause_box)
 {
 	// Unpause the game
 	gameplay_state &= ~GAMESTATE_PAUSED;

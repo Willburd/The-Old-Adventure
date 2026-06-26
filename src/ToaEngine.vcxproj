@@ -152,11 +152,12 @@
     <ClCompile Include="actor_debug.c" />
     <ClCompile Include="actor_entrance.c" />
     <ClCompile Include="actor_fadein.c" />
-    <ClCompile Include="actor_pause.c" />
+    <ClCompile Include="actor_fire.c" />
+    <ClCompile Include="actor_pause_box.c" />
     <ClCompile Include="actor_player.c" />
     <ClCompile Include="actor_factory.c" />
     <ClCompile Include="actor_scene.c" />
-    <ClCompile Include="actor_sign.c" />
+    <ClCompile Include="actor_signpost.c" />
     <ClCompile Include="actor_skybox.c" />
     <ClCompile Include="actor_test.c" />
     <ClCompile Include="actor_textbox.c" />

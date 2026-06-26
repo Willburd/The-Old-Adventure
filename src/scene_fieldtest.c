@@ -74,15 +74,12 @@ SCENE_ACTIVATE_ROOM(fieldtest)
 	// Actor spawns
 	ACTOR_FACTORY(act_skybox, scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 	ACTOR_FACTORY(act_signpost, scene, (Vector3){ 2.0f, 0.0f, 0.0f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
-	
-	// Debug
-	//ACTOR_FACTORY(act_animtest, scene, (Vector3){ 3.0f, 3.0f, 0.0f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_fire, scene, (Vector3) { 3.0f, 2.0f, 1.0f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 SCENE_LIGHTNODES(fieldtest)
 {
 	LIGHT_NODE_CAVE(-1.5f, 0.15f, 36.0f, 15.0f);
-	LIGHT_NODE_TORCH(3.0f, 2.0f, 1.0f, 30.0f);
 }
 
 SCENE_DRAWWORLD(fieldtest)
