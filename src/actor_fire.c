@@ -45,7 +45,7 @@ ACTOR_TRANSPARENTDRAWWORLD(fire)
 	Transform fire_transform = {
 		.translation = actor->position,
 		.rotation = QuaternionLookAt( cam_main.position, actor->position, VEC3UP),
-		.scale = (Vector3) { 1.0f, 2.0f, 1.0f }
+		.scale = Vector3Multiply(actor->scale, (Vector3) { 1.0f, 2.0f, 1.0f })
 	};
 
 	////////////////////////////////////////////////
