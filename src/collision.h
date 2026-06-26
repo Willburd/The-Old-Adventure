@@ -5,7 +5,8 @@
 
 #define COL_LAYER_NONE 0
 #define COL_LAYER_WORLD (1 << 0)	// World geometry
-#define COL_LAYER_ACTOR (1 << 1)	// Actors inworld
+#define COL_LAYER_CAMERA (1 << 1)	// Camera blocking
+#define COL_LAYER_ACTOR (1 << 2)	// Actors inworld
 #define COL_LAYER_PLAYER (1 << 3)	// Player hurtbox
 #define COL_LAYER_ENEMY (1 << 4)	// Enemy hitboxes
 #define COL_LAYER_WATER (1 << 5)	// Water geometry

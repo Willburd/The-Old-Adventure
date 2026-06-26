@@ -201,6 +201,9 @@
     <ClCompile Include="actor_fire.c">
       <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_woodtorch.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">

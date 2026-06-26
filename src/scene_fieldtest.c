@@ -60,7 +60,7 @@ SCENE_PRELOADASSETS(fieldtest)
 	LoadAsset_Material(FIELD_ASSET_MAIN_MATERIAL, FALSE);
 
 	// Set collision data
-	scene->collision_flags = COL_LAYER_WORLD;
+	scene->collision_flags = COL_LAYER_WORLD | COL_LAYER_CAMERA;
 	CollisionRegister(scene, &model_asset->mdl->meshes[MAIN_MODEL_MESH_COLLISION]);
 }
 
@@ -86,8 +86,12 @@ SCENE_ACTIVATE_ROOM(fieldtest)
 
 	// Actor spawns
 	ACTOR_FACTORY(act_skybox, scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+
 	ACTOR_FACTORY(act_signpost, scene, (Vector3){ 2.0f, 0.0f, 0.0f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
-	ACTOR_FACTORY(act_fire, scene, (Vector3) { 3.0f, 2.0f, 1.0f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 8.3f, -1.3f, 12.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { -10.3f, -1.0f, 13.04f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { -6.67f, 0.16f, -14.74f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 6.11f, 0.16f, -14.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 SCENE_LIGHTNODES(fieldtest)

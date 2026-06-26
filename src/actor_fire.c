@@ -37,9 +37,7 @@ ACTOR_PRELOADASSETS(fire)
 
 ACTOR_LIGHTNODES(fire)
 {
-	if (OutOfRenderRange(actor))
-		return;
-	LIGHT_NODE_TORCH(actor->position.x, actor->position.y, actor->position.z, 20.0f);
+	LIGHT_NODE_TORCH(actor->position.x, actor->position.y, actor->position.z, 15.0f);
 }
 
 ACTOR_TRANSPARENTDRAWWORLD(fire)

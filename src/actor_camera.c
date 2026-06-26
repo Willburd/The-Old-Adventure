@@ -121,7 +121,7 @@ ACTOR_PREUPDATE(camera)
                 .position = look_pos,
                 .direction = VEC3DIRECTION(look_pos, follow_pos)
             };
-            RayCollision ray_col = CollisionGetNearest(check_ray, Vector3Distance(look_pos, follow_pos), COL_LAYER_WORLD);
+            RayCollision ray_col = CollisionGetNearest(check_ray, Vector3Distance(look_pos, follow_pos), COL_LAYER_CAMERA);
             if (ray_col.hit) // Hit a wall, bump out from it!
             {
                 follow_pos = Vector3Add(check_ray.position, Vector3Scale(check_ray.direction, ray_col.distance - CAMERA_BUBBLE_RADIUS));
@@ -199,7 +199,7 @@ ACTOR_DRAWWORLD(camera)
                 .position = cam_main.position,
                 .direction = VEC3DIRECTION(cam_main.position, cam_main.target)
             };
-            RayCollision ray_col = CollisionGetNearest(check_ray, 10.0f, COL_LAYER_WORLD);
+            RayCollision ray_col = CollisionGetNearest(check_ray, 10.0f, COL_LAYER_CAMERA);
             if (ray_col.hit) // Hit a wall, bump out from it!
             {
                 DrawSphere(ray_col.point, 0.06f, YELLOW);

@@ -28,6 +28,7 @@ typedef enum
 	act_pause_box,
 	act_signpost,
 	act_fire,
+	act_woodtorch,
 	LAST_ACTOR
 
 } ActorTypes;
@@ -46,6 +47,7 @@ ACTOR_INIT(player);
 ACTOR_INIT(pause_box);
 ACTOR_INIT(signpost);
 ACTOR_INIT(fire);
+ACTOR_INIT(woodtorch);
 
 inline char* actor_name(ActorTypes actor_id)
 {
@@ -67,6 +69,7 @@ inline char* actor_name(ActorTypes actor_id)
 		"Player",
 		"PauseBox",
 		"Signpost",
+		"Woodentorch",
 		"Fire"
 	};
 	return actor_names[actor_id];
@@ -92,6 +95,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 	MAKE_ACTOR_INIT(pause_box);
 	MAKE_ACTOR_INIT(signpost);
 	MAKE_ACTOR_INIT(fire);
+	MAKE_ACTOR_INIT(woodtorch);
 }
 
 #endif
