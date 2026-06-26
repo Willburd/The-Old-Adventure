@@ -13,11 +13,26 @@
 #include "gamestate.h"
 #include "light_tools.h"
 
+// Assets
+#define FIELD_ASSET_MAIN_MODEL ASSET_MODELS"/Scenes/test_room.glb"
+#define FIELD_ASSET_MAIN_MATERIAL ASSET_MATERIALS"/Objects/wood.mat"
+
+// Utility
+#define MAIN_MODEL_MESH_MAIN 0
+#define MAIN_MODEL_MESH_COLLISION 1
+#define MAIN_MODEL_MATERIAL_MAIN 0
+
+// private header
 SCENE_PRELOADASSETS(fieldtest);
 SCENE_CLEANUP(fieldtest);
 SCENE_ACTIVATE_ROOM(fieldtest);
 SCENE_LIGHTNODES(fieldtest);
 SCENE_DRAWWORLD(fieldtest);
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Public functions
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SCENE_INIT(fieldtest)
 {
@@ -33,12 +48,10 @@ SCENE_INIT(fieldtest)
 	SCENEDATA_CLEAR(scene->data);
 }
 
-#define FIELD_ASSET_MAIN_MODEL ASSET_MODELS"/Scenes/test_room.glb"
-#define FIELD_ASSET_MAIN_MATERIAL ASSET_MATERIALS"/Objects/wood.mat"
 
-#define MAIN_MODEL_MESH_MAIN 0
-#define MAIN_MODEL_MESH_COLLISION 1
-#define MAIN_MODEL_MATERIAL_MAIN 0
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Private functions
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SCENE_PRELOADASSETS(fieldtest)
 {
