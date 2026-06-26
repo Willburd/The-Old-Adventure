@@ -60,8 +60,7 @@ SCENE_PRELOADASSETS(fieldtest)
 	LoadAsset_Material(FIELD_ASSET_MAIN_MATERIAL, FALSE);
 
 	// Set collision data
-	scene->collision_flags = COL_LAYER_WORLD | COL_LAYER_CAMERA;
-	CollisionRegister(scene, &model_asset->mdl->meshes[MAIN_MODEL_MESH_COLLISION]);
+	CollisionRegister(scene, &model_asset->mdl->meshes[MAIN_MODEL_MESH_COLLISION], COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_CLEANUP(fieldtest)

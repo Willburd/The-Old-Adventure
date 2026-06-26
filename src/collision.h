@@ -15,7 +15,7 @@
 
 #include "tools.h"
 
-void CollisionRegister(struct Actor* owner, Mesh* collider);
+void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collision_flags);
 void CollisionResign(struct Actor* owner, Mesh* collider);
 
 void CollisionTest(RayCollision* collisions, int max_collisions, Ray raycast, float max_dist, unsigned int mask);

@@ -43,8 +43,7 @@ ACTOR_PRELOADASSETS(woodtorch)
 	LoadAsset_Material(WOODTORCH_ASSET_MAIN_MATERIAL, FALSE);
 
 	// Set collision data
-	actor->collision_flags = COL_LAYER_WORLD;
-	CollisionRegister(actor, &model_asset->mdl->meshes[MAIN_MODEL_MESH_COLLISION]);
+	CollisionRegister(actor, &model_asset->mdl->meshes[MAIN_MODEL_MESH_COLLISION], COL_LAYER_WORLD);
 }
 
 ACTOR_CLEANUP(woodtorch)

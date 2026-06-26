@@ -7,13 +7,14 @@
 typedef struct {
 	struct Actor* owner;
 	Mesh* mesh;
+	unsigned int flags;
 } ColliderData;
 
 int max_collision = -1;
 ColliderData world_colliders[MAX_COLLIDERS] = { NULL };
 
 // Allocate collision to the game's collision system. DO NOT FORGET TO RESIGN IT.
-void CollisionRegister(struct Actor* owner, Mesh* collider)
+void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collision_flags)
 {
 	for (int i = 0; i < MAX_COLLIDERS; i++)
 	{
@@ -22,6 +23,7 @@ void CollisionRegister(struct Actor* owner, Mesh* collider)
 		// Assign a new collider to this slot
 		world_colliders[i].owner = owner;
 		world_colliders[i].mesh = collider;
+		world_colliders[i].flags = collision_flags;
 		if (max_collision < i)
 			max_collision = i;
 		return;
@@ -70,7 +72,7 @@ void CollisionTest(RayCollision* collisions, int max_collisions, Ray raycast, fl
 	int detected_collisions = 0;
 	for (int i = 0; i <= max_collision; i++)
 	{
-		if (!(world_colliders[i].owner->collision_flags & mask)) // Masked out
+		if (!(world_colliders[i].flags & mask)) // Masked out
 			continue;
 		RayCollision hit = GetRayCollisionMesh(raycast, *world_colliders[i].mesh, GetMatrix(world_colliders[i].owner));
 		if (!hit.hit)

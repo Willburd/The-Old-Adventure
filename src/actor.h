@@ -44,7 +44,6 @@ struct Actor {
 	Vector3 last_velocity;
 
 	unsigned int actor_flags;
-	unsigned int collision_flags; // Defines in collision.h
 	float draw_range;
 
 	int animlayer_count;
@@ -101,7 +100,6 @@ x->is_destroying = FALSE; \
 x->parent = NULL; \
 x->actor_flags = 0; \
 x->actor_flags = 0; \
-x->collision_flags = 0; \
 x->draw_range = DEFAULT_MAX_RENDER_RANGE; \
 x->animlayer_count = -1; \
 x->func_init = NULL; x->func_preloadassets = NULL; \
