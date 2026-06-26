@@ -88,7 +88,7 @@ ACTOR_PREDRAWWORLD(skybox)
 	EndShaderMode();
 
 	// Sun and moon orbit the world
-	float orbit_angle = (daynight_cycle * 365.0f) * DEG2RAD;
+	float orbit_angle = (daynight_cycle * CIRCLE_DEGREES) * DEG2RAD;
 	float orbit_distance = 500.0f;
 	Transform sun_transform = {
 		.translation = Vector3Add(actor->position, Vector3Scale(Vector3RotateByQuaternion(VEC3RIGHT, QuaternionFromEuler(0.0f, 0.0f, orbit_angle)), orbit_distance)),

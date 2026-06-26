@@ -18,6 +18,7 @@
 #define RAND_RANGE(l,h) ((l) + (rand() % ((h)-(l))))
 #define RAND_FRANGE(l,h) ((l) + ((float)fmod((float)rand()/1000.0f,((h)-(l)))))
 #define SIGN(x) ((x > 0) - (x < 0))
+#define CIRCLE_DEGREES 360.0f
 
 #define STRMATCH(x,y) (strcmp(x,y)==0)
 
