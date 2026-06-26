@@ -1,6 +1,7 @@
 #include "actor_factory.h"
 #include "tools.h"
 #include "collision.h"
+#include "game_draw.h"
 
 // Assets
 #define WOODTORCH_ASSET_MAIN_MODEL ASSET_MODELS"/Objects/wood_torch.glb"
