@@ -67,10 +67,6 @@ ACTOR_PREDRAWWORLD(skybox)
 	////////////////////////////////////////////////
 	Material* mat = AssetGet_Material(SKYBOX_MATERIAL_CYCLE);
 	Shader set_shader = mat->shader;
-
-	////////////////////////////////////////////////
-	// Set shader mode.
-	////////////////////////////////////////////////
 	BeginShaderMode(set_shader);
 
 	// Intensities
@@ -99,18 +95,17 @@ ACTOR_PREDRAWWORLD(skybox)
 		.rotation = QuaternionFromVector3ToVector3(VEC3BACKWARD, VEC3DIRECTION(sun_transform.translation, Vector3Zero())),
 		.scale = (Vector3){ 160, 160, 160 }
 	};
-	mat = AssetGet_Material(SKYBOX_MATERIAL_SUN);
-	DrawMesh(
-		AssetGet_Model(SPRITE_MODEL)->meshes[0],
-		*AssetGet_Material(SKYBOX_MATERIAL_SUN),
-		MATRIX_ASSEMBLE(sun_transform)
-	);
 	Transform moon_transform = {
 		.translation = Vector3Scale(Vector3RotateByQuaternion(VEC3LEFT, QuaternionFromEuler(0.0f, 0.0f, orbit_angle)), orbit_distance),
 		.rotation = QuaternionFromVector3ToVector3(VEC3BACKWARD, VEC3DIRECTION(moon_transform.translation, Vector3Zero())),
 		.scale = (Vector3){ 70, 70, 70 }
 	};
-	mat = AssetGet_Material(SKYBOX_MATERIAL_MOON);
+
+	DrawMesh(
+		AssetGet_Model(SPRITE_MODEL)->meshes[0],
+		*AssetGet_Material(SKYBOX_MATERIAL_SUN),
+		MATRIX_ASSEMBLE(sun_transform)
+	);
 	DrawMesh(
 		AssetGet_Model(SPRITE_MODEL)->meshes[0],
 		*AssetGet_Material(SKYBOX_MATERIAL_MOON),

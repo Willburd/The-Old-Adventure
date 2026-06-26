@@ -191,4 +191,4 @@ Texture2D* AssetGet_Texture(char* path) ASSET_FALLBACK(path,ASSET_TEXTURES"/Erro
 Model* AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mdl);
 Sound* AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", snd);
 Music* AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mus);
-Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mat);
+Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_MATERIALS"/Error/no_material.mat", mat);

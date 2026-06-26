@@ -91,6 +91,7 @@ void game_draw(double tick_percent)
 	BeginMode3D(cam_main);
 	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
 	BeginBlendMode(BLEND_CUSTOM_SEPARATE);
+	// Base pass
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* draw_actor = world_actors[i];
@@ -100,6 +101,17 @@ void game_draw(double tick_percent)
 			continue;
 		if (ACTOR_HAS(draw_actor, func_drawworld))
 			draw_actor->func_drawworld(draw_actor, tick_percent);
+	}
+	// Transparent pass
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* draw_actor = world_actors[i];
+		if (!ACTOR_EXISTS(draw_actor))
+			continue;
+		if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
+			continue;
+		if (ACTOR_HAS(draw_actor, func_transparentdrawworld))
+			draw_actor->func_transparentdrawworld(draw_actor, tick_percent);
 	}
 	EndMode3D();
 	EndTextureMode();

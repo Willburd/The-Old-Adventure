@@ -66,6 +66,8 @@ struct Actor {
 	void (*func_predrawworld)(struct Actor* actor, double tick_percent);
 	// Actor draw world
 	void (*func_drawworld)(struct Actor* actor, double tick_percent);
+	// Actor draw world
+	void (*func_transparentdrawworld)(struct Actor* actor, double tick_percent);
 	// Actor draw world after primary draw
 	void (*func_postdrawworld)(struct Actor* actor, double tick_percent);
 	// Actor draw hud before primary draw
@@ -103,7 +105,7 @@ x->func_init = NULL; x->func_preloadassets = NULL; \
 x->func_destroy = NULL; \
 x->func_preupdate = NULL; x->func_update = NULL; x->func_postupdate = NULL; \
 x->func_append_lights = NULL; \
-x->func_predrawworld = NULL; x->func_drawworld = NULL; x->func_postdrawworld = NULL; \
+x->func_predrawworld = NULL; x->func_drawworld = NULL; x->func_transparentdrawworld = NULL; x->func_postdrawworld = NULL; \
 x->func_predrawhud = NULL; x->func_drawhud = NULL; x->func_postdrawhud = NULL; \
 x->func_activate_room = NULL; x->func_deactivate_room = NULL; \
 x->func_animation_ended = NULL; \
@@ -187,6 +189,7 @@ Transform GetTransform(struct Actor* actor);
 
 #define ACTOR_PREDRAWWORLD(x) static void actor_## x ##_predrawworld(struct Actor* actor, double tick_percent)
 #define ACTOR_DRAWWORLD(x) static void actor_## x ##_drawworld(struct Actor* actor, double tick_percent)
+#define ACTOR_TRANSPARENTDRAWWORLD(x) static void actor_## x ##_transparentdrawworld(struct Actor* actor, double tick_percent)
 #define ACTOR_POSTDRAWWORLD(x) static void actor_## x ##_postdrawworld(struct Actor* actor, double tick_percent)
 
 #define ACTOR_PREDRAWHUD(x) static void actor_## x ##_predrawhud(struct Actor* actor, double tick_percent)
@@ -211,6 +214,7 @@ Transform GetTransform(struct Actor* actor);
 
 #define ACTOR_REGISTER_PREDRAWWORLD(x) actor->func_predrawworld = actor_## x ##_predrawworld
 #define ACTOR_REGISTER_DRAWWORLD(x) actor->func_drawworld = actor_## x ##_drawworld
+#define ACTOR_REGISTER_TRANSPARENTDRAWWORLD(x) actor->func_transparentdrawworld = actor_## x ##_transparentdrawworld
 #define ACTOR_REGISTER_POSTDRAWWORLD(x) actor->func_postdrawworld = actor_## x ##_postdrawworld
 
 #define ACTOR_REGISTER_PREDRAWHUD(x) actor->func_predrawhud = actor_## x ##_predrawhud
@@ -235,6 +239,7 @@ Transform GetTransform(struct Actor* actor);
 
 #define SCENE_REGISTER_UPDATE(x) scene->func_update = scene_## x ##_update
 #define SCENE_REGISTER_DRAWWORLD(x) scene->func_drawworld = scene_## x ##_drawworld
+#define SCENE_REGISTER_TRANSPARENTDRAWWORLD(x) scene->func_transparentdrawworld = scene_## x ##_transparentdrawworld
 #define SCENE_REGISTER_DRAWHUD(x) scene->func_drawhud = scene_## x ##_drawhud
 #define SCENE_REGISTER_LIGHTNODES(x) scene->func_append_lights = scene_## x ##_lights
 
