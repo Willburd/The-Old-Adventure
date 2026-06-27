@@ -6,7 +6,7 @@
 int draw_debug_info;
 
 #define LIGHT_WORLD_RANGE 10000.0f
-#define MAX_LIGHTS 16
+#define MAX_LIGHTS 24
 typedef struct {
 	Vector4 pos; 
 	Vector4 col; 

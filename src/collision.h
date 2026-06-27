@@ -1,7 +1,7 @@
 #ifndef __COLLISION_HEADER__
 #define __COLLISION_HEADER__
 
-#define MAX_COLLIDERS 256
+#define MAX_COLLIDERS 512
 
 #define COL_LAYER_NONE 0
 #define COL_LAYER_WORLD (1 << 0)	// World geometry
@@ -15,10 +15,11 @@
 
 #include "tools.h"
 
+int max_collision;
+
 void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collision_flags);
 void CollisionResign(struct Actor* owner, Mesh* collider);
 
-void CollisionTest(RayCollision* collisions, int max_collisions, Ray raycast, float max_dist, unsigned int mask);
 RayCollision CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask);
 RayCollision CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask);
 

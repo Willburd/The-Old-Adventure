@@ -75,6 +75,11 @@ int main(void)
             LoadBuiltinText();
             LoadCoreTextAssets();
         }
+        if (IsKeyPressed(KEY_F6)) // Misc debug
+        {
+            struct Actor* torch = ACTOR_FACTORY(act_woodtorch, NULL, (Vector3) { rand() % 10, 5.0f, rand() % 10 }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+            torch->blend_color = ColorToVector4((Color) { rand() % 256, rand() % 256, rand() % 256, 255 });
+        }
 #endif
 
         ticker_rate = 1.0 / update_rate;

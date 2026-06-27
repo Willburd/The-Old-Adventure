@@ -28,7 +28,7 @@ void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collisi
 			max_collision = i;
 		return;
 	}
-	printf("Unable to allocate collider");
+	printf("Unable to allocate collider for: [%llu] %s\n", owner->uuid, owner->actor_type_name);
 }
 
 // Resigns a collision from the game's collision system. MUST be done during unload if you registered any meshes to collide.
@@ -66,9 +66,13 @@ void CollisionResign(struct Actor* owner, Mesh* collider)
 	max_collision--;
 }
 
-// Get a list of collisions, tested against all active colliders.
-void CollisionTest(RayCollision* collisions, int max_collisions, Ray raycast, float max_dist, unsigned int mask)
+// Lets keep this off the heap
+static RayCollision collision_test_list[MAX_COLLIDERS];
+
+// Get a list of collisions, tested against all active colliders. This is internal. Other functions should use it and return results. Uses an pre-allocated and cleaned array instead of a heap object due to memory footprint.
+static void CollisionTest(Ray raycast, float max_dist, unsigned int mask)
 {
+	memset(collision_test_list, NULL, sizeof(RayCollision) * MAX_COLLIDERS);
 	int detected_collisions = 0;
 	for (int i = 0; i <= max_collision; i++)
 	{
@@ -79,30 +83,27 @@ void CollisionTest(RayCollision* collisions, int max_collisions, Ray raycast, fl
 			continue;
 		if (hit.distance > max_dist)
 			continue;
-		collisions[detected_collisions++] = hit;
+		collision_test_list[detected_collisions++] = hit;
 	}
 }
-
-#define QUICK_SEARCH_MAX 50
 
 // Get the nearest point. May not return a valid collision.
 RayCollision CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask)
 {
-	RayCollision test_list[QUICK_SEARCH_MAX] = { 0 };
-	CollisionTest(test_list, QUICK_SEARCH_MAX, raycast, max_dist, mask);
+	CollisionTest(raycast, max_dist, mask);
 	// Search for the nearest hit
 	float nearest_point = INFINITY;
 	RayCollision nearest = { 0 };
-	for (int i = 0; i <= min(max_collision,QUICK_SEARCH_MAX); i++)
+	for (int i = 0; i <= min(max_collision, MAX_COLLIDERS); i++)
 	{
-		if (!test_list[i].hit)
+		if (!collision_test_list[i].hit)
 			continue;
-		if (test_list[i].distance >= nearest_point)
+		if (collision_test_list[i].distance >= nearest_point)
 			continue;
-		nearest.distance = test_list[i].distance;
-		nearest.hit = test_list[i].hit;
-		nearest.point = test_list[i].point;
-		nearest.normal = test_list[i].normal;
+		nearest.distance = collision_test_list[i].distance;
+		nearest.hit = collision_test_list[i].hit;
+		nearest.point = collision_test_list[i].point;
+		nearest.normal = collision_test_list[i].normal;
 		nearest_point = nearest.distance;
 	}
 	return nearest;
@@ -111,21 +112,20 @@ RayCollision CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask)
 // Get the furthest point. May not return a valid collision.
 RayCollision CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask)
 {
-	RayCollision test_list[QUICK_SEARCH_MAX] = { 0 };
-	CollisionTest(test_list, QUICK_SEARCH_MAX, raycast, max_dist, mask);
+	CollisionTest(raycast, max_dist, mask);
 	// Search for the furthest hit
 	float furthest_point = 0;
 	RayCollision furthest = { 0 };
-	for (int i = 0; i < min(max_collision, QUICK_SEARCH_MAX); i++)
+	for (int i = 0; i < max_collision; i++)
 	{
-		if (!test_list[i].hit)
+		if (!collision_test_list[i].hit)
 			continue;
-		if (test_list[i].distance < furthest_point)
+		if (collision_test_list[i].distance < furthest_point)
 			continue;
-		furthest.distance = test_list[i].distance;
-		furthest.hit = test_list[i].hit;
-		furthest.point = test_list[i].point;
-		furthest.normal = test_list[i].normal;
+		furthest.distance = collision_test_list[i].distance;
+		furthest.hit = collision_test_list[i].hit;
+		furthest.point = collision_test_list[i].point;
+		furthest.normal = collision_test_list[i].normal;
 		furthest_point = furthest.distance;
 	}
 	return furthest;

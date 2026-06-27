@@ -104,6 +104,13 @@ SCENE_ACTIVATE_ROOM(Sfieldtest)
 	torch->blend_color = ColorToVector4(YELLOW);
 	*/
 
+	// Torch test wall
+	for (int i = 0; i < 45; i++)
+	{
+		struct Actor* torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { rand() % 10, 5.0f, rand() % 10}, QuaternionIdentity(), Vector3One(), Vector3Zero());
+		torch->blend_color = ColorToVector4((Color){ rand() % 256, rand() % 256, rand() % 256, 255 });
+	}
+
 }
 
 SCENE_LIGHTNODES(Sfieldtest)

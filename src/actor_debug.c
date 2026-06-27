@@ -4,6 +4,7 @@
 #include "actor_scene.h"
 #include "game_draw.h"
 #include "world_state.h"
+#include "collision.h"
 
 // private header
 ACTOR_DRAWWORLD(debug);
@@ -65,6 +66,8 @@ ACTOR_POSTDRAWHUD(debug)
 		5, 20, 4, GRAY);
 	*/
 
+	DrawText(TextFormat("[act: %i] [col: %i]", current_actor_cap, max_collision), 5, 25, 4, WHITE);
+	/*
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* draw_actor = world_actors[i];
@@ -78,4 +81,5 @@ ACTOR_POSTDRAWHUD(debug)
 		}
 		DrawText(TextFormat("[%i](%s)->%s  ", i, parent_name, draw_actor->actor_type_name), 5, 25 + (i*12), 4, WHITE);
 	}
+	*/
 }

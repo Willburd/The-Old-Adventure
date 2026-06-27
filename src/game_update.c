@@ -50,6 +50,7 @@ void game_update()
 				shift_index = i;
 			continue;
 		}
+		/*
 		if (shift_index > -1)
 		{
 			// Shift the actor back to the last free slot.
@@ -62,6 +63,7 @@ void game_update()
 			world_actors[i] = NULL;
 			shift_index = i;
 		}
+		*/
 
 		// Store previous state values
 		update_actor->last_position.x = update_actor->position.x;
