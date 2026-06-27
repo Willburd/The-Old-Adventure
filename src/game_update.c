@@ -156,7 +156,7 @@ void game_update()
 			continue;
 		}
 		// Light update
-		if (ACTOR_HAS(finalize_actor, func_append_lights))
+		if (!(finalize_actor->actor_flags & ACTOR_FLAG_DISABLE_LIGHTS) && ACTOR_HAS(finalize_actor, func_append_lights))
 			finalize_actor->func_append_lights(finalize_actor);
 	}
 }

@@ -22,6 +22,7 @@
 #define ACTOR_FLAG_HAS_ANIMATIONS (1 << 8) // Has animations
 #define ACTOR_FLAG_IS_INVISIBLE (1 << 9) // disable drawing
 #define ACTOR_FLAG_INTERACTIVE (1 << 10) // player can trigger interacts with
+#define ACTOR_FLAG_DISABLE_LIGHTS (1 << 11) // Skips actor's lightnodes being queued to the shader
 
 struct Actor;
 struct Actor {

@@ -7,7 +7,7 @@
 void InitWorldState()
 {
 	// Start of game daynight cycle
-	daynight_cycle = TIME_DAWN;
+	daynight_cycle = TIME_DUSK;
 	daynight_speed = DEFAULT_DAYNIGHT_SPEED;
 
 	// Setup inventory

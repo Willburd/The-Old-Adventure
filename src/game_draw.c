@@ -211,6 +211,14 @@ void fog_set(Color col, float power, float dist)
 // Lights are updated each frame and do not persist between them. Lights need to be "appended" to the light list each update to render. This is easier than juggling light references when wanting to animate lights.
 void lighting_append_light(Vector3 pos, float radius, Color col, float influence)
 {
+	// Calculate range affected intensity
+	if (col.r + col.g + col.b > 0 && radius < LIGHT_WORLD_RANGE) // Unless it's cave darkness or the skybox...
+	{
+		float dist = Vector3Distance(cam_main.position, pos);
+		influence *= (1.0f - powf(dist / DEFAULT_MAX_RENDER_RANGE, 7.0f));
+		if (influence <= 0) // Do not bother with lights we will never see.
+			return;
+	}
 	int write_index = light_count;
 	if (light_count >= MAX_LIGHTS) // Find furthest light and replace it
 	{
