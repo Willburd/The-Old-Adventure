@@ -66,7 +66,7 @@ ACTOR_INIT(scene)
 	}
 }
 
-// Sets the next scene to be loaded. Will be actually loaded before the pre-update loop next gametick. DOES NOT LOAD THE SCENE ITSELF. Happens next tick, this is safe to call with ACTORY_DESTORY actions happening.
+// Sets the next scene to be loaded. Will be actually loaded before the pre-update loop next gametick. DOES NOT LOAD THE SCENE ITSELF. Happens next tick, this is safe to call with ACTOR_DESTORY actions happening.
 void LoadScene(SceneID id, EntranceID entrance)
 {
 	next_scene = id;
