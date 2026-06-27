@@ -25,9 +25,6 @@ ACTOR_PREDRAWWORLD(skybox);
 
 ACTOR_INIT(skybox)
 {
-	// Remove previous skyboxes
-	ACTOR_DESTROY_TYPE(act_skybox);
-
     // Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE;
 	ACTOR_REGISTER_PRELOADASSETS(skybox);

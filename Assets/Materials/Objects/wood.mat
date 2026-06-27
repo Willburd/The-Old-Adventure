@@ -1,5 +1,5 @@
 // Textures
-#ALBED /Objects/sign_wood.png FILT_BI WRAP_REPEAT
+#ALBED /Objects/wooden_beam.png FILT_BI WRAP_REPEAT
 
 // Shader
 #SHADR /standard.vert /standard.frag
