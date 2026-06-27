@@ -1,4 +1,4 @@
-#include "actor.h"
+#include "actor_factory.h"
 #include "tools.h"
 #include "core_assets.h"
 #include "light_tools.h"
@@ -38,6 +38,12 @@ ACTOR_PRELOADASSETS(fire)
 
 ACTOR_LIGHTNODES(fire)
 {
+	// Sync with parent torch if we are a children of one.
+	struct Actor* parent = ACTOR_PARENT(actor);
+	if (parent && parent->actor_type == act_woodtorch)
+		actor->blend_color = parent->blend_color;
+
+	// Apply fire blend color
 	Color fire_col_blend = Vector4ToColor(Vector4Lerp(actor->blend_color, ColorToVector4(WHITE), 0.5f));
 	LIGHT_NODE_TORCH(actor->position.x, actor->position.y, actor->position.z, 15.0f, fire_col_blend);
 }

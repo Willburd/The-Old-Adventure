@@ -14,13 +14,12 @@
 #include "light_tools.h"
 
 // Assets
-#define FIELD_ASSET_MAIN_MODEL ASSET_MODELS"/Scenes/test_room.glb"
-#define FIELD_ASSET_MAIN_MATERIAL ASSET_MATERIALS"/Objects/wood.mat"
+#define FIELD_MODEL ASSET_MODELS"/Scenes/test_room.glb"
+#define FIELD_MATERIAL_MAIN ASSET_MATERIALS"/Objects/wood.mat"
 
 // Utility
-#define MAIN_MODEL_MESH_MAIN 0
-#define MAIN_MODEL_MESH_COLLISION 0
-#define MAIN_MODEL_MATERIAL_MAIN 0
+#define FIELD_MAIN 0
+#define FIELD_COLLISION 0
 
 // private header
 SCENE_PRELOADASSETS(fieldtest);
@@ -56,17 +55,17 @@ SCENE_INIT(fieldtest)
 SCENE_PRELOADASSETS(fieldtest)
 {
 	// Load model
-	Asset* model_asset = LoadAsset_Model(FIELD_ASSET_MAIN_MODEL, FALSE);
-	LoadAsset_Material(FIELD_ASSET_MAIN_MATERIAL, FALSE);
+	Asset* model_asset = LoadAsset_Model(FIELD_MODEL, FALSE);
+	LoadAsset_Material(FIELD_MATERIAL_MAIN, FALSE);
 
 	// Set collision data
-	CollisionRegister(scene, &model_asset->mdl->meshes[MAIN_MODEL_MESH_COLLISION], COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	CollisionRegister(scene, &model_asset->mdl->meshes[FIELD_COLLISION], COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_CLEANUP(fieldtest)
 {
 	// clear collision data
-	CollisionResign(scene, &AssetGet_Model(FIELD_ASSET_MAIN_MODEL)->meshes[MAIN_MODEL_MESH_COLLISION]);
+	CollisionResign(scene, &AssetGet_Model(FIELD_MODEL)->meshes[FIELD_COLLISION]);
 }
 
 SCENE_ACTIVATE_ROOM(fieldtest)
@@ -94,10 +93,14 @@ SCENE_ACTIVATE_ROOM(fieldtest)
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 6.11f, 0.16f, -14.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 
 	// Path of torches
-	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 48.96f, -9.88f, 2.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
-	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 115.01f, -16.04f, 95.63f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
-	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 185.43f, -14.75f, -28.19f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
-	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 285.25f, -9.91f, -63.23f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	struct Actor* torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 48.96f, -9.88f, 2.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	torch->blend_color = ColorToVector4(BLUE);
+	torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 115.01f, -16.04f, 95.63f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	torch->blend_color = ColorToVector4(RED);
+	torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 185.43f, -14.75f, -28.19f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	torch->blend_color = ColorToVector4(GREEN);
+	torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 285.25f, -9.91f, -63.23f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	torch->blend_color = ColorToVector4(YELLOW);
 
 }
 
@@ -108,12 +111,12 @@ SCENE_LIGHTNODES(fieldtest)
 
 SCENE_DRAWWORLD(fieldtest)
 {
-	Material* mat = AssetGet_Material(FIELD_ASSET_MAIN_MATERIAL);
+	Material* mat = AssetGet_Material(FIELD_MATERIAL_MAIN);
 	shader_update_fog(mat->shader);
 	shader_update_lights(mat->shader);
 
 	DrawMesh(
-		AssetGet_Model(FIELD_ASSET_MAIN_MODEL)->meshes[MAIN_MODEL_MESH_MAIN],
+		AssetGet_Model(FIELD_MODEL)->meshes[FIELD_MAIN],
 		*mat,
 		GetMatrix(scene)
 	);

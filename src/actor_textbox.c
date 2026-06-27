@@ -9,6 +9,7 @@
 #include "text_loading.h"
 #include "camera.h"
 
+// Private Data
 typedef struct
 {
 	unsigned int text_start_index;

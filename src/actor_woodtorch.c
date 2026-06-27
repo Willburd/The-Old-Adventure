@@ -4,12 +4,12 @@
 #include "game_draw.h"
 
 // Assets
-#define WOODTORCH_ASSET_MAIN_MODEL ASSET_MODELS"/Objects/wood_torch.glb"
-#define WOODTORCH_ASSET_MAIN_MATERIAL ASSET_MATERIALS"/Objects/wood_torch.mat"
+#define WOODTORCH_MODEL ASSET_MODELS"/Objects/wood_torch.glb"
+#define WOODTORCH_MATERIAL ASSET_MATERIALS"/Objects/wood_torch.mat"
 
 // Utility
-#define MAIN_MODEL_MESH_MAIN 0
-#define MAIN_MODEL_MESH_COLLISION 1
+#define WOODTORCH_MESH_MAIN 0
+#define WOODTORCH_MESH_COLLISION 1
 
 // private header
 ACTOR_PRELOADASSETS(woodtorch);
@@ -24,6 +24,7 @@ ACTOR_DRAWWORLD(woodtorch);
 ACTOR_INIT(woodtorch)
 {
 	actor->actor_flags = 0;
+	actor->blend_color = ColorToVector4(GOLD);
 	ACTOR_REGISTER_PRELOADASSETS(woodtorch);
 	ACTOR_REGISTER_CLEANUP(woodtorch);
 	ACTOR_REGISTER_DRAWWORLD(woodtorch);
@@ -39,29 +40,29 @@ ACTOR_INIT(woodtorch)
 ACTOR_PRELOADASSETS(woodtorch)
 {
 	// Load model
-	Asset* model_asset = LoadAsset_Model(WOODTORCH_ASSET_MAIN_MODEL, FALSE);
-	LoadAsset_Material(WOODTORCH_ASSET_MAIN_MATERIAL, FALSE);
+	Asset* model_asset = LoadAsset_Model(WOODTORCH_MODEL, FALSE);
+	LoadAsset_Material(WOODTORCH_MATERIAL, FALSE);
 
 	// Set collision data
-	CollisionRegister(actor, &model_asset->mdl->meshes[MAIN_MODEL_MESH_COLLISION], COL_LAYER_WORLD);
+	CollisionRegister(actor, &model_asset->mdl->meshes[WOODTORCH_MESH_COLLISION], COL_LAYER_WORLD);
 }
 
 ACTOR_CLEANUP(woodtorch)
 {
 	// clear collision data
-	CollisionResign(actor, &AssetGet_Model(WOODTORCH_ASSET_MAIN_MODEL)->meshes[MAIN_MODEL_MESH_COLLISION]);
+	CollisionResign(actor, &AssetGet_Model(WOODTORCH_MODEL)->meshes[WOODTORCH_MESH_COLLISION]);
 }
 
 ACTOR_DRAWWORLD(woodtorch)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	Material* mat = AssetGet_Material(WOODTORCH_ASSET_MAIN_MATERIAL);
+	Material* mat = AssetGet_Material(WOODTORCH_MATERIAL);
 	shader_update_fog(mat->shader);
 	shader_update_lights(mat->shader);
 
 	DrawMesh(
-		AssetGet_Model(WOODTORCH_ASSET_MAIN_MODEL)->meshes[MAIN_MODEL_MESH_MAIN],
+		AssetGet_Model(WOODTORCH_MODEL)->meshes[WOODTORCH_MESH_MAIN],
 		*mat,
 		GetMatrix(actor)
 	);
