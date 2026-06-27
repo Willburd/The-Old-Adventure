@@ -92,7 +92,6 @@ SCENE_ACTIVATE_ROOM(Sfieldtest)
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { -6.67f, 0.16f, -14.74f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 6.11f, 0.16f, -14.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 
-	/*
 	// Path of torches
 	struct Actor* torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 48.96f, -9.88f, 2.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	torch->blend_color = ColorToVector4(BLUE);
@@ -102,15 +101,6 @@ SCENE_ACTIVATE_ROOM(Sfieldtest)
 	torch->blend_color = ColorToVector4(GREEN);
 	torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 285.25f, -9.91f, -63.23f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	torch->blend_color = ColorToVector4(YELLOW);
-	*/
-
-	// Torch test wall
-	for (int i = 0; i < 45; i++)
-	{
-		struct Actor* torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { rand() % 10, 5.0f, rand() % 10}, QuaternionIdentity(), Vector3One(), Vector3Zero());
-		torch->blend_color = ColorToVector4((Color){ rand() % 256, rand() % 256, rand() % 256, 255 });
-	}
-
 }
 
 SCENE_LIGHTNODES(Sfieldtest)
