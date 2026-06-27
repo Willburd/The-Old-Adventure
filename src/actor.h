@@ -45,6 +45,7 @@ struct Actor {
 
 	unsigned int actor_flags;
 	float draw_range;
+	Vector4 blend_color;
 
 	int animlayer_count;
 	struct AnimationLayer* animation_layers[ANIMATION_LAYER_MAX];
@@ -100,7 +101,7 @@ x->is_destroying = FALSE; \
 x->parent = NULL; \
 x->actor_flags = 0; \
 x->actor_flags = 0; \
-x->draw_range = DEFAULT_MAX_RENDER_RANGE; \
+x->draw_range = DEFAULT_MAX_RENDER_RANGE; x->blend_color = (Vector4){ 255, 255, 255, 255}; \
 x->animlayer_count = -1; \
 x->func_init = NULL; x->func_preloadassets = NULL; \
 x->func_destroy = NULL; \

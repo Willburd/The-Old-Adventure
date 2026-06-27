@@ -20,7 +20,8 @@ ACTOR_TRANSPARENTDRAWWORLD(fire);
 
 ACTOR_INIT(fire)
 {
-	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_INTERACTIVE;
+	actor->actor_flags = 0;
+	actor->blend_color = ColorToVector4(GOLD);
 	ACTOR_REGISTER_PRELOADASSETS(fire);
 	ACTOR_REGISTER_LIGHTNODES(fire);
 	ACTOR_REGISTER_TRANSPARENTDRAWWORLD(fire);
@@ -37,7 +38,8 @@ ACTOR_PRELOADASSETS(fire)
 
 ACTOR_LIGHTNODES(fire)
 {
-	LIGHT_NODE_TORCH(actor->position.x, actor->position.y, actor->position.z, 15.0f);
+	Color fire_col_blend = Vector4ToColor(Vector4Lerp(actor->blend_color, ColorToVector4(WHITE), 0.5f));
+	LIGHT_NODE_TORCH(actor->position.x, actor->position.y, actor->position.z, 15.0f, fire_col_blend);
 }
 
 ACTOR_TRANSPARENTDRAWWORLD(fire)
@@ -57,9 +59,8 @@ ACTOR_TRANSPARENTDRAWWORLD(fire)
 	Shader set_shader = mat->shader;
 	BeginShaderMode(set_shader);
 
-	Vector4 fire_color = ColorToVector4(GOLD);
 	int fire_loc = GetShaderLocation(set_shader, "FireColor");
-	SetShaderValue(set_shader, fire_loc, &fire_color, SHADER_UNIFORM_VEC4);
+	SetShaderValue(set_shader, fire_loc, &actor->blend_color, SHADER_UNIFORM_VEC4);
 
 	fire_loc = GetShaderLocation(set_shader, "Identity");
 	SetShaderValue(set_shader, fire_loc, &actor->uuid, SHADER_UNIFORM_INT);
