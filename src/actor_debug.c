@@ -44,7 +44,9 @@ ACTOR_POSTDRAWHUD(debug)
 	if (!draw_debug_info)
 		return;
 	struct Actor* player = FINDACTORTYPE(act_player);
-	struct Actor* scene = scene = GETSCENE(player);
+	if (!ACTOR_EXISTS(player))
+		return;
+	struct Actor* scene = GETSCENE(player);
 	int room_index = -1;
 	if (scene)
 	{
@@ -68,6 +70,12 @@ ACTOR_POSTDRAWHUD(debug)
 		struct Actor* draw_actor = world_actors[i];
 		if (!ACTOR_EXISTS(draw_actor))
 			continue;
-		DrawText(TextFormat("[%i] %s", i, actor_name(draw_actor->actor_type)), 5, 25 + (i*12), 4, WHITE);
+		char* parent_name = "NOPARENT";
+		if (ACTOR_EXISTS(ACTOR_PARENT(draw_actor)))
+		{
+			struct Actor* parent = ACTOR_PARENT(draw_actor);
+			parent_name = parent->actor_type_name;
+		}
+		DrawText(TextFormat("[%i](%s)->%s  ", i, parent_name, draw_actor->actor_type_name), 5, 25 + (i*12), 4, WHITE);
 	}
 }

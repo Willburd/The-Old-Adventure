@@ -40,13 +40,8 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, V
 	{
 		actor->animation_layers[i] = NULL;
 	}
-	
-	// Configure to type of actor made
-	ACTOR_LIBRARY(actor, actor_type);
-	if (actor_type != act_scene && ACTOR_HAS(actor, func_preloadassets)) // Scenes handle preload assets themselves at a much earlier point
-		actor->func_preloadassets(actor);
 
-	// Place in update list
+	// Place in update list before we configure it. This way scenes appear before their actors.
 	for (int i = 0; i < ACTOR_LIMIT; i++)
 	{
 		if (world_actors[i] != NULL)
@@ -55,8 +50,14 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, V
 		actor->index = i;
 		if (i > current_actor_cap)
 			current_actor_cap = i;
+
+	// Configure to type of actor made
+	ACTOR_LIBRARY(actor, actor_type);
+	if (actor_type != act_scene && ACTOR_HAS(actor, func_preloadassets)) // Scenes handle preload assets themselves at a much earlier point
+		actor->func_preloadassets(actor);
+
 #ifdef _DEBUG
-		printf("ACTOR SPAWN: [type: %s] slot: %i [%llu]\n", actor_name(actor->actor_type), actor->index, actor->uuid);
+		printf("ACTOR SPAWN: [type: %s] slot: %i [%llu]\n", actor->actor_type_name, actor->index, actor->uuid);
 #endif
 		return actor;
 	}

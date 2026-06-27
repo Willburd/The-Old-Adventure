@@ -17,21 +17,21 @@
 #define MENUINDEX utilityA1
 
 // private header
-SCENE_ACTIVATE_ROOM(debug);
-SCENE_UPDATE(debug);
-SCENE_DRAWHUD(debug);
+SCENE_ACTIVATE_ROOM(Sdebug);
+SCENE_UPDATE(Sdebug);
+SCENE_DRAWHUD(Sdebug);
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SCENE_INIT(debug)
+SCENE_INIT(Sdebug)
 {
 	// Configure scene
-	SCENE_REGISTER_ACTIVATE_ROOM(debug);
-	SCENE_REGISTER_UPDATE(debug);
-	SCENE_REGISTER_DRAWHUD(debug);
+	SCENE_REGISTER_ACTIVATE_ROOM(Sdebug);
+	SCENE_REGISTER_UPDATE(Sdebug);
+	SCENE_REGISTER_DRAWHUD(Sdebug);
 
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
@@ -43,7 +43,7 @@ SCENE_INIT(debug)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SCENE_ACTIVATE_ROOM(debug)
+SCENE_ACTIVATE_ROOM(Sdebug)
 {
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
@@ -58,7 +58,7 @@ SCENE_ACTIVATE_ROOM(debug)
 		ACTOR_FACTORY(act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
-SCENE_UPDATE(debug)
+SCENE_UPDATE(Sdebug)
 {
 	SceneData* our_data = (SceneData*)scene->data;
 
@@ -81,7 +81,7 @@ SCENE_UPDATE(debug)
 	}
 }
 
-SCENE_DRAWHUD(debug)
+SCENE_DRAWHUD(Sdebug)
 {
 	SceneData* our_data = (SceneData*)scene->data;
 
@@ -89,9 +89,8 @@ SCENE_DRAWHUD(debug)
 
 	for (int i = 0; i < LAST_SCENE; i++)
 	{
-		char* entry = scene_name(i);
 		char* pretex = our_data->MENUINDEX == i ? ">" : "";
-		DrawText(TextFormat("%s%s", pretex, entry), 120, 30 + (i * 8), 5, WHITE);
+		DrawText(TextFormat("%s%s", pretex, all_scene_names[i]), 120, 30 + (i * 8), 5, WHITE);
 	}
 }
 

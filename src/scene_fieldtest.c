@@ -22,25 +22,25 @@
 #define FIELD_COLLISION 0
 
 // private header
-SCENE_PRELOADASSETS(fieldtest);
-SCENE_CLEANUP(fieldtest);
-SCENE_ACTIVATE_ROOM(fieldtest);
-SCENE_LIGHTNODES(fieldtest);
-SCENE_DRAWWORLD(fieldtest);
+SCENE_PRELOADASSETS(Sfieldtest);
+SCENE_CLEANUP(Sfieldtest);
+SCENE_ACTIVATE_ROOM(Sfieldtest);
+SCENE_LIGHTNODES(Sfieldtest);
+SCENE_DRAWWORLD(Sfieldtest);
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SCENE_INIT(fieldtest)
+SCENE_INIT(Sfieldtest)
 {
 	// Configure scene
-	SCENE_REGISTER_PRELOADASSETS(fieldtest);
-	SCENE_REGISTER_CLEANUP(fieldtest);
-	SCENE_REGISTER_LIGHTNODES(fieldtest);
-	SCENE_REGISTER_ACTIVATE_ROOM(fieldtest);
-	SCENE_REGISTER_DRAWWORLD(fieldtest);
+	SCENE_REGISTER_PRELOADASSETS(Sfieldtest);
+	SCENE_REGISTER_CLEANUP(Sfieldtest);
+	SCENE_REGISTER_LIGHTNODES(Sfieldtest);
+	SCENE_REGISTER_ACTIVATE_ROOM(Sfieldtest);
+	SCENE_REGISTER_DRAWWORLD(Sfieldtest);
 
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
@@ -52,7 +52,7 @@ SCENE_INIT(fieldtest)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SCENE_PRELOADASSETS(fieldtest)
+SCENE_PRELOADASSETS(Sfieldtest)
 {
 	// Load model
 	Asset* model_asset = LoadAsset_Model(FIELD_MODEL, FALSE);
@@ -62,13 +62,13 @@ SCENE_PRELOADASSETS(fieldtest)
 	CollisionRegister(scene, &model_asset->mdl->meshes[FIELD_COLLISION], COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
-SCENE_CLEANUP(fieldtest)
+SCENE_CLEANUP(Sfieldtest)
 {
 	// clear collision data
 	CollisionResign(scene, &AssetGet_Model(FIELD_MODEL)->meshes[FIELD_COLLISION]);
 }
 
-SCENE_ACTIVATE_ROOM(fieldtest)
+SCENE_ACTIVATE_ROOM(Sfieldtest)
 {
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
@@ -76,7 +76,7 @@ SCENE_ACTIVATE_ROOM(fieldtest)
 	data->config_flags = 0;
 
 	// Exits
-	EXIT_TRIGGER_CREATE(scene_fieldtest, ent_caveA, scene, (Vector3) { 0.0f, 0.0f, 36.0f }, 18.0f);
+	EXIT_TRIGGER_CREATE(scene_Sfieldtest, ent_caveA, scene, (Vector3) { 0.0f, 0.0f, 36.0f }, 18.0f);
 
 	// Entrances
 	ENTRANCE_CREATE(ent_debugentrance, scene, (Vector3) { 2.0, 0, 2 }, (Vector3) { -1, 0, 2 });
@@ -92,6 +92,7 @@ SCENE_ACTIVATE_ROOM(fieldtest)
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { -6.67f, 0.16f, -14.74f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 6.11f, 0.16f, -14.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 
+	/*
 	// Path of torches
 	struct Actor* torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 48.96f, -9.88f, 2.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	torch->blend_color = ColorToVector4(BLUE);
@@ -101,15 +102,16 @@ SCENE_ACTIVATE_ROOM(fieldtest)
 	torch->blend_color = ColorToVector4(GREEN);
 	torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 285.25f, -9.91f, -63.23f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	torch->blend_color = ColorToVector4(YELLOW);
+	*/
 
 }
 
-SCENE_LIGHTNODES(fieldtest)
+SCENE_LIGHTNODES(Sfieldtest)
 {
 	LIGHT_NODE_CAVE(-1.5f, 0.15f, 36.0f, 15.0f);
 }
 
-SCENE_DRAWWORLD(fieldtest)
+SCENE_DRAWWORLD(Sfieldtest)
 {
 	Material* mat = AssetGet_Material(FIELD_MATERIAL_MAIN);
 	shader_update_fog(mat->shader);

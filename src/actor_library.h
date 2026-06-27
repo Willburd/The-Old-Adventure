@@ -49,33 +49,7 @@ ACTOR_INIT(signpost);
 ACTOR_INIT(fire);
 ACTOR_INIT(woodtorch);
 
-inline char* actor_name(ActorTypes actor_id)
-{
-	char* actor_names[LAST_ACTOR] = {
-		"Error",
-		// debugging
-		"Debug",
-		"Test",
-		"Animtest",
-		// Gameengine
-		"Scene",
-		"Entrance",
-		"TriggerExit",
-		"Fadein",
-		"Camera",
-		"Skybox",
-		"Textbox",
-		// Adventure
-		"Player",
-		"PauseBox",
-		"Signpost",
-		"Woodentorch",
-		"Fire"
-	};
-	return actor_names[actor_id];
-}
-
-#define MAKE_ACTOR_INIT(x) if(actor_type == act_## x){actor->func_init = actor_## x ##_init;if(actor->func_init != NULL) actor->func_init(actor);return;}
+#define MAKE_ACTOR_INIT(x) if(actor_type == act_## x){actor->actor_type_name = #x ;actor->func_init = actor_## x ##_init;if(actor->func_init != NULL) actor->func_init(actor);return;}
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 {
 	// debugging
@@ -97,5 +71,6 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 	MAKE_ACTOR_INIT(fire);
 	MAKE_ACTOR_INIT(woodtorch);
 }
+#undef MAKE_ACTOR_INIT
 
 #endif

@@ -28,6 +28,7 @@ struct Actor {
 	int index;
 	uint64_t uuid;
 	int actor_type;
+	char* actor_type_name;
 	int is_destroying;
 
 	struct Actor* parent;
@@ -96,7 +97,7 @@ struct Actor {
 	void (*func_touch)(struct Actor* actor, struct Actor* other);
 };
 #define ACTOR_CLEAR(x) \
-x->uuid = 0; x->index = -1; x->actor_type = 0; \
+x->uuid = 0; x->index = -1; x->actor_type = 0; x->actor_type_name = "?"; \
 x->is_destroying = FALSE; \
 x->parent = NULL; \
 x->actor_flags = 0; \

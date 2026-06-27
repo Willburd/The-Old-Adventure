@@ -67,7 +67,7 @@ int main(void)
         }
         if (IsKeyPressed(KEY_F4)) // Debug warp
         {
-            TransferScene(scene_debug, ent_title);
+            TransferScene(scene_Sdebug, ent_title);
         }
         if (IsKeyPressed(KEY_F5)) // Reload text assets
         {
@@ -102,6 +102,7 @@ static void game_setup()
     {
         world_actors[i] = NULL;
     }
+    SceneNamePredef();
 
     // State
     gameplay_state = GAMESTATE_GAMEPLAY;
@@ -126,7 +127,7 @@ static void game_setup()
     ACTOR_FACTORY(act_camera, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 
     // Enter game
-    LoadScene(scene_boot, ent_title);
+    LoadScene(scene_Sboot, ent_title);
 }
 
 static void game_shutdown()

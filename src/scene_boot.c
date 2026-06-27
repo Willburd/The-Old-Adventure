@@ -10,19 +10,19 @@
 
 
 // private header
-SCENE_ACTIVATE_ROOM(boot);
-SCENE_UPDATE(boot);
+SCENE_ACTIVATE_ROOM(Sboot);
+SCENE_UPDATE(Sboot);
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SCENE_INIT(boot)
+SCENE_INIT(Sboot)
 {
 	// Configure 
-	SCENE_REGISTER_ACTIVATE_ROOM(boot);
-	SCENE_REGISTER_UPDATE(boot);
+	SCENE_REGISTER_ACTIVATE_ROOM(Sboot);
+	SCENE_REGISTER_UPDATE(Sboot);
 
 	// Set data
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
@@ -34,7 +34,7 @@ SCENE_INIT(boot)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SCENE_ACTIVATE_ROOM(boot)
+SCENE_ACTIVATE_ROOM(Sboot)
 {
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
@@ -42,8 +42,8 @@ SCENE_ACTIVATE_ROOM(boot)
 	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
 }
 
-SCENE_UPDATE(boot)
+SCENE_UPDATE(Sboot)
 {
 	// Go to title
-	TransferScene(scene_debug, ent_title);
+	TransferScene(scene_Sdebug, ent_title);
 }

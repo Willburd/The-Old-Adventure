@@ -57,10 +57,10 @@ ACTOR_INIT(scene)
 	}
 
 	// Spawn player
+	ACTOR_DESTROY_TYPE(act_player); // Only a single player
 	if (next_entrance < NO_PLAYER_SCENE)
 	{
-		if(FINDACTORTYPE(act_player) == NULL) // Only a single player
-			ACTOR_FACTORY(act_player, scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+		ACTOR_FACTORY(act_player, current_scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 		if (entrance != NULL) // Enter the scene from this entrance if we have one
 			actor_entrance_startentry(entrance);
 	}

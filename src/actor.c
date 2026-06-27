@@ -213,7 +213,7 @@ struct Actor* GETSCENE(struct Actor* actor)
 {
 	if (actor == NULL)
 		return NULL;
-	while (ACTOR_PARENT(actor))
+	while (ACTOR_PARENT(actor) != NULL)
 	{
 		actor = ACTOR_PARENT(actor);
 	}

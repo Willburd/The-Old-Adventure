@@ -12,50 +12,51 @@
 typedef enum
 {
 	// Setup
-	scene_boot,
+	scene_Sboot,
 	// Debug
-	scene_debug,
-	scene_title,
-	scene_test,
-	scene_fieldtest,
+	scene_Sdebug,
+	scene_Stitle,
+	scene_Stest,
+	scene_Sfieldtest,
 	// Adventure
 	LAST_SCENE
-
 } SceneID;
+char* all_scene_names[500];
 
-SCENE_INIT(debug);
-SCENE_INIT(boot);
-SCENE_INIT(title);
-SCENE_INIT(test);
-SCENE_INIT(fieldtest);
+SCENE_INIT(Sdebug);
+SCENE_INIT(Sboot);
+SCENE_INIT(Stitle);
+SCENE_INIT(Stest);
+SCENE_INIT(Sfieldtest);
 
-inline char* scene_name(SceneID scene_id)
+#define PREDEF_SCENE(x) all_scene_names[scene_## x] = #x;
+// Setup scene debug names
+inline void SceneNamePredef()
 {
-	char* scene_names[LAST_SCENE] = {
-		// Setup
-		"Boot",
-		// Debug
-		"Debug",
-		"Title",
-		"Test",
-		"FieldTest"
-		// Adventure
-	};
-	return scene_names[scene_id];
+	// Setup
+	PREDEF_SCENE(Sdebug);
+	// Debug
+	PREDEF_SCENE(Sboot);
+	PREDEF_SCENE(Stitle);
+	PREDEF_SCENE(Stest);
+	// Adventure
+	PREDEF_SCENE(Sfieldtest);
 }
+#undef PREDEF_SCENE
 
-#define MAKE_SCENE_INIT(x,y) if(scene_id == x){scene->func_init = y;scene->func_init(scene);}
+#define MAKE_SCENE_INIT(x) if(scene_id == scene_## x ){scene->actor_type_name = #x ;scene->func_init = scene_## x ##_init;scene->func_init(scene);}
 inline void SCENE_LIBRARY(struct Actor* scene, SceneID scene_id)
 {
-	printf("SCENE CHANGE: %s \n", scene_name(scene_id));
+	printf("SCENE CHANGE: %s \n", scene->actor_type_name);
 	// Setup
-	MAKE_SCENE_INIT(scene_boot, scene_boot_init);
+	MAKE_SCENE_INIT(Sboot);
 	// Debug
-	MAKE_SCENE_INIT(scene_debug, scene_debug_init);
-	MAKE_SCENE_INIT(scene_title, scene_title_init);
-	MAKE_SCENE_INIT(scene_test, scene_test_init);
-	MAKE_SCENE_INIT(scene_fieldtest, scene_fieldtest_init);
+	MAKE_SCENE_INIT(Sdebug);
+	MAKE_SCENE_INIT(Stitle);
+	MAKE_SCENE_INIT(Stest);
 	// Adventure
+	MAKE_SCENE_INIT(Sfieldtest);
 }
+#undef MAKE_SCENE_INIT
 
 #endif
