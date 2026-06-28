@@ -37,7 +37,7 @@
 
 #define MATRIX_ASSEMBLE(transform) MatrixMultiply(MatrixMultiply(MatrixScale(transform.scale.x, transform.scale.y, transform.scale.z), QuaternionToMatrix(transform.rotation)), MatrixTranslate(transform.translation.x, transform.translation.y, transform.translation.z))
 
-#define DRAWCAPSULE(pos, hig, rad, col) DrawCapsule(Vector3Add(pos, Vector3Scale(VEC3UP, rad)), Vector3Add(pos, Vector3Scale(VEC3UP, rad + hig + rad)), rad, 7, 3, col)
+#define DRAWCAPSULE(pos, hig, rad, col) DrawCapsule(Vector3Add(pos, Vector3Scale(VEC3UP, rad)), Vector3Add(pos, Vector3Scale(VEC3UP, rad + hig + rad)), rad, 7, 5, col)
 
 Vector4 ColorToVector4(Color col);
 Color Vector4ToColor(Vector4 vec);
