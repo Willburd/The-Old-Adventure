@@ -38,9 +38,6 @@ static void AdvanceText(struct Actor* textbox);
 
 ACTOR_INIT(textbox)
 {
-	// Remove previous textboxes
-	ACTOR_DESTROY_TYPE(act_textbox);
-
 	// Lock to textbox gamestate
 	gameplay_state &= ~GAMESTATE_GAMEPLAY;
 	gameplay_state |= GAMESTATE_TEXTBOX;
@@ -66,6 +63,10 @@ ACTOR_INIT(textbox)
 
 struct Actor* TEXTBOX_CREATE(struct Actor* owner, struct Actor* player, char* text_id, float text_speed)
 {
+	// Remove previous textboxes
+	ACTOR_DESTROY_TYPE(act_textbox);
+	
+	// Create our textbox
 	struct Actor* textbox = ACTOR_FACTORY(act_textbox, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 	TextboxData* textbox_data = (TextboxData*)textbox->data;
 	textbox_data->current_text = GetText(text_id);

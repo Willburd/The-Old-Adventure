@@ -2,7 +2,7 @@
 #define __ANIMATION_HEADER__
 
 // Expected animation framerate for ALL model animations
-#define ANIMATION_FRAMERATE 60
+#define ANIMATION_FRAMERATE 24 // Blender default
 #define MAX_BONES 255
 
 #define BLENDTYPE_MIX 0

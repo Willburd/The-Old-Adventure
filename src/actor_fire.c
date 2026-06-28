@@ -38,8 +38,6 @@ ACTOR_PRELOADASSETS(fire)
 
 ACTOR_LIGHTNODES(fire)
 {
-	if (OutOfRenderRange(actor))
-		return;
 	// Sync with parent torch if we are a children of one.
 	struct Actor* parent = ACTOR_PARENT(actor);
 	if (parent && parent->actor_type == act_woodtorch)
