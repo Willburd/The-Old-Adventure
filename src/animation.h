@@ -3,7 +3,7 @@
 
 // Expected animation framerate for ALL model animations
 #define ANIMATION_FRAMERATE 24 // Blender default
-#define MAX_BONES 255
+#define MAX_BONES 128
 
 #define BLENDTYPE_MIX 0
 #define BLENDTYPE_REPLACE 1

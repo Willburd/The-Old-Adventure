@@ -3,7 +3,6 @@
 #include "tools.h"
 #include "raymath.h"
 #include <string.h>
-#include <threads.h>
 
 ModelAnimation* GetAnimation(Asset* asset, char* name)
 {
