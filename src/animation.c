@@ -3,6 +3,7 @@
 #include "tools.h"
 #include "raymath.h"
 #include <string.h>
+#include <threads.h>
 
 ModelAnimation* GetAnimation(Asset* asset, char* name)
 {
@@ -211,8 +212,6 @@ void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
     if (model->boneMatrices == NULL)
         return;
 
-    // Bones need to be calculated from the bottom up.
-    // So we do so recursively... Keeping track of solved bones so we can end recursive chains early.
     for (int bone_index = 0; bone_index < model->skeleton.boneCount; bone_index++)
     {
         ApplyAnimationLayerTransformsToBone(bone_index, model, actor, tick_percent);

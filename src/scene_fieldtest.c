@@ -101,6 +101,11 @@ SCENE_ACTIVATE_ROOM(Sfieldtest)
 	torch->blend_color = ColorToVector4(GREEN);
 	torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 285.25f, -9.91f, -63.23f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	torch->blend_color = ColorToVector4(YELLOW);
+
+	for (int i = 0; i < 25; i += 1)
+	{
+		ACTOR_FACTORY(act_animationtest, scene, (Vector3) { rand() % 10, 0.0f, rand() % 10 }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	}
 }
 
 SCENE_LIGHTNODES(Sfieldtest)
