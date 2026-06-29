@@ -58,6 +58,7 @@ ACTOR_INIT(pause_box)
 
 ACTOR_PRELOADASSETS(pause_box)
 {
+	LoadAsset_Material(ASSET_MATERIALS"/Objects/skinned_example.mat", FALSE);
 	Asset* model_asset = LoadAsset_Model(PAUSEBOX_MODEL, FALSE);
 	AddAnimLayer(actor, GetAnimation(model_asset, "HoldOpen"), ANIMATION_FRAMERATE, ANIM_LOOP, TRUE, 1.0f, BLENDTYPE_REPLACE);
 	AddAnimLayer(actor, GetAnimation(model_asset, "HoldClosed"), ANIMATION_FRAMERATE, ANIM_LOOP, FALSE, 1.0f, BLENDTYPE_REPLACE);
@@ -97,8 +98,7 @@ ACTOR_ANIMATION_END(pause_box)
 
 ACTOR_POSTDRAWWORLD(pause_box)
 {
-	Material* mat = AssetGet_Material(ASSET_MATERIALS"/Error/no_material.mat");
-	Material* mat_f = AssetGet_Material(ASSET_MATERIALS"/Objects/example.mat");
+	Material* mat = AssetGet_Material(ASSET_MATERIALS"/Objects/skinned_example.mat");
 	Matrix box_mat = MatrixCompose(cam_main.position, QuaternionLookAt(cam_main.position, cam_main.target, VEC3UP), (Vector3) { 1.0f, 0.92f, 1.0f});
 	
 	Model* mdl = AssetGet_Model(PAUSEBOX_MODEL);
@@ -106,7 +106,7 @@ ACTOR_POSTDRAWWORLD(pause_box)
 
 	DrawMesh( // Forward
 		mdl->meshes[3],
-		*mat_f,
+		*mat,
 		box_mat
 	);
 	DrawMesh( // Right
