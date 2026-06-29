@@ -81,7 +81,7 @@ void main()
     skinnedNormal.w = 0.0;
 
     // Position calc
-    gl_Position = mvp*vec4(vertexPosition, 1.0);
+    gl_Position = mvp*skinnedPosition;
     fragNormal = normalize(vec3(matNormal*skinnedNormal));
     fragTexCoord = vertexTexCoord;
 
