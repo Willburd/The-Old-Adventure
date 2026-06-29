@@ -165,9 +165,6 @@
     <ClCompile Include="hashmap.c">
       <Filter>Source Files\hashmap</Filter>
     </ClCompile>
-    <ClCompile Include="skinmodel.c">
-      <Filter>Source Files\engine\game</Filter>
-    </ClCompile>
     <ClCompile Include="player_state_grounded.c">
       <Filter>Source Files\adventure\actors\player_states</Filter>
     </ClCompile>

@@ -37,6 +37,8 @@ ACTOR_INIT(animationtest)
 
 ACTOR_PRELOADASSETS(animationtest)
 {
+	LoadAsset_Material(MATERIAL_ANIM_TEST, FALSE);
+
 	Asset* model_asset = LoadAsset_Model(MODEL_ANIM_TEST, FALSE);
 	struct AnimationLayer* idle_layer = AddAnimLayer(actor, GetAnimation(model_asset, "Robot_Walking"), ANIMATION_FRAMERATE, ANIM_LOOP, TRUE, 1.0f, BLENDTYPE_MIX);
 	AnimLayerFilterAllBones(model_asset, idle_layer, 0.6f); // Low influence on everything except legs
@@ -75,7 +77,7 @@ ACTOR_DRAWWORLD(animationtest)
 	Model* model = AssetGet_Model(MODEL_ANIM_TEST);
 	Material* mat = AssetGet_Material(MATERIAL_ANIM_TEST);
 	Matrix actor_matrix = GetMatrix(actor);
-	ApplyAnimLayers(actor, model, tick_percent);
+	ApplyAnimLayers(actor, model, mat, tick_percent);
 
 	for (int i = 0; i <= model->meshCount; i++)
 	{

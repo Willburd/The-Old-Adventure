@@ -116,7 +116,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\darkl\OneDrive\Desktop\Tools\raylib-6.0_win64_msvc16\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\darkl\OneDrive\Desktop\Tools\raylib-6.0_win64_msvc16\raylib-master\projects\VS2022\build\raylib\bin\x64\Debug.DLL</AdditionalLibraryDirectories>
       <AdditionalDependencies>raylib.lib;winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)  </AdditionalDependencies>
     </Link>
     <Manifest>
@@ -187,7 +187,6 @@
     <ClCompile Include="scene_fieldtest.c" />
     <ClCompile Include="scene_test.c" />
     <ClCompile Include="scene_title.c" />
-    <ClCompile Include="skinmodel.c" />
     <ClCompile Include="text_loading.c" />
     <ClCompile Include="tools.c" />
   </ItemGroup>

@@ -3,6 +3,7 @@
 #include "tools.h"
 #include "raymath.h"
 #include <string.h>
+#include "rlgl.h"
 
 ModelAnimation* GetAnimation(Asset* asset, char* name)
 {
@@ -204,11 +205,15 @@ static inline void ApplyAnimationLayerTransformsToBone(int bone_index, Model* mo
     model->boneMatrices[bone_index] = MatrixMultiply(MatrixInvert(bindPoseMatrix), currentPoseMatrix);
 }
 
-void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
+void ApplyAnimLayers(struct Actor* actor, Model* model, Material* mat, double tick_percent)
 {
     if (actor->animlayer_count == -1)
         return;
     if (model->boneMatrices == NULL)
+        return;
+    if (mat->shader.locs == NULL)
+        return;
+    if (mat->shader.locs[SHADER_LOC_MATRIX_BONETRANSFORMS] == -1)
         return;
 
     for (int bone_index = 0; bone_index < model->skeleton.boneCount; bone_index++)
@@ -217,5 +222,6 @@ void ApplyAnimLayers(struct Actor* actor, Model* model, double tick_percent)
     }
 
     // Forward bones to gpu
-    SkinModel(model);
+    rlEnableShader(mat->shader.id);
+    rlSetUniformMatrices(mat->shader.locs[SHADER_LOC_MATRIX_BONETRANSFORMS], model->boneMatrices, model->skeleton.boneCount);
 }

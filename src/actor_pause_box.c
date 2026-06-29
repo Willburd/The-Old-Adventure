@@ -102,7 +102,7 @@ ACTOR_POSTDRAWWORLD(pause_box)
 	Matrix box_mat = MatrixCompose(cam_main.position, QuaternionLookAt(cam_main.position, cam_main.target, VEC3UP), (Vector3) { 1.0f, 0.92f, 1.0f});
 	
 	Model* mdl = AssetGet_Model(PAUSEBOX_MODEL);
-	ApplyAnimLayers(actor, mdl, tick_percent);
+	ApplyAnimLayers(actor, mdl, mat, tick_percent);
 
 	DrawMesh( // Forward
 		mdl->meshes[3],
