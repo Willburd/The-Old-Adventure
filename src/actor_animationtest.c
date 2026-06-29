@@ -4,7 +4,7 @@
 #include "input.h"
 
 // Assets
-#define MATERIAL_ANIM_TEST ASSET_MATERIALS"/Objects/example.mat"
+#define MATERIAL_ANIM_TEST ASSET_MATERIALS"/Objects/skinned_example.mat"
 #define MODEL_ANIM_TEST ASSET_MODELS"/Tools/robot.glb"
 
 // private header
