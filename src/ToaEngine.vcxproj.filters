@@ -79,6 +79,12 @@
     <Filter Include="Header Files\engine\localization">
       <UniqueIdentifier>{da819f6d-f6ca-47b9-9c56-a9e10bb9d4c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\cjson">
+      <UniqueIdentifier>{2f12a7b0-e928-4ff6-b39d-ff2e80c4f59a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\cjson">
+      <UniqueIdentifier>{64ff0ffb-3c0d-4202-b5c2-a09c09af5433}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -201,6 +207,15 @@
     <ClCompile Include="actor_woodtorch.c">
       <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_tree.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON.c">
+      <Filter>Source Files\cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON_Utils.c">
+      <Filter>Source Files\cjson</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -286,6 +301,12 @@
     </ClInclude>
     <ClInclude Include="game_state.h">
       <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="cJSON.h">
+      <Filter>Header Files\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="cJSON_Utils.h">
+      <Filter>Header Files\cjson</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

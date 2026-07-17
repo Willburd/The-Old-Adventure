@@ -29,6 +29,7 @@ typedef enum
 	act_signpost,
 	act_fire,
 	act_woodtorch,
+	act_tree,
 	LAST_ACTOR
 
 } ActorTypes;
@@ -48,6 +49,7 @@ ACTOR_INIT(pause_box);
 ACTOR_INIT(signpost);
 ACTOR_INIT(fire);
 ACTOR_INIT(woodtorch);
+ACTOR_INIT(tree);
 
 #define MAKE_ACTOR_INIT(x) if(actor_type == act_## x){actor->actor_type_name = #x ;actor->func_init = actor_## x ##_init;if(actor->func_init != NULL) actor->func_init(actor);return;}
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
@@ -70,6 +72,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 	MAKE_ACTOR_INIT(signpost);
 	MAKE_ACTOR_INIT(fire);
 	MAKE_ACTOR_INIT(woodtorch);
+	MAKE_ACTOR_INIT(tree);
 }
 #undef MAKE_ACTOR_INIT
 

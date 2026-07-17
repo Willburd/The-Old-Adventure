@@ -161,10 +161,13 @@
     <ClCompile Include="actor_skybox.c" />
     <ClCompile Include="actor_test.c" />
     <ClCompile Include="actor_textbox.c" />
+    <ClCompile Include="actor_tree.c" />
     <ClCompile Include="actor_trigger_exit.c" />
     <ClCompile Include="actor_woodtorch.c" />
     <ClCompile Include="animation.c" />
     <ClCompile Include="assets.c" />
+    <ClCompile Include="cJSON.c" />
+    <ClCompile Include="cJSON_Utils.c" />
     <ClCompile Include="collision.c" />
     <ClCompile Include="core_assets.c" />
     <ClCompile Include="world_state.c" />
@@ -202,6 +205,8 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="assets.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="cJSON.h" />
+    <ClInclude Include="cJSON_Utils.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="core_assets.h" />
     <ClInclude Include="game_draw.h" />
