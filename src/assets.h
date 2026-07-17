@@ -7,6 +7,7 @@
 #include "globals.h"
 #include "raylib.h"
 #include "hashmap.h"
+#include "cJSON.h"
 
 // TODO - Properly set something up for this
 #ifdef _RELEASE
@@ -39,6 +40,7 @@ typedef struct {
     char* filepath;
     Texture2D* tex;
     Model* mdl;
+    cJSON* mdl_info;
     Sound* snd;
     Music* mus;
     Material* mat;

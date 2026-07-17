@@ -170,6 +170,7 @@
     <ClCompile Include="cJSON_Utils.c" />
     <ClCompile Include="collision.c" />
     <ClCompile Include="core_assets.c" />
+    <ClCompile Include="models.c" />
     <ClCompile Include="world_state.c" />
     <ClCompile Include="game_draw.c" />
     <ClCompile Include="game_update.c" />
@@ -218,6 +219,7 @@
     <ClInclude Include="inventory.h" />
     <ClInclude Include="light_tools.h" />
     <ClInclude Include="materials.h" />
+    <ClInclude Include="models.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="scene_entry.h" />
     <ClInclude Include="scene_library.h" />

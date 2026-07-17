@@ -1,5 +1,5 @@
-#ifndef __MODELS_HEADER__
-#define __MODELS_HEADER__
+#ifndef __MODELMATS_HEADER__
+#define __MODELMATS_HEADER__
 
 #include "raylib.h"
 

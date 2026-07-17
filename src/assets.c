@@ -2,6 +2,7 @@
 #include "assets.h"
 #include "animation.h"
 #include "materials.h"
+#include "models.h"
 #include "tools.h"
 
 // Remove all assets from the hashmap. Normally ignores core assets.
@@ -55,6 +56,9 @@ void asset_free(void* item) {
         // Unload model
         UnloadModel(*asset->mdl);
         RELEASE(asset->mdl);
+        // Unload json data
+        cJSON_Delete(asset->mdl_info); // Handles the json freeing for us
+        asset->mdl_info = NULL;
         printf("ASSET: model unloaded %s\n", asset->filepath);
     }
     if (asset->snd != NULL && IsSoundValid(*asset->snd))
@@ -108,6 +112,8 @@ Asset* LoadAsset_Model(char* path, int is_core)
     MALLOC_SET(Model, asset->mdl, FALSE);
     // Load model
     *asset->mdl = LoadModel(path);
+    // Get the model's json data
+    asset->mdl_info = ParseGLTFModel(path);
     // Load animation data too
     asset->anm = LoadModelAnimations(path, &asset->anm_count);
     // This uses MEMSET, ensure all data is assigned before hashmapping!

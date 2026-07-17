@@ -216,6 +216,9 @@
     <ClCompile Include="cJSON_Utils.c">
       <Filter>Source Files\cjson</Filter>
     </ClCompile>
+    <ClCompile Include="models.c">
+      <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -307,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="cJSON_Utils.h">
       <Filter>Header Files\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="models.h">
+      <Filter>Header Files\engine\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
