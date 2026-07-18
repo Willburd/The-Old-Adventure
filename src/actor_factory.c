@@ -7,6 +7,7 @@
 #include "actor_factory.h"
 #include "game_update.h"
 #include "animation.h"
+#include "collision.h"
 #include "actor_library.h"
 
 // Creates an actor in the world.
@@ -77,6 +78,8 @@ void ACTOR_DESTROY(struct Actor* actor)
 	actor->is_destroying = TRUE;
 	if (ACTOR_HAS(actor, func_destroy))
 		actor->func_destroy(actor);
+	// Clear collisions
+	CollisionCleanup(actor);
 	// Clear animation layers
 	for (int i = 0; i < ANIMATION_LAYER_MAX; i++)
 	{

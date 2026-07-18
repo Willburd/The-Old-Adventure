@@ -5,5 +5,6 @@
 #include "cJSON.h"
 
 cJSON* ParseGLTFModel(char* path);
+int GetMeshIndex(cJSON* model_json, char* mesh_name);
 
 #endif

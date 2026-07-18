@@ -31,7 +31,7 @@ void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collisi
 	printf("Unable to allocate collider for: [%llu] %s\n", owner->uuid, owner->actor_type_name);
 }
 
-// Resigns a collision from the game's collision system. MUST be done during unload if you registered any meshes to collide.
+// Resigns a collision from the game's collision system.
 void CollisionResign(struct Actor* owner, Mesh* collider)
 {
 	// Find and remove the matching entry
@@ -64,6 +64,22 @@ void CollisionResign(struct Actor* owner, Mesh* collider)
 		}
 	}
 	max_collision--;
+}
+
+// Cleans up all colliders tied to an actor
+void CollisionCleanup(struct Actor* owner)
+{
+	int index_counter = 0;
+	ColliderData clear_array[MAX_COLLIDERS] = { NULL };
+	for (int i = 0; i <= max_collision; i++)
+	{
+		if (world_colliders[i].owner == owner)
+			clear_array[index_counter++] = world_colliders[i];
+	}
+	if(!index_counter)
+		return;
+	for (int i = 0; i < index_counter; i++)
+		CollisionResign(owner, clear_array[i].mesh);
 }
 
 // Lets keep this off the heap

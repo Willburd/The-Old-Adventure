@@ -15,7 +15,6 @@
 
 // private header
 ACTOR_PRELOADASSETS(tree);
-ACTOR_CLEANUP(tree);
 ACTOR_DRAWWORLD(tree);
 
 
@@ -28,7 +27,6 @@ ACTOR_INIT(tree)
 	actor->actor_flags = 0;
 	actor->blend_color = ColorToVector4(GOLD);
 	ACTOR_REGISTER_PRELOADASSETS(tree);
-	ACTOR_REGISTER_CLEANUP(tree);
 	ACTOR_REGISTER_DRAWWORLD(tree);
 }
 
@@ -46,12 +44,6 @@ ACTOR_PRELOADASSETS(tree)
 
 	// Set collision data
 	CollisionRegister(actor, &model_asset->mdl->meshes[TREE_MESH_COLLISION], COL_LAYER_WORLD);
-}
-
-ACTOR_CLEANUP(tree)
-{
-	// clear collision data
-	CollisionResign(actor, &AssetGet_Model(TREE_MODEL)->meshes[TREE_MESH_COLLISION]);
 }
 
 ACTOR_DRAWWORLD(tree)

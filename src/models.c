@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include "assets.h"
 #include "models.h"
+#include "tools.h"
 
+// Extracts json from .glb file 
 cJSON* ParseGLTFModel(char* path)
 {
 	// Load material define file
@@ -40,4 +43,23 @@ cJSON* ParseGLTFModel(char* path)
 	}
 	fclose(fptr);
 	return cJSON_Parse(final_data);
+}
+
+int GetMeshIndex(cJSON* model_json, char* mesh_name)
+{
+	cJSON* mesh_array = cJSON_GetObjectItem(model_json, "nodes");
+	for (int i = 0; i < cJSON_GetArraySize(mesh_array); i++)
+	{
+		cJSON* mesh_entry = cJSON_GetArrayItem(mesh_array, i);
+		
+		if (STRMATCH(cJSON_GetObjectItem(mesh_entry, "name")->valuestring, mesh_name))
+			return cJSON_GetObjectItem(mesh_entry, "mesh")->valueint;
+	}
+	printf("MESH FIND ERROR: Unable to locate %s, meshes are: \n", mesh_name);
+	for (int i = 0; i < cJSON_GetArraySize(mesh_array); i++)
+	{
+		cJSON* mesh_entry = cJSON_GetArrayItem(mesh_array, i);
+		printf("  -%s \n", cJSON_GetObjectItem(mesh_entry, "name")->valuestring);
+	}
+	return 0;
 }

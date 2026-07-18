@@ -5,6 +5,7 @@
 #include "actor_scene.h"
 #include "scene_entry.h"
 #include "assets.h"
+#include "models.h"
 #include "materials.h"
 #include "game_draw.h"
 #include "actor_entrance.h"
@@ -17,13 +18,8 @@
 #define FIELD_MODEL ASSET_MODELS"/Scenes/test_room.glb"
 #define FIELD_MATERIAL_MAIN ASSET_MATERIALS"/Objects/wood.mat"
 
-// Utility
-#define FIELD_MAIN 0
-#define FIELD_COLLISION 0
-
 // private header
 SCENE_PRELOADASSETS(Sfieldtest);
-SCENE_CLEANUP(Sfieldtest);
 SCENE_ACTIVATE_ROOM(Sfieldtest);
 SCENE_LIGHTNODES(Sfieldtest);
 SCENE_DRAWWORLD(Sfieldtest);
@@ -37,7 +33,6 @@ SCENE_INIT(Sfieldtest)
 {
 	// Configure scene
 	SCENE_REGISTER_PRELOADASSETS(Sfieldtest);
-	SCENE_REGISTER_CLEANUP(Sfieldtest);
 	SCENE_REGISTER_LIGHTNODES(Sfieldtest);
 	SCENE_REGISTER_ACTIVATE_ROOM(Sfieldtest);
 	SCENE_REGISTER_DRAWWORLD(Sfieldtest);
@@ -59,13 +54,8 @@ SCENE_PRELOADASSETS(Sfieldtest)
 	LoadAsset_Material(FIELD_MATERIAL_MAIN, FALSE);
 
 	// Set collision data
-	CollisionRegister(scene, &model_asset->mdl->meshes[FIELD_COLLISION], COL_LAYER_WORLD | COL_LAYER_CAMERA);
-}
-
-SCENE_CLEANUP(Sfieldtest)
-{
-	// clear collision data
-	CollisionResign(scene, &AssetGet_Model(FIELD_MODEL)->meshes[FIELD_COLLISION]);
+	int collision_mesh_index = GetMeshIndex(model_asset->mdl_info, "test_room");
+	CollisionRegister(scene, &model_asset->mdl->meshes[collision_mesh_index], COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_ACTIVATE_ROOM(Sfieldtest)
@@ -110,12 +100,14 @@ SCENE_LIGHTNODES(Sfieldtest)
 
 SCENE_DRAWWORLD(Sfieldtest)
 {
+	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
 	Material* mat = AssetGet_Material(FIELD_MATERIAL_MAIN);
 	shader_update_fog(mat->shader);
 	shader_update_lights(mat->shader);
 
+	int main_mesh_index = GetMeshIndex(model_asset->mdl_info, "test_room");
 	DrawMesh(
-		AssetGet_Model(FIELD_MODEL)->meshes[FIELD_MAIN],
+		model_asset->mdl->meshes[main_mesh_index],
 		*mat,
 		GetMatrix(scene)
 	);
