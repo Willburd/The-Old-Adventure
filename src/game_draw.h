@@ -2,6 +2,7 @@
 #define __GAME_DRAW_HEADER__
 
 #include "raylib.h"
+#include "rlgl.h"
 
 int draw_debug_info;
 
@@ -37,5 +38,7 @@ void lighting_append_light(Vector3 pos, float radius, Color col, float influence
 
 void shader_update_fog(Shader shader);
 void shader_update_lights(Shader shader);
+
+void ToaDrawMesh(Mesh mesh, Material material, Matrix matrix, int show_backface);
 
 #endif

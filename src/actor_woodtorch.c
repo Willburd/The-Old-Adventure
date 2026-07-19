@@ -6,7 +6,7 @@
 
 // Assets
 #define WOODTORCH_MODEL ASSET_MODELS"/Objects/wood_torch.glb"
-#define WOODTORCH_MATERIAL ASSET_MATERIALS"/Objects/wood_torch.mat"
+#define WOODTORCH_MATERIAL ASSET_MATERIALS"/Objects/wood_door_a.mat"
 
 // private header
 ACTOR_PRELOADASSETS(woodtorch);
@@ -39,7 +39,7 @@ ACTOR_PRELOADASSETS(woodtorch)
 	LoadAsset_Material(WOODTORCH_MATERIAL, FALSE);
 
 	// Set collision data
-	int collision_mesh_index = GetMeshIndex(model_asset->mdl_info, "Col");
+	int collision_mesh_index = GetMeshIndex(model_asset->mdl_info, DEFAULT_COLLISION_MESH);
 	CollisionRegister(actor, &model_asset->mdl->meshes[collision_mesh_index], COL_LAYER_WORLD);
 }
 
@@ -53,9 +53,10 @@ ACTOR_DRAWWORLD(woodtorch)
 	shader_update_lights(mat->shader);
 
 	int main_mesh_index = GetMeshIndex(model_asset->mdl_info, "Torch");
-	DrawMesh(
+	ToaDrawMesh(
 		model_asset->mdl->meshes[main_mesh_index],
 		*mat,
-		GetMatrix(actor)
+		GetMatrix(actor),
+		TRUE
 	);
 }

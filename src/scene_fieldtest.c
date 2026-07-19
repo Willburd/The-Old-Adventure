@@ -106,9 +106,10 @@ SCENE_DRAWWORLD(Sfieldtest)
 	shader_update_lights(mat->shader);
 
 	int main_mesh_index = GetMeshIndex(model_asset->mdl_info, "test_room");
-	DrawMesh(
+	ToaDrawMesh(
 		model_asset->mdl->meshes[main_mesh_index],
 		*mat,
-		GetMatrix(scene)
+		GetMatrix(scene),
+		FALSE
 	);
 }

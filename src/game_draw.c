@@ -279,3 +279,17 @@ void shader_update_lights(Shader shader)
 	light_loc = GetShaderLocation(shader, "uLightColors");
 	SetShaderValueV(shader, light_loc, &world_light_colors, SHADER_UNIFORM_VEC4, light_count);
 }
+
+// Extended mesh drawing
+void ToaDrawMesh(Mesh mesh, Material material, Matrix matrix, int show_backface)
+{
+	if(show_backface)
+		rlDisableBackfaceCulling();
+	DrawMesh(
+		mesh,
+		material,
+		matrix
+	);
+	if (show_backface)
+		rlEnableBackfaceCulling();
+}

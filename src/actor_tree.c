@@ -54,9 +54,10 @@ ACTOR_DRAWWORLD(tree)
 	shader_update_fog(mat->shader);
 	shader_update_lights(mat->shader);
 
-	DrawMesh(
+	ToaDrawMesh(
 		AssetGet_Model(TREE_MODEL)->meshes[TREE_MESH_MAIN],
 		*mat,
-		GetMatrix(actor)
+		GetMatrix(actor),
+		FALSE
 	);
 }

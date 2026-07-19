@@ -81,10 +81,11 @@ ACTOR_DRAWWORLD(animationtest)
 
 	for (int i = 0; i <= model->meshCount; i++)
 	{
-		DrawMesh(
+		ToaDrawMesh(
 			model->meshes[i],
 			*mat,
-			actor_matrix
+			actor_matrix,
+			FALSE
 		);
 	}
 }

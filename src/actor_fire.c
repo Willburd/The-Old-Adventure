@@ -54,7 +54,7 @@ ACTOR_TRANSPARENTDRAWWORLD(fire)
 		return;
 	Transform fire_transform = {
 		.translation = actor->position,
-		.rotation = QuaternionLookAt( cam_main.position, actor->position, VEC3UP),
+		.rotation = QuaternionFlatLookAt( cam_main.position, actor->position, VEC3UP),
 		.scale = Vector3Multiply(actor->scale, (Vector3) { 1.0f, 2.0f, 1.0f })
 	};
 
@@ -75,10 +75,11 @@ ACTOR_TRANSPARENTDRAWWORLD(fire)
 	fire_loc = GetShaderLocation(set_shader, "Animator");
 	SetShaderValue(set_shader, fire_loc, &animation_ticker, SHADER_UNIFORM_FLOAT);
 
-	DrawMesh(
+	ToaDrawMesh(
 		AssetGet_Model(SPRITE_MODEL)->meshes[0],
 		*AssetGet_Material(FIRE_MATERIAL),
-		MATRIX_ASSEMBLE(fire_transform)
+		MATRIX_ASSEMBLE(fire_transform),
+		FALSE
 	);
 	EndShaderMode();
 }

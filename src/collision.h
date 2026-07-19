@@ -1,6 +1,8 @@
 #ifndef __COLLISION_HEADER__
 #define __COLLISION_HEADER__
 
+#define DEFAULT_COLLISION_MESH "Col"
+
 #define MAX_COLLIDERS 512
 
 #define COL_LAYER_NONE 0
