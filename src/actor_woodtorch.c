@@ -54,7 +54,8 @@ ACTOR_DRAWWORLD(woodtorch)
 
 	int main_mesh_index = GetMeshIndex(model_asset->mesh_data, "Torch-Torch");
 	ToaDrawMesh(
-		model_asset->mdl->meshes[main_mesh_index],
+		model_asset,
+		main_mesh_index,
 		*mat,
 		GetMatrix(actor),
 		TRUE

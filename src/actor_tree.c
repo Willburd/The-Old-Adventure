@@ -58,19 +58,22 @@ ACTOR_DRAWWORLD(tree)
 	int branch_mesh_index = GetMeshIndex(model_asset->mesh_data, "Tree-Branches");
 	int leaves_mesh_index = GetMeshIndex(model_asset->mesh_data, "Tree-Leaves");
 	ToaDrawMesh(
-		model_asset->mdl->meshes[trunk_mesh_index],
+		model_asset,
+		trunk_mesh_index,
 		*bark_mat,
 		position,
 		FALSE
 	);
 	ToaDrawMesh(
-		model_asset->mdl->meshes[branch_mesh_index],
+		model_asset,
+		branch_mesh_index,
 		*branches_mat,
 		position,
 		TRUE
 	);
 	ToaDrawMesh(
-		model_asset->mdl->meshes[leaves_mesh_index],
+		model_asset,
+		leaves_mesh_index,
 		*leaves_mat,
 		position,
 		TRUE

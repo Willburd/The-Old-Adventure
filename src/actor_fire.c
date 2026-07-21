@@ -76,7 +76,8 @@ ACTOR_TRANSPARENTDRAWWORLD(fire)
 	SetShaderValue(set_shader, fire_loc, &animation_ticker, SHADER_UNIFORM_FLOAT);
 
 	ToaDrawMesh(
-		AssetGet_Model(SPRITE_MODEL)->meshes[0],
+		AssetGetPackage(SPRITE_MODEL),
+		0,
 		*AssetGet_Material(FIRE_MATERIAL),
 		MATRIX_ASSEMBLE(fire_transform),
 		FALSE

@@ -105,7 +105,8 @@ SCENE_DRAWWORLD(Sfieldtest)
 
 	int main_mesh_index = GetMeshIndex(model_asset->mesh_data, "test_room");
 	ToaDrawMesh(
-		model_asset->mdl->meshes[main_mesh_index],
+		model_asset,
+		main_mesh_index,
 		*field_mat,
 		GetMatrix(scene),
 		FALSE
