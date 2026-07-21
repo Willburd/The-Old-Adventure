@@ -39,7 +39,7 @@ ACTOR_PRELOADASSETS(woodtorch)
 	LoadAsset_Material(WOODTORCH_MATERIAL, FALSE);
 
 	// Set collision data
-	int collision_mesh_index = GetMeshIndex(model_asset->mdl_info, DEFAULT_COLLISION_MESH);
+	int collision_mesh_index = GetMeshIndex(model_asset->mesh_data, DEFAULT_COLLISION_MESH);
 	CollisionRegister(actor, &model_asset->mdl->meshes[collision_mesh_index], COL_LAYER_WORLD);
 }
 
@@ -52,7 +52,7 @@ ACTOR_DRAWWORLD(woodtorch)
 	shader_update_fog(mat->shader);
 	shader_update_lights(mat->shader);
 
-	int main_mesh_index = GetMeshIndex(model_asset->mdl_info, "Torch");
+	int main_mesh_index = GetMeshIndex(model_asset->mesh_data, "Torch-Torch");
 	ToaDrawMesh(
 		model_asset->mdl->meshes[main_mesh_index],
 		*mat,

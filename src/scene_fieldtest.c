@@ -54,7 +54,7 @@ SCENE_PRELOADASSETS(Sfieldtest)
 	LoadAsset_Material(FIELD_MATERIAL_MAIN, FALSE);
 
 	// Set collision data
-	int collision_mesh_index = GetMeshIndex(model_asset->mdl_info, "test_room");
+	int collision_mesh_index = GetMeshIndex(model_asset->mesh_data, "test_room");
 	CollisionRegister(scene, &model_asset->mdl->meshes[collision_mesh_index], COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
@@ -80,7 +80,7 @@ SCENE_ACTIVATE_ROOM(Sfieldtest)
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 8.3f, -1.3f, 12.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { -10.3f, -1.0f, 13.04f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { -6.67f, 0.16f, -14.74f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
-	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 6.11f, 0.16f, -14.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(act_tree, scene, (Vector3) { 6.11f, 0.16f, -14.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 
 	// Path of torches
 	struct Actor* torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 48.96f, -9.88f, 2.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
@@ -101,14 +101,12 @@ SCENE_LIGHTNODES(Sfieldtest)
 SCENE_DRAWWORLD(Sfieldtest)
 {
 	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
-	Material* mat = AssetGet_Material(FIELD_MATERIAL_MAIN);
-	shader_update_fog(mat->shader);
-	shader_update_lights(mat->shader);
+	STANDARD_SHADER_MATERIAL(field_mat, FIELD_MATERIAL_MAIN);
 
-	int main_mesh_index = GetMeshIndex(model_asset->mdl_info, "test_room");
+	int main_mesh_index = GetMeshIndex(model_asset->mesh_data, "test_room");
 	ToaDrawMesh(
 		model_asset->mdl->meshes[main_mesh_index],
-		*mat,
+		*field_mat,
 		GetMatrix(scene),
 		FALSE
 	);

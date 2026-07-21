@@ -40,7 +40,7 @@ typedef struct {
     char* filepath;
     Texture2D* tex;
     Model* mdl;
-    cJSON* mdl_info;
+    struct hashmap* mesh_data;
     Sound* snd;
     Music* mus;
     Material* mat;

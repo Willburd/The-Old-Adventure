@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "assets.h"
 #include "animation.h"
 #include "materials.h"
@@ -56,9 +57,9 @@ void asset_free(void* item) {
         // Unload model
         UnloadModel(*asset->mdl);
         RELEASE(asset->mdl);
-        // Unload json data
-        cJSON_Delete(asset->mdl_info); // Handles the json freeing for us
-        asset->mdl_info = NULL;
+        // Unload mesh lookup data
+        hashmap_free(asset->mesh_data);
+        asset->mesh_data = NULL;
         printf("ASSET: model unloaded %s\n", asset->filepath);
     }
     if (asset->snd != NULL && IsSoundValid(*asset->snd))
@@ -112,8 +113,57 @@ Asset* LoadAsset_Model(char* path, int is_core)
     MALLOC_SET(Model, asset->mdl, FALSE);
     // Load model
     *asset->mdl = LoadModel(path);
-    // Get the model's json data
-    asset->mdl_info = ParseGLTFModel(path);
+    // Get the model's mesh data
+    printf("ASSET: loading model meshes: %s\n", asset->filepath);
+    int mesh_load_index = 0;
+    cJSON* model_json = ParseGLTFModel(path);
+    cJSON* node_array = cJSON_GetObjectItem(model_json, "nodes");
+    cJSON* material_array = cJSON_GetObjectItem(model_json, "materials");
+    cJSON* mesh_array = cJSON_GetObjectItem(model_json, "meshes");
+    asset->mesh_data = hashmap_new(sizeof(MeshInfo), 64, 0, 0, meshdata_hash, meshdata_compare, meshdata_free, NULL);
+    for (int i = 0; i < cJSON_GetArraySize(node_array); i++)
+    {
+        // For each node...
+        cJSON* node_entry = cJSON_GetArrayItem(node_array, i);
+        char* node_data_name = cJSON_GetObjectItem(node_entry, "name")->valuestring;
+        int node_data_meshindex = cJSON_GetObjectItem(node_entry, "mesh")->valueint;
+
+        // Check each mesh in the mesh array for more information
+        for (int m = 0; m < cJSON_GetArraySize(mesh_array); m++)
+        {
+            cJSON* mesh_entry = cJSON_GetArrayItem(mesh_array, m);
+            char* mesh_data_name = cJSON_GetObjectItem(mesh_entry, "name")->valuestring;
+            if (STRMATCH(mesh_data_name, node_data_name))
+            {
+                char* mesh_identifier = NULL;
+                cJSON* primitive_array = cJSON_GetObjectItem(mesh_entry, "primitives");
+                for (int p = 0; p < cJSON_GetArraySize(primitive_array); p++)
+                {
+                    cJSON* primative_entry = cJSON_GetArrayItem(primitive_array, p);
+                    if (cJSON_HasObjectItem(primative_entry, "material"))
+                    {
+                        int prim_mat_index = cJSON_GetObjectItem(primative_entry, "material")->valueint;
+                        cJSON* material_entry = cJSON_GetArrayItem(material_array, prim_mat_index);
+                        char* material_data_name = cJSON_GetObjectItem(material_entry, "name")->valuestring;
+                        mesh_identifier = TextFormat("%s-%s", node_data_name, material_data_name);
+                    }
+                    else
+                    {
+                        // Not a material mesh. Only use the mesh's ID as an indentifier
+                        mesh_identifier = node_data_name;
+                    }
+
+                    MALLOC(MeshInfo, mesh_inf, NULL);
+                    CHAR_STR_COPY(mesh_inf->mesh_name, mesh_identifier, NULL);
+                    mesh_inf->mesh_index = mesh_load_index++;
+                    hashmap_set(asset->mesh_data, mesh_inf);
+                    printf(" ->%s\n", mesh_inf->mesh_name);
+                }
+                break;
+            }
+        }
+    }
+    cJSON_Delete(model_json);
     // Load animation data too
     asset->anm = LoadModelAnimations(path, &asset->anm_count);
     // This uses MEMSET, ensure all data is assigned before hashmapping!

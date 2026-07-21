@@ -4,14 +4,10 @@
 #include "game_draw.h"
 
 // Assets
-#define TREE_MODEL ASSET_MODELS"/Scenes/test_room.glb"
-#define TREE_MATERIAL_BARK ASSET_MATERIALS"/Objects/wood.mat"
-#define TREE_MATERIAL_BRANCHES ASSET_MATERIALS"/Objects/wood.mat"
-#define TREE_MATERIAL_LEAVES ASSET_MATERIALS"/Objects/wood.mat"
-
-// Utility
-#define TREE_MESH_MAIN 0
-#define TREE_MESH_COLLISION 1
+#define TREE_MODEL ASSET_MODELS"/Trees/tree_A.glb"
+#define TREE_MATERIAL_BARK ASSET_MATERIALS"/Trees/tree_bark_a.mat"
+#define TREE_MATERIAL_BRANCHES ASSET_MATERIALS"/Trees/tree_branches_a.mat"
+#define TREE_MATERIAL_LEAVES ASSET_MATERIALS"/Trees/tree_leaves_a.mat"
 
 // private header
 ACTOR_PRELOADASSETS(tree);
@@ -43,21 +39,40 @@ ACTOR_PRELOADASSETS(tree)
 	LoadAsset_Material(TREE_MATERIAL_LEAVES, FALSE);
 
 	// Set collision data
-	CollisionRegister(actor, &model_asset->mdl->meshes[TREE_MESH_COLLISION], COL_LAYER_WORLD);
+	int collision_mesh_index = GetMeshIndex(model_asset->mesh_data, DEFAULT_COLLISION_MESH);
+	CollisionRegister(actor, &model_asset->mdl->meshes[collision_mesh_index], COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 ACTOR_DRAWWORLD(tree)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	Material* mat = AssetGet_Material(TREE_MATERIAL_BARK);
-	shader_update_fog(mat->shader);
-	shader_update_lights(mat->shader);
+	Asset* model_asset = LoadAsset_Model(TREE_MODEL, FALSE);
+	Matrix position = GetMatrix(actor);
 
+	STANDARD_SHADER_MATERIAL(bark_mat, TREE_MATERIAL_BARK);
+	STANDARD_SHADER_MATERIAL(branches_mat, TREE_MATERIAL_BRANCHES);
+	STANDARD_SHADER_MATERIAL(leaves_mat, TREE_MATERIAL_LEAVES);
+
+	int trunk_mesh_index = GetMeshIndex(model_asset->mesh_data, "Tree-Bark");
+	int branch_mesh_index = GetMeshIndex(model_asset->mesh_data, "Tree-Branches");
+	int leaves_mesh_index = GetMeshIndex(model_asset->mesh_data, "Tree-Leaves");
 	ToaDrawMesh(
-		AssetGet_Model(TREE_MODEL)->meshes[TREE_MESH_MAIN],
-		*mat,
-		GetMatrix(actor),
+		model_asset->mdl->meshes[trunk_mesh_index],
+		*bark_mat,
+		position,
 		FALSE
+	);
+	ToaDrawMesh(
+		model_asset->mdl->meshes[branch_mesh_index],
+		*branches_mat,
+		position,
+		TRUE
+	);
+	ToaDrawMesh(
+		model_asset->mdl->meshes[leaves_mesh_index],
+		*leaves_mat,
+		position,
+		TRUE
 	);
 }

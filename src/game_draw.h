@@ -20,6 +20,8 @@ Vector4 world_light_colors[MAX_LIGHTS];// XYZcolor, Walpha
 #define FOG_NIGHT_MULTIPLIER 0.85f
 #define FOG_DEFAULT_POWER 7.0f
 
+#define STANDARD_SHADER_MATERIAL(name, material_path) Material* name = AssetGet_Material(material_path);shader_update_fog(name->shader);shader_update_lights(name->shader);
+
 float fog_distance;
 float fog_power;
 Vector3 fog_color;
