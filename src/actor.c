@@ -1,6 +1,7 @@
 #include "actor.h"
 #include "camera.h"
 #include "tools.h"
+#include "scene_entry.h"
 
 struct Actor* FINDACTOR(uint64_t find_uuid)
 {
@@ -233,4 +234,40 @@ Transform GetTransform(struct Actor* actor)
 int OutOfRenderRange(struct Actor* actor)
 {
 	return (Vector3Distance(cam_main.position, actor->position) > actor->draw_range);
+}
+
+void SceneFlagTrigger(struct Actor* actor)
+{
+	struct Actor* scene = GETSCENE(actor);
+	if (!scene)
+		return;
+	SceneData* data = scene->data;
+	if (actor->flags_permanent)
+		data->perm_flags |= actor->triggers_flags;
+	else
+		data->temp_flags |= actor->triggers_flags;
+}
+
+void SceneFlagClear(struct Actor* actor)
+{
+	struct Actor* scene = GETSCENE(actor);
+	if (!scene)
+		return;
+	SceneData* data = scene->data;
+	if (actor->flags_permanent)
+		data->perm_flags &= ~actor->triggers_flags;
+	else
+		data->temp_flags &= ~actor->triggers_flags;
+}
+
+void SceneFlagToggle(struct Actor* actor)
+{
+	struct Actor* scene = GETSCENE(actor);
+	if (!scene)
+		return;
+	SceneData* data = scene->data;
+	if (actor->flags_permanent)
+		data->perm_flags ^= actor->triggers_flags;
+	else
+		data->temp_flags ^= actor->triggers_flags;
 }

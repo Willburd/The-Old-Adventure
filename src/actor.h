@@ -45,11 +45,20 @@ struct Actor {
 	Vector3 last_scale;
 	Vector3 last_velocity;
 
+	// Generic flags for actor defined behaviors.
 	unsigned int actor_flags;
+	// Maximum range an actor is drawn at.
 	float draw_range;
+	// Color used various actors and shaders for actor defined reasons.
 	Vector4 blend_color;
+	// Scene flags set when this actor triggers a actor defined event.
+	uint64_t triggers_flags;
+	// If the above flag sets the permanent, or temporary scene flag set.
+	int flags_permanent;
 
+	// Number of animation layers present in this actor
 	int animlayer_count;
+	// Stored animation layers, processed each update tick before drawing.
 	struct AnimationLayer* animation_layers[ANIMATION_LAYER_MAX];
 
 	// Actor setup and function assignment
@@ -101,8 +110,7 @@ struct Actor {
 x->uuid = 0; x->index = -1; x->actor_type = 0; x->actor_type_name = "?"; \
 x->is_destroying = FALSE; \
 x->parent = NULL; \
-x->actor_flags = 0; \
-x->actor_flags = 0; \
+x->actor_flags = 0; x->triggers_flags = 0; x->flags_permanent = FALSE; \
 x->draw_range = DEFAULT_MAX_RENDER_RANGE; x->blend_color = (Vector4){ 255, 255, 255, 255}; \
 x->animlayer_count = -1; \
 x->func_init = NULL; x->func_preloadassets = NULL; \
@@ -174,6 +182,13 @@ Matrix GetMatrix(struct Actor* actor);
 Transform GetTransform(struct Actor* actor);
 // Check if we are in range of the camera before drawing
 int OutOfRenderRange(struct Actor* actor);
+
+// Automatically activates the current scene's flags based on the flags configured in the actor.
+void SceneFlagTrigger(struct Actor* actor);
+// Automatically clears the current scene's flags based on the flags configured in the actor.
+void SceneFlagClear(struct Actor* actor);
+// Automatically toggles the current scene's flags based on the flags configured in the actor.
+void SceneFlagToggle(struct Actor* actor);
 
 // definition boilerplate for actors
 #define ACTOR_INIT(x) void actor_## x ##_init(struct Actor* actor)
