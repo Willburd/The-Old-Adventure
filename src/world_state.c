@@ -7,8 +7,9 @@
 void InitWorldState()
 {
 	// Start of game daynight cycle
-	daynight_cycle = TIME_DUSK;
+	daynight_cycle = TIME_DAWN;
 	daynight_speed = DEFAULT_DAYNIGHT_SPEED;
+	rain_intensity = 0;
 
 	// Setup inventory
 	player_inventory.max_hearts = HEALTH_STARTING_HEARTS;
@@ -34,6 +35,15 @@ void UpdateWorldState()
 		while (daynight_cycle > 1.0f)
 			daynight_cycle -= 1.0f;
 	}
+	// If the scene is raining, fade into the rain effect
+	if (gameplay_state & (GAMESTATE_GAMEPLAY | GAMESTATE_TEXTBOX | GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE))
+	{
+		if (scene_config & SCENE_CONFIG_ISRAINING)
+			rain_intensity += 0.01f;
+		else
+			rain_intensity -= 0.01f;
+		rain_intensity = Clamp(rain_intensity, 0.0f, 1.0f);
+	}
 }
 
 
@@ -52,6 +62,8 @@ float GetNightIntensity()
 }
 
 #define SUNRISE_EXPONENT 40.0f // Higher exponent makes dusk/dawn shorter
+#define RAIN_SUN_MULTIPLIER 0.35f // How much rain desaturates the current sky/light
+#define RAIN_FOG_MULTIPLIER 0.95f // How much rain decreases the fog distance
 
 float GetDawnIntensity()
 {
@@ -61,6 +73,11 @@ float GetDawnIntensity()
 float GetDuskIntensity()
 {
 	return powf((float)sinf(daynight_cycle * PI), SUNRISE_EXPONENT);
+}
+
+float GetRainIntensity()
+{
+	return rain_intensity;
 }
 
 float GetSunIntensity()
@@ -77,11 +94,13 @@ Color GetSunColor()
 	float day_intense = GetDayIntensity();
 	float dawn_intense = GetDawnIntensity();
 	float dusk_intense = GetDuskIntensity();
+	float rain_intense = GetRainIntensity();
 
 	Color col =				(Color) { 58, 54, 91, 255 };		// Night
 	col = ColorLerp(col,	(Color) { 225, 237, 235, 255 }, day_intense);	// Day
 	col = ColorLerp(col,	(Color) { 222, 167, 144, 255 }, dawn_intense); // Dawn
 	col = ColorLerp(col,	(Color) { 227, 181, 52, 255 }, dusk_intense);	// Dusk
+	col = ColorLerp(col,	(Color) { 60, 60, 60, 255 }, rain_intense * RAIN_SUN_MULTIPLIER); // Rain
 	return col;
 }
 
@@ -90,11 +109,13 @@ Color GetSkyColor()
 	float day_intense = GetDayIntensity();
 	float dawn_intense = GetDawnIntensity();
 	float dusk_intense = GetDuskIntensity();
+	float rain_intense = GetRainIntensity();
 
 	Color col =				(Color) { 46, 49, 66, 255 };	// Night
 	col = ColorLerp(col,	(Color) { 126, 189, 252, 255 }, day_intense);  // Day
 	col = ColorLerp(col,	(Color) { 138, 196, 255, 255 }, dawn_intense); // Dawn
 	col = ColorLerp(col,	(Color) { 224, 195, 114, 255 }, dusk_intense); // Dusk
+	col = ColorLerp(col,	(Color) { 100, 100, 100, 255 }, rain_intense * RAIN_SUN_MULTIPLIER); // Rain
 	return col;
 }
 
@@ -103,7 +124,8 @@ float GetFogDistance()
 	float day_intense = GetDayIntensity();
 	float dawn_intense = GetDawnIntensity();
 	float dusk_intense = GetDuskIntensity();
-	return Lerp(FOG_DEFAULT_RANGE * FOG_NIGHT_MULTIPLIER, FOG_DEFAULT_RANGE, Clamp(day_intense + dawn_intense + dusk_intense, 0.0f, 1.0f));
+	float rain_intense = GetRainIntensity();
+	return Lerp(FOG_DEFAULT_RANGE * FOG_NIGHT_MULTIPLIER, FOG_DEFAULT_RANGE, Clamp((day_intense + dawn_intense + dusk_intense) - (rain_intense * RAIN_FOG_MULTIPLIER), 0.0f, 1.0f));
 }
 
 Color GetFogColor()

@@ -76,6 +76,7 @@ typedef enum
 #define SCENE_CONFIG_TIMEPAUSED (1 << 0)
 #define SCENE_CONFIG_HOTROOM	(1 << 1)
 #define SCENE_CONFIG_COLDROOM	(1 << 2)
+#define SCENE_CONFIG_ISRAINING	(1 << 3)
 
 typedef struct {
 	int active_room;

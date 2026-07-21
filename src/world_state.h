@@ -18,6 +18,7 @@
 #define TIME_MIDNIGHT 0.75f
 float daynight_cycle;
 float daynight_speed;
+float rain_intensity;
 
 // Set the default gamestate on file creation
 void InitWorldState();
@@ -29,6 +30,7 @@ float GetDayIntensity();
 float GetNightIntensity();
 float GetDawnIntensity();
 float GetDuskIntensity();
+float GetRainIntensity();
 
 // Get the current sun/moon light color based on time of day
 float GetSunIntensity();
