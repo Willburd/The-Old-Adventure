@@ -256,6 +256,12 @@ void lighting_append_light(Vector3 pos, float radius, Color col, float influence
 		light_count = MAX_LIGHTS;
 }
 
+void shader_update_defaultuniforms(Shader shader, struct Actor* actor)
+{
+	int pos_loc = GetShaderLocation(shader, "uWorldPos");
+	SetShaderValue(shader, pos_loc, &actor->position, SHADER_UNIFORM_VEC3);
+}
+
 void shader_update_fog(Shader shader)
 {
 	int fog_loc = GetShaderLocation(shader, "uFogColor");

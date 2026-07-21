@@ -26,8 +26,8 @@ cJSON* ParseGLTFModel(char* path)
 {
 	// Load material define file
 	FILE* fptr = fopen(path, "r");
-	char cur_line[4096] = { '\0'};
-	char final_data[4096] = { '\0' };
+	char* cur_line = malloc(sizeof(char) * 24000);
+	char* final_data = malloc(sizeof(char) * 24000);
 	if (fptr == NULL) {
 		printf("Asset: failed to open model file: %s\n", path);
 		return NULL;
@@ -36,8 +36,8 @@ cJSON* ParseGLTFModel(char* path)
 	unsigned int depth = 0;
 	unsigned int read_index = 0;
 	unsigned int write_index = 0;
-	while (fgets(cur_line, 4096, fptr)) {
-		while (read_index < 4096)
+	while (fgets(cur_line, 8192, fptr)) {
+		while (read_index < 8192)
 		{
 			char current = cur_line[read_index++];
 			if (current == '{')
@@ -60,7 +60,10 @@ cJSON* ParseGLTFModel(char* path)
 		read_index = 0;
 	}
 	fclose(fptr);
-	return cJSON_Parse(final_data);
+	free(cur_line);
+	cJSON* parsed_data = cJSON_Parse(final_data);
+	free(final_data);
+	return parsed_data;
 }
 
 int GetMeshIndex(struct hashmap* mesh_data, char* mesh_name)

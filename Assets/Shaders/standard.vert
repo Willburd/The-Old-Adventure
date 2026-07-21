@@ -7,6 +7,7 @@ in vec3 vertexNormal;
 in vec4 vertexColor;
 
 uniform mat4 mvp;
+uniform vec3 uWorldPos;
 
 uniform vec3 uFogColor;
 uniform float uFogDistance;
@@ -62,5 +63,5 @@ void main()
     float dist_perc = clamp(dist / uFogDistance, 0.0, 1.0);
     fragColor = mix(vertexColor, vec4(uFogColor.xyz,0.0), pow(dist_perc, uFogPower));
     // Light calc
-    fragLight = vec4( solve_lights(vertexPosition), 1.0 - pow(dist_perc, 100));
+    fragLight = vec4( solve_lights(uWorldPos + vertexPosition), 1.0 - pow(dist_perc, 100));
 }

@@ -48,9 +48,7 @@ ACTOR_DRAWWORLD(woodtorch)
 	if (OutOfRenderRange(actor))
 		return;
 	Asset* model_asset = AssetGetPackage(WOODTORCH_MODEL);
-	Material* mat = AssetGet_Material(WOODTORCH_MATERIAL);
-	shader_update_fog(mat->shader);
-	shader_update_lights(mat->shader);
+	STANDARD_SHADER_MATERIAL(mat, WOODTORCH_MATERIAL, actor);
 
 	int main_mesh_index = GetMeshIndex(model_asset->mesh_data, "Torch-Torch");
 	ToaDrawMesh(

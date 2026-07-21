@@ -12,6 +12,7 @@ in vec4 vertexBoneWeights;
 uniform mat4 mvp;
 uniform mat4 matNormal;
 uniform mat4 boneMatrices[MAX_BONE_NUM];
+uniform vec3 uWorldPos;
 
 uniform vec3 uFogColor;
 uniform float uFogDistance;
@@ -91,5 +92,5 @@ void main()
     fragColor = mix(vertexColor, vec4(uFogColor.xyz,0.0), pow(dist_perc, uFogPower));
 
     // Light calc
-    fragLight = vec4( solve_lights(vertexPosition), 1.0 - pow(dist_perc, 100));
+    fragLight = vec4( solve_lights(uWorldPos + skinnedPosition), 1.0 - pow(dist_perc, 100));
 }

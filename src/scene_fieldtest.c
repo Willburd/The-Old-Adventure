@@ -81,6 +81,7 @@ SCENE_ACTIVATE_ROOM(Sfieldtest)
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { -10.3f, -1.0f, 13.04f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { -6.67f, 0.16f, -14.74f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	ACTOR_FACTORY(act_tree, scene, (Vector3) { 6.11f, 0.16f, -14.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	// ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { -0.5f, 0.0f, -0.5f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
 
 	// Path of torches
 	struct Actor* torch = ACTOR_FACTORY(act_woodtorch, scene, (Vector3) { 48.96f, -9.88f, 2.42f }, QuaternionIdentity(), Vector3One(), Vector3Zero());
@@ -101,7 +102,7 @@ SCENE_LIGHTNODES(Sfieldtest)
 SCENE_DRAWWORLD(Sfieldtest)
 {
 	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
-	STANDARD_SHADER_MATERIAL(field_mat, FIELD_MATERIAL_MAIN);
+	STANDARD_SHADER_MATERIAL(field_mat, FIELD_MATERIAL_MAIN, scene);
 
 	int main_mesh_index = GetMeshIndex(model_asset->mesh_data, "test_room");
 	ToaDrawMesh(

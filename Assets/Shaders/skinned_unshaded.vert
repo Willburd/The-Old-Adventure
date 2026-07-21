@@ -11,6 +11,7 @@ in vec4 vertexBoneWeights;
 uniform mat4 mvp;
 uniform mat4 matNormal;
 uniform mat4 boneMatrices[MAX_BONE_NUM];
+uniform vec3 uWorldPos;
 
 out vec2 fragTexCoord;
 out vec3 fragNormal;

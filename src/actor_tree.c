@@ -50,9 +50,9 @@ ACTOR_DRAWWORLD(tree)
 	Asset* model_asset = LoadAsset_Model(TREE_MODEL, FALSE);
 	Matrix position = GetMatrix(actor);
 
-	STANDARD_SHADER_MATERIAL(bark_mat, TREE_MATERIAL_BARK);
-	STANDARD_SHADER_MATERIAL(branches_mat, TREE_MATERIAL_BRANCHES);
-	STANDARD_SHADER_MATERIAL(leaves_mat, TREE_MATERIAL_LEAVES);
+	STANDARD_SHADER_MATERIAL(bark_mat, TREE_MATERIAL_BARK, actor);
+	STANDARD_SHADER_MATERIAL(branches_mat, TREE_MATERIAL_BRANCHES, actor);
+	STANDARD_SHADER_MATERIAL(leaves_mat, TREE_MATERIAL_LEAVES, actor);
 
 	int trunk_mesh_index = GetMeshIndex(model_asset->mesh_data, "Tree-Bark");
 	int branch_mesh_index = GetMeshIndex(model_asset->mesh_data, "Tree-Branches");
