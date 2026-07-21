@@ -54,8 +54,7 @@ SCENE_PRELOADASSETS(Sfieldtest)
 	LoadAsset_Material(FIELD_MATERIAL_MAIN, FALSE);
 
 	// Set collision data
-	int collision_mesh_index = GetMeshIndex(model_asset->mesh_data, "test_room");
-	CollisionRegister(scene, &model_asset->mdl->meshes[collision_mesh_index], COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "test_room", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_ACTIVATE_ROOM(Sfieldtest)

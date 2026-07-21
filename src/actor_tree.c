@@ -39,8 +39,7 @@ ACTOR_PRELOADASSETS(tree)
 	LoadAsset_Material(TREE_MATERIAL_LEAVES, FALSE);
 
 	// Set collision data
-	int collision_mesh_index = GetMeshIndex(model_asset->mesh_data, DEFAULT_COLLISION_MESH);
-	CollisionRegister(actor, &model_asset->mdl->meshes[collision_mesh_index], COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(actor, model_asset, DEFAULT_COLLISION_MESH, COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 ACTOR_DRAWWORLD(tree)

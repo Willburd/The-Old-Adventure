@@ -15,6 +15,8 @@
 #define COL_LAYER_MOVINGPLATFORM (1 << 6)	// Moving platforms
 #define COL_LAYER_ALL (~0)
 
+#define REGISTER_COLLISION_MESH(act, mdl_ast, mesh_name, layers) CollisionRegister(act, &mdl_ast->mdl->meshes[GetMeshIndex(mdl_ast->mesh_data, mesh_name)], layers);
+
 #include "tools.h"
 
 int max_collision;
