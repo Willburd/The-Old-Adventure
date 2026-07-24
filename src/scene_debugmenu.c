@@ -17,21 +17,21 @@
 #define MENUINDEX utilityA1
 
 // private header
-SCENE_ACTIVATE_ROOM(debug);
-SCENE_UPDATE(debug);
-SCENE_DRAWHUD(debug);
+SCENE_ACTIVATE_ROOM(debugmenu);
+SCENE_UPDATE(debugmenu);
+SCENE_DRAWHUD(debugmenu);
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SCENE_INIT(debug)
+SCENE_INIT(debugmenu)
 {
 	// Configure scene
-	SCENE_REGISTER_ACTIVATE_ROOM(debug);
-	SCENE_REGISTER_UPDATE(debug);
-	SCENE_REGISTER_DRAWHUD(debug);
+	SCENE_REGISTER_ACTIVATE_ROOM(debugmenu);
+	SCENE_REGISTER_UPDATE(debugmenu);
+	SCENE_REGISTER_DRAWHUD(debugmenu);
 }
 
 
@@ -39,14 +39,14 @@ SCENE_INIT(debug)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SCENE_ACTIVATE_ROOM(debug)
+SCENE_ACTIVATE_ROOM(debugmenu)
 {
 	// Debug info actor
 	if (!FINDACTORTYPE(act_debug))
 		ACTOR_FACTORY(NULL, act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
-SCENE_UPDATE(debug)
+SCENE_UPDATE(debugmenu)
 {
 	SceneData* our_data = (SceneData*)scene->data;
 
@@ -69,7 +69,7 @@ SCENE_UPDATE(debug)
 	}
 }
 
-SCENE_DRAWHUD(debug)
+SCENE_DRAWHUD(debugmenu)
 {
 	SceneData* our_data = (SceneData*)scene->data;
 

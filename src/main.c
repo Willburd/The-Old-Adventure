@@ -68,7 +68,7 @@ int main(void)
         }
         if (IsKeyPressed(KEY_F4)) // Debug warp
         {
-            TransferScene(scene_debug, ent_title);
+            TransferScene(scene_debugmenu, ent_title);
         }
         if (IsKeyPressed(KEY_F5)) // Reload text assets
         {

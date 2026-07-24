@@ -15,7 +15,7 @@ typedef enum
 	// Setup
 	scene_boot,
 	// Debug
-	scene_debug,
+	scene_debugmenu,
 	// Adventure
 	scene_title,
 	scene_test,
@@ -24,7 +24,7 @@ typedef enum
 } SceneID;
 char* all_scene_names[500];
 
-SCENE_INIT(debug);
+SCENE_INIT(debugmenu);
 SCENE_INIT(boot);
 SCENE_INIT(title);
 SCENE_INIT(test);
@@ -36,7 +36,7 @@ inline SceneID SCENE_FROM_STRING(char* string_id)
 	// Setup
 	SCENE_STRING_CASE(boot);
 	// Debug
-	SCENE_STRING_CASE(debug);
+	SCENE_STRING_CASE(debugmenu);
 	// Adventure
 	SCENE_STRING_CASE(title);
 	SCENE_STRING_CASE(test);
@@ -52,7 +52,7 @@ inline void SceneNamePredef()
 	// Setup
 	PREDEF_SCENE(boot);
 	// Debug
-	PREDEF_SCENE(debug);
+	PREDEF_SCENE(debugmenu);
 	// Adventure
 	PREDEF_SCENE(title);
 	PREDEF_SCENE(test);
@@ -67,7 +67,7 @@ inline void SCENE_LIBRARY(struct Actor* scene, SceneID scene_id)
 	// Setup
 	MAKE_SCENE_INIT(boot);
 	// Debug
-	MAKE_SCENE_INIT(debug);
+	MAKE_SCENE_INIT(debugmenu);
 	MAKE_SCENE_INIT(title);
 	MAKE_SCENE_INIT(test);
 	// Adventure

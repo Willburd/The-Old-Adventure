@@ -40,5 +40,5 @@ SCENE_ACTIVATE_ROOM(boot)
 SCENE_UPDATE(boot)
 {
 	// Go to title
-	TransferScene(scene_debug, ent_title);
+	TransferScene(scene_debugmenu, ent_title);
 }
