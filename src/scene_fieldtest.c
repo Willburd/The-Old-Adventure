@@ -59,17 +59,9 @@ SCENE_PRELOADASSETS(Sfieldtest)
 
 SCENE_ACTIVATE_ROOM(Sfieldtest)
 {
-	SceneData* data = (SceneData*)scene->data;
-
-	// Exits
-	EXIT_TRIGGER_CREATE(scene_Sfieldtest, ent_caveA, scene, (Vector3) { 0.0f, 0.0f, 36.0f }, 18.0f);
-
-	// Entrances
-	ENTRANCE_CREATE(ent_debugentrance, scene, (Vector3) { 2.0, 0, 2 }, (Vector3) { -1, 0, 2 });
-	ENTRANCE_CREATE(ent_caveA, scene, (Vector3) { -0.2f, -1.1f, 17.5f }, (Vector3) { -0.21f, -1.1f, 15.0f });
-
 	if ((rand() % 2) == 1)
 	{
+		SceneData* data = (SceneData*)scene->data;
 		data->config_flags |= SCENE_CONFIG_ISRAINING;
 		printf("Raining\n");
 	}

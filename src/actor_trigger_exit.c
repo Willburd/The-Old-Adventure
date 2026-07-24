@@ -13,6 +13,7 @@
 #define MAX_FADEOUT_TIME 300
 
 // private header
+ACTOR_JSON_INIT(trigger_exit);
 ACTOR_PREUPDATE(trigger_exit);
 ACTOR_DRAWWORLD(trigger_exit);
 ACTOR_POSTDRAWHUD(trigger_exit);
@@ -28,6 +29,7 @@ ACTOR_INIT(trigger_exit)
 {
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_TRANSITION;
+	ACTOR_REGISTER_JSON_INIT(trigger_exit);
 	ACTOR_REGISTER_PREUPDATE(trigger_exit);
 	ACTOR_REGISTER_DRAWWORLD(trigger_exit);
 	ACTOR_REGISTER_POSTDRAWHUD(trigger_exit);
@@ -36,17 +38,18 @@ ACTOR_INIT(trigger_exit)
 	MALLOC_ACTOR_DATA(TriggerExitData, actor->data);
 }
 
-struct Actor* EXIT_TRIGGER_CREATE(int destination_scene, int destination_entrance, struct Actor* scene, Vector3 pos, float radius)
+ACTOR_JSON_INIT(trigger_exit)
 {
-	struct Actor* exit = ACTOR_FACTORY(NULL, act_trigger_exit, scene, pos, QuaternionIdentity(), Vector3One(), Vector3Zero());
-	TriggerExitData* exit_data = exit->data;
-	exit_data->dest_scene = destination_scene;
-	exit_data->dest_entrance = destination_entrance;
-	exit_data->radius = radius;
+	if (file_data == NULL)
+		return;
+
+	TriggerExitData* exit_data = actor->data;
+	exit_data->dest_scene = SCENE_FROM_STRING(cJSON_GetObjectItem(file_data, "to_scene")->valuestring);
+	exit_data->dest_entrance = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, "to_entrance")->valuestring);
+	exit_data->radius = (float)cJSON_GetObjectItem(file_data, "radius")->valuedouble;
 	exit_data->is_triggered = FALSE;
 	exit_data->previous_fadeout = 0;
 	exit_data->fadeout = 0;
-	return exit;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

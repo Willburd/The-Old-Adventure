@@ -78,7 +78,7 @@ cJSON* ParseJsonFile(char* path)
     uint64_t buffer_size = ftell(fptr);
     fseek(fptr, 0, SEEK_SET);
 
-    MALLOC_SIZE(char, buffer_size + 1, buffer, ERR_NOALLOC);
+    MALLOC_SIZE(char, buffer_size + 1, buffer, '\0', ERR_NOALLOC);
     size_t read_bytes = fread(buffer, 1, buffer_size, fptr);
     buffer[read_bytes] = '\0';
 

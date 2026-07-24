@@ -14,7 +14,7 @@
 struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
 {
 	if (!cJSON_IsString(cJSON_GetObjectItem(actor_data, "type")))
-		return;
+		return NULL;
 	int actor_type = ACTOR_FROM_STRING(cJSON_GetObjectItem(actor_data, "type")->valuestring);
 
 	Vector3 at_position = Vector3Zero();
