@@ -14,6 +14,7 @@ SceneID next_scene;
 EntranceID next_entrance;
 struct Actor* current_scene = NULL;
 int unload_previous_scene = TRUE;
+static void LoadLayer(struct Actor* scene, cJSON* json_data);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -120,17 +121,24 @@ void LoadSceneJSONActors(struct Actor* scene)
 	SceneData* scene_data = (SceneData*)scene->data;
 	int room_index = scene_data->active_room;
 
-	// Load data if there is any
-	cJSON* json_data = ParseJsonFile(TextFormat("%s/%s/default.json", ASSET_SCENE, scene_name));
+	LoadLayer(scene, ParseJsonFile(TextFormat("%s/%s/default.json", ASSET_SCENE, scene_name)));
+	LoadLayer(scene, ParseJsonFile(TextFormat("%s/%s/room_%i.json", ASSET_SCENE, scene_name, scene_data->active_room)));
+}
+
+#define HAS_JSON_INT(x) (cJSON_GetObjectItem(json_data, "time_paused") && cJSON_GetObjectItem(json_data, "time_paused")->valueint > 0)
+
+//Apply a json layer file to the room
+static void LoadLayer(struct Actor* scene, cJSON* json_data)
+{
 	if (json_data == NULL)
 		return;
 
 	// Get data config
 	SceneData* data = (SceneData*)scene->data;
-	data->config_flags |= cJSON_GetObjectItem(json_data, "time_paused") ? SCENE_CONFIG_TIMEPAUSED : 0;
-	data->config_flags |= cJSON_GetObjectItem(json_data, "is_hot") ? SCENE_CONFIG_HOTROOM : 0;
-	data->config_flags |= cJSON_GetObjectItem(json_data, "is_cold") ? SCENE_CONFIG_COLDROOM : 0;
-	data->config_flags |= cJSON_GetObjectItem(json_data, "is_raining") ? SCENE_CONFIG_ISRAINING : 0;
+	data->config_flags |= HAS_JSON_INT("time_paused") ? SCENE_CONFIG_TIMEPAUSED : 0;
+	data->config_flags |= HAS_JSON_INT("is_hot") ? SCENE_CONFIG_HOTROOM : 0;
+	data->config_flags |= HAS_JSON_INT("is_cold") ? SCENE_CONFIG_COLDROOM : 0;
+	data->config_flags |= HAS_JSON_INT("is_raining") ? SCENE_CONFIG_ISRAINING : 0;
 
 	// Set sky color
 	if (cJSON_IsArray(cJSON_GetObjectItem(json_data, "sky_color")))
@@ -153,6 +161,8 @@ void LoadSceneJSONActors(struct Actor* scene)
 	// Cleanup
 	cJSON_Delete(json_data);
 }
+
+#undef HAS_JSON_INT
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

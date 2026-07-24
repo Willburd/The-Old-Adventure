@@ -55,12 +55,7 @@ SCENE_PRELOADASSETS(Sfieldtest)
 
 SCENE_ACTIVATE_ROOM(Sfieldtest)
 {
-	if ((rand() % 2) == 1)
-	{
-		SceneData* data = (SceneData*)scene->data;
-		data->config_flags |= SCENE_CONFIG_ISRAINING;
-		printf("Raining\n");
-	}
+
 }
 
 SCENE_LIGHTNODES(Sfieldtest)
