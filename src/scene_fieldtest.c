@@ -55,7 +55,7 @@ SCENE_PRELOADASSETS(Sfieldtest)
 
 SCENE_ACTIVATE_ROOM(Sfieldtest)
 {
-
+	LoadCustomLayer(scene, IsDay() ? "Day" : "Night");
 }
 
 SCENE_LIGHTNODES(Sfieldtest)

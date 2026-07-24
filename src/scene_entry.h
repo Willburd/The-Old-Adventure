@@ -168,5 +168,6 @@ struct Actor* GetCurrentScene();
 void HandleLoadNextScene();
 void UnloadScene(int clear_assets);
 void LoadSceneJSONActors(struct Actor* scene);
+void LoadCustomLayer(struct Actor* scene, char* custom_layer);
 
 #endif
