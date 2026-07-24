@@ -117,7 +117,7 @@
     <ClCompile Include="actor_player.c">
       <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
-    <ClCompile Include="scene_debug.c">
+    <ClCompile Include="scene_debugmenu.c">
       <Filter>Source Files\adventure\scenes</Filter>
     </ClCompile>
     <ClCompile Include="scene_test.c">

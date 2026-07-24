@@ -187,7 +187,7 @@
     <ClCompile Include="player_state_generic.c" />
     <ClCompile Include="return_codes.h" />
     <ClCompile Include="scene_boot.c" />
-    <ClCompile Include="scene_debug.c" />
+    <ClCompile Include="scene_debugmenu.c" />
     <ClCompile Include="scene_fieldtest.c" />
     <ClCompile Include="scene_test.c" />
     <ClCompile Include="scene_title.c" />
