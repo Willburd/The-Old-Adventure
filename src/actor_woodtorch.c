@@ -59,7 +59,9 @@ ACTOR_JSON_INIT(woodtorch)
 	}
 
 	// Spawn child fire object
-	ACTOR_FACTORY(NULL, act_fire, actor, Vector3RotateByQuaternion(Vector3Add(actor->position, Vector3Scale(VEC3UP, 3.0f)), actor->rotation), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	int burned_out = CHECK_JSON_BOOL(file_data, "burned_out");
+	if(!burned_out)
+		ACTOR_FACTORY(NULL, act_fire, actor, Vector3RotateByQuaternion(Vector3Add(actor->position, Vector3Scale(VEC3UP, 3.0f)), actor->rotation), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 ACTOR_DRAWWORLD(woodtorch)

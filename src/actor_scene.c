@@ -125,8 +125,6 @@ void LoadSceneJSONActors(struct Actor* scene)
 	LoadLayer(scene, ParseJsonFile(TextFormat("%s/%s/room_%i.json", ASSET_SCENE, scene_name, scene_data->active_room)));
 }
 
-#define HAS_JSON_INT(x) (cJSON_GetObjectItem(json_data, "time_paused") && cJSON_GetObjectItem(json_data, "time_paused")->valueint > 0)
-
 //Apply a json layer file to the room
 static void LoadLayer(struct Actor* scene, cJSON* json_data)
 {
@@ -135,10 +133,10 @@ static void LoadLayer(struct Actor* scene, cJSON* json_data)
 
 	// Get data config
 	SceneData* data = (SceneData*)scene->data;
-	data->config_flags |= HAS_JSON_INT("time_paused") ? SCENE_CONFIG_TIMEPAUSED : 0;
-	data->config_flags |= HAS_JSON_INT("is_hot") ? SCENE_CONFIG_HOTROOM : 0;
-	data->config_flags |= HAS_JSON_INT("is_cold") ? SCENE_CONFIG_COLDROOM : 0;
-	data->config_flags |= HAS_JSON_INT("is_raining") ? SCENE_CONFIG_ISRAINING : 0;
+	data->config_flags |= CHECK_JSON_BOOL(json_data, "time_paused") ? SCENE_CONFIG_TIMEPAUSED : 0;
+	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_hot") ? SCENE_CONFIG_HOTROOM : 0;
+	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_cold") ? SCENE_CONFIG_COLDROOM : 0;
+	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_raining") ? SCENE_CONFIG_ISRAINING : 0;
 
 	// Set sky color
 	if (cJSON_IsArray(cJSON_GetObjectItem(json_data, "sky_color")))
@@ -161,8 +159,6 @@ static void LoadLayer(struct Actor* scene, cJSON* json_data)
 	// Cleanup
 	cJSON_Delete(json_data);
 }
-
-#undef HAS_JSON_INT
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

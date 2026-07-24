@@ -40,7 +40,8 @@
 	  },
 	  {
 		"type": "woodtorch",
-		"pos": [-10.3, -1.0, 13.04]
+		"pos": [-10.3, -1.0, 13.04],
+		"burned_out": 1
 	  },
 	  {
 		"type": "woodtorch",

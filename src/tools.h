@@ -22,8 +22,9 @@
 #define CIRCLE_DEGREES 360.0f
 
 #define STRMATCH(x,y) (strcmp(x,y)==0)
-
 #define STRENDLINETERMINATE(x) x[strcspn(x, "\n")] = '\0'
+
+#define CHECK_JSON_BOOL(d, x) (cJSON_GetObjectItem(d, x) && cJSON_GetObjectItem(d, x)->valueint > 0)
 
 #define VEC3UP ((Vector3){0,1,0})
 #define VEC3DOWN ((Vector3){0,-1,0})
