@@ -27,11 +27,6 @@ SCENE_INIT(Stest)
 
 SCENE_ACTIVATE_ROOM(Stest)
 {
-	// Store the current active subroom of the scene
-	SceneData* data = (SceneData*)scene->data;
-	data->active_room = room_index;
-	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
-
 	// Actor spawns
 	for (int i = 0; i < 60; i++)
 	{
