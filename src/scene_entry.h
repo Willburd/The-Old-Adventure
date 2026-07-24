@@ -93,7 +93,7 @@ typedef struct {
 	float utilityB4;
 } SceneData;
 
-#define SCENEDATA_CLEAR(x) {SceneData* __dat = (SceneData*)x;__dat->temp_flags = 0;__dat->perm_flags = 0;__dat->utilityA1 = 0;__dat->utilityA2 = 0;__dat->utilityA3 = 0;__dat->utilityA4 = 0;__dat->utilityB1 = 0.0f;__dat->utilityB2 = 0.0f;__dat->utilityB3 = 0.0f;__dat->utilityB4 = 0.0f;}
+#define SCENEDATA_CLEAR(x) {SceneData* __dat = (SceneData*)x;__dat->active_room = 0;__dat->config_flags = 0;__dat->temp_flags = 0;__dat->perm_flags = 0;__dat->utilityA1 = 0;__dat->utilityA2 = 0;__dat->utilityA3 = 0;__dat->utilityA4 = 0;__dat->utilityB1 = 0.0f;__dat->utilityB2 = 0.0f;__dat->utilityB3 = 0.0f;__dat->utilityB4 = 0.0f;}
 
 void LoadScene(SceneID id, EntranceID entrance);
 void TransferScene(SceneID id, EntranceID entrance);

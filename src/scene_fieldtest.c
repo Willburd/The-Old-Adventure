@@ -59,10 +59,7 @@ SCENE_PRELOADASSETS(Sfieldtest)
 
 SCENE_ACTIVATE_ROOM(Sfieldtest)
 {
-	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
-	data->active_room = room_index;
-	data->config_flags = 0;
 
 	// Exits
 	EXIT_TRIGGER_CREATE(scene_Sfieldtest, ent_caveA, scene, (Vector3) { 0.0f, 0.0f, 36.0f }, 18.0f);

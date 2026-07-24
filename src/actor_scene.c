@@ -35,7 +35,10 @@ ACTOR_INIT(scene)
 
 	// Activate the first room inside the scene.
 	if (ACTOR_HAS(scene, func_activate_room))
-		scene->func_activate_room(scene, 0, next_entrance);
+	{
+		SceneData* data = (SceneData*)scene->data;
+		scene->func_activate_room(scene, data->active_room, next_entrance);
+	}
 	LoadSceneJSONActors(scene);
 
 	// Check for entrance actors, find the one we're using.
