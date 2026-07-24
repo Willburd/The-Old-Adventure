@@ -13,24 +13,24 @@
 typedef enum
 {
 	// Setup
-	scene_Sboot,
+	scene_boot,
 	// Debug
-	scene_Sdebug,
+	scene_debug,
 	// Adventure
-	scene_Stitle,
-	scene_Stest,
-	scene_Sfieldtest,
+	scene_title,
+	scene_test,
+	scene_fieldtest,
 	LAST_SCENE
 } SceneID;
 char* all_scene_names[500];
 
-SCENE_INIT(Sdebug);
-SCENE_INIT(Sboot);
-SCENE_INIT(Stitle);
-SCENE_INIT(Stest);
-SCENE_INIT(Sfieldtest);
+SCENE_INIT(debug);
+SCENE_INIT(boot);
+SCENE_INIT(title);
+SCENE_INIT(test);
+SCENE_INIT(fieldtest);
 
-#define SCENE_STRING_CASE(str) if (STRMATCH(string_id, #str)) return scene_S## str
+#define SCENE_STRING_CASE(str) if (STRMATCH(string_id, #str)) return scene_## str
 inline SceneID SCENE_FROM_STRING(char* string_id)
 {
 	// Setup
@@ -50,17 +50,17 @@ inline SceneID SCENE_FROM_STRING(char* string_id)
 inline void SceneNamePredef()
 {
 	// Setup
-	PREDEF_SCENE(Sboot);
+	PREDEF_SCENE(boot);
 	// Debug
-	PREDEF_SCENE(Sdebug);
+	PREDEF_SCENE(debug);
 	// Adventure
-	PREDEF_SCENE(Stitle);
-	PREDEF_SCENE(Stest);
-	PREDEF_SCENE(Sfieldtest);
+	PREDEF_SCENE(title);
+	PREDEF_SCENE(test);
+	PREDEF_SCENE(fieldtest);
 }
 #undef PREDEF_SCENE
 
-#define MAKE_SCENE_INIT(x) if(scene_id == scene_S## x ){scene->actor_type_name = #x ;scene->func_init = scene_S## x ##_init;scene->func_init(scene);}
+#define MAKE_SCENE_INIT(x) if(scene_id == scene_## x ){scene->actor_type_name = #x ;scene->func_init = scene_## x ##_init;scene->func_init(scene);}
 inline void SCENE_LIBRARY(struct Actor* scene, SceneID scene_id)
 {
 	printf("SCENE CHANGE: %s \n", scene->actor_type_name);

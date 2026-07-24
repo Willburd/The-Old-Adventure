@@ -9,19 +9,19 @@
 
 
 // private header
-SCENE_ACTIVATE_ROOM(Sboot);
-SCENE_UPDATE(Sboot);
+SCENE_ACTIVATE_ROOM(boot);
+SCENE_UPDATE(boot);
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SCENE_INIT(Sboot)
+SCENE_INIT(boot)
 {
 	// Configure 
-	SCENE_REGISTER_ACTIVATE_ROOM(Sboot);
-	SCENE_REGISTER_UPDATE(Sboot);
+	SCENE_REGISTER_ACTIVATE_ROOM(boot);
+	SCENE_REGISTER_UPDATE(boot);
 }
 
 
@@ -29,7 +29,7 @@ SCENE_INIT(Sboot)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SCENE_ACTIVATE_ROOM(Sboot)
+SCENE_ACTIVATE_ROOM(boot)
 {
 	// Store the current active subroom of the scene
 	SceneData* data = (SceneData*)scene->data;
@@ -37,8 +37,8 @@ SCENE_ACTIVATE_ROOM(Sboot)
 	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
 }
 
-SCENE_UPDATE(Sboot)
+SCENE_UPDATE(boot)
 {
 	// Go to title
-	TransferScene(scene_Sdebug, ent_title);
+	TransferScene(scene_debug, ent_title);
 }
