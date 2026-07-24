@@ -15,10 +15,10 @@ typedef enum
 	scene_Sboot,
 	// Debug
 	scene_Sdebug,
+	// Adventure
 	scene_Stitle,
 	scene_Stest,
 	scene_Sfieldtest,
-	// Adventure
 	LAST_SCENE
 } SceneID;
 char* all_scene_names[500];
@@ -29,17 +29,32 @@ SCENE_INIT(Stitle);
 SCENE_INIT(Stest);
 SCENE_INIT(Sfieldtest);
 
+#define SCENE_STRING_CASE(str) if (STRMATCH(string_id, #str)) return scene_S## str
+inline SceneID SCENE_FROM_STRING(char* string_id)
+{
+	// Setup
+	SCENE_STRING_CASE(boot);
+	// Debug
+	SCENE_STRING_CASE(debug);
+	// Adventure
+	SCENE_STRING_CASE(title);
+	SCENE_STRING_CASE(test);
+	SCENE_STRING_CASE(fieldtest);
+	return LAST_SCENE;
+}
+#undef SCENE_STRING_CASE
+
 #define PREDEF_SCENE(x) all_scene_names[scene_## x] = #x;
 // Setup scene debug names
 inline void SceneNamePredef()
 {
 	// Setup
-	PREDEF_SCENE(Sdebug);
-	// Debug
 	PREDEF_SCENE(Sboot);
+	// Debug
+	PREDEF_SCENE(Sdebug);
+	// Adventure
 	PREDEF_SCENE(Stitle);
 	PREDEF_SCENE(Stest);
-	// Adventure
 	PREDEF_SCENE(Sfieldtest);
 }
 #undef PREDEF_SCENE

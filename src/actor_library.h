@@ -53,7 +53,7 @@ ACTOR_INIT(woodtorch);
 ACTOR_INIT(tree);
 
 #define ACTOR_STRING_CASE(str) if (STRMATCH(string_id, #str)) return act_## str
-inline int ACTOR_FROM_STRING(char* string_id)
+inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 {
 	ACTOR_STRING_CASE(debug);
 	ACTOR_STRING_CASE(test);
@@ -73,7 +73,7 @@ inline int ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(tree);
 	return act_error;
 }
-#undef FIND_ACTOR_STRING
+#undef ACTOR_STRING_CASE
 
 #define MAKE_ACTOR_INIT(x) if(actor_type == act_## x){actor->actor_type_name = #x ;actor->func_init = actor_## x ##_init;if(actor->func_init != NULL) actor->func_init(actor);return;}
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
