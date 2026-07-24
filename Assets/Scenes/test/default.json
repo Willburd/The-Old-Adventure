@@ -3,6 +3,6 @@
    "is_hot": 0,
    "is_cold": 0,
    "is_raining": 0,
-   "sky_color": [ 0, 0, 0,255 ],
+   "sky_color": [ 1, 0, 1, 1 ],
    "actors":[]
 }

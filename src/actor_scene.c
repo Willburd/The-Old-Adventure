@@ -14,7 +14,7 @@ SceneID next_scene;
 EntranceID next_entrance;
 struct Actor* current_scene = NULL;
 int unload_previous_scene = TRUE;
-static void LoadLayer(struct Actor* scene, cJSON* json_data);
+static void LoadRoomLayer(struct Actor* scene, cJSON* json_data);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -117,28 +117,37 @@ void UnloadScene(int clear_assets)
 // Loads static scene json to place actors
 void LoadSceneJSONActors(struct Actor* scene)
 {
-	char* scene_name = scene->actor_type_name;
 	SceneData* scene_data = (SceneData*)scene->data;
-	int room_index = scene_data->active_room;
-
-	LoadLayer(scene, ParseJsonFile(TextFormat("%s/%s/default.json", ASSET_SCENE, scene_name)));
-	LoadLayer(scene, ParseJsonFile(TextFormat("%s/%s/room_%i.json", ASSET_SCENE, scene_name, scene_data->active_room)));
+	LoadRoomLayer(scene, TextFormat("%s/%s/default.json", ASSET_SCENE, scene->actor_type_name));
+	LoadRoomLayer(scene, TextFormat("%s/%s/room_%i.json", ASSET_SCENE, scene->actor_type_name, scene_data->active_room));
 }
 
-//Apply a json layer file to the room
-static void LoadLayer(struct Actor* scene, cJSON* json_data)
+void LoadCustomLayer(struct Actor* scene, char* custom_layer)
 {
+	SceneData* scene_data = (SceneData*)scene->data;
+	LoadRoomLayer(scene, TextFormat("%s/%s/%s.json", ASSET_SCENE, scene->actor_type_name, custom_layer));
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Private functions
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Apply a json layer file to the room
+static void LoadRoomLayer(struct Actor* scene, char* layer_path)
+{
+	cJSON* json_data = ParseJsonFile(layer_path);
 	if (json_data == NULL)
 		return;
 
 	// Get data config
 	SceneData* data = (SceneData*)scene->data;
-	data->config_flags |= CHECK_JSON_BOOL(json_data, "time_paused") ? SCENE_CONFIG_TIMEPAUSED : 0;
-	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_hot") ? SCENE_CONFIG_HOTROOM : 0;
-	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_cold") ? SCENE_CONFIG_COLDROOM : 0;
-	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_raining") ? SCENE_CONFIG_ISRAINING : 0;
+	data->config_flags |= CHECK_JSON_BOOL(json_data, "time_paused") ? SCENE_CONFIG_TIMEPAUSED : 0; // range: [0 - 1]
+	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_hot") ? SCENE_CONFIG_HOTROOM : 0; // range: [0 - 1]
+	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_cold") ? SCENE_CONFIG_COLDROOM : 0; // range: [0 - 1]
+	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_raining") ? SCENE_CONFIG_ISRAINING : 0; // range: [0 - 1]
 
-	// Set sky color
+	// Set sky color. range: [0 - 1]
 	if (cJSON_IsArray(cJSON_GetObjectItem(json_data, "sky_color")))
 	{
 		cJSON* array = cJSON_GetObjectItem(json_data, "sky_color");
@@ -151,7 +160,7 @@ static void LoadLayer(struct Actor* scene, cJSON* json_data)
 		clear_background_color = Vector4ToColor(solved_color);
 	}
 
-	// Create actors from actors array in json
+	// Create actors from actors array in json. range: [{Object array}]
 	cJSON* actor_array = cJSON_GetObjectItem(json_data, "actors");
 	for (int i = 0; i < cJSON_GetArraySize(actor_array); i++)
 		JSON_ACTOR_FACTORY(cJSON_GetArrayItem(actor_array, i), scene);
@@ -159,8 +168,3 @@ static void LoadLayer(struct Actor* scene, cJSON* json_data)
 	// Cleanup
 	cJSON_Delete(json_data);
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Private functions
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

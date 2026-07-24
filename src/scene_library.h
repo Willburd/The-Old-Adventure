@@ -60,18 +60,18 @@ inline void SceneNamePredef()
 }
 #undef PREDEF_SCENE
 
-#define MAKE_SCENE_INIT(x) if(scene_id == scene_## x ){scene->actor_type_name = #x ;scene->func_init = scene_## x ##_init;scene->func_init(scene);}
+#define MAKE_SCENE_INIT(x) if(scene_id == scene_S## x ){scene->actor_type_name = #x ;scene->func_init = scene_S## x ##_init;scene->func_init(scene);}
 inline void SCENE_LIBRARY(struct Actor* scene, SceneID scene_id)
 {
 	printf("SCENE CHANGE: %s \n", scene->actor_type_name);
 	// Setup
-	MAKE_SCENE_INIT(Sboot);
+	MAKE_SCENE_INIT(boot);
 	// Debug
-	MAKE_SCENE_INIT(Sdebug);
-	MAKE_SCENE_INIT(Stitle);
-	MAKE_SCENE_INIT(Stest);
+	MAKE_SCENE_INIT(debug);
+	MAKE_SCENE_INIT(title);
+	MAKE_SCENE_INIT(test);
 	// Adventure
-	MAKE_SCENE_INIT(Sfieldtest);
+	MAKE_SCENE_INIT(fieldtest);
 }
 #undef MAKE_SCENE_INIT
 
