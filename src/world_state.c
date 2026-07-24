@@ -135,3 +135,13 @@ Color GetFogColor()
 	float dusk_intense = GetDuskIntensity();
 	return ColorLerp(BLACK, GetSkyColor(), day_intense);
 }
+
+int IsDay()
+{
+	return daynight_cycle < TIME_DUSK;
+}
+
+int IsNight()
+{
+	return !IsDay();
+}
