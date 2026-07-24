@@ -31,10 +31,7 @@ SCENE_INIT(boot)
 
 SCENE_ACTIVATE_ROOM(boot)
 {
-	// Store the current active subroom of the scene
-	SceneData* data = (SceneData*)scene->data;
-	data->active_room = room_index;
-	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
+
 }
 
 SCENE_UPDATE(boot)
