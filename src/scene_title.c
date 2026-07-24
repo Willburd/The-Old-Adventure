@@ -17,12 +17,7 @@ SCENE_ACTIVATE_ROOM(Stitle);
 
 SCENE_INIT(Stitle)
 {
-	// Configure scene
 	SCENE_REGISTER_ACTIVATE_ROOM(Stitle);
-
-	// Set data
-	MALLOC_ACTOR_DATA(SceneData, scene->data);
-	SCENEDATA_CLEAR(scene->data);
 }
 
 
@@ -32,10 +27,5 @@ SCENE_INIT(Stitle)
 
 SCENE_ACTIVATE_ROOM(Stitle)
 {
-	// Store the current active subroom of the scene
-	SceneData* data = (SceneData*)scene->data;
-	data->active_room = room_index;
-	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
 
-	// Actor spawns
 }

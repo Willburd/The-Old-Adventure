@@ -17,12 +17,7 @@ SCENE_ACTIVATE_ROOM(Stest);
 
 SCENE_INIT(Stest)
 {
-	// Configure scene
 	SCENE_REGISTER_ACTIVATE_ROOM(Stest);
-
-	// Set data
-	MALLOC_ACTOR_DATA(SceneData, scene->data);
-	SCENEDATA_CLEAR(scene->data);
 }
 
 

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "tools.h"
-#include "globals.h"
 #include "actor_factory.h"
 #include "actor_scene.h"
 #include "scene_entry.h"
@@ -23,10 +22,6 @@ SCENE_INIT(Sboot)
 	// Configure 
 	SCENE_REGISTER_ACTIVATE_ROOM(Sboot);
 	SCENE_REGISTER_UPDATE(Sboot);
-
-	// Set data
-	MALLOC_ACTOR_DATA(SceneData, scene->data);
-	SCENEDATA_CLEAR(scene->data);
 }
 
 

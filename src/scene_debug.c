@@ -32,10 +32,6 @@ SCENE_INIT(Sdebug)
 	SCENE_REGISTER_ACTIVATE_ROOM(Sdebug);
 	SCENE_REGISTER_UPDATE(Sdebug);
 	SCENE_REGISTER_DRAWHUD(Sdebug);
-
-	// Set data
-	MALLOC_ACTOR_DATA(SceneData, scene->data);
-	SCENEDATA_CLEAR(scene->data);
 }
 
 
@@ -45,14 +41,6 @@ SCENE_INIT(Sdebug)
 
 SCENE_ACTIVATE_ROOM(Sdebug)
 {
-	// Store the current active subroom of the scene
-	SceneData* data = (SceneData*)scene->data;
-	data->active_room = room_index;
-	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
-
-	// Set sky color
-	clear_background_color = BLACK;
-
 	// Debug info actor
 	if (!FINDACTORTYPE(act_debug))
 		ACTOR_FACTORY(NULL, act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());

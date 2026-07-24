@@ -36,10 +36,6 @@ SCENE_INIT(Sfieldtest)
 	SCENE_REGISTER_LIGHTNODES(Sfieldtest);
 	SCENE_REGISTER_ACTIVATE_ROOM(Sfieldtest);
 	SCENE_REGISTER_DRAWWORLD(Sfieldtest);
-
-	// Set data
-	MALLOC_ACTOR_DATA(SceneData, scene->data);
-	SCENEDATA_CLEAR(scene->data);
 }
 
 

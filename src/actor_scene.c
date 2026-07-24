@@ -7,6 +7,7 @@
 #include "assets.h"
 #include "actor_entrance.h"
 #include "tools.h"
+#include "game_draw.h"
 
 // private header
 SceneID next_scene;
@@ -28,6 +29,10 @@ ACTOR_INIT(scene)
 
 	// Setup scene actor with the intended functions
 	SCENE_LIBRARY(scene, next_scene);
+
+	// Set default scene data.
+	MALLOC_ACTOR_DATA(SceneData, scene->data);
+	SCENEDATA_CLEAR(scene->data);
 
 	// Load assets. This has polymorphed to the SCENE'S assets since the initial call to preloadassets in actor library.
 	if (ACTOR_HAS(scene, func_preloadassets))
@@ -114,14 +119,37 @@ void LoadSceneJSONActors(struct Actor* scene)
 	char* scene_name = scene->actor_type_name;
 	SceneData* scene_data = (SceneData*)scene->data;
 	int room_index = scene_data->active_room;
+
 	// Load data if there is any
 	cJSON* json_data = ParseJsonFile(TextFormat("%s/%s/default.json", ASSET_SCENE, scene_name));
 	if (json_data == NULL)
 		return;
+
+	// Get data config
+	SceneData* data = (SceneData*)scene->data;
+	data->config_flags |= cJSON_GetObjectItem(json_data, "time_paused") ? SCENE_CONFIG_TIMEPAUSED : 0;
+	data->config_flags |= cJSON_GetObjectItem(json_data, "is_hot") ? SCENE_CONFIG_HOTROOM : 0;
+	data->config_flags |= cJSON_GetObjectItem(json_data, "is_cold") ? SCENE_CONFIG_COLDROOM : 0;
+	data->config_flags |= cJSON_GetObjectItem(json_data, "is_raining") ? SCENE_CONFIG_ISRAINING : 0;
+
+	// Set sky color
+	if (cJSON_IsArray(cJSON_GetObjectItem(json_data, "sky_color")))
+	{
+		cJSON* array = cJSON_GetObjectItem(json_data, "sky_color");
+		Vector4 solved_color = {
+			(float)cJSON_GetArrayItem(array, 0)->valuedouble,
+			(float)cJSON_GetArrayItem(array, 1)->valuedouble,
+			(float)cJSON_GetArrayItem(array, 2)->valuedouble,
+			(float)cJSON_GetArrayItem(array, 3)->valuedouble
+		};
+		clear_background_color = Vector4ToColor(solved_color);
+	}
+
 	// Create actors from actors array in json
 	cJSON* actor_array = cJSON_GetObjectItem(json_data, "actors");
 	for (int i = 0; i < cJSON_GetArraySize(actor_array); i++)
 		JSON_ACTOR_FACTORY(cJSON_GetArrayItem(actor_array, i), scene);
+
 	// Cleanup
 	cJSON_Delete(json_data);
 }
