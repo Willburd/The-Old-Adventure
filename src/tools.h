@@ -5,6 +5,7 @@
 #include "raymath.h"
 #include "return_codes.h"
 #include "stdlib.h"
+#include "cJSON.h"
 
 #define MALLOC(t,name,err) t* name = (t*)malloc(sizeof(t));if(name == NULL){printf("Failed malloc");exit(ERR_NOALLOC);return err;};
 #define MALLOC_SET(t,name,err) name = (t*)malloc(sizeof(t));if(name == NULL){printf("Failed malloc");exit(ERR_NOALLOC);return err;};
@@ -48,6 +49,7 @@ Quaternion QuaternionLookAt(Vector3 start, Vector3 end, Vector3 up);
 Quaternion QuaternionFlatLookAt(Vector3 start, Vector3 end, Vector3 up);
 void ApplyFriction(struct Actor* actor, float amount);
 void ApplyFlatFriction(struct Actor* actor, float amount);
+cJSON* ParseJsonFile(char* path);
 
 #endif
 

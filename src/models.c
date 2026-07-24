@@ -21,23 +21,24 @@ void meshdata_free(void* item) {
 	// RELEASE(item); TODO : Why can't I deallocate this?
 }
 
+#define MAX_JSON_CHARS 24000
 // Extracts json from .glb file 
 cJSON* ParseGLTFModel(char* path)
 {
 	// Load material define file
 	FILE* fptr = fopen(path, "r");
-	char* cur_line = malloc(sizeof(char) * 24000);
-	char* final_data = malloc(sizeof(char) * 24000);
 	if (fptr == NULL) {
 		printf("Asset: failed to open model file: %s\n", path);
 		return NULL;
 	}
+	char* cur_line = malloc(sizeof(char) * MAX_JSON_CHARS);
+	char* final_data = malloc(sizeof(char) * MAX_JSON_CHARS);
 
 	unsigned int depth = 0;
 	unsigned int read_index = 0;
 	unsigned int write_index = 0;
-	while (fgets(cur_line, 8192, fptr)) {
-		while (read_index < 8192)
+	while (fgets(cur_line, MAX_JSON_CHARS, fptr)) {
+		while (read_index < MAX_JSON_CHARS)
 		{
 			char current = cur_line[read_index++];
 			if (current == '{')
@@ -65,6 +66,7 @@ cJSON* ParseGLTFModel(char* path)
 	free(final_data);
 	return parsed_data;
 }
+#undef MAX_JSON_CHARS
 
 int GetMeshIndex(struct hashmap* mesh_data, char* mesh_name)
 {

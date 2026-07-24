@@ -38,7 +38,7 @@ ACTOR_INIT(trigger_exit)
 
 struct Actor* EXIT_TRIGGER_CREATE(int destination_scene, int destination_entrance, struct Actor* scene, Vector3 pos, float radius)
 {
-	struct Actor* exit = ACTOR_FACTORY(act_trigger_exit, scene, pos, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	struct Actor* exit = ACTOR_FACTORY(NULL, act_trigger_exit, scene, pos, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	TriggerExitData* exit_data = exit->data;
 	exit_data->dest_scene = destination_scene;
 	exit_data->dest_entrance = destination_entrance;

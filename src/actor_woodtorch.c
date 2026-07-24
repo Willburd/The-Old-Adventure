@@ -10,6 +10,7 @@
 
 // private header
 ACTOR_PRELOADASSETS(woodtorch);
+ACTOR_JSON_INIT(woodtorch);
 ACTOR_DRAWWORLD(woodtorch);
 
 
@@ -22,10 +23,8 @@ ACTOR_INIT(woodtorch)
 	actor->actor_flags = 0;
 	actor->blend_color = ColorToVector4(GOLD);
 	ACTOR_REGISTER_PRELOADASSETS(woodtorch);
+	ACTOR_REGISTER_JSON_INIT(woodtorch);
 	ACTOR_REGISTER_DRAWWORLD(woodtorch);
-
-	// Spawn child fire object
-	ACTOR_FACTORY(act_fire, actor, Vector3RotateByQuaternion(Vector3Add(actor->position, Vector3Scale(VEC3UP,3.0f)), actor->rotation), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,6 +39,27 @@ ACTOR_PRELOADASSETS(woodtorch)
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(actor, model_asset, DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
+}
+
+ACTOR_JSON_INIT(woodtorch)
+{
+	if (file_data == NULL)
+		return;
+
+	// Array4 color
+	if (cJSON_IsArray(cJSON_GetObjectItem(file_data, "fire_color")))
+	{
+		cJSON* array = cJSON_GetObjectItem(file_data, "fire_color");
+		actor->blend_color = (Vector4){
+			(float)cJSON_GetArrayItem(array, 0)->valuedouble,
+			(float)cJSON_GetArrayItem(array, 1)->valuedouble,
+			(float)cJSON_GetArrayItem(array, 2)->valuedouble,
+			(float)cJSON_GetArrayItem(array, 3)->valuedouble,
+		};
+	}
+
+	// Spawn child fire object
+	ACTOR_FACTORY(NULL, act_fire, actor, Vector3RotateByQuaternion(Vector3Add(actor->position, Vector3Scale(VEC3UP, 3.0f)), actor->rotation), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 ACTOR_DRAWWORLD(woodtorch)

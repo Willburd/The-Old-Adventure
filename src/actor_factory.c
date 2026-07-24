@@ -10,8 +10,63 @@
 #include "collision.h"
 #include "actor_library.h"
 
+// Creates an actor from json provided
+struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
+{
+	if (!cJSON_IsString(cJSON_GetObjectItem(actor_data, "type")))
+		return;
+	int actor_type = ACTOR_FROM_STRING(cJSON_GetObjectItem(actor_data, "type")->valuestring);
+
+	Vector3 at_position = Vector3Zero();
+	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, "pos")))
+	{
+		cJSON* pos_array = cJSON_GetObjectItem(actor_data, "pos");
+		at_position = (Vector3){
+			(float)cJSON_GetArrayItem(pos_array, 0)->valuedouble,
+			(float)cJSON_GetArrayItem(pos_array, 1)->valuedouble,
+			(float)cJSON_GetArrayItem(pos_array, 2)->valuedouble,
+		};
+	}
+
+	Quaternion at_rotation = QuaternionIdentity();
+	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, "rot")))
+	{
+		cJSON* rot_array = cJSON_GetObjectItem(actor_data, "rot");
+		at_rotation = QuaternionFromEuler(
+			(float)cJSON_GetArrayItem(rot_array, 0)->valuedouble * DEG2RAD,
+			(float)cJSON_GetArrayItem(rot_array, 1)->valuedouble * DEG2RAD,
+			(float)cJSON_GetArrayItem(rot_array, 2)->valuedouble * DEG2RAD
+		);
+	}
+
+	Vector3 at_scale = Vector3One();
+	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, "scl")))
+	{
+		cJSON* scl_array = cJSON_GetObjectItem(actor_data, "scl");
+		at_scale = (Vector3){
+			(float)cJSON_GetArrayItem(scl_array, 0)->valuedouble,
+			(float)cJSON_GetArrayItem(scl_array, 1)->valuedouble,
+			(float)cJSON_GetArrayItem(scl_array, 2)->valuedouble,
+		};
+	}
+
+	Vector3 initial_velocity = Vector3Zero();
+	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, "vel")))
+	{
+		cJSON* vel_array = cJSON_GetObjectItem(actor_data, "vel");
+		initial_velocity = (Vector3){
+			(float)cJSON_GetArrayItem(vel_array, 0)->valuedouble,
+			(float)cJSON_GetArrayItem(vel_array, 1)->valuedouble,
+			(float)cJSON_GetArrayItem(vel_array, 2)->valuedouble,
+		};
+
+	}
+
+	return ACTOR_FACTORY(actor_data, actor_type, actor_parent, at_position, at_rotation, at_scale, initial_velocity);
+}
+
 // Creates an actor in the world.
-struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity)
+struct Actor* ACTOR_FACTORY(cJSON* actor_data, ActorTypes actor_type, struct Actor* actor_parent, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity)
 {
 	if (current_actor_cap >= ACTOR_LIMIT)
 	{
@@ -56,6 +111,8 @@ struct Actor* ACTOR_FACTORY(ActorTypes actor_type, struct Actor* actor_parent, V
 	ACTOR_LIBRARY(actor, actor_type);
 	if (actor_type != act_scene && ACTOR_HAS(actor, func_preloadassets)) // Scenes handle preload assets themselves at a much earlier point
 		actor->func_preloadassets(actor);
+	if (ACTOR_HAS(actor, func_json_init))
+		actor->func_json_init(actor, actor_data);
 
 #ifdef _DEBUG
 		printf("ACTOR SPAWN: [type: %s] slot: %i [%llu]\n", actor->actor_type_name, actor->index, actor->uuid);

@@ -187,5 +187,5 @@ void PlayerStandardPauseActivate(struct Actor* player)
 {
 	if (FINDACTORTYPE(act_pause_box))
 		return;
-	ACTOR_FACTORY(act_pause_box, GETSCENE(player), Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	ACTOR_FACTORY(NULL, act_pause_box, GETSCENE(player), Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }

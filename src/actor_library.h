@@ -2,6 +2,7 @@
 #define __ACTOR_LIBRARY_HEADER__
 
 #include "actor.h"
+#include "tools.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Actor library. Contains all actor polymorphs and where their init function pointers are.
@@ -50,6 +51,29 @@ ACTOR_INIT(signpost);
 ACTOR_INIT(fire);
 ACTOR_INIT(woodtorch);
 ACTOR_INIT(tree);
+
+#define ACTOR_STRING_CASE(str) if (STRMATCH(string_id, #str)) return act_## str
+inline int ACTOR_FROM_STRING(char* string_id)
+{
+	ACTOR_STRING_CASE(debug);
+	ACTOR_STRING_CASE(test);
+	ACTOR_STRING_CASE(animationtest);
+	ACTOR_STRING_CASE(scene);
+	ACTOR_STRING_CASE(entrance);
+	ACTOR_STRING_CASE(trigger_exit);
+	ACTOR_STRING_CASE(fadein);
+	ACTOR_STRING_CASE(camera);
+	ACTOR_STRING_CASE(skybox);
+	ACTOR_STRING_CASE(textbox);
+	ACTOR_STRING_CASE(player);
+	ACTOR_STRING_CASE(pause_box);
+	ACTOR_STRING_CASE(signpost);
+	ACTOR_STRING_CASE(fire);
+	ACTOR_STRING_CASE(woodtorch);
+	ACTOR_STRING_CASE(tree);
+	return act_error;
+}
+#undef FIND_ACTOR_STRING
 
 #define MAKE_ACTOR_INIT(x) if(actor_type == act_## x){actor->actor_type_name = #x ;actor->func_init = actor_## x ##_init;if(actor->func_init != NULL) actor->func_init(actor);return;}
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)

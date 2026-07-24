@@ -2,6 +2,7 @@
 #include "actor.h"
 #include "animation.h"
 #include "input.h"
+#include "game_draw.h"
 
 // Assets
 #define MATERIAL_ANIM_TEST ASSET_MATERIALS"/Objects/skinned_example.mat"
@@ -74,15 +75,16 @@ ACTOR_DRAWWORLD(animationtest)
 {
 	if(OutOfRenderRange(actor))
 		return;
-	Model* model = AssetGet_Model(MODEL_ANIM_TEST);
+	Asset* model_asset = AssetGetPackage(MODEL_ANIM_TEST);
 	Material* mat = AssetGet_Material(MATERIAL_ANIM_TEST);
 	Matrix actor_matrix = GetMatrix(actor);
-	ApplyAnimLayers(actor, model, mat, tick_percent);
+	ApplyAnimLayers(actor, model_asset->mdl, mat, tick_percent);
 
-	for (int i = 0; i <= model->meshCount; i++)
+	for (int i = 0; i <= model_asset->mdl->meshCount; i++)
 	{
 		ToaDrawMesh(
-			model->meshes[i],
+			model_asset,
+			i,
 			*mat,
 			actor_matrix,
 			FALSE

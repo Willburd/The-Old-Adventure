@@ -1,3 +1,5 @@
+#include "models.h"
+
 #ifndef __COLLISION_HEADER__
 #define __COLLISION_HEADER__
 

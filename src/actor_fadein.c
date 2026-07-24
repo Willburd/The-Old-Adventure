@@ -32,7 +32,7 @@ ACTOR_INIT(fadein)
 
 struct Actor* FADEIN_CREATE(Color color)
 {
-	struct Actor* fadein = ACTOR_FACTORY(act_fadein, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	struct Actor* fadein = ACTOR_FACTORY(NULL, act_fadein, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 	FadeInData* fadein_data = (FadeInData*)fadein->data;
 	fadein_data->blend_color = color;
 	return fadein;

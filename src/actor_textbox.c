@@ -67,7 +67,7 @@ struct Actor* TEXTBOX_CREATE(struct Actor* owner, struct Actor* player, char* te
 	ACTOR_DESTROY_TYPE(act_textbox);
 	
 	// Create our textbox
-	struct Actor* textbox = ACTOR_FACTORY(act_textbox, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	struct Actor* textbox = ACTOR_FACTORY(NULL, act_textbox, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 	TextboxData* textbox_data = (TextboxData*)textbox->data;
 	textbox_data->current_text = GetText(text_id);
 	textbox_data->text_speed = text_speed;
@@ -126,7 +126,7 @@ ACTOR_POSTDRAWHUD(textbox)
 	// Draw the current text segment
 	unsigned int segment_length = textbox_data->current_segment_index;
 	if (textbox_data->text_progress > segment_length)
-		textbox_data->text_progress = segment_length;
+		textbox_data->text_progress = (float)segment_length;
 	unsigned int draw_length = (unsigned int)textbox_data->text_progress;
 
 	char substr[SEGMENT_BUFFER_SIZE] = { 0 }; // Only needs to contain the current segment, lets not blow out the size of the heap

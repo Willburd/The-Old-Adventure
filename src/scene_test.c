@@ -40,7 +40,7 @@ SCENE_ACTIVATE_ROOM(Stest)
 	// Actor spawns
 	for (int i = 0; i < 60; i++)
 	{
-		ACTOR_FACTORY(act_test, scene, (Vector3) { (float)(rand() % 300), (float)(rand() % 300), 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 1, 1, 0 });
+		ACTOR_FACTORY(NULL, act_test, scene, (Vector3) { (float)(rand() % 300), (float)(rand() % 300), 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 1, 1, 0 });
 	}
 
 	// Function testing

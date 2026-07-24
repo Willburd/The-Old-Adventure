@@ -66,3 +66,25 @@ void ApplyFlatFriction(struct Actor* actor, float amount)
     APPLY_FRICTION(z);
 }
 #undef APPLY_FRICTION
+
+cJSON* ParseJsonFile(char* path)
+{
+    // Load material define file
+    FILE* fptr = fopen(path, "r");
+    if (fptr == NULL)
+        return NULL;
+
+    fseek(fptr, 0, SEEK_END);
+    uint64_t buffer_size = ftell(fptr);
+    fseek(fptr, 0, SEEK_SET);
+
+    MALLOC_SIZE(char, buffer_size + 1, buffer, ERR_NOALLOC);
+    size_t read_bytes = fread(buffer, 1, buffer_size, fptr);
+    buffer[read_bytes] = '\0';
+
+    cJSON* parsed_data = cJSON_Parse(buffer);
+    fclose(fptr);
+    free(buffer);
+
+    return parsed_data;
+}

@@ -65,6 +65,8 @@ struct Actor {
 	void (*func_init)(struct Actor* actor);
 	// Load assets when actor is created
 	void (*func_preloadassets)(struct Actor* actor);
+	// Load settings from parsed json, must handle NULL file_data!
+	void (*func_json_init)(struct Actor* actor, cJSON* file_data);
 	// Actor cleanup during ACTOR_DESTROY()
 	void (*func_destroy)(struct Actor* actor);
 	// Actor update tick before primary update
@@ -107,7 +109,7 @@ struct Actor {
 	void (*func_touch)(struct Actor* actor, struct Actor* other);
 };
 #define ACTOR_CLEAR(x) \
-x->uuid = 0; x->index = -1; x->actor_type = 0; x->actor_type_name = "?"; \
+x->uuid = 0; x->index = -1; x->actor_type = 0; x->actor_type_name = "?"; x->func_json_init = NULL; \
 x->is_destroying = FALSE; \
 x->parent = NULL; \
 x->actor_flags = 0; x->triggers_flags = 0; x->flags_permanent = FALSE; \
@@ -193,6 +195,7 @@ void SceneFlagToggle(struct Actor* actor);
 // definition boilerplate for actors
 #define ACTOR_INIT(x) void actor_## x ##_init(struct Actor* actor)
 #define ACTOR_PRELOADASSETS(x) static void actor_## x ##_preload_assets(struct Actor* actor)
+#define ACTOR_JSON_INIT(x) static void actor_## x ##_json_init(struct Actor* actor, cJSON* file_data)
 #define ACTOR_CLEANUP(x) static void actor_## x ##_cleanup(struct Actor* actor)
 
 #define ACTOR_PREUPDATE(x) static void actor_## x ##_preupdate(struct Actor* actor)
@@ -218,6 +221,7 @@ void SceneFlagToggle(struct Actor* actor);
 
 // registration boilerplate for actors
 #define ACTOR_REGISTER_PRELOADASSETS(x) actor->func_preloadassets = actor_## x ##_preload_assets
+#define ACTOR_REGISTER_JSON_INIT(x) actor->func_json_init = actor_## x ##_json_init
 #define ACTOR_REGISTER_CLEANUP(x) actor->func_destroy = actor_## x ##_cleanup
 
 #define ACTOR_REGISTER_PREUPDATE(x) actor->func_preupdate = actor_## x ##_preupdate

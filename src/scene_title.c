@@ -38,5 +38,4 @@ SCENE_ACTIVATE_ROOM(Stitle)
 	data->config_flags = SCENE_CONFIG_TIMEPAUSED;
 
 	// Actor spawns
-
 }

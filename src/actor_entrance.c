@@ -57,7 +57,7 @@ void actor_entrance_startentry(struct Actor* entrance)
 
 struct Actor* ENTRANCE_CREATE(int entrance_id, struct Actor* scene, Vector3 s_pos, Vector3 e_pos)
 {
-	struct Actor* entrance = ACTOR_FACTORY(act_entrance, scene, s_pos, QuaternionIdentity(), Vector3One(), Vector3Zero());
+	struct Actor* entrance = ACTOR_FACTORY(NULL, act_entrance, scene, s_pos, QuaternionIdentity(), Vector3One(), Vector3Zero());
 	actor_entrance_setup(entrance, s_pos, e_pos);
 	EntranceData* entrance_data = entrance->data;
 	entrance_data->entrance_id = entrance_id;

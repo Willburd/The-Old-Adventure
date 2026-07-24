@@ -9,6 +9,7 @@
 #include "scene_entry.h"
 #include "core_assets.h"
 #include "tools.h"
+#include "world_state.h"
 #include "game_state.h"
 #include "inventory.h"
 #include "text_loading.h"
@@ -77,7 +78,7 @@ int main(void)
         }
         if (IsKeyPressed(KEY_F6)) // Misc debug
         {
-            struct Actor* torch = ACTOR_FACTORY(act_woodtorch, NULL, (Vector3) { rand() % 10, 5.0f, rand() % 10 }, QuaternionIdentity(), Vector3One(), Vector3Zero());
+            struct Actor* torch = ACTOR_FACTORY(NULL, act_woodtorch, NULL, (Vector3) { rand() % 10, 5.0f, rand() % 10 }, QuaternionIdentity(), Vector3One(), Vector3Zero());
             torch->blend_color = ColorToVector4((Color) { rand() % 256, rand() % 256, rand() % 256, 255 });
         }
 #endif
@@ -116,7 +117,7 @@ static void game_setup()
     clear_background_color = BLACK;
 
     // Init inventory
-    MALLOC(Inventory, player_inventory, ERR_NOALLOC);
+    MALLOC(Inventory, player_inventory, NULL);
 
     // Set worldstate up temporarily
     InitWorldState();
@@ -129,7 +130,7 @@ static void game_setup()
     LoadCoreAssets();
 
     // Spawn camera
-    ACTOR_FACTORY(act_camera, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+    ACTOR_FACTORY(NULL, act_camera, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 
     // Enter game
     LoadScene(scene_Sboot, ent_title);

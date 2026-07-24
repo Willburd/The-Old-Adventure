@@ -55,7 +55,7 @@ SCENE_ACTIVATE_ROOM(Sdebug)
 
 	// Debug info actor
 	if (!FINDACTORTYPE(act_debug))
-		ACTOR_FACTORY(act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+		ACTOR_FACTORY(NULL, act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 
 SCENE_UPDATE(Sdebug)

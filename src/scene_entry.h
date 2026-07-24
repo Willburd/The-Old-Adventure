@@ -100,5 +100,6 @@ void TransferScene(SceneID id, EntranceID entrance);
 struct Actor* GetCurrentScene();
 void HandleLoadNextScene();
 void UnloadScene(int clear_assets);
+void LoadSceneJSONActors(struct Actor* scene);
 
 #endif

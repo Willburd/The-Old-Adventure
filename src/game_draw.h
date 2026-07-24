@@ -43,6 +43,6 @@ void shader_update_defaultuniforms(Shader shader, struct Actor* actor);
 void shader_update_fog(Shader shader);
 void shader_update_lights(Shader shader);
 
-void ToaDrawMesh(Asset* model_asset, int model_index, Material material, Matrix matrix, int show_backface);
+void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix matrix, int show_backface);
 
 #endif
