@@ -50,10 +50,7 @@ ACTOR_POSTDRAWHUD(debug)
 	struct Actor* scene = GETSCENE(player);
 	int room_index = -1;
 	if (scene)
-	{
-		SceneData* scene_data = scene->data;
-		room_index = scene_data->active_room;
-	}
+		room_index = scene->current_room_index;
 	DrawFPS(5, 5);
 	/*
 	float day_intensity = GetDayIntensity();

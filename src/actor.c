@@ -242,10 +242,18 @@ void SceneFlagTrigger(struct Actor* actor)
 	if (!scene)
 		return;
 	SceneData* data = scene->data;
-	if (actor->flags_permanent)
-		data->perm_flags |= actor->triggers_flags;
-	else
+	switch (actor->flag_group_selector)
+	{
+	case SCENE_FLAG_GROUP_TEMP:
 		data->temp_flags |= actor->triggers_flags;
+		break;
+	case SCENE_FLAG_GROUP_PERM:
+		data->perm_flags |= actor->triggers_flags;
+		break;
+	case SCENE_FLAG_GROUP_PUZZLE:
+		data->puzzle_flags |= actor->triggers_flags;
+		break;
+	}
 }
 
 void SceneFlagClear(struct Actor* actor)
@@ -254,10 +262,18 @@ void SceneFlagClear(struct Actor* actor)
 	if (!scene)
 		return;
 	SceneData* data = scene->data;
-	if (actor->flags_permanent)
-		data->perm_flags &= ~actor->triggers_flags;
-	else
-		data->temp_flags &= ~actor->triggers_flags;
+	switch (actor->flag_group_selector)
+	{
+	case SCENE_FLAG_GROUP_TEMP:
+		data->temp_flags &= actor->triggers_flags;
+		break;
+	case SCENE_FLAG_GROUP_PERM:
+		data->perm_flags &= actor->triggers_flags;
+		break;
+	case SCENE_FLAG_GROUP_PUZZLE:
+		data->puzzle_flags &= actor->triggers_flags;
+		break;
+	}
 }
 
 void SceneFlagToggle(struct Actor* actor)
@@ -266,8 +282,16 @@ void SceneFlagToggle(struct Actor* actor)
 	if (!scene)
 		return;
 	SceneData* data = scene->data;
-	if (actor->flags_permanent)
-		data->perm_flags ^= actor->triggers_flags;
-	else
+	switch (actor->flag_group_selector)
+	{
+	case SCENE_FLAG_GROUP_TEMP:
 		data->temp_flags ^= actor->triggers_flags;
+		break;
+	case SCENE_FLAG_GROUP_PERM:
+		data->perm_flags ^= actor->triggers_flags;
+		break;
+	case SCENE_FLAG_GROUP_PUZZLE:
+		data->puzzle_flags ^= actor->triggers_flags;
+		break;
+	}
 }

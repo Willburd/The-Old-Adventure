@@ -15,6 +15,7 @@ void ACTOR_DESTROY(struct Actor* actor);
 void ACTOR_DESTROY_UUID(uint64_t uuid);
 void ACTOR_DESTROY_TYPE(ActorTypes actor_type);
 void ACTOR_DESTROY_ALL();
+void ACTOR_DESTROY_IN_ROOM(int index);
 void ACTOR_DESTROY_CHILDREN(struct Actor* parent);
 
 #endif

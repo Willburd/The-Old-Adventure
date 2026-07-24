@@ -9,6 +9,7 @@
 #include "animation.h"
 #include "collision.h"
 #include "actor_library.h"
+#include "scene_entry.h"
 
 // Creates an actor from json provided
 struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
@@ -83,6 +84,7 @@ struct Actor* ACTOR_FACTORY(cJSON* actor_data, ActorTypes actor_type, struct Act
 	actor->uuid = ++current_unique_id;
 	actor->actor_type = actor_type;
 	actor->parent = actor_parent;
+	actor->current_room_index = (actor_parent != NULL) ? actor_parent->current_room_index : ACTOR_HAS_NO_ROOM_INDEX;
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TEXTBOX | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE; // Default scene flags
 
 	// Set position
@@ -177,6 +179,23 @@ void ACTOR_DESTROY_ALL()
 	{
 		struct Actor* check_actor = world_actors[i];
 		if (!ACTOR_EXISTS(check_actor))
+			continue;
+		ACTOR_DESTROY(check_actor);
+	}
+}
+
+void ACTOR_DESTROY_IN_ROOM(int room_index)
+{
+	if (room_index == -1)
+		return;
+	for (int i = 0; i < current_actor_cap; i++)
+	{
+		struct Actor* check_actor = world_actors[i];
+		if (!ACTOR_EXISTS(check_actor))
+			continue;
+		if (check_actor->current_room_index != room_index)
+			continue;
+		if (check_actor == GetCurrentScene()) // Ignore the scene itself
 			continue;
 		ACTOR_DESTROY(check_actor);
 	}

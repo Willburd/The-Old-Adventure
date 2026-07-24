@@ -146,10 +146,11 @@ inline EntranceID ENTRANCE_FROM_STRING(char* string_id)
 #define SCENE_CONFIG_ISRAINING	(1 << 3)
 
 typedef struct {
-	int active_room;
 	uint64_t config_flags;	// Persistant settings assigned during scene creation or subroom entry
 	uint64_t temp_flags;	// Temp flags set by actors in the scene to preserve state until the scene is unloaded.
 	uint64_t perm_flags;	// Permanent flags set and loaded by the save file. So that state is preserved between scene reloads. 
+	uint64_t puzzle_flags;	// Temp flags set by actors in the scene. Resets on room change instead of scene unload like temp_flags.
+	// Misc utility vars, used for giving scenes quickly usable variables without needing custom data, or a dedicated flag.
 	int utilityA1;
 	int utilityA2;
 	int utilityA3;
@@ -160,10 +161,11 @@ typedef struct {
 	float utilityB4;
 } SceneData;
 
-#define SCENEDATA_CLEAR(x) {SceneData* __dat = (SceneData*)x;__dat->active_room = 0;__dat->config_flags = 0;__dat->temp_flags = 0;__dat->perm_flags = 0;__dat->utilityA1 = 0;__dat->utilityA2 = 0;__dat->utilityA3 = 0;__dat->utilityA4 = 0;__dat->utilityB1 = 0.0f;__dat->utilityB2 = 0.0f;__dat->utilityB3 = 0.0f;__dat->utilityB4 = 0.0f;}
+#define SCENEDATA_CLEAR(x) {SceneData* __dat = (SceneData*)x;__dat->config_flags = 0;__dat->temp_flags = 0;__dat->perm_flags = 0;__dat->puzzle_flags = 0;__dat->utilityA1 = 0;__dat->utilityA2 = 0;__dat->utilityA3 = 0;__dat->utilityA4 = 0;__dat->utilityB1 = 0.0f;__dat->utilityB2 = 0.0f;__dat->utilityB3 = 0.0f;__dat->utilityB4 = 0.0f;}
 
 void LoadScene(SceneID id, EntranceID entrance);
 void TransferScene(SceneID id, EntranceID entrance);
+void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player);
 struct Actor* GetCurrentScene();
 void HandleLoadNextScene();
 void UnloadScene(int clear_assets);

@@ -70,16 +70,19 @@ int main(void)
         {
             TransferScene(scene_debugmenu, ent_title);
         }
-        if (IsKeyPressed(KEY_F5)) // Reload text assets
+        if (IsKeyPressed(KEY_F5)) // Reload game data
         {
+            // Reload text assets
             hashmap_clear(loaded_text, FALSE);
             LoadBuiltinText();
             LoadCoreTextAssets();
+            // Reload current room without clearing player
+            struct Actor* current_scene = GetCurrentScene();
+            ChangeSceneRoom(current_scene, current_scene->current_room_index, TRUE);
         }
         if (IsKeyPressed(KEY_F6)) // Misc debug
         {
-            struct Actor* torch = ACTOR_FACTORY(NULL, act_woodtorch, NULL, (Vector3) { rand() % 10, 5.0f, rand() % 10 }, QuaternionIdentity(), Vector3One(), Vector3Zero());
-            torch->blend_color = ColorToVector4((Color) { rand() % 256, rand() % 256, rand() % 256, 255 });
+
         }
 #endif
 

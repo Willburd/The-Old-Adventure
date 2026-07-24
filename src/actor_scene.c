@@ -38,14 +38,7 @@ ACTOR_INIT(scene)
 	// Load assets. This has polymorphed to the SCENE'S assets since the initial call to preloadassets in actor library.
 	if (ACTOR_HAS(scene, func_preloadassets))
 		scene->func_preloadassets(scene);
-
-	// Activate the first room inside the scene.
-	if (ACTOR_HAS(scene, func_activate_room))
-	{
-		SceneData* data = (SceneData*)scene->data;
-		scene->func_activate_room(scene, data->active_room, next_entrance);
-	}
-	LoadSceneJSONActors(scene);
+	ChangeSceneRoom(scene, 0, FALSE); // Activate the first room inside the scene.
 
 	// Check for entrance actors, find the one we're using.
 	struct Actor* found_group[LAST_ENTRANCE] = { 0 };
@@ -117,17 +110,44 @@ void UnloadScene(int clear_assets)
 // Loads static scene json to place actors
 void LoadSceneJSONActors(struct Actor* scene)
 {
-	SceneData* scene_data = (SceneData*)scene->data;
 	LoadRoomLayer(scene, TextFormat("%s/%s/default.json", ASSET_SCENE, scene->actor_type_name));
-	LoadRoomLayer(scene, TextFormat("%s/%s/room_%i.json", ASSET_SCENE, scene->actor_type_name, scene_data->active_room));
+	LoadRoomLayer(scene, TextFormat("%s/%s/room_%i.json", ASSET_SCENE, scene->actor_type_name, scene->current_room_index));
 }
 
+// Applies a custom layer json
 void LoadCustomLayer(struct Actor* scene, char* custom_layer)
 {
 	SceneData* scene_data = (SceneData*)scene->data;
 	LoadRoomLayer(scene, TextFormat("%s/%s/%s.json", ASSET_SCENE, scene->actor_type_name, custom_layer));
 }
 
+// Loads the specified room index of the current scene, while deleting all actors outside of it. Resets the current room if used to go to the same index as current.
+void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player)
+{
+	// If we're retaining the player we need to do some magic.
+	struct Actor* player = NULL;
+	if (keep_player)
+	{
+		struct Actor* player = FINDACTORTYPE(act_player);
+		if (player)
+			player->current_room_index = ACTOR_HAS_NO_ROOM_INDEX;
+	}
+	// Clear puzzle flag
+	SceneData* scene_data = (SceneData*)scene->data;
+	scene_data->puzzle_flags = 0; // Clear puzzle flags on room change
+	// Remove prior actors
+	if (ACTOR_HAS(scene, func_deactivate_room))
+		scene->func_deactivate_room(scene, scene->current_room_index);
+	ACTOR_DESTROY_IN_ROOM(current_scene->current_room_index);
+	// Activate the first room inside the scene.
+	scene->current_room_index = new_room_index;
+	if (ACTOR_HAS(scene, func_activate_room))
+		scene->func_activate_room(scene, scene->current_room_index, next_entrance);
+	LoadSceneJSONActors(scene);
+	// Restore player's room link
+	if (player)
+		player->current_room_index = current_scene->current_room_index;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions

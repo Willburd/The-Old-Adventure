@@ -24,6 +24,12 @@
 #define ACTOR_FLAG_INTERACTIVE (1 << 10) // player can trigger interacts with
 #define ACTOR_FLAG_DISABLE_LIGHTS (1 << 11) // Skips actor's lightnodes being queued to the shader
 
+#define ACTOR_HAS_NO_ROOM_INDEX -1
+
+#define SCENE_FLAG_GROUP_TEMP 0
+#define SCENE_FLAG_GROUP_PERM 1
+#define SCENE_FLAG_GROUP_PUZZLE 2
+
 struct Actor;
 struct Actor {
 	int index;
@@ -33,6 +39,7 @@ struct Actor {
 	int is_destroying;
 
 	struct Actor* parent;
+	int current_room_index;
 	void* data;
 
 	Vector3 position;
@@ -53,8 +60,8 @@ struct Actor {
 	Vector4 blend_color;
 	// Scene flags set when this actor triggers a actor defined event.
 	uint64_t triggers_flags;
-	// If the above flag sets the permanent, or temporary scene flag set.
-	int flags_permanent;
+	// Sets which flag group is written to when SceneFlagToggle() is called.
+	int flag_group_selector;
 
 	// Number of animation layers present in this actor
 	int animlayer_count;
@@ -111,8 +118,8 @@ struct Actor {
 #define ACTOR_CLEAR(x) \
 x->uuid = 0; x->index = -1; x->actor_type = 0; x->actor_type_name = "?"; x->func_json_init = NULL; \
 x->is_destroying = FALSE; \
-x->parent = NULL; \
-x->actor_flags = 0; x->triggers_flags = 0; x->flags_permanent = FALSE; \
+x->parent = NULL; x->current_room_index = ACTOR_HAS_NO_ROOM_INDEX; \
+x->actor_flags = 0; x->triggers_flags = 0; x->flag_group_selector = SCENE_FLAG_GROUP_TEMP; \
 x->draw_range = DEFAULT_MAX_RENDER_RANGE; x->blend_color = (Vector4){ 255, 255, 255, 255}; \
 x->animlayer_count = -1; \
 x->func_init = NULL; x->func_preloadassets = NULL; \
