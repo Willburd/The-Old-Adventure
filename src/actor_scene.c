@@ -23,7 +23,7 @@ static void LoadRoomLayer(struct Actor* scene, char* layer_path);
 ACTOR_INIT(scene)
 {
 	// Use this for clarity
-	struct Actor* scene = actor; 
+	struct Actor* scene = actor;
 
 	// Unload previous scene
 	current_scene = scene;
@@ -67,6 +67,10 @@ ACTOR_INIT(scene)
 			actor_entrance_startentry(entrance);
 	}
 	// Adventure edit end
+
+	printf("\n..............................................................................\n");
+	printf("CHANGE FINISHED ==> %s \n", scene->actor_type_name);
+	printf("********************************************************************************\n");
 }
 
 // Sets the next scene to be loaded. Will be actually loaded before the pre-update loop next gametick. DOES NOT LOAD THE SCENE ITSELF. Happens next tick, this is safe to call with ACTOR_DESTORY actions happening.
