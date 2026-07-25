@@ -1,5 +1,5 @@
 // Textures
-#ALBED /Error/no_material.png FILT_POINT WRAP_REPEAT
+#ALBED /Engine/no_material.png FILT_POINT WRAP_REPEAT
 
 // Shader
 #SHADR /unshaded.vert /unshaded.frag

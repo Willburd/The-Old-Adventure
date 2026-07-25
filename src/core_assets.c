@@ -5,14 +5,14 @@
 void LoadCoreAssets()
 {
     // Load default textures
-    LoadAsset_Texture(ASSET_TEXTURES"/Error/no_texture.png", TRUE, NULL);
-    LoadAsset_Texture(ASSET_TEXTURES"/Error/no_material.png", TRUE, NULL);
-    LoadAsset_Texture(ASSET_TEXTURES"/Objects/example.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Engine/no_texture.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Engine/no_material.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/Engine/example.png", TRUE, NULL);
     // TODO - Your default textures here
 
     // Load default materials
-    LoadAsset_Material(ASSET_MATERIALS"/Error/no_material.mat", TRUE);
-    LoadAsset_Material(ASSET_MATERIALS"/Objects/example.mat", TRUE);
+    LoadAsset_Material(ASSET_MATERIALS"/Engine/no_material.mat", TRUE);
+    LoadAsset_Material(ASSET_MATERIALS"/Engine/example.mat", TRUE);
     // TODO - Your default materials here
 
     // Load default models
