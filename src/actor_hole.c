@@ -6,8 +6,11 @@
 #include "actor_fadein.h"
 #include "actor_scene.h"
 #include "player.h"
+#include "core_assets.h"
+#include "game_draw.h"
 
 // Assets
+#define HOLE_MATERIAL_MAIN ASSET_MATERIALS"/Effects/pit_warp.mat"
 
 // Utility
 #define MAX_FADEOUT_RATE 6
@@ -17,8 +20,8 @@
 ACTOR_PRELOADASSETS(hole);
 ACTOR_JSON_INIT(hole);
 ACTOR_UPDATE(hole);
+ACTOR_TRANSPARENTDRAWWORLD(hole);
 ACTOR_POSTDRAWHUD(hole);
-ACTOR_DRAWWORLD(hole);
 static void actor_hole_startleaving(struct Actor* exit, struct Actor* player);
 static void actor_hole_finishleaving(struct Actor* exit);
 
@@ -33,8 +36,8 @@ ACTOR_INIT(hole)
 	ACTOR_REGISTER_PRELOADASSETS(hole);
 	ACTOR_REGISTER_JSON_INIT(hole);
 	ACTOR_REGISTER_UPDATE(hole);
+	ACTOR_REGISTER_TRANSPARENTDRAWWORLD(hole);
 	ACTOR_REGISTER_POSTDRAWHUD(hole);
-	ACTOR_REGISTER_DRAWWORLD(hole);
 
 	// Set data
 	MALLOC_ACTOR_DATA(TriggerExitData, actor->data);
@@ -60,7 +63,7 @@ ACTOR_JSON_INIT(hole)
 
 ACTOR_PRELOADASSETS(hole)
 {
-
+	LoadAsset_Material(HOLE_MATERIAL_MAIN, FALSE);
 }
 
 ACTOR_UPDATE(hole)
@@ -87,11 +90,22 @@ ACTOR_UPDATE(hole)
 	actor_hole_startleaving(actor, player);
 }
 
-ACTOR_DRAWWORLD(hole)
+ACTOR_TRANSPARENTDRAWWORLD(hole)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	DrawSphereWires(actor->position, 1.0f, 10, 10, RED);
+	STANDARD_SHADER_MATERIAL(hole_mat, HOLE_MATERIAL_MAIN, actor);
+	Transform hole_transform = {
+		.translation = Vector3Add(actor->position, (Vector3) { 0.0f, 0.1f, 0.0f }),
+		.rotation = QuaternionMultiply(QuaternionFlatLookAt(cam_main.position, actor->position, VEC3UP), QuaternionFromEuler(270.0f * DEG2RAD, 0.0f, 0.0f)),
+		.scale = Vector3Multiply(actor->scale, (Vector3) { 2.0f, 2.0f, 2.0f })
+	};
+
+	DrawMesh(
+		AssetGet_Model(SPRITE_MODEL)->meshes[0],
+		*hole_mat,
+		MATRIX_ASSEMBLE(hole_transform)
+	);
 }
 
 ACTOR_POSTDRAWHUD(hole)
