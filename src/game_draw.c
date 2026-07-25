@@ -4,7 +4,6 @@
 #include "actor.h"
 #include "rlgl.h"
 #include "tools.h"
-#include "world_state.h"
 
 int draw_debug_info = FALSE;
 

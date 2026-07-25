@@ -58,6 +58,14 @@ typedef enum
 	ent_caveB,
 	ent_caveC,
 	ent_caveD,
+	ent_checkpointA,
+	ent_checkpointB,
+	ent_checkpointC,
+	ent_checkpointD,
+	ent_checkpointE,
+	ent_checkpointF,
+	ent_checkpointG,
+	ent_checkpointH,
 	NO_PLAYER_SCENE, // If beyond this point, don't spawn the player automatically
 	ent_title,
 	ent_cutsceneA,
@@ -126,6 +134,14 @@ inline EntranceID ENTRANCE_FROM_STRING(char* string_id)
 	ENTRANCE_STRING_CASE(caveB);
 	ENTRANCE_STRING_CASE(caveC);
 	ENTRANCE_STRING_CASE(caveD);
+	ENTRANCE_STRING_CASE(checkpointA);
+	ENTRANCE_STRING_CASE(checkpointB);
+	ENTRANCE_STRING_CASE(checkpointC);
+	ENTRANCE_STRING_CASE(checkpointD);
+	ENTRANCE_STRING_CASE(checkpointE);
+	ENTRANCE_STRING_CASE(checkpointF);
+	ENTRANCE_STRING_CASE(checkpointG);
+	ENTRANCE_STRING_CASE(checkpointH);
 	// NO_PLAYER_SCENE
 	ENTRANCE_STRING_CASE(title);
 	ENTRANCE_STRING_CASE(cutsceneA);

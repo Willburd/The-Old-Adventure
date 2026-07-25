@@ -1,5 +1,0 @@
-// Textures
-#ALBED /Trees/branchmess_A.png FILT_BI WRAP_REPEAT
-
-// Shader
-#SHADR /standard.vert /standard.frag

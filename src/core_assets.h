@@ -13,6 +13,6 @@ void LoadCoreTextAssets();
 
 // Text entries
 #define TEXT_TEST_DEBUG "Test_Debug"
-#define TEXT_ACTIONBUTTON_READ "ActionButton_Read"
+// TODO - Your text defines here
 
 #endif

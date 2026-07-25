@@ -1,5 +1,0 @@
-// Textures
-#ALBED /Objects/door_a.png FILT_BI WRAP_REPEAT
-
-// Shader
-#SHADR /standard.vert /standard.frag

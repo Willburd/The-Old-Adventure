@@ -1,5 +1,0 @@
-// Textures
-#ALBED /Skybox/standard_skybox_nightrain.png FILT_BI WRAP_REPEAT
-
-// Shader
-#SHADR /unshaded.vert /unshaded.frag

@@ -10,7 +10,6 @@
 #include "globals.h"
 #include "input.h"
 #include "game_state.h"
-#include "world_state.h"
 
 
 int current_actor_cap = 0;
@@ -31,7 +30,6 @@ void game_update()
 	////////////////////////////////////////////////////////////////////////
 
 	light_count = 0;
-	UpdateWorldState();
 	HandleLoadNextScene();
 
 	////////////////////////////////////////////////////////////////////////

@@ -3,7 +3,6 @@
 #include "actor_factory.h"
 #include "actor_scene.h"
 #include "game_draw.h"
-#include "world_state.h"
 #include "collision.h"
 
 // private header
@@ -44,39 +43,10 @@ ACTOR_POSTDRAWHUD(debug)
 {
 	if (!draw_debug_info)
 		return;
-	struct Actor* player = FINDACTORTYPE(act_player);
-	if (!ACTOR_EXISTS(player))
-		return;
-	struct Actor* scene = GETSCENE(player);
+	struct Actor* scene = GetCurrentScene();
 	int room_index = -1;
 	if (scene)
 		room_index = scene->current_room_index;
 	DrawFPS(5, 5);
-	/*
-	float day_intensity = GetDayIntensity();
-	float night_intensity = GetNightIntensity();
-	float dawn_intensity = GetDawnIntensity();
-	float dusk_intensity = GetDuskIntensity();
-	float rain_intensity = 0.0f;
-	DrawText(TextFormat("Actor Total: [%i]\nSeconds [%f]\nTicks [%i]\nDelta [%f]\nCurrent room: %i\n\n\nday: %f\nnight: %f\ndawn: %f\ndusk: %f\nrain: %f\n", 
-		total_actors, seconds_counter, tick_counter, tick_percent, room_index, day_intensity, night_intensity, dawn_intensity, dusk_intensity, rain_intensity),
-		5, 20, 4, GRAY);
-	*/
-
 	DrawText(TextFormat("[act: %i] [col: %i]", current_actor_cap, max_collision), 5, 25, 4, WHITE);
-	/*
-	for (int i = 0; i <= current_actor_cap; i++)
-	{
-		struct Actor* draw_actor = world_actors[i];
-		if (!ACTOR_EXISTS(draw_actor))
-			continue;
-		char* parent_name = "NOPARENT";
-		if (ACTOR_EXISTS(ACTOR_PARENT(draw_actor)))
-		{
-			struct Actor* parent = ACTOR_PARENT(draw_actor);
-			parent_name = parent->actor_type_name;
-		}
-		DrawText(TextFormat("[%i](%s)->%s  ", i, parent_name, draw_actor->actor_type_name), 5, 25 + (i*12), 4, WHITE);
-	}
-	*/
 }
