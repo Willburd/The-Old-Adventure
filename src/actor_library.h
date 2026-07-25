@@ -18,7 +18,19 @@ typedef enum
 	act_scene,
 	act_fadein,
 	act_camera,
-	// TODO - Your entities here
+	// Adventure
+	act_test,
+	act_animationtest,
+	act_entrance,
+	act_trigger_exit,
+	act_skybox,
+	act_textbox,
+	act_player,
+	act_pause_box,
+	act_signpost,
+	act_fire,
+	act_woodtorch,
+	act_tree,
 	LAST_ACTOR
 
 } ActorTypes;
@@ -29,7 +41,19 @@ ACTOR_INIT(debug);
 ACTOR_INIT(scene);
 ACTOR_INIT(fadein);
 ACTOR_INIT(camera);
-// TODO - Your entities here
+// Adventure
+ACTOR_INIT(test);
+ACTOR_INIT(animationtest);
+ACTOR_INIT(entrance);
+ACTOR_INIT(trigger_exit);
+ACTOR_INIT(skybox);
+ACTOR_INIT(textbox);
+ACTOR_INIT(player);
+ACTOR_INIT(pause_box);
+ACTOR_INIT(signpost);
+ACTOR_INIT(fire);
+ACTOR_INIT(woodtorch);
+ACTOR_INIT(tree);
 
 #define ACTOR_STRING_CASE(str) if (STRMATCH(string_id, #str)) return act_## str
 inline ActorTypes ACTOR_FROM_STRING(char* string_id)
@@ -40,7 +64,19 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(scene);
 	ACTOR_STRING_CASE(fadein);
 	ACTOR_STRING_CASE(camera);
-	// TODO - Your entities here
+	// Adventure
+	ACTOR_STRING_CASE(test);
+	ACTOR_STRING_CASE(animationtest);
+	ACTOR_STRING_CASE(entrance);
+	ACTOR_STRING_CASE(trigger_exit);
+	ACTOR_STRING_CASE(skybox);
+	ACTOR_STRING_CASE(textbox);
+	ACTOR_STRING_CASE(player);
+	ACTOR_STRING_CASE(pause_box);
+	ACTOR_STRING_CASE(signpost);
+	ACTOR_STRING_CASE(fire);
+	ACTOR_STRING_CASE(woodtorch);
+	ACTOR_STRING_CASE(tree);
 	return act_error;
 }
 #undef ACTOR_STRING_CASE
@@ -54,7 +90,19 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 	MAKE_ACTOR_INIT(scene);
 	MAKE_ACTOR_INIT(fadein);
 	MAKE_ACTOR_INIT(camera);
-	// TODO - Your entities here
+	// Adventure
+	MAKE_ACTOR_INIT(test);
+	MAKE_ACTOR_INIT(animationtest);
+	MAKE_ACTOR_INIT(entrance);
+	MAKE_ACTOR_INIT(trigger_exit);
+	MAKE_ACTOR_INIT(skybox);
+	MAKE_ACTOR_INIT(textbox);
+	MAKE_ACTOR_INIT(player);
+	MAKE_ACTOR_INIT(pause_box);
+	MAKE_ACTOR_INIT(signpost);
+	MAKE_ACTOR_INIT(fire);
+	MAKE_ACTOR_INIT(woodtorch);
+	MAKE_ACTOR_INIT(tree);
 }
 #undef MAKE_ACTOR_INIT
 

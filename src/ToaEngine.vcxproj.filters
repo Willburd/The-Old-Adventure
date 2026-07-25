@@ -49,17 +49,29 @@
     <Filter Include="Header Files\adventure">
       <UniqueIdentifier>{73ea9d1c-9f18-4dd9-a7ba-c5fc38abba3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\adventure\actors">
+      <UniqueIdentifier>{98d1ed99-10f7-4a78-a846-64368538569b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\adventure\scenes">
       <UniqueIdentifier>{a644b98c-514b-4081-8a68-7d3dc5b56d5b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\adventure\assets">
       <UniqueIdentifier>{d02f349d-0f27-4f7b-b9f6-ee4898d2923b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\adventure\game">
+      <UniqueIdentifier>{cd9a0e50-0966-42ad-9e50-4634f46ef16f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\hashmap">
       <UniqueIdentifier>{ba968dd7-1a95-4f0b-b197-cf330bb26838}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\hashmap">
       <UniqueIdentifier>{3d37dd40-4d53-46e5-9f6e-8e743bc38e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\adventure\actors\player_states">
+      <UniqueIdentifier>{fe66cc40-e27c-4593-bb87-77f81c75ea48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\adventure\actors\player_states">
+      <UniqueIdentifier>{92bbfbf4-8b37-4fe9-88f5-4ccabfead260}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\engine\localization">
       <UniqueIdentifier>{3df59ec4-67f3-4fbb-a231-e72e26ada154}</UniqueIdentifier>
@@ -102,14 +114,32 @@
     <ClCompile Include="actor.c">
       <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_player.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
     <ClCompile Include="scene_debugmenu.c">
       <Filter>Source Files\adventure\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_test.c">
+      <Filter>Source Files\adventure\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_title.c">
+      <Filter>Source Files\adventure\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_test.c">
+      <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
     <ClCompile Include="scene_boot.c">
       <Filter>Source Files\adventure\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="actor_debug.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
     <ClCompile Include="input.c">
       <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_fieldtest.c">
+      <Filter>Source Files\adventure\scenes</Filter>
     </ClCompile>
     <ClCompile Include="actor_camera.c">
       <Filter>Source Files\engine\actors</Filter>
@@ -123,17 +153,50 @@
     <ClCompile Include="collision.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
+    <ClCompile Include="world_state.c">
+      <Filter>Source Files\adventure\game</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_animationtest.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
     <ClCompile Include="animation.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
     <ClCompile Include="hashmap.c">
       <Filter>Source Files\hashmap</Filter>
     </ClCompile>
+    <ClCompile Include="player_state_grounded.c">
+      <Filter>Source Files\adventure\actors\player_states</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_generic.c">
+      <Filter>Source Files\adventure\actors\player_states</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_air.c">
+      <Filter>Source Files\adventure\actors\player_states</Filter>
+    </ClCompile>
+    <ClCompile Include="inventory.c">
+      <Filter>Source Files\adventure\game</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_pause_box.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
     <ClCompile Include="actor_fadein.c">
       <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
     <ClCompile Include="text_loading.c">
       <Filter>Source Files\engine\localization</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_signpost.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_fire.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_woodtorch.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_tree.c">
+      <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
     <ClCompile Include="cJSON.c">
       <Filter>Source Files\cjson</Filter>
@@ -144,8 +207,17 @@
     <ClCompile Include="models.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
-    <ClCompile Include="actor_debug.c">
-      <Filter>Source Files\engine\actors</Filter>
+    <ClCompile Include="actor_skybox.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_textbox.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_trigger_exit.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_entrance.c">
+      <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,8 +269,14 @@
     <ClInclude Include="hashmap.h">
       <Filter>Header Files\hashmap</Filter>
     </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Header Files\adventure\actors\player_states</Filter>
+    </ClInclude>
     <ClInclude Include="hud.h">
       <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_trigger_exit.h">
+      <Filter>Header Files\engine\actors</Filter>
     </ClInclude>
     <ClInclude Include="actor_fadein.h">
       <Filter>Header Files\engine\actors</Filter>
@@ -206,10 +284,19 @@
     <ClInclude Include="text_loading.h">
       <Filter>Header Files\engine\localization</Filter>
     </ClInclude>
+    <ClInclude Include="actor_textbox.h">
+      <Filter>Header Files\engine\actors</Filter>
+    </ClInclude>
     <ClInclude Include="actor_library.h">
       <Filter>Header Files\adventure</Filter>
     </ClInclude>
     <ClInclude Include="scene_library.h">
+      <Filter>Header Files\adventure</Filter>
+    </ClInclude>
+    <ClInclude Include="inventory.h">
+      <Filter>Header Files\adventure</Filter>
+    </ClInclude>
+    <ClInclude Include="world_state.h">
       <Filter>Header Files\adventure</Filter>
     </ClInclude>
     <ClInclude Include="core_assets.h">

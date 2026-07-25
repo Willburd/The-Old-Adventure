@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "light_tools.h"
 #include "actor_factory.h"
+#include "world_state.h"
 
 // Assets
 #define SKYSPHERE_MODEL				ASSET_MODELS"/Tools/skysphere.glb"

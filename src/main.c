@@ -11,6 +11,9 @@
 #include "tools.h"
 #include "game_state.h"
 #include "text_loading.h"
+// Adventure
+#include "world_state.h"
+#include "inventory.h"
 
 #define RAYMATH_USE_SIMD_INTRINSICS 1
 #define PLATFORM_DESKTOP 1
@@ -116,6 +119,11 @@ static void game_setup()
 
     // Setup renderer
     clear_background_color = BLACK;
+
+    // Adventure edit begin - Init inventory and worldstate
+    MALLOC(Inventory, player_inventory, NULL);
+    InitWorldState();
+    // Adventure edit end
 
     // Load text data
     loaded_text = hashmap_new(sizeof(TextEntry), MAX_TEXT_ENTRIES, 0, 0, text_hash, text_compare, text_free, NULL);
