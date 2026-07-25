@@ -1,5 +1,5 @@
 // Textures
-#ALBED /Objects/example.png FILT_BI WRAP_REPEAT
+#ALBED /Engine/example.png FILT_BI WRAP_REPEAT
 
 // Shader
 #SHADR /skinned_unshaded.vert /unshaded.frag
