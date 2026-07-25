@@ -30,6 +30,7 @@ ACTOR_INIT(player)
 	player_data->cutscene_run_goal = Vector3Zero();
 	player_data->cutscene_run_factor = 1.0f;
 	player_data->current_action_button_text = "";
+	player_data->disable_collision = FALSE;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

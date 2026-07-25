@@ -21,6 +21,8 @@ void PlayerState_Air_Enter(struct Actor* player, PlayerData* player_data, int pr
 
 void PlayerState_Air_Update(struct Actor* player)
 {
+	PlayerData* player_data = (PlayerData*)player->data;
+
 	// Pausing
 	if (CHECK_INPUTPRESSED(input_pause))
 	{
@@ -31,9 +33,12 @@ void PlayerState_Air_Update(struct Actor* player)
 	ApplyFlatFriction(player, 0.02f);
 
 	// Handle wall collision
-	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, 0.1f), PLAYER_COLLISION_RADIUS);
-	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT), PLAYER_COLLISION_RADIUS);
-	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_TOP_HEIGHT), PLAYER_COLLISION_RADIUS);
+	if (!player_data->disable_collision)
+	{
+		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, 0.1f), PLAYER_COLLISION_RADIUS);
+		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT), PLAYER_COLLISION_RADIUS);
+		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_TOP_HEIGHT), PLAYER_COLLISION_RADIUS);
+	}
 
 	// Handle gravity
 	Ray downray = {
@@ -41,18 +46,16 @@ void PlayerState_Air_Update(struct Actor* player)
 		.direction = VEC3DOWN
 	};
 	RayCollision collision = CollisionGetNearest(downray, PLAYER_COLLISION_MID_HEIGHT * 1.01f, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
-	if (collision.hit)
-	{
-		// Snap to floor on landing
-		player->position = collision.point;
-		PlayerChangeState(player, plysta_grounded);
-	}
-	else
+	if (player_data->disable_collision || !collision.hit)
 	{
 		// Falling down!
 		if (player->velocity.y > PLAYER_TERMINAL_VELOCITY)
 			player->velocity.y += GRAVITY;
+		return;
 	}
+	// Snap to floor on landing
+	player->position = collision.point;
+	PlayerChangeState(player, plysta_grounded);
 }
 
 void PlayerState_Air_DrawWorld(struct Actor* player, double tick_percent)

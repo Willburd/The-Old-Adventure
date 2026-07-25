@@ -48,8 +48,11 @@
 		"pos": [-6.67, 0.16, -14.74]
 	  },
 	  {
-		"type": "woodtorch",
-		"pos": [6.11, 0.16, -14.42]
+		"type": "hole",
+		"pos": [6.11, 0.16, -14.42],
+		"to_scene": "fieldtest",
+		"to_entrance": "caveA",
+		"radius": 1
 	  }
    ]
 }

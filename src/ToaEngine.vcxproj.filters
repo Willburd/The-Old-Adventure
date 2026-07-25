@@ -219,6 +219,9 @@
     <ClCompile Include="actor_entrance.c">
       <Filter>Source Files\adventure\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_hole.c">
+      <Filter>Source Files\adventure\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">

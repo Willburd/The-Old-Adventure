@@ -20,7 +20,7 @@ ACTOR_DRAWWORLD(tree);
 
 ACTOR_INIT(tree)
 {
-	actor->actor_flags = 0;
+	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
 	actor->blend_color = ColorToVector4(GOLD);
 	ACTOR_REGISTER_PRELOADASSETS(tree);
 	ACTOR_REGISTER_DRAWWORLD(tree);

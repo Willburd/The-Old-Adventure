@@ -32,6 +32,8 @@ void PlayerState_Grounded_Enter(struct Actor* player, PlayerData* player_data, i
 
 void PlayerState_Grounded_Update(struct Actor* player)
 {
+	PlayerData* player_data = (PlayerData*)player->data;
+
 	Vector3 move_velocity = { 0 };
 	int can_accept_input = PlayerCanAcceptInput(player);
 	if (can_accept_input)
@@ -49,7 +51,6 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	else if(gameplay_state & (GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE))
 	{
 		// Cutscene movement, use the rungoal vector
-		PlayerData* player_data = (PlayerData*)player->data;
 		if(player_data->cutscene_run_goal.x != 0 || player_data->cutscene_run_goal.z != 0)
 			move_velocity = Vector3Scale(Vector3FlatDirection(player->position, player_data->cutscene_run_goal), PLAYER_GROUND_ACCELERATION * player_data->cutscene_run_factor);
 	}
@@ -100,9 +101,12 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	}
 
 	// Handle wall collision
-	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_GROUND_STEP_HEIGHT), PLAYER_COLLISION_RADIUS);
-	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT), PLAYER_COLLISION_RADIUS);
-	PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_TOP_HEIGHT), PLAYER_COLLISION_RADIUS);
+	if (!player_data->disable_collision)
+	{
+		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_GROUND_STEP_HEIGHT), PLAYER_COLLISION_RADIUS);
+		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT), PLAYER_COLLISION_RADIUS);
+		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_TOP_HEIGHT), PLAYER_COLLISION_RADIUS);
+	}
 
 	// Handle gravity
 	Ray downray = {
@@ -110,7 +114,7 @@ void PlayerState_Grounded_Update(struct Actor* player)
 		.direction = VEC3DOWN
 	};
 	RayCollision collision = CollisionGetNearest(downray, PLAYER_GROUND_STEP_HEIGHT * 3.0f, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
-	if (!collision.hit) 
+	if (player_data->disable_collision || !collision.hit)
 	{
 		// We must fall...
 		PlayerChangeState(player, plysta_air);
@@ -125,7 +129,6 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	struct Actor* nearest_actor = FINDINTERACTIONNEAREST(ahead_pos, player);
 
 	// Interact with other actors
-	PlayerData* player_data = (PlayerData*)player->data;
 	player_data->current_action_button_text = ""; // Reset hud text
 	if (ACTOR_EXISTS(nearest_actor) && can_accept_input)
 	{

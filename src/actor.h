@@ -9,6 +9,7 @@
 #define ANIMATION_LAYER_MAX 24
 #define DEFAULT_MAX_RENDER_RANGE 200.0f
 
+#define ACTOR_FLAG_DOES_NOT_TICK 0
 // Must match gamestate flags
 #define ACTOR_FLAG_TICKDURING_GAME (1 << 0) // Updates during gameplay
 #define ACTOR_FLAG_TICKDURING_TEXTBOX (1 << 1) // Updates during textboxes

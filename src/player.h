@@ -30,6 +30,7 @@ typedef struct {
 	Vector3 cutscene_run_goal;
 	float cutscene_run_factor;
 	char* current_action_button_text;
+	int disable_collision;
 } PlayerData;
 
 
