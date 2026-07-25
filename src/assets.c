@@ -125,6 +125,8 @@ Asset* LoadAsset_Model(char* path, int is_core)
     {
         // For each node...
         cJSON* node_entry = cJSON_GetArrayItem(node_array, i);
+        if (!cJSON_GetObjectItem(node_entry, "mesh")) // It's probably a bone or skeleton node
+            continue;
         char* node_data_name = cJSON_GetObjectItem(node_entry, "name")->valuestring;
         int node_data_meshindex = cJSON_GetObjectItem(node_entry, "mesh")->valueint;
 
@@ -243,8 +245,8 @@ Asset* AssetGetPackage(char* path)
     } \
     return asset->ast; \
 }
-Texture2D* AssetGet_Texture(char* path) ASSET_FALLBACK(path,ASSET_TEXTURES"/Error/no_texture.png", tex);
-Model* AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mdl);
-Sound* AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", snd);
-Music* AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Error/no_texture.png", mus);
-Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_MATERIALS"/Error/no_material.mat", mat);
+Texture2D* AssetGet_Texture(char* path) ASSET_FALLBACK(path,ASSET_TEXTURES"/Engine/no_texture.png", tex);
+Model* AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_MODELS"/Tools/quad2d.glb", mdl);
+Sound* AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Engine/no_texture.png", snd);
+Music* AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Engine/no_texture.png", mus);
+Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_MATERIALS"/Engine/no_material.mat", mat);
