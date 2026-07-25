@@ -9,6 +9,13 @@
 // Remove all assets from the hashmap. Normally ignores core assets.
 void UnloadAllAssets(int including_core)
 {
+    printf("==============================================================================\n");
+    if(!including_core)
+        printf("                             UNLOADING ASSETS                                 \n");
+    else
+        printf("                          UNLOADING CORE ASSETS                               \n");
+    printf("==============================================================================\n");
+
     size_t iter = 0;
     void* item;
     // Scan the hashmap for assets that are not core assets
@@ -23,6 +30,10 @@ void UnloadAllAssets(int including_core)
     {
         UnloadFont(default_font);
     }
+
+    printf("==============================================================================\n");
+    printf("                             UNLOADING FINISHED                               \n");
+    printf("==============================================================================\n");
 }
 
 int asset_compare(const void* a, const void* b, void* udata) {
@@ -40,12 +51,15 @@ void asset_free(void* item) {
     Asset* asset = item;
     if (asset->tex != NULL && IsTextureValid(*asset->tex))
     {
+        printf("UNLOAD TEXTURE------------------------\n");
         UnloadTexture(*asset->tex);
         RELEASE(asset->tex);
         printf("ASSET: texture unloaded %s\n", asset->filepath);
+        printf("--------------------------------------\n");
     }
     if (asset->mdl != NULL && IsModelValid(*asset->mdl))
     {
+        printf("UNLOAD MODEL--------------------------\n");
         // Unload anims
         if (asset->anm != NULL && IsModelAnimationValid(*asset->mdl, *asset->anm))
         {
@@ -61,27 +75,34 @@ void asset_free(void* item) {
         hashmap_free(asset->mesh_data);
         asset->mesh_data = NULL;
         printf("ASSET: model unloaded %s\n", asset->filepath);
+        printf("--------------------------------------\n");
     }
     if (asset->snd != NULL && IsSoundValid(*asset->snd))
     {
+        printf("UNLOAD SOUND--------------------------\n");
         UnloadSound(*asset->snd);
         RELEASE(asset->snd);
         printf("ASSET: sound unloaded %s\n", asset->filepath);
+        printf("--------------------------------------\n");
     }
     if (asset->mus != NULL && IsMusicValid(*asset->mus))
     {
+        printf("UNLOAD MUSIC--------------------------\n");
         UnloadMusicStream(*asset->mus);
         RELEASE(asset->mus);
         printf("ASSET: music unloaded %s\n", asset->filepath);
+        printf("--------------------------------------\n");
     }
     if (asset->mat != NULL && IsMaterialValid(*asset->mat))
     {
+        printf("Unload Matrial------------------------\n");
         // Unload material's local textures
 
         // Unload map
         UnloadMaterial(*asset->mat);
         RELEASE(asset->mat);
         printf("ASSET: material unloaded %s\n", asset->filepath);
+        printf("--------------------------------------\n");
     }
     RELEASE(asset->filepath); // malloc char* string
 }
@@ -91,6 +112,7 @@ void asset_free(void* item) {
 Asset* LoadAsset_Texture(char* path, int is_core, char* mat_link)
 {
     RETURN_EXISTING_ASSET(path, is_core);
+    printf("NEW TEXTURE---------------------------\n");
     char* tex_name = mat_link != NULL ? TextFormat("%s[%s]", mat_link, path) : path;
     MALLOC_ASSET(asset, tex_name, is_core);
     MALLOC_SET(Texture2D, asset->tex, FALSE);
@@ -103,12 +125,14 @@ Asset* LoadAsset_Texture(char* path, int is_core, char* mat_link)
         printf("ASSET: loaded material-texture: %s\n", asset->filepath);
     else
         printf("ASSET: loaded texture: %s\n", asset->filepath);
+    printf("--------------------------------------\n");
     return asset;
 }
 
 Asset* LoadAsset_Model(char* path, int is_core)
 {
     RETURN_EXISTING_ASSET(path, is_core);
+    printf("NEW MODEL-----------------------------\n");
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Model, asset->mdl, FALSE);
     // Load model
@@ -176,12 +200,14 @@ Asset* LoadAsset_Model(char* path, int is_core)
         if (asset->anm != NULL && !IsModelAnimationValid(*asset->mdl, *asset->anm))
             printf("ASSET: Unable to load animations: %s\n", path);
         printf("ASSET: loaded model: %s\n", asset->filepath);
+    printf("--------------------------------------\n");
     return asset;
 }
 
 Asset* LoadAsset_Sound(char* path, int is_core)
 {
     RETURN_EXISTING_ASSET(path, is_core);
+    printf("NEW SOUND-----------------------------\n");
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Sound, asset->snd, FALSE);
     *asset->snd = LoadSound(path);
@@ -191,12 +217,14 @@ Asset* LoadAsset_Sound(char* path, int is_core)
         printf("ASSET: Unable to load sound: %s\n", path);
     else
         printf("ASSET: loaded sound: %s\n", asset->filepath);
+    printf("--------------------------------------\n");
     return asset;
 }
 
 Asset* LoadAsset_Music(char* path, int is_core)
 {
     RETURN_EXISTING_ASSET(path, is_core);
+    printf("NEW MUSIC-----------------------------\n");
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Music, asset->mus, FALSE);
     *asset->mus = LoadMusicStream(path);
@@ -206,12 +234,14 @@ Asset* LoadAsset_Music(char* path, int is_core)
         printf("ASSET: Unable to load music: %s\n", path);
     else
         printf("ASSET: loaded music: %s\n", asset->filepath);
+    printf("--------------------------------------\n");
     return asset;
 }
 
 Asset* LoadAsset_Material(char* path, int is_core)
 {
     RETURN_EXISTING_ASSET(path, is_core);
+    printf("NEW MATERIAL--------------------------\n");
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Material, asset->mat, FALSE);
     *asset->mat = LoadMaterial(asset, path, is_core);
@@ -221,6 +251,7 @@ Asset* LoadAsset_Material(char* path, int is_core)
         printf("ASSET: Unable to load material: %s\n", path);
     else
         printf("ASSET: loaded material: %s\n", asset->filepath);
+    printf("--------------------------------------\n");
     return asset;
 }
 

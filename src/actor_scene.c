@@ -41,6 +41,10 @@ ACTOR_INIT(scene)
 	ChangeSceneRoom(scene, 0, FALSE); // Activate the first room inside the scene.
 
 	// TODO - Your player scene entry logic here
+
+	printf("\n..............................................................................\n");
+	printf("CHANGE FINISHED ==> %s \n", scene->actor_type_name);
+	printf("********************************************************************************\n");
 }
 
 // Sets the next scene to be loaded. Will be actually loaded before the pre-update loop next gametick. DOES NOT LOAD THE SCENE ITSELF. Happens next tick, this is safe to call with ACTOR_DESTORY actions happening.
