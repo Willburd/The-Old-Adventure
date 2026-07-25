@@ -38,12 +38,20 @@ static void game_shutdown();
 
 int main(void)
 {
+    printf("==============================================================================\n");
+    printf("                                 BEGIN SETUP                                  \n");
+    printf("==============================================================================\n");
+
     SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_ALWAYS_RUN);
     InitWindow(screenWidth, screenHeight, "The Old Adventures");
     InitAudioDevice();
 
     SetTargetFPS(frame_rate);
     game_setup();
+
+    printf("==============================================================================\n");
+    printf("                                BEGIN GAME LOOP                               \n");
+    printf("==============================================================================\n");
 
     double current_prog = 0;
     double ticker_rate = 0;
@@ -93,6 +101,10 @@ int main(void)
         }
         game_draw(update_ticker / ticker_rate);
     }
+
+    printf("==============================================================================\n");
+    printf("                                 END GAME LOOP                                \n");
+    printf("==============================================================================\n");
 
     game_shutdown();
     CloseWindow();

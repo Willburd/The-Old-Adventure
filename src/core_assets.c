@@ -4,6 +4,10 @@
 // Loads all core assets, and flags them as core assets.
 void LoadCoreAssets()
 {
+    printf("==============================================================================\n");
+    printf("                             LOADING CORE ASSETS                              \n");
+    printf("==============================================================================\n");
+
     // Load default textures
     LoadAsset_Texture(ASSET_TEXTURES"/Engine/no_texture.png", TRUE, NULL);
     LoadAsset_Texture(ASSET_TEXTURES"/Engine/no_material.png", TRUE, NULL);
@@ -26,6 +30,10 @@ void LoadCoreAssets()
     
     // Load text
     LoadCoreTextAssets();
+
+    printf("==============================================================================\n");
+    printf("                             FINISHED CORE ASSETS                             \n");
+    printf("==============================================================================\n");
 }
 
 void LoadCoreTextAssets()
