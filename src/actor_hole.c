@@ -81,6 +81,8 @@ ACTOR_UPDATE(hole)
 	struct Actor* player = FINDACTORTYPE(act_player);
 	if (!player)
 		return;
+	if (abs(player->position.y - actor->position.y) > 0.1f)
+		return;
 	if (Vector3Distance(actor->position, player->position) > exit_data->radius)
 		return;
 	actor_hole_startleaving(actor, player);
