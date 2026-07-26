@@ -151,6 +151,7 @@
     <ClCompile Include="actor_debug.c" />
     <ClCompile Include="actor_fadein.c" />
     <ClCompile Include="actor_factory.c" />
+    <ClCompile Include="actor_fadeout.c" />
     <ClCompile Include="actor_scene.c" />
     <ClCompile Include="animation.c" />
     <ClCompile Include="assets.c" />

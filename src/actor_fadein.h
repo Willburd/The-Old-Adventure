@@ -12,5 +12,6 @@ typedef struct
 } FadeInData;
 
 struct Actor* FADEIN_CREATE(Color color);
+struct Actor* FADEOUT_CREATE(Color color);
 
 #endif
