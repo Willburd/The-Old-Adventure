@@ -21,7 +21,6 @@ ACTOR_PRELOADASSETS(hole);
 ACTOR_JSON_INIT(hole);
 ACTOR_UPDATE(hole);
 ACTOR_TRANSPARENTDRAWWORLD(hole);
-ACTOR_POSTDRAWHUD(hole);
 static void actor_hole_startleaving(struct Actor* exit, struct Actor* player);
 static void actor_hole_finishleaving(struct Actor* exit);
 
@@ -37,7 +36,6 @@ ACTOR_INIT(hole)
 	ACTOR_REGISTER_JSON_INIT(hole);
 	ACTOR_REGISTER_UPDATE(hole);
 	ACTOR_REGISTER_TRANSPARENTDRAWWORLD(hole);
-	ACTOR_REGISTER_POSTDRAWHUD(hole);
 
 	// Set data
 	MALLOC_ACTOR_DATA(TriggerExitData, actor->data);
@@ -52,9 +50,6 @@ ACTOR_JSON_INIT(hole)
 	exit_data->dest_scene = SCENE_FROM_STRING(cJSON_GetObjectItem(file_data, "to_scene")->valuestring);
 	exit_data->dest_entrance = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, "to_entrance")->valuestring);
 	exit_data->radius = 1.0f;
-	exit_data->is_triggered = FALSE;
-	exit_data->previous_fadeout = 0;
-	exit_data->fadeout = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,15 +64,16 @@ ACTOR_PRELOADASSETS(hole)
 ACTOR_UPDATE(hole)
 {
 	TriggerExitData* exit_data = actor->data;
-	if (exit_data->is_triggered)
+	struct Actor* fade_actor = FINDACTORTYPE(act_fadeout);
+	if (fade_actor)
 	{
 		// Wait for fadeout before entering the new scene
-		exit_data->previous_fadeout = exit_data->fadeout;
-		exit_data->fadeout += MAX_FADEOUT_RATE;
-		if (exit_data->fadeout >= MAX_FADEOUT_TIME)
+		FadeInData* fade_data = fade_actor->data;
+		if (fade_data->fadeout >= 255)
 		{
-			exit_data->fadeout = MAX_FADEOUT_TIME;
+			ACTOR_DESTROY(fade_actor);
 			actor_hole_finishleaving(actor);
+			actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
 		}
 		return;
 	}
@@ -108,20 +104,14 @@ ACTOR_TRANSPARENTDRAWWORLD(hole)
 	);
 }
 
-ACTOR_POSTDRAWHUD(hole)
-{
-	TriggerExitData* exit_data = actor->data;
-	DrawRectangle(0, 0, renderWidth, renderHeight, (Color) { 0, 0, 0, (int)Clamp(Lerp((float)exit_data->previous_fadeout, (float)exit_data->fadeout, (float)tick_percent), 0, 255) });
-}
-
 static void actor_hole_startleaving(struct Actor* exit, struct Actor* player)
 {
 	// Set the game into transition state
 	TriggerExitData* exit_data = exit->data;
-	exit_data->is_triggered = TRUE;
 	gameplay_state &= ~GAMESTATE_GAMEPLAY;
 	gameplay_state |= GAMESTATE_TRANSITION;
 	printf("HOLE TRIGGERED\n");
+	FADEOUT_CREATE(BLACK);
 
 	// Make player fall out of the world
 	PlayerData* player_data = (PlayerData*)player->data;
