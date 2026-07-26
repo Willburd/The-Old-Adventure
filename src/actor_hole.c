@@ -12,10 +12,6 @@
 // Assets
 #define HOLE_MATERIAL_MAIN ASSET_MATERIALS"/Effects/pit_warp.mat"
 
-// Utility
-#define MAX_FADEOUT_RATE 6
-#define MAX_FADEOUT_TIME 300
-
 // private header
 ACTOR_PRELOADASSETS(hole);
 ACTOR_JSON_INIT(hole);
