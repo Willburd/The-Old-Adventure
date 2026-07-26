@@ -3,7 +3,7 @@
 #include "camera.h"
 #include "game_state.h"
 #include "actor_trigger_exit.h"
-#include "actor_fadein.h"
+#include "actor_fade.h"
 #include "actor_scene.h"
 #include "player.h"
 #include "core_assets.h"

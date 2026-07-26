@@ -6,7 +6,7 @@
 #include "game_state.h"
 #include "player.h"
 #include "game_draw.h"
-#include "actor_fadein.h"
+#include "actor_fade.h"
 
 // private header
 ACTOR_JSON_INIT(trigger_exit);
