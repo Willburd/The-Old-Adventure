@@ -48,8 +48,10 @@ ACTOR_UPDATE(fadeout)
 	FadeInData* fadeout_data = (FadeInData*)actor->data;
 	fadeout_data->previous_fadeout = fadeout_data->fadeout;
 	fadeout_data->fadeout += FADE_RATE;
-	if (fadeout_data->fadeout >= 255)
-		fadeout_data->fadeout = 255;
+	if (fadeout_data->fadeout < 255)
+		return;
+	// end the fade
+	fadeout_data->fadeout = 255;
 	actor->actor_flags = ACTOR_FLAG_NONE; // Stop ticking
 }
 
