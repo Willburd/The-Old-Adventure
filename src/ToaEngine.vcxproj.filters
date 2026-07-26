@@ -132,6 +132,9 @@
     <ClCompile Include="actor_fadein.c">
       <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_fadeout.c">
+      <Filter>Source Files\engine\actors</Filter>
+    </ClCompile>
     <ClCompile Include="text_loading.c">
       <Filter>Source Files\engine\localization</Filter>
     </ClCompile>
