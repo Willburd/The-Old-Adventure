@@ -2,6 +2,7 @@
 #define __GAMESTATE_HEADER__
 
 // Must match actor flags for gamestate
+#define GAMESTATE_NONE		0
 #define GAMESTATE_GAMEPLAY	(1 << 0)
 #define GAMESTATE_TEXTBOX   (1 << 1)
 #define GAMESTATE_TRANSITION (1 << 2)

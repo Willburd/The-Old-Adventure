@@ -40,19 +40,19 @@
     <Filter Include="Header Files\engine\scenes">
       <UniqueIdentifier>{e99e1466-5f59-4c7b-8e62-bbd8e05247e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\adventure">
+    <Filter Include="Source Files\module">
       <UniqueIdentifier>{bd4cc79c-b03b-4d7f-b4bc-ab5de5ff33a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\adventure\actors">
+    <Filter Include="Source Files\module\actors">
       <UniqueIdentifier>{8aa38d55-9da6-423c-b464-c3ef27563c7b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\adventure">
+    <Filter Include="Header Files\module">
       <UniqueIdentifier>{73ea9d1c-9f18-4dd9-a7ba-c5fc38abba3a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\adventure\scenes">
+    <Filter Include="Source Files\module\scenes">
       <UniqueIdentifier>{a644b98c-514b-4081-8a68-7d3dc5b56d5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\adventure\assets">
+    <Filter Include="Source Files\module\assets">
       <UniqueIdentifier>{d02f349d-0f27-4f7b-b9f6-ee4898d2923b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\hashmap">
@@ -103,10 +103,10 @@
       <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
     <ClCompile Include="scene_debugmenu.c">
-      <Filter>Source Files\adventure\scenes</Filter>
+      <Filter>Source Files\module\scenes</Filter>
     </ClCompile>
     <ClCompile Include="scene_boot.c">
-      <Filter>Source Files\adventure\scenes</Filter>
+      <Filter>Source Files\module\scenes</Filter>
     </ClCompile>
     <ClCompile Include="input.c">
       <Filter>Source Files\engine\game</Filter>
@@ -118,7 +118,7 @@
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
     <ClCompile Include="core_assets.c">
-      <Filter>Source Files\adventure\assets</Filter>
+      <Filter>Source Files\module\assets</Filter>
     </ClCompile>
     <ClCompile Include="collision.c">
       <Filter>Source Files\engine\game</Filter>
@@ -210,13 +210,13 @@
       <Filter>Header Files\engine\localization</Filter>
     </ClInclude>
     <ClInclude Include="actor_library.h">
-      <Filter>Header Files\adventure</Filter>
+      <Filter>Header Files\module</Filter>
     </ClInclude>
     <ClInclude Include="scene_library.h">
-      <Filter>Header Files\adventure</Filter>
+      <Filter>Header Files\module</Filter>
     </ClInclude>
     <ClInclude Include="core_assets.h">
-      <Filter>Header Files\adventure</Filter>
+      <Filter>Header Files\module</Filter>
     </ClInclude>
     <ClInclude Include="game_state.h">
       <Filter>Header Files\engine\game</Filter>

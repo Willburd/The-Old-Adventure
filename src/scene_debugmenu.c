@@ -9,7 +9,7 @@
 #include "camera.h"
 #include "globals.h"
 #include "input.h"
-#include "actor_fadein.h"
+#include "actor_fade.h"
 
 // Assets
 

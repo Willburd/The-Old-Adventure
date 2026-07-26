@@ -178,7 +178,7 @@
   <ItemGroup>
     <ClInclude Include="actor.h" />
     <ClInclude Include="actor_entrance.h" />
-    <ClInclude Include="actor_fadein.h" />
+    <ClInclude Include="actor_fade.h" />
     <ClInclude Include="actor_library.h" />
     <ClInclude Include="actor_factory.h" />
     <ClInclude Include="actor_scene.h" />

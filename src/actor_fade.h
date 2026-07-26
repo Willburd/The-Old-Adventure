@@ -4,6 +4,8 @@
 #include "raylib.h"
 #include "actor.h"
 
+#define FADE_RATE 5
+
 typedef struct
 {
 	Color blend_color;
