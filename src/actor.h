@@ -11,6 +11,7 @@
 
 #define ACTOR_FLAG_DOES_NOT_TICK 0
 // Must match gamestate flags
+#define ACTOR_FLAG_NONE 0
 #define ACTOR_FLAG_TICKDURING_GAME (1 << 0) // Updates during gameplay
 #define ACTOR_FLAG_TICKDURING_TEXTBOX (1 << 1) // Updates during textboxes
 #define ACTOR_FLAG_TICKDURING_TRANSITION (1 << 2) // Updates during room enter/exit animations

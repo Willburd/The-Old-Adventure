@@ -1,7 +1,7 @@
 #include "tools.h"
 #include "assets.h"
 #include "actor_factory.h"
-#include "actor_fadein.h"
+#include "actor_fade.h"
 
 // private header
 ACTOR_UPDATE(fadein);
@@ -47,7 +47,7 @@ ACTOR_UPDATE(fadein)
 	// Fade into the scene
 	FadeInData* fadein_data = (FadeInData*)actor->data;
 	fadein_data->previous_fadeout = fadein_data->fadeout;
-	fadein_data->fadeout -= 5;
+	fadein_data->fadeout -= FADE_RATE;
 	if (fadein_data->fadeout >= 0)
 		return;
 	// end the fade

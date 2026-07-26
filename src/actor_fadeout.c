@@ -1,7 +1,7 @@
 #include "tools.h"
 #include "assets.h"
 #include "actor_factory.h"
-#include "actor_fadein.h"
+#include "actor_fade.h"
 
 // private header
 ACTOR_UPDATE(fadeout);
@@ -47,9 +47,10 @@ ACTOR_UPDATE(fadeout)
 	// Fade into the scene
 	FadeInData* fadeout_data = (FadeInData*)actor->data;
 	fadeout_data->previous_fadeout = fadeout_data->fadeout;
-	fadeout_data->fadeout += 5;
+	fadeout_data->fadeout += FADE_RATE;
 	if (fadeout_data->fadeout >= 255)
 		fadeout_data->fadeout = 255;
+	actor->actor_flags = ACTOR_FLAG_NONE; // Stop ticking
 }
 
 ACTOR_POSTDRAWHUD(fadeout)
