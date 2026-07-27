@@ -225,9 +225,6 @@
     <ClCompile Include="actor_hole.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
-    <ClCompile Include="json_properties.h">
-      <Filter>Header Files\module</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -287,9 +284,6 @@
     <ClInclude Include="actor_trigger_exit.h">
       <Filter>Header Files\engine\actors</Filter>
     </ClInclude>
-    <ClInclude Include="actor_fadein.h">
-      <Filter>Header Files\engine\actors</Filter>
-    </ClInclude>
     <ClInclude Include="text_loading.h">
       <Filter>Header Files\engine\localization</Filter>
     </ClInclude>
@@ -322,6 +316,12 @@
     </ClInclude>
     <ClInclude Include="models.h">
       <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_fade.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json_properties.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
