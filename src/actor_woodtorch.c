@@ -3,6 +3,7 @@
 #include "collision.h"
 #include "game_draw.h"
 #include "models.h"
+#include "json_properties.h"
 
 // Assets
 #define WOODTORCH_MODEL ASSET_MODELS"/Objects/wood_torch.glb"
@@ -47,9 +48,9 @@ ACTOR_JSON_INIT(woodtorch)
 		return;
 
 	// Array4 color
-	if (cJSON_IsArray(cJSON_GetObjectItem(file_data, "fire_color")))
+	if (cJSON_IsArray(cJSON_GetObjectItem(file_data, PROP_FIRECOLOR)))
 	{
-		cJSON* array = cJSON_GetObjectItem(file_data, "fire_color");
+		cJSON* array = cJSON_GetObjectItem(file_data, PROP_FIRECOLOR);
 		actor->blend_color = (Vector4){
 			(float)cJSON_GetArrayItem(array, 0)->valuedouble,
 			(float)cJSON_GetArrayItem(array, 1)->valuedouble,
@@ -59,7 +60,7 @@ ACTOR_JSON_INIT(woodtorch)
 	}
 
 	// Spawn child fire object
-	int burned_out = CHECK_JSON_BOOL(file_data, "burned_out");
+	int burned_out = CHECK_JSON_BOOL(file_data, PROP_BURNEDOUT);
 	if(!burned_out)
 		ACTOR_FACTORY(NULL, act_fire, actor, Vector3RotateByQuaternion(Vector3Add(actor->position, Vector3Scale(VEC3UP, 3.0f)), actor->rotation), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }

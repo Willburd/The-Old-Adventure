@@ -6,6 +6,7 @@
 #include "collision.h"
 #include "game_draw.h"
 #include "scene_entry.h"
+#include "json_properties.h"
 
 // private header
 static void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endpos);
@@ -39,9 +40,9 @@ ACTOR_JSON_INIT(entrance)
 		return;
 
 	Vector3 end_posi = Vector3Zero();
-	if (cJSON_IsArray(cJSON_GetObjectItem(file_data, "end_pos")))
+	if (cJSON_IsArray(cJSON_GetObjectItem(file_data, PROP_ENDPOS)))
 	{
-		cJSON* pos_array = cJSON_GetObjectItem(file_data, "end_pos");
+		cJSON* pos_array = cJSON_GetObjectItem(file_data, PROP_ENDPOS);
 		end_posi = (Vector3){
 			(float)cJSON_GetArrayItem(pos_array, 0)->valuedouble,
 			(float)cJSON_GetArrayItem(pos_array, 1)->valuedouble,
@@ -51,7 +52,7 @@ ACTOR_JSON_INIT(entrance)
 
 	actor_entrance_setup(actor, actor->position, end_posi);
 	EntranceData* entrance_data = actor->data;
-	entrance_data->entrance_id = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, "is_entrance")->valuestring);
+	entrance_data->entrance_id = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, PROP_IS_ENTRANCE)->valuestring);
 }
 
 // Perform entrance actions like aligning the camera and making the player run into the scene

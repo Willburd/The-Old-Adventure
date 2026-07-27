@@ -7,6 +7,7 @@
 #include "player.h"
 #include "game_draw.h"
 #include "actor_fade.h"
+#include "json_properties.h"
 
 // private header
 ACTOR_JSON_INIT(trigger_exit);
@@ -38,9 +39,9 @@ ACTOR_JSON_INIT(trigger_exit)
 		return;
 
 	TriggerExitData* exit_data = actor->data;
-	exit_data->dest_scene = SCENE_FROM_STRING(cJSON_GetObjectItem(file_data, "to_scene")->valuestring);
-	exit_data->dest_entrance = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, "to_entrance")->valuestring);
-	exit_data->radius = (float)cJSON_GetObjectItem(file_data, "radius")->valuedouble;
+	exit_data->dest_scene = SCENE_FROM_STRING(cJSON_GetObjectItem(file_data, PROP_TO_SCENE)->valuestring);
+	exit_data->dest_entrance = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, PROP_TO_ENTRANCE)->valuestring);
+	exit_data->radius = (float)cJSON_GetObjectItem(file_data, PROP_RADIUS)->valuedouble;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

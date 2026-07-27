@@ -219,6 +219,7 @@
     <ClInclude Include="hashmap.h" />
     <ClInclude Include="hud.h" />
     <ClInclude Include="inventory.h" />
+    <ClInclude Include="json_properties.h" />
     <ClInclude Include="light_tools.h" />
     <ClInclude Include="materials.h" />
     <ClInclude Include="models.h" />

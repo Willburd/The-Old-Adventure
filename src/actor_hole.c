@@ -8,6 +8,7 @@
 #include "player.h"
 #include "core_assets.h"
 #include "game_draw.h"
+#include "json_properties.h"
 
 // Assets
 #define HOLE_MATERIAL_MAIN ASSET_MATERIALS"/Effects/pit_warp.mat"
@@ -43,8 +44,8 @@ ACTOR_JSON_INIT(hole)
 		return;
 
 	TriggerExitData* exit_data = actor->data;
-	exit_data->dest_scene = SCENE_FROM_STRING(cJSON_GetObjectItem(file_data, "to_scene")->valuestring);
-	exit_data->dest_entrance = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, "to_entrance")->valuestring);
+	exit_data->dest_scene = SCENE_FROM_STRING(cJSON_GetObjectItem(file_data, PROP_TO_SCENE)->valuestring);
+	exit_data->dest_entrance = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, PROP_TO_ENTRANCE)->valuestring);
 	exit_data->radius = 1.0f;
 }
 

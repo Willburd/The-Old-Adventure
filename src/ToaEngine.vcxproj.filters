@@ -225,6 +225,9 @@
     <ClCompile Include="actor_hole.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
+    <ClCompile Include="json_properties.h">
+      <Filter>Header Files\module</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
