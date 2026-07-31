@@ -23,16 +23,28 @@ Vector4 world_light_colors[MAX_LIGHTS];// XYZcolor, Walpha
 
 #define STANDARD_SHADER_MATERIAL(name, material_path, act) Material* name = AssetGet_Material(material_path);shader_update_defaultuniforms(name->shader, act);shader_update_fog(name->shader);shader_update_lights(name->shader);
 
+#define RENDER_LAYER_SIZE 4096
+
 float fog_distance;
 float fog_power;
 Vector3 fog_color;
 
 Color clear_background_color;
 
+// Autocleared, updated using actor DRAW functions.
 RenderTexture render_tex_pre;
 RenderTexture render_tex_main;
 RenderTexture render_tex_post;
 RenderTexture render_tex_hud;
+
+// Not autocleared, should be updated during actor UPDATE functions and not draw, and only for changes.
+const int renderlayers_enabled;
+Vector2 renderlayer_pos_background;
+RenderTexture render_tex_background;
+Vector2 renderlayer_pos_tilemap;
+RenderTexture render_tex_tilemap;
+Vector2 renderlayer_pos_foreground;
+RenderTexture render_tex_foreground;
 
 void game_draw(double tick_percent);
 

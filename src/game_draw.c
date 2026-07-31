@@ -18,6 +18,14 @@ RenderTexture render_tex_main = { 0 };
 RenderTexture render_tex_post = { 0 };
 RenderTexture render_tex_hud = { 0 };
 
+const int renderlayers_enabled = FALSE;
+Vector2 renderlayer_pos_background = { 0 };
+Vector2 renderlayer_pos_tilemap = { 0 };
+Vector2 renderlayer_pos_foreground = { 0 };
+RenderTexture render_tex_background = { 0 };
+RenderTexture render_tex_tilemap = { 0 };
+RenderTexture render_tex_foreground = { 0 };
+
 void game_draw(double tick_percent)
 {
 	// Recalculate render size
@@ -175,10 +183,6 @@ void game_draw(double tick_percent)
 	// Hud drawing
 	////////////////////////////////////////////////////////////////////////
 
-	Vector2 org = (Vector2){ screenWidth / 2.0f, screenHeight / 2.0f };
-	Rectangle src = (Rectangle){ 0, 0, (float)renderWidth, (float)-renderHeight };
-	Rectangle dest = (Rectangle){ screenWidth / 2.0f, screenHeight / 2.0f, (float)screenWidth, (float)screenHeight };
-
 	BeginTextureMode(render_tex_hud);
 	ClearBackground((Color) {20,20,20,0}); // Slightly gray
 	BeginMode2D(cam_hud);
@@ -231,11 +235,39 @@ void game_draw(double tick_percent)
 	EndMode2D();
 	EndTextureMode();
 
+
+	Vector2 org = (Vector2){ screenWidth / 2.0f, screenHeight / 2.0f };
+	Rectangle src = (Rectangle){ 0, 0, (float)renderWidth, (float)-renderHeight };
+	Rectangle dest = (Rectangle){ screenWidth / 2.0f, screenHeight / 2.0f, (float)screenWidth, (float)screenHeight };
+	Rectangle layer_src = (Rectangle){ 0, 0, (float)RENDER_LAYER_SIZE, (float)-RENDER_LAYER_SIZE };
+
 	BeginDrawing();
 	BeginMode2D(cam_hud);
+	// Background
+	if (renderlayers_enabled)
+		DrawTexturePro(render_tex_background.texture, 
+			layer_src,
+			(Rectangle) { 
+				renderlayer_pos_background.x, renderlayer_pos_background.y, (float)RENDER_LAYER_SIZE, (float)-RENDER_LAYER_SIZE 
+			}, org, 0, WHITE);
 	DrawTexturePro(render_tex_pre.texture, src, dest, org, 0, WHITE);
+	// Mainground
 	DrawTexturePro(render_tex_main.texture, src, dest, org, 0, WHITE);
+	if (renderlayers_enabled)
+		DrawTexturePro(render_tex_tilemap.texture,
+			layer_src,
+			(Rectangle) {
+				renderlayer_pos_tilemap.x, renderlayer_pos_tilemap.y, (float)RENDER_LAYER_SIZE, (float)-RENDER_LAYER_SIZE
+			}, org, 0, WHITE);
+	// Foreground
 	DrawTexturePro(render_tex_post.texture, src, dest, org, 0, WHITE);
+	if (renderlayers_enabled)
+		DrawTexturePro(render_tex_foreground.texture,
+			layer_src,
+			(Rectangle) {
+				renderlayer_pos_foreground.x, renderlayer_pos_foreground.y, (float)RENDER_LAYER_SIZE, (float)-RENDER_LAYER_SIZE
+			}, org, 0, WHITE);
+	// Hud
 	DrawTexturePro(render_tex_hud.texture, src, dest, org, 0, WHITE);
 	EndMode2D();
 	EndDrawing();

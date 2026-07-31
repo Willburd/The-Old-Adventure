@@ -140,6 +140,17 @@ static void game_setup()
     // Spawn camera
     ACTOR_FACTORY(NULL, act_camera, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 
+    // Prepare render layers for 2D games
+    if (renderlayers_enabled)
+    {
+        render_tex_background = LoadRenderTexture(RENDER_LAYER_SIZE, RENDER_LAYER_SIZE);
+        render_tex_tilemap = LoadRenderTexture(RENDER_LAYER_SIZE, RENDER_LAYER_SIZE);
+        render_tex_foreground = LoadRenderTexture(RENDER_LAYER_SIZE, RENDER_LAYER_SIZE);
+        SetTextureWrap(render_tex_background.texture, TEXTURE_WRAP_REPEAT);
+        SetTextureWrap(render_tex_tilemap.texture, TEXTURE_WRAP_REPEAT);
+        SetTextureWrap(render_tex_foreground.texture, TEXTURE_WRAP_REPEAT);
+    }
+
     // Enter game
     LoadScene(scene_boot, ent_title);
 }
@@ -158,4 +169,19 @@ static void game_shutdown()
     UnloadAllAssets(TRUE);
     hashmap_free(loaded_text);
     hashmap_free(loaded_assets);
+    // Unload render textures
+    if (IsRenderTextureValid(render_tex_pre))
+        UnloadRenderTexture(render_tex_pre);
+    if (IsRenderTextureValid(render_tex_main))
+        UnloadRenderTexture(render_tex_main);
+    if (IsRenderTextureValid(render_tex_post))
+        UnloadRenderTexture(render_tex_post);
+    if (IsRenderTextureValid(render_tex_hud))
+        UnloadRenderTexture(render_tex_hud);
+    if (IsRenderTextureValid(render_tex_background))
+        UnloadRenderTexture(render_tex_background);
+    if (IsRenderTextureValid(render_tex_tilemap))
+        UnloadRenderTexture(render_tex_tilemap);
+    if (IsRenderTextureValid(render_tex_foreground))
+        UnloadRenderTexture(render_tex_foreground);
 }
