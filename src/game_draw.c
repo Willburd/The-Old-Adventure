@@ -1,7 +1,7 @@
 #include "game_draw.h"
 #include "camera.h"
 #include "globals.h"
-#include "actor.h"
+#include "actor_factory.h"
 #include "rlgl.h"
 #include "tools.h"
 #include "collision.h"
@@ -206,6 +206,35 @@ void game_draw(double tick_percent)
 		}
 		EndMode3D();
 		EndTextureMode();
+
+		// Now draw the actors as sprites
+		BeginTextureMode(render_tex_post);
+		ClearBackground(draw_clear_col);
+		BeginMode3D(cam_main);
+		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
+		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
+		Model* sprite_model = AssetGet_Model(ASSET_MODELS"/Tools/sprite2d.glb");
+		mat_col = AssetGet_Material(ASSET_MATERIALS"/Engine/no_texture.mat");
+		for (int i = 0; i <= current_actor_cap; i++)
+		{
+			struct Actor* draw_actor = world_actors[i];
+			if (!ACTOR_EXISTS(draw_actor))
+				continue;
+			if (draw_actor->actor_type == act_camera)
+				continue;
+			Transform facing_transform = {
+				.translation = draw_actor->position,
+				.rotation = QuaternionLookAt(cam_main.position, draw_actor->position, VEC3UP),
+				.scale = Vector3One()
+			};
+			DrawMesh(
+				sprite_model->meshes[0],
+				*mat_col,
+				MATRIX_ASSEMBLE(facing_transform)
+			);
+		}
+		EndMode3D();
+		EndTextureMode();
 	}
 
 	////////////////////////////////////////////////////////////////////////
@@ -289,8 +318,7 @@ void game_draw(double tick_percent)
 				renderlayer_pos_tilemap.x, renderlayer_pos_tilemap.y, (float)RENDER_LAYER_SIZE, (float)-RENDER_LAYER_SIZE
 			}, org, 0, WHITE);
 	// Foreground
-	if (!draw_collider_info)
-		DrawTexturePro(render_tex_post.texture, src, dest, org, 0, WHITE);
+	DrawTexturePro(render_tex_post.texture, src, dest, org, 0, WHITE);
 	if (renderlayers_enabled)
 		DrawTexturePro(render_tex_foreground.texture,
 			layer_src,
