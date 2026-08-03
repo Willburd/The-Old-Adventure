@@ -193,7 +193,7 @@ void game_draw(double tick_percent)
 		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
 		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
 		// Get collision material
-		Material* mat_col = AssetGet_Material(ASSET_MATERIALS"/Engine/example.mat");
+		Material* mat_col = AssetGet_Material(ASSET_MATERIALS"/Engine/collision_debug.mat");
 		for (int i = 0; i <= max_collision; i++)
 		{
 			struct ColliderData* col = GetCollider(i);
