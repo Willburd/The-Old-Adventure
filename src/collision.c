@@ -7,6 +7,11 @@
 int max_collision = -1;
 struct ColliderData world_colliders[MAX_COLLIDERS] = { NULL };
 
+int debug_current_rays = 0;
+Vector3 debug_ray_starts[MAX_COLLIDERS] = { 0,0,0 };
+Vector3 debug_ray_ends[MAX_COLLIDERS] = { 0,0,0 };
+int debug_ray_hits[MAX_COLLIDERS] = { FALSE };
+
 // Get a collision using it's index in the collider array. Shouldn't be used for anything except iterating all colliders outside of collision.c
 struct ColliderData* GetCollider(int index)
 {
@@ -92,6 +97,11 @@ static RayCollision collision_test_list[MAX_COLLIDERS];
 // Get a list of collisions, tested against all active colliders. This is internal. Other functions should use it and return results. Uses an pre-allocated and cleaned array instead of a heap object due to memory footprint.
 static void CollisionTest(Ray raycast, float max_dist, unsigned int mask)
 {
+	// Debugging
+	debug_ray_starts[debug_current_rays] = raycast.position;
+	debug_ray_ends[debug_current_rays] = Vector3Add(raycast.position, Vector3Scale(raycast.direction, max_dist));
+	debug_ray_hits[debug_current_rays] = FALSE;
+
 	memset(collision_test_list, NULL, sizeof(RayCollision) * MAX_COLLIDERS);
 	int detected_collisions = 0;
 	for (int i = 0; i <= max_collision; i++)
@@ -104,7 +114,9 @@ static void CollisionTest(Ray raycast, float max_dist, unsigned int mask)
 		if (hit.distance > max_dist)
 			continue;
 		collision_test_list[detected_collisions++] = hit;
+		debug_ray_hits[debug_current_rays] = TRUE;
 	}
+	debug_current_rays++; // Next ray
 }
 
 // Get the nearest point. May not return a valid collision.

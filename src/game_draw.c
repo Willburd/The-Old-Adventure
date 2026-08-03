@@ -225,13 +225,18 @@ void game_draw(double tick_percent)
 			Transform facing_transform = {
 				.translation = draw_actor->position,
 				.rotation = QuaternionLookAt(cam_main.position, draw_actor->position, VEC3UP),
-				.scale = Vector3One()
+				.scale = Vector3Scale(Vector3One(),0.2f)
 			};
 			DrawMesh(
 				sprite_model->meshes[0],
 				*mat_col,
 				MATRIX_ASSEMBLE(facing_transform)
 			);
+		}
+		// Draw raycast lines
+		for (int i = 0; i < debug_current_rays; i++)
+		{
+			DrawLine3D(debug_ray_starts[i], debug_ray_ends[i], debug_ray_hits[i] ? RED : BLUE);
 		}
 		EndMode3D();
 		EndTextureMode();

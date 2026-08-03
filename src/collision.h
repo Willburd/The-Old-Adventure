@@ -6,6 +6,7 @@
 #define DEFAULT_COLLISION_MESH "Col"
 
 #define MAX_COLLIDERS 512
+#define MAX_COLLISION_RAYS 1024
 
 #define COL_LAYER_NONE 0
 #define COL_LAYER_WORLD (1 << 0)	// World geometry
@@ -28,6 +29,11 @@ struct ColliderData {
 } ;
 
 int max_collision;
+
+int debug_current_rays;
+Vector3 debug_ray_starts[];
+Vector3 debug_ray_ends[];
+int debug_ray_hits[];
 
 struct ColliderData* GetCollider(int index);
 void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collision_flags);
