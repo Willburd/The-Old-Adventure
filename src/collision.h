@@ -21,8 +21,15 @@
 
 #include "tools.h"
 
+struct ColliderData {
+	struct Actor* owner;
+	Mesh* mesh;
+	unsigned int flags;
+} ;
+
 int max_collision;
 
+struct ColliderData* GetCollider(int index);
 void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collision_flags);
 void CollisionResign(struct Actor* owner, Mesh* collider);
 void CollisionCleanup(struct Actor* owner);

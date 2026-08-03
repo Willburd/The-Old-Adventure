@@ -23,6 +23,7 @@ void LoadCoreAssets()
     // Load default materials
     LoadAsset_Material(ASSET_MATERIALS"/Engine/no_material.mat", TRUE);
     LoadAsset_Material(ASSET_MATERIALS"/Engine/example.mat", TRUE);
+    LoadAsset_Material(ASSET_MATERIALS"/Engine/collision_debug.mat", TRUE);
     // Adventure
 
     // Load default models

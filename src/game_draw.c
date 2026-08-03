@@ -4,8 +4,11 @@
 #include "actor.h"
 #include "rlgl.h"
 #include "tools.h"
+#include "collision.h"
+#include "assets.h"
 
 int draw_debug_info = FALSE;
+int draw_collider_info = FALSE;
 
 int light_count = 0;
 Vector4 world_light_positions[MAX_LIGHTS] = { 0 };
@@ -107,77 +110,103 @@ void game_draw(double tick_percent)
 	EndMode3D();
 	EndTextureMode();
 
-
-	////////////////////////////////////////////////////////////////////////
-	// Main draw
-	////////////////////////////////////////////////////////////////////////
-
-	BeginTextureMode(render_tex_main);
-	ClearBackground(draw_clear_col);
-	if (has_main_draw)
+	if (!draw_collider_info)
 	{
+		////////////////////////////////////////////////////////////////////////
+		// Main draw
+		////////////////////////////////////////////////////////////////////////
+		BeginTextureMode(render_tex_main);
+		ClearBackground(draw_clear_col);
+		if (has_main_draw)
+		{
+			BeginMode3D(cam_main);
+			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
+			BeginBlendMode(BLEND_CUSTOM_SEPARATE);
+			// Base pass
+			for (int i = 0; i <= current_actor_cap; i++)
+			{
+				struct Actor* draw_actor = world_actors[i];
+				if (!ACTOR_EXISTS(draw_actor))
+					continue;
+				if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
+					continue;
+				if (ACTOR_HAS(draw_actor, func_drawworld))
+					draw_actor->func_drawworld(draw_actor, tick_percent);
+			}
+			EndMode3D();
+		}
+		if (has_transparent_draw)
+		{
+			BeginMode3D(cam_main);
+			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
+			BeginBlendMode(BLEND_CUSTOM_SEPARATE);
+			// Transparent pass
+			for (int i = 0; i <= current_actor_cap; i++)
+			{
+				struct Actor* draw_actor = world_actors[i];
+				if (!ACTOR_EXISTS(draw_actor))
+					continue;
+				if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
+					continue;
+				if (ACTOR_HAS(draw_actor, func_transparentdrawworld))
+					draw_actor->func_transparentdrawworld(draw_actor, tick_percent);
+			}
+			EndMode3D();
+		}
+		EndTextureMode();
+
+
+		////////////////////////////////////////////////////////////////////////
+		// Post draw
+		////////////////////////////////////////////////////////////////////////
+
+		BeginTextureMode(render_tex_post);
+		ClearBackground(draw_clear_col);
+		if (has_main_postdraw)
+		{
+			BeginMode3D(cam_main);
+			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
+			BeginBlendMode(BLEND_CUSTOM_SEPARATE);
+			for (int i = 0; i <= current_actor_cap; i++)
+			{
+				struct Actor* draw_actor = world_actors[i];
+				if (!ACTOR_EXISTS(draw_actor))
+					continue;
+				if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
+					continue;
+				if (ACTOR_HAS(draw_actor, func_postdrawworld))
+					draw_actor->func_postdrawworld(draw_actor, tick_percent);
+			}
+			EndMode3D();
+		}
+		EndTextureMode();
+	}
+	else
+	{
+		////////////////////////////////////////////////////////////////////////
+		// Collider debug drawing
+		////////////////////////////////////////////////////////////////////////
+
+		BeginTextureMode(render_tex_main);
+		ClearBackground(draw_clear_col);
 		BeginMode3D(cam_main);
 		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
 		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-		// Base pass
-		for (int i = 0; i <= current_actor_cap; i++)
+		// Get collision material
+		Material* mat_col = AssetGet_Material(ASSET_MATERIALS"/Engine/collision_debug.mat");
+		for (int i = 0; i <= max_collision; i++)
 		{
-			struct Actor* draw_actor = world_actors[i];
-			if (!ACTOR_EXISTS(draw_actor))
-				continue;
-			if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
-				continue;
-			if (ACTOR_HAS(draw_actor, func_drawworld))
-				draw_actor->func_drawworld(draw_actor, tick_percent);
+			struct ColliderData* col = GetCollider(i);
+			Matrix position = GetMatrix(col->owner);
+			DrawMesh(
+				*col->mesh,
+				*mat_col,
+				position
+			);
 		}
 		EndMode3D();
+		EndTextureMode();
 	}
-	if(has_transparent_draw)
-	{
-		BeginMode3D(cam_main);
-		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
-		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-		// Transparent pass
-		for (int i = 0; i <= current_actor_cap; i++)
-		{
-			struct Actor* draw_actor = world_actors[i];
-			if (!ACTOR_EXISTS(draw_actor))
-				continue;
-			if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
-				continue;
-			if (ACTOR_HAS(draw_actor, func_transparentdrawworld))
-				draw_actor->func_transparentdrawworld(draw_actor, tick_percent);
-		}
-		EndMode3D();
-	}
-	EndTextureMode();
-
-
-	////////////////////////////////////////////////////////////////////////
-	// Post draw
-	////////////////////////////////////////////////////////////////////////
-
-	BeginTextureMode(render_tex_post);
-	ClearBackground(draw_clear_col);
-	if (has_main_postdraw)
-	{
-		BeginMode3D(cam_main);
-		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
-		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-		for (int i = 0; i <= current_actor_cap; i++)
-		{
-			struct Actor* draw_actor = world_actors[i];
-			if (!ACTOR_EXISTS(draw_actor))
-				continue;
-			if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
-				continue;
-			if (ACTOR_HAS(draw_actor, func_postdrawworld))
-				draw_actor->func_postdrawworld(draw_actor, tick_percent);
-		}
-		EndMode3D();
-	}
-	EndTextureMode();
-
 
 	////////////////////////////////////////////////////////////////////////
 	// Hud drawing
@@ -260,7 +289,8 @@ void game_draw(double tick_percent)
 				renderlayer_pos_tilemap.x, renderlayer_pos_tilemap.y, (float)RENDER_LAYER_SIZE, (float)-RENDER_LAYER_SIZE
 			}, org, 0, WHITE);
 	// Foreground
-	DrawTexturePro(render_tex_post.texture, src, dest, org, 0, WHITE);
+	if (!draw_collider_info)
+		DrawTexturePro(render_tex_post.texture, src, dest, org, 0, WHITE);
 	if (renderlayers_enabled)
 		DrawTexturePro(render_tex_foreground.texture,
 			layer_src,
