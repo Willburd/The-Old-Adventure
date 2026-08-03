@@ -10,5 +10,5 @@ out vec4 finalColor;
 
 void main()
 {
-    finalColor = colDiffuse*fragColor;
+    finalColor = fragColor;
 }
