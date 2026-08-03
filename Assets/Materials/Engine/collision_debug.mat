@@ -1,4 +1,4 @@
 // Textures
 
 // Shader
-#SHADR /unshaded.vert /collision_debug.frag
+#SHADR /collision_debug.vert /collision_debug.frag
