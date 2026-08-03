@@ -5,6 +5,7 @@
 #include "raymath.h"
 #include "actor_factory.h"
 #include "game_update.h"
+#include "collision.h"
 #include "game_draw.h"
 #include "scene_entry.h"
 #include "globals.h"
@@ -31,6 +32,7 @@ void game_update()
 	// Prepare world and renderer
 	////////////////////////////////////////////////////////////////////////
 
+	debug_current_rays = 0; // reset debug info
 	light_count = 0;
 	UpdateWorldState();	// Adventure edit begin - Update our worldstate
 	HandleLoadNextScene();
