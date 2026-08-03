@@ -4,14 +4,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct {
-	struct Actor* owner;
-	Mesh* mesh;
-	unsigned int flags;
-} ColliderData;
-
 int max_collision = -1;
-ColliderData world_colliders[MAX_COLLIDERS] = { NULL };
+struct ColliderData world_colliders[MAX_COLLIDERS] = { NULL };
+
+// Get a collision using it's index in the collider array. Shouldn't be used for anything except iterating all colliders outside of collision.c
+struct ColliderData* GetCollider(int index)
+{
+	if (index > max_collision)
+		return NULL;
+	if (index >= MAX_COLLIDERS)
+		return NULL;
+	return &world_colliders[index];
+}
 
 // Allocate collision to the game's collision system. DO NOT FORGET TO RESIGN IT.
 void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collision_flags)
@@ -70,7 +74,7 @@ void CollisionResign(struct Actor* owner, Mesh* collider)
 void CollisionCleanup(struct Actor* owner)
 {
 	int index_counter = 0;
-	ColliderData clear_array[MAX_COLLIDERS] = { NULL };
+	struct ColliderData clear_array[MAX_COLLIDERS] = { NULL };
 	for (int i = 0; i <= max_collision; i++)
 	{
 		if (world_colliders[i].owner == owner)

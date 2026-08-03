@@ -86,7 +86,11 @@ int main(void)
             struct Actor* current_scene = GetCurrentScene();
             ChangeSceneRoom(current_scene, current_scene->current_room_index, TRUE);
         }
-        if (IsKeyPressed(KEY_F6)) // Misc debug
+        if (IsKeyPressed(KEY_F6)) // Collision Debug
+        {
+            draw_collider_info = !draw_collider_info;
+        }
+        if (IsKeyPressed(KEY_F7)) // Misc debug
         {
 
         }
