@@ -48,6 +48,7 @@ float Vector3GetTopDownAngle(Vector3 direction);
 Vector3 Vector3FlatDirection(Vector3 start, Vector3 end);
 Quaternion QuaternionLookAt(Vector3 start, Vector3 end, Vector3 up);
 Quaternion QuaternionFlatLookAt(Vector3 start, Vector3 end, Vector3 up);
+Quaternion QuaternionGetFlat(Quaternion source, Vector3 up);
 void ApplyFriction(struct Actor* actor, float amount);
 void ApplyFlatFriction(struct Actor* actor, float amount);
 cJSON* ParseJsonFile(char* path);
