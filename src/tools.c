@@ -40,6 +40,12 @@ Quaternion QuaternionFlatLookAt(Vector3 start, Vector3 end, Vector3 up)
     return QuaternionFromMatrix(MatrixInvert(MatrixLookAt(start, end, up)));
 }
 
+Quaternion QuaternionGetFlat(Quaternion source, Vector3 up)
+{
+    Vector3 vec = Vector3RotateByQuaternion(VEC3FORWARD, source);
+    return QuaternionFlatLookAt(Vector3Zero(), vec, up);
+}
+
 #define APPLY_FRICTION(component) \
 if (actor->velocity.component > 0.0f) \
 { \
