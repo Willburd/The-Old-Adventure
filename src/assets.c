@@ -191,24 +191,6 @@ Asset* LoadAsset_Model(char* path, int is_core)
         }
     }
     cJSON_Delete(model_json);
-    // Load colors from the first mesh to all others (due to how vertex colors are stored)
-    if (asset->mdl->meshes[0].colors != NULL)
-    {
-        /*
-        const attribute_size = 4 * sizeof(unsigned char);
-        int base_index = 0;
-        for (int m = 0; m < asset->mdl->meshCount; m++)
-        {
-            Mesh* mesh = &asset->mdl->meshes[m];
-            // Update mesh data
-            for (int vc = 0; vc < mesh->vertexCount; vc++)
-                mesh->colors[vc] = asset->mdl->meshes[0].colors[base_index + vc];
-            base_index += mesh->vertexCount * attribute_size;
-            // Update VBO
-            UpdateMeshBuffer(*mesh, 3, mesh->colors, mesh->vertexCount * attribute_size, 0);
-        }
-        */
-    }
     // Load animation data too
     asset->anm = LoadModelAnimations(path, &asset->anm_count);
     // This uses MEMSET, ensure all data is assigned before hashmapping!
