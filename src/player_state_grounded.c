@@ -11,7 +11,6 @@
 #define PLAYER_GROUND_STOP_FRICTION 0.2f
 #define PLAYER_GROUND_SNAPTURN_FRICTION 0.7f
 #define PLAYER_GROUND_TURN_RATE 0.2f
-#define PLAYER_GROUND_STEP_HEIGHT 0.4f
 
 void PlayerState_Grounded_Update(struct Actor* player);
 void PlayerState_Grounded_DrawWorld(struct Actor* player, double tick_percent);
@@ -103,17 +102,17 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	// Handle wall collision
 	if (!player_data->disable_collision)
 	{
-		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_GROUND_STEP_HEIGHT), PLAYER_COLLISION_RADIUS);
+		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_STEP_HEIGHT), PLAYER_COLLISION_RADIUS);
 		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT), PLAYER_COLLISION_RADIUS);
 		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_TOP_HEIGHT), PLAYER_COLLISION_RADIUS);
 	}
 
 	// Handle gravity
 	Ray downray = {
-		.position = Vector3Add(player->position, Vector3Scale(VEC3UP, PLAYER_GROUND_STEP_HEIGHT*2.0f)),
+		.position = Vector3Add(player->position, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT)),
 		.direction = VEC3DOWN
 	};
-	RayCollision collision = CollisionGetNearest(downray, PLAYER_GROUND_STEP_HEIGHT * 3.0f, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
+	RayCollision collision = CollisionGetNearest(downray, PLAYER_COLLISION_MID_HEIGHT + PLAYER_COLLISION_FLOOR_SENSOR_LENGTH, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
 	if (player_data->disable_collision || !collision.hit)
 	{
 		// We must fall...

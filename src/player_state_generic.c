@@ -114,14 +114,16 @@ int PlayerCollisionEject(struct Actor* player, Vector3 start_offset, Vector3 dir
 	return TRUE;
 }
 
-#define TOTAL_ANGLES 10.0f
+#define TOTAL_ANGLES 8.0f
 int PlayerStandardRadialEjection(struct Actor* player, Vector3 start_offset, float radius)
 {
 	float angle_divisions = (360.0f / TOTAL_ANGLES) * DEG2RAD;
 	int collisions = 0;
 	for (int i = 0; i < TOTAL_ANGLES; i++)
 	{
-		collisions += PlayerCollisionEject(player, start_offset, Vector3RotateByQuaternion(VEC3FORWARD, QuaternionFromAxisAngle(VEC3UP, angle_divisions * i)), radius);
+		Quaternion dir_angle = QuaternionFromAxisAngle(VEC3UP, angle_divisions * i);
+		Quaternion player_angle = QuaternionGetFlat(player->rotation, VEC3UP);
+		collisions += PlayerCollisionEject(player, start_offset, Vector3RotateByQuaternion(VEC3FORWARD, QuaternionMultiply(player_angle, dir_angle)), radius);
 	}
 	return collisions;
 }

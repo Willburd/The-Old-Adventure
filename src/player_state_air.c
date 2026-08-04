@@ -35,7 +35,7 @@ void PlayerState_Air_Update(struct Actor* player)
 	// Handle wall collision
 	if (!player_data->disable_collision)
 	{
-		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, 0.1f), PLAYER_COLLISION_RADIUS);
+		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_STEP_HEIGHT), PLAYER_COLLISION_RADIUS);
 		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT), PLAYER_COLLISION_RADIUS);
 		PlayerStandardRadialEjection(player, Vector3Scale(VEC3UP, PLAYER_COLLISION_TOP_HEIGHT), PLAYER_COLLISION_RADIUS);
 	}
@@ -45,7 +45,7 @@ void PlayerState_Air_Update(struct Actor* player)
 		.position = Vector3Add(player->position, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT)),
 		.direction = VEC3DOWN
 	};
-	RayCollision collision = CollisionGetNearest(downray, PLAYER_COLLISION_MID_HEIGHT * 1.01f, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
+	RayCollision collision = CollisionGetNearest(downray, PLAYER_COLLISION_MID_HEIGHT + PLAYER_COLLISION_FLOOR_SENSOR_LENGTH, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
 	if (player_data->disable_collision || !collision.hit)
 	{
 		// Falling down!
