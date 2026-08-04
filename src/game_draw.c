@@ -424,13 +424,16 @@ void shader_update_lights(Shader shader)
 // Extended mesh drawing
 void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix matrix, int show_backface)
 {
+	// Backface culling
 	if(show_backface)
 		rlDisableBackfaceCulling();
+	// Draw
 	DrawMesh(
 		model_asset->mdl->meshes[mesh_index],
 		material,
 		matrix
 	);
+	// Restore backface mode
 	if (show_backface)
 		rlEnableBackfaceCulling();
 }

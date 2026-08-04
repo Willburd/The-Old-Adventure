@@ -54,7 +54,7 @@ SCENE_PRELOADASSETS(fieldtest)
 	LoadAsset_Material(FIELD_MATERIAL_STONE, FALSE);
 
 	// Set collision data
-	REGISTER_COLLISION_MESH(scene, model_asset, "test_room-Material", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "test_room-Bridge", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 	REGISTER_COLLISION_MESH(scene, model_asset, "test_room-Grass", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 	REGISTER_COLLISION_MESH(scene, model_asset, "test_room-Rockwalls", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
@@ -72,14 +72,14 @@ SCENE_LIGHTNODES(fieldtest)
 SCENE_DRAWWORLD(fieldtest)
 {
 	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
-	STANDARD_SHADER_MATERIAL(bridge_mat, FIELD_MATERIAL_BRIDGE, scene);
-	STANDARD_SHADER_MATERIAL(grass_mat, FIELD_MATERIAL_GRASS, scene);
 	STANDARD_SHADER_MATERIAL(stone_mat, FIELD_MATERIAL_STONE, scene);
+	STANDARD_SHADER_MATERIAL(grass_mat, FIELD_MATERIAL_GRASS, scene);
+	STANDARD_SHADER_MATERIAL(bridge_mat, FIELD_MATERIAL_BRIDGE, scene);
 
 	ToaDrawMesh(
 		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "test_room-Material"),
-		*bridge_mat,
+		GetMeshIndex(model_asset->mesh_data, "test_room-Rockwalls"),
+		*stone_mat,
 		GetMatrix(scene),
 		FALSE
 	);
@@ -94,8 +94,8 @@ SCENE_DRAWWORLD(fieldtest)
 
 	ToaDrawMesh(
 		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "test_room-Rockwalls"),
-		*stone_mat,
+		GetMeshIndex(model_asset->mesh_data, "test_room-Bridge"),
+		*bridge_mat,
 		GetMatrix(scene),
 		FALSE
 	);
