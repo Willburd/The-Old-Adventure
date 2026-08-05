@@ -177,7 +177,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor.h" />
-    <ClInclude Include="actor_entrance.h" />
     <ClInclude Include="actor_fade.h" />
     <ClInclude Include="actor_library.h" />
     <ClInclude Include="actor_factory.h" />
@@ -195,6 +194,7 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="hashmap.h" />
     <ClInclude Include="hud.h" />
+    <ClInclude Include="json_properties.h" />
     <ClInclude Include="light_tools.h" />
     <ClInclude Include="materials.h" />
     <ClInclude Include="models.h" />

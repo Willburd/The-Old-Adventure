@@ -185,9 +185,6 @@
     <ClInclude Include="materials.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
-    <ClInclude Include="actor_entrance.h">
-      <Filter>Header Files\engine\actors</Filter>
-    </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
@@ -227,8 +224,11 @@
     <ClInclude Include="models.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
+    <ClInclude Include="json_properties.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
     <ClInclude Include="actor_fade.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\engine\actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

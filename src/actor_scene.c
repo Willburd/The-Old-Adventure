@@ -5,7 +5,6 @@
 #include "raylib.h"
 #include "globals.h"
 #include "assets.h"
-#include "actor_entrance.h"
 #include "tools.h"
 #include "game_draw.h"
 
