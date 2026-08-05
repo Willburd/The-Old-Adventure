@@ -4,6 +4,8 @@
 // General
 #define PROP_RADIUS "radius"
 
+// Adventure
+
 // Exits
 #define PROP_TO_SCENE "to_scene"
 #define PROP_TO_ENTRANCE "to_entrance"
@@ -15,6 +17,5 @@
 // Torchs
 #define PROP_FIRECOLOR "fire_color"
 #define PROP_BURNEDOUT "burned_out"
-
 
 #endif
