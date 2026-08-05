@@ -7,6 +7,8 @@
 #include "assets.h"
 #include "tools.h"
 #include "game_draw.h"
+// Adventure
+#include "actor_entrance.h"
 
 // private header
 SceneID next_scene;
