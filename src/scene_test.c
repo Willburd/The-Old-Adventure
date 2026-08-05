@@ -5,10 +5,17 @@
 #include "actor_scene.h"
 #include "scene_entry.h"
 
+/*******************************************
+			Gameplay Debuging Room
+********************************************/
+
 // Assets
 
 // private header
+SCENE_PRELOADASSETS(test);
 SCENE_ACTIVATE_ROOM(test);
+SCENE_LIGHTNODES(test);
+SCENE_DRAWWORLD(test);
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,7 +24,10 @@ SCENE_ACTIVATE_ROOM(test);
 
 SCENE_INIT(test)
 {
+	SCENE_REGISTER_PRELOADASSETS(test);
 	SCENE_REGISTER_ACTIVATE_ROOM(test);
+	SCENE_REGISTER_LIGHTNODES(test);
+	SCENE_REGISTER_DRAWWORLD(test);
 }
 
 
@@ -25,19 +35,25 @@ SCENE_INIT(test)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+SCENE_PRELOADASSETS(test)
+{
+
+}
+
 SCENE_ACTIVATE_ROOM(test)
 {
 	// Actor spawns
-	for (int i = 0; i < 60; i++)
-	{
-		ACTOR_FACTORY(NULL, act_test, scene, (Vector3) { (float)(rand() % 300), (float)(rand() % 300), 0 }, QuaternionIdentity(), Vector3One(), (Vector3) { 1, 1, 0 });
-	}
 
 	// Function testing
-	int child_count = CHILDCOUNT(scene);
-	printf("children: %i\n", child_count);
 
-	struct Actor* child_array[10] = { NULL };
-	FINDACTORCHILDREN(child_array, 10, scene);
-	printf("cuid: %llu\n", child_array[0]->uuid);
+}
+
+SCENE_LIGHTNODES(test)
+{
+
+}
+
+SCENE_DRAWWORLD(test)
+{
+
 }

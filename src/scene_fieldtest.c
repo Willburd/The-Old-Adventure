@@ -14,6 +14,10 @@
 #include "world_state.h"
 #include "light_tools.h"
 
+/*******************************************
+		   Large Playspace Testing
+********************************************/
+
 // Assets
 #define FIELD_MODEL ASSET_MODELS"/Scenes/test_room.glb"
 #define FIELD_MATERIAL_BRIDGE ASSET_MATERIALS"/Objects/wood_door_a.mat"

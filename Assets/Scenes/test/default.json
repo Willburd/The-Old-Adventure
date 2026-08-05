@@ -4,5 +4,22 @@
    "is_cold": 0,
    "is_raining": 0,
    "sky_color": [ 1, 0, 1, 1 ],
-   "actors":[]
+   "actors":[
+	  {
+		"type": "skybox"
+	  },
+	  {
+		"type": "entrance",
+		"is_entrance": "debugentrance",
+		"pos": [0, 0, 0],
+		"end_pos": [0, 0, -1]
+	  },
+	  {
+		"type": "trigger_exit",
+		"pos": [0,0,36],
+		"to_scene": "fieldtest",
+		"to_entrance": "caveA",
+		"radius": 18
+	  }
+	]
 }

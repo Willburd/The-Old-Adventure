@@ -24,8 +24,8 @@
 	  {
 		"type": "trigger_exit",
 		"pos": [0,0,36],
-		"to_scene": "fieldtest",
-		"to_entrance": "caveA",
+		"to_scene": "test",
+		"to_entrance": "debugentrance",
 		"radius": 18
 	  },
 	  
