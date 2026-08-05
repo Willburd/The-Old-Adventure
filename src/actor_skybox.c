@@ -6,6 +6,10 @@
 #include "light_tools.h"
 #include "actor_factory.h"
 #include "world_state.h"
+#include "json_properties.h"
+
+static int is_cave = FALSE;
+static float cave_light = 0;
 
 // Assets
 #define SKYSPHERE_MODEL				ASSET_MODELS"/Tools/skysphere.glb"
@@ -50,22 +54,48 @@ ACTOR_PRELOADASSETS(skybox)
 
 ACTOR_JSON_INIT(skybox)
 {
+	// Defaults
+	is_cave = FALSE;
+	cave_light = 0.0f;
+	cJSON* check_if_cave = cJSON_GetObjectItem(file_data, PROP_SKYCAVE_ENABLED);
+	if (check_if_cave == NULL || !check_if_cave->valueint)
+		return;
 
+	// Is a cave! Set some default values so shaders are happy
+	is_cave = TRUE;
+	clear_background_color = BLACK;
+	fog_set(BLACK, FOG_DEFAULT_POWER, FOG_DEFAULT_RANGE);
+
+	// Set cave lighting
+	cJSON* cave_intensity_light = cJSON_GetObjectItem(file_data, PROP_SKYCAVE_LIGHT);
+	if (cave_intensity_light == NULL)
+		return;
+	cave_light = (float)cave_intensity_light->valuedouble;
 }
 
 ACTOR_UPDATE(skybox)
 {
+	if (is_cave)
+		return;
 	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler( 0.0f, 0.01f * DEG2RAD, 0.0f));
 	fog_set(GetFogColor(), FOG_DEFAULT_POWER, GetFogDistance()); // maintain fog state with sky
 }
 
 ACTOR_LIGHTNODES(skybox)
 {
+	if (is_cave)
+	{ 
+		lighting_append_light(Vector3Zero(), LIGHT_WORLD_RANGE, WHITE, cave_light);
+		return;
+	}
 	LIGHT_NODE_SKYBOX;
 }
 
 ACTOR_PREDRAWWORLD(skybox)
 {
+	if (is_cave)
+		return;
+
 	////////////////////////////////////////////////
 	// Skybox shader uniforms
 	////////////////////////////////////////////////

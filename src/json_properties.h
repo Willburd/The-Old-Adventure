@@ -18,4 +18,8 @@
 #define PROP_FIRECOLOR "fire_color"
 #define PROP_BURNEDOUT "burned_out"
 
+// Skybox
+#define PROP_SKYCAVE_ENABLED "is_cave"
+#define PROP_SKYCAVE_LIGHT "cave_light"
+
 #endif

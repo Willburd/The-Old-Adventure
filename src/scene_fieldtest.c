@@ -19,10 +19,11 @@
 ********************************************/
 
 // Assets
-#define FIELD_MODEL ASSET_MODELS"/Scenes/test_room.glb"
+#define FIELD_MODEL ASSET_MODELS"/Scenes/test_field.glb"
 #define FIELD_MATERIAL_BRIDGE ASSET_MATERIALS"/Objects/wood_door_a.mat"
 #define FIELD_MATERIAL_GRASS ASSET_MATERIALS"/Natural/grass_A.mat"
 #define FIELD_MATERIAL_STONE ASSET_MATERIALS"/Natural/stone_B.mat"
+#define FIELD_MESH_BASE "test_field"
 
 // private header
 SCENE_PRELOADASSETS(fieldtest);
@@ -58,9 +59,9 @@ SCENE_PRELOADASSETS(fieldtest)
 	LoadAsset_Material(FIELD_MATERIAL_STONE, FALSE);
 
 	// Set collision data
-	REGISTER_COLLISION_MESH(scene, model_asset, "test_room-Bridge", COL_LAYER_WORLD | COL_LAYER_CAMERA);
-	REGISTER_COLLISION_MESH(scene, model_asset, "test_room-Grass", COL_LAYER_WORLD | COL_LAYER_CAMERA);
-	REGISTER_COLLISION_MESH(scene, model_asset, "test_room-Rockwalls", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, FIELD_MESH_BASE"-Bridge", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, FIELD_MESH_BASE"-Grass", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, FIELD_MESH_BASE"-Rockwalls", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_ACTIVATE_ROOM(fieldtest)
@@ -82,7 +83,7 @@ SCENE_DRAWWORLD(fieldtest)
 
 	ToaDrawMesh(
 		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "test_room-Rockwalls"),
+		GetMeshIndex(model_asset->mesh_data, FIELD_MESH_BASE"-Rockwalls"),
 		*stone_mat,
 		GetMatrix(scene),
 		FALSE
@@ -90,7 +91,7 @@ SCENE_DRAWWORLD(fieldtest)
 
 	ToaDrawMesh(
 		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "test_room-Grass"),
+		GetMeshIndex(model_asset->mesh_data, FIELD_MESH_BASE"-Grass"),
 		*grass_mat,
 		GetMatrix(scene),
 		FALSE
@@ -98,7 +99,7 @@ SCENE_DRAWWORLD(fieldtest)
 
 	ToaDrawMesh(
 		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "test_room-Bridge"),
+		GetMeshIndex(model_asset->mesh_data, FIELD_MESH_BASE"-Bridge"),
 		*bridge_mat,
 		GetMatrix(scene),
 		FALSE

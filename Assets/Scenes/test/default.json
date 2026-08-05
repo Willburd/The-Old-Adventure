@@ -3,23 +3,32 @@
    "is_hot": 0,
    "is_cold": 0,
    "is_raining": 0,
-   "sky_color": [ 1, 0, 1, 1 ],
+   "sky_color": [ 0, 0, 0, 1 ],
    "actors":[
 	  {
-		"type": "skybox"
+		"type": "skybox",
+		"is_cave": 1,
+		"cave_light": 0.3
 	  },
+	  
 	  {
 		"type": "entrance",
 		"is_entrance": "debugentrance",
-		"pos": [0, 0, 0],
-		"end_pos": [0, 0, -1]
+		"pos": [-2.35, 0, 10],
+		"end_pos": [-2.35, 0, 4]
 	  },
+	  
 	  {
 		"type": "trigger_exit",
-		"pos": [0,0,36],
+		"pos": [-2.5,0,22],
 		"to_scene": "fieldtest",
 		"to_entrance": "caveA",
-		"radius": 18
+		"radius": 10
+	  },
+	  
+	  {
+		"type": "woodtorch",
+		"pos": [-7.441, 0, -6.657]
 	  }
 	]
 }
