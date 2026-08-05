@@ -24,7 +24,7 @@ static void LoadRoomLayer(struct Actor* scene, char* layer_path);
 ACTOR_INIT(scene)
 {
 	// Use this for clarity
-	struct Actor* scene = actor;
+	struct Actor* scene = actor; 
 
 	// Unload previous scene
 	current_scene = scene;
