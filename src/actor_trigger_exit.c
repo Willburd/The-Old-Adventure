@@ -6,17 +6,13 @@
 #include "game_state.h"
 #include "player.h"
 #include "game_draw.h"
-#include "actor_fadein.h"
-
-// Utility
-#define MAX_FADEOUT_RATE 6
-#define MAX_FADEOUT_TIME 300
+#include "actor_fade.h"
+#include "json_properties.h"
 
 // private header
 ACTOR_JSON_INIT(trigger_exit);
 ACTOR_PREUPDATE(trigger_exit);
 ACTOR_DRAWWORLD(trigger_exit);
-ACTOR_POSTDRAWHUD(trigger_exit);
 static void actor_exit_startleaving(struct Actor* exit, struct Actor* player);
 static void actor_exit_finishleaving(struct Actor* exit);
 
@@ -32,7 +28,6 @@ ACTOR_INIT(trigger_exit)
 	ACTOR_REGISTER_JSON_INIT(trigger_exit);
 	ACTOR_REGISTER_PREUPDATE(trigger_exit);
 	ACTOR_REGISTER_DRAWWORLD(trigger_exit);
-	ACTOR_REGISTER_POSTDRAWHUD(trigger_exit);
 
 	// Set data
 	MALLOC_ACTOR_DATA(TriggerExitData, actor->data);
@@ -44,12 +39,9 @@ ACTOR_JSON_INIT(trigger_exit)
 		return;
 
 	TriggerExitData* exit_data = actor->data;
-	exit_data->dest_scene = SCENE_FROM_STRING(cJSON_GetObjectItem(file_data, "to_scene")->valuestring);
-	exit_data->dest_entrance = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, "to_entrance")->valuestring);
-	exit_data->radius = (float)cJSON_GetObjectItem(file_data, "radius")->valuedouble;
-	exit_data->is_triggered = FALSE;
-	exit_data->previous_fadeout = 0;
-	exit_data->fadeout = 0;
+	exit_data->dest_scene = SCENE_FROM_STRING(cJSON_GetObjectItem(file_data, PROP_TO_SCENE)->valuestring);
+	exit_data->dest_entrance = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, PROP_TO_ENTRANCE)->valuestring);
+	exit_data->radius = (float)cJSON_GetObjectItem(file_data, PROP_RADIUS)->valuedouble;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,27 +50,27 @@ ACTOR_JSON_INIT(trigger_exit)
 
 ACTOR_PREUPDATE(trigger_exit)
 {
-	struct Actor* player = FINDACTORTYPE(act_player);
 	TriggerExitData* exit_data = actor->data;
-	if (exit_data->is_triggered)
+	struct Actor* fade_actor = FINDACTORTYPE(act_fadeout);
+	if (fade_actor)
 	{
 		// Wait for fadeout before entering the new scene
-		exit_data->previous_fadeout = exit_data->fadeout;
-		exit_data->fadeout += MAX_FADEOUT_RATE;
-		if (exit_data->fadeout >= MAX_FADEOUT_TIME)
+		FadeInData* fade_data = fade_actor->data;
+		if (fade_data->fadeout >= 255)
 		{
-			exit_data->fadeout = MAX_FADEOUT_TIME;
+			ACTOR_DESTROY(fade_actor);
 			actor_exit_finishleaving(actor);
+			actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
 		}
+		return;
 	}
-	else
-	{
-		// Wait for player to enter trigger
-		if (!player)
-			return;
-		if (Vector3Distance(actor->position, player->position) < exit_data->radius)
-			actor_exit_startleaving(actor, player);
-	}
+	// Wait for player to enter trigger
+	struct Actor* player = FINDACTORTYPE(act_player);
+	if (!player)
+		return;
+	if (Vector3Distance(actor->position, player->position) > exit_data->radius)
+		return;
+	actor_exit_startleaving(actor, player);
 }
 
 ACTOR_DRAWWORLD(trigger_exit)
@@ -89,20 +81,14 @@ ACTOR_DRAWWORLD(trigger_exit)
 	DrawSphereWires(actor->position, exit_data->radius, 10, 10, WHITE);
 }
 
-ACTOR_POSTDRAWHUD(trigger_exit)
-{
-	TriggerExitData* exit_data = actor->data;
-	DrawRectangle(0, 0, renderWidth, renderHeight, (Color) { 0, 0, 0, (int)Clamp( Lerp((float)exit_data->previous_fadeout, (float)exit_data->fadeout, (float)tick_percent),0,255) });
-}
-
 static void actor_exit_startleaving(struct Actor* exit, struct Actor* player)
 {
 	// Set the game into transition state
 	TriggerExitData* exit_data = exit->data;
-	exit_data->is_triggered = TRUE;
 	gameplay_state &= ~GAMESTATE_GAMEPLAY;
 	gameplay_state |= GAMESTATE_TRANSITION;
 	printf("EXIT TRIGGERED\n");
+	FADEOUT_CREATE(BLACK);
 
 	// Run to the entrance
 	PlayerData* player_data = (PlayerData*)player->data;

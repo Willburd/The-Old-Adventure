@@ -5,6 +5,7 @@
 #include "materials.h"
 #include "models.h"
 #include "tools.h"
+#include "rlgl.h"
 
 // Remove all assets from the hashmap. Normally ignores core assets.
 void UnloadAllAssets(int including_core)
@@ -277,7 +278,7 @@ Asset* AssetGetPackage(char* path)
     return asset->ast; \
 }
 Texture2D* AssetGet_Texture(char* path) ASSET_FALLBACK(path,ASSET_TEXTURES"/Engine/no_texture.png", tex);
-Model* AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_MODELS"/Tools/quad2d.glb", mdl);
+Model* AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_MODELS"/Tools/sprite2d.glb", mdl);
 Sound* AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Engine/no_texture.png", snd);
 Music* AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Engine/no_texture.png", mus);
 Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_MATERIALS"/Engine/no_material.mat", mat);
