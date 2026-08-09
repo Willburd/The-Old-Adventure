@@ -23,6 +23,8 @@
 #define FIELD_MATERIAL_BRIDGE ASSET_MATERIALS"/Objects/wood_door_a.mat"
 #define FIELD_MATERIAL_GRASS ASSET_MATERIALS"/Natural/grass_A.mat"
 #define FIELD_MATERIAL_STONE ASSET_MATERIALS"/Natural/stone_B.mat"
+
+// Meshes
 #define FIELD_MESH_BASE "test_field"
 
 // private header
@@ -71,7 +73,7 @@ SCENE_ACTIVATE_ROOM(fieldtest)
 
 SCENE_LIGHTNODES(fieldtest)
 {
-	//LIGHT_NODE_CAVE(-1.5f, 0.15f, 36.0f, 15.0f);
+	LIGHT_NODE_CAVE(-1.5f, 0.15f, 36.0f, 15.0f);
 }
 
 SCENE_DRAWWORLD(fieldtest)
@@ -88,7 +90,6 @@ SCENE_DRAWWORLD(fieldtest)
 		GetMatrix(scene),
 		FALSE
 	);
-
 	ToaDrawMesh(
 		model_asset,
 		GetMeshIndex(model_asset->mesh_data, FIELD_MESH_BASE"-Grass"),
@@ -96,7 +97,6 @@ SCENE_DRAWWORLD(fieldtest)
 		GetMatrix(scene),
 		FALSE
 	);
-
 	ToaDrawMesh(
 		model_asset,
 		GetMeshIndex(model_asset->mesh_data, FIELD_MESH_BASE"-Bridge"),

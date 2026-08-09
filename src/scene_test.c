@@ -14,6 +14,8 @@
 // Assets
 #define TESTROOM_MODEL ASSET_MODELS"/Scenes/test_room.glb"
 #define TESTROOM_MATERIAL_STONE ASSET_MATERIALS"/Natural/stone_B.mat"
+
+// Meshes
 #define TESTROOM_MESH_BASE "test_room"
 
 // private header
