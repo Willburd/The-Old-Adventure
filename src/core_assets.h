@@ -7,6 +7,7 @@
 #define CUBEMAP_MODEL				ASSET_MODELS"/Tools/cube_map.glb"
 #define QUAD_MODEL					ASSET_MODELS"/Tools/quad2d.glb"
 #define SPRITE_MODEL				ASSET_MODELS"/Tools/sprite2d.glb"
+#define CUBE_MODEL					ASSET_MODELS"/Tools/unit_cube.glb"
 
 void LoadCoreAssets();
 void LoadCoreTextAssets();

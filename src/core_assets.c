@@ -30,6 +30,7 @@ void LoadCoreAssets()
     LoadAsset_Model(CUBEMAP_MODEL, TRUE);
     LoadAsset_Model(QUAD_MODEL, TRUE);
     LoadAsset_Model(SPRITE_MODEL, TRUE);
+    LoadAsset_Model(CUBE_MODEL, TRUE);
     // Adventure
 
     // Set font
