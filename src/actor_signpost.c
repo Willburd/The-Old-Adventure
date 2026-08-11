@@ -1,15 +1,19 @@
 #include "core_assets.h"
+#include "collision.h"
 #include "actor_factory.h"
 #include "tools.h"
 #include "actor_textbox.h"
+#include "game_draw.h"
 #include "camera.h"
 
 // Assets
-
+#define SIGN_MODEL ASSET_MODELS"/Objects/wood_sign.glb"
+#define SIGN_MATERIAL ASSET_MATERIALS"/Objects/wood_sign_a.mat"
 
 // private header
 ACTOR_PRELOADASSETS(signpost);
 ACTOR_INTERACT_TEXT(signpost);
+ACTOR_CAN_INTERACT(signpost);
 ACTOR_PLAYER_INTERACT(signpost);
 ACTOR_DRAWWORLD(signpost);
 
@@ -23,6 +27,7 @@ ACTOR_INIT(signpost)
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_INTERACTIVE;
 	ACTOR_REGISTER_PRELOADASSETS(signpost);
 	ACTOR_REGISTER_DRAWWORLD(signpost);
+	ACTOR_REGISTER_CAN_INTERACT(signpost);
 	ACTOR_REGISTER_PLAYER_INTERACT(signpost);
 	ACTOR_REGISTER_INTERACT_TEXT(signpost);
 }
@@ -33,14 +38,21 @@ ACTOR_INIT(signpost)
 
 ACTOR_PRELOADASSETS(signpost)
 {
+	// Load model
+	Asset* model_asset = LoadAsset_Model(SIGN_MODEL, FALSE);
+	LoadAsset_Material(SIGN_MATERIAL, FALSE);
 
+	// Set collision data
+	REGISTER_COLLISION_MESH(actor, model_asset, DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
 }
 
 ACTOR_CAN_INTERACT(signpost)
 {
 	if (OutOfRenderRange(actor))
 		return FALSE;
-	return TRUE;
+	Vector3 our_forwardvec = Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation);
+	Vector3 ply_forwardvec = Vector3RotateByQuaternion(VEC3FORWARD, player->rotation);
+	return Vector3DotProduct(our_forwardvec, ply_forwardvec) < -0.2; // Facing off against each other
 }
 
 ACTOR_INTERACT_TEXT(signpost)
@@ -62,5 +74,14 @@ ACTOR_DRAWWORLD(signpost)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	DrawSphereWires(actor->position, ACTOR_INTERACTION_RANGE, 5, 5, WHITE);
+	Asset* model_asset = LoadAsset_Model(SIGN_MODEL, FALSE);
+
+	STANDARD_SHADER_MATERIAL(sign_mat, SIGN_MATERIAL, actor);
+	ToaDrawMesh(
+		model_asset,
+		GetMeshIndex(model_asset->mesh_data, "Sign-Main"),
+		*sign_mat,
+		GetMatrix(actor),
+		FALSE
+	);
 }

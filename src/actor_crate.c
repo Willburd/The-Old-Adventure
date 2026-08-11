@@ -43,16 +43,13 @@ ACTOR_DRAWWORLD(crate)
 	if (OutOfRenderRange(actor))
 		return;
 	Asset* model_asset = LoadAsset_Model(CRATE_MODEL, FALSE);
-	Matrix position = GetMatrix(actor);
 
 	STANDARD_SHADER_MATERIAL(crate_mat, CRATE_MATERIAL, actor);
-
-	int trunk_mesh_index = GetMeshIndex(model_asset->mesh_data, "Crate-Main");
 	ToaDrawMesh(
 		model_asset,
 		GetMeshIndex(model_asset->mesh_data, "Crate-Main"),
 		*crate_mat,
-		position,
+		GetMatrix(actor),
 		FALSE
 	);
 }
