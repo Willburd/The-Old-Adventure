@@ -36,12 +36,12 @@
 	  },
 	  {
 		"type": "woodtorch",
-		"pos": [-10.3, -1.0, 13.04],
-		"burned_out": 1
+		"pos": [-10.3, -1.0, 13.04]
 	  },
 	  {
 		"type": "woodtorch",
-		"pos": [6.11, 0.16, -14.42]
+		"pos": [6.11, 0.16, -14.42],
+		"burned_out": 1
 	  },
 	  {
 		"type": "hole",
@@ -66,7 +66,8 @@
 	  },
 	  {
 		"type": "signpost",
-		"pos": [-7.5,-1.49,15.1]
+		"pos": [-7.5,-1.49,15.1],
+		"text_id": "Field_Test_Sign"
 	  }
    ]
 }

@@ -22,4 +22,7 @@
 #define PROP_SKYCAVE_ENABLED "is_cave"
 #define PROP_SKYCAVE_LIGHT "cave_light"
 
+// Signs
+#define PROP_TEXT_ID "text_id"
+
 #endif
