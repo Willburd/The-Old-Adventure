@@ -149,6 +149,7 @@
     <ClCompile Include="actor.c" />
     <ClCompile Include="actor_animationtest.c" />
     <ClCompile Include="actor_camera.c" />
+    <ClCompile Include="actor_crate.c" />
     <ClCompile Include="actor_debug.c" />
     <ClCompile Include="actor_entrance.c" />
     <ClCompile Include="actor_fadein.c" />

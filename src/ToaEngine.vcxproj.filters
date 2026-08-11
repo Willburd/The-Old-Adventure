@@ -225,6 +225,9 @@
     <ClCompile Include="actor_hole.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_crate.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">

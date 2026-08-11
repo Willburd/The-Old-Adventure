@@ -53,6 +53,20 @@
 		"to_scene": "fieldtest",
 		"to_entrance": "caveA",
 		"radius": 1
+	  },
+	  {
+		"type": "crate",
+		"pos": [14.3, -1.6, -1.2]
+	  },
+	  {
+		"type": "crate",
+		"pos": [14.2, -1.6, -3.45],
+		"rot": [0, 12, 0]
+	  },
+	  {
+		"type": "crate",
+		"pos": [14.2, 0.3, -2.1],
+		"rot": [0, 40, 0]
 	  }
    ]
 }
