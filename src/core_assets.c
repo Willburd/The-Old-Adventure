@@ -24,6 +24,7 @@ void LoadCoreAssets()
     LoadAsset_Model(CUBEMAP_MODEL, TRUE);
     LoadAsset_Model(QUAD_MODEL, TRUE);
     LoadAsset_Model(SPRITE_MODEL, TRUE);
+    LoadAsset_Model(CUBE_MODEL, TRUE);
     // TODO - Your default models here
 
     // Set font
