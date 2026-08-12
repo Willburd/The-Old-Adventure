@@ -45,6 +45,7 @@ int main(void)
 {
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    // _crtBreakAlloc = 1; // Break on allocation block
 #endif
 
     printf("==============================================================================\n");
@@ -197,4 +198,15 @@ static void game_shutdown()
         UnloadRenderTexture(render_tex_tilemap);
     if (IsRenderTextureValid(render_tex_foreground))
         UnloadRenderTexture(render_tex_foreground);
+    // Cleanup destroyed actors
+    for (int i = 0; i <= current_actor_cap; i++)
+    {
+        struct Actor* end_actor = world_actors[i];
+        if (end_actor == NULL)
+            continue;
+        // Fully delete actors that no longer exist
+        if (!end_actor->is_destroying)
+            continue;
+        HandleActorFinalCleanup(end_actor);
+    }
 }

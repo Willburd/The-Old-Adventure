@@ -213,3 +213,14 @@ void ACTOR_DESTROY_CHILDREN(struct Actor* parent)
 		ACTOR_DESTROY(check_actor);
 	}
 }
+
+void HandleActorFinalCleanup(struct Actor* goner)
+{
+	total_actors--;
+	// Wipedata
+	world_actors[goner->index] = NULL;
+	if (ACTOR_HAS(goner, data))
+		RELEASE(goner->data);
+	ACTOR_CLEAR(goner);
+	RELEASE(goner);
+}

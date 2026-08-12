@@ -28,6 +28,7 @@ static int AddEntry(char* string_id, char* string_data)
     CHAR_STR_COPY(entry->key, string_id, ERR_NOALLOC);
     CHAR_STR_COPY(entry->data, string_data, ERR_NOALLOC);
     hashmap_set(loaded_text, entry);
+    RELEASE(entry); // Hashmap clones
     return 0;
 }
 

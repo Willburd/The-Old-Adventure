@@ -18,4 +18,6 @@ void ACTOR_DESTROY_ALL();
 void ACTOR_DESTROY_IN_ROOM(int index);
 void ACTOR_DESTROY_CHILDREN(struct Actor* parent);
 
+void HandleActorFinalCleanup(struct Actor* goner);
+
 #endif

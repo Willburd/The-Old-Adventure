@@ -144,13 +144,7 @@ void game_update()
 		// Fully delete actors that no longer exist
 		if (finalize_actor->is_destroying)
 		{
-			total_actors--;
-			// Wipedata
-			world_actors[finalize_actor->index] = NULL;
-			if (ACTOR_HAS(finalize_actor, data))
-				RELEASE(finalize_actor->data);
-			ACTOR_CLEAR(finalize_actor);
-			RELEASE(finalize_actor);
+			HandleActorFinalCleanup(finalize_actor);
 			continue;
 		}
 		// Light update
