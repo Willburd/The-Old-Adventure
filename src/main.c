@@ -147,7 +147,7 @@ static void game_setup()
     clear_background_color = BLACK;
 
     // Adventure edit begin - Init inventory and worldstate
-    MALLOC(Inventory, player_inventory, NULL);
+    MALLOC_SET(Inventory, player_inventory, NULL);
     InitWorldState();
     // Adventure edit end
 
@@ -217,4 +217,6 @@ static void game_shutdown()
             continue;
         HandleActorFinalCleanup(end_actor);
     }
+    // Cleanup Adventure
+    RELEASE(player_inventory);
 }
