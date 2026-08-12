@@ -18,7 +18,7 @@ uint64_t meshdata_hash(const void* item, uint64_t seed0, uint64_t seed1) {
 void meshdata_free(void* item) {
 	MeshInfo* mesh_inf = item;
 	RELEASE(mesh_inf->mesh_name); // Allocated string
-	// RELEASE(item); TODO : Why can't I deallocate this?
+	free(mesh_inf->resource_ptr);
 }
 
 // Half a MB of space

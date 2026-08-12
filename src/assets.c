@@ -106,6 +106,7 @@ void asset_free(void* item) {
         printf("--------------------------------------\n");
     }
     RELEASE(asset->filepath); // malloc char* string
+    free(asset->resource_ptr); // Release original allocation
 }
 
 #define RETURN_EXISTING_ASSET(pth, s_core) Asset* check = AssetGetPackage(pth); if (check){if(s_core){check->core_asset=s_core;};return check;}
@@ -126,7 +127,6 @@ Asset* LoadAsset_Texture(char* path, int is_core, char* mat_link)
         printf("ASSET: loaded material-texture: %s\n", asset->filepath);
     else
         printf("ASSET: loaded texture: %s\n", asset->filepath);
-    RELEASE(asset); // Hashmap clones
     printf("--------------------------------------\n");
     return asset;
 }
@@ -182,11 +182,11 @@ Asset* LoadAsset_Model(char* path, int is_core)
                     }
 
                     MALLOC(MeshInfo, mesh_inf, NULL);
+                    mesh_inf->resource_ptr = mesh_inf;
                     CHAR_STR_COPY(mesh_inf->mesh_name, mesh_identifier, NULL);
                     mesh_inf->mesh_index = mesh_load_index++;
                     hashmap_set(asset->mesh_data, mesh_inf);
                     printf(" ->%s\n", mesh_inf->mesh_name);
-                    RELEASE(mesh_inf); // Hashmap clones
                 }
                 break;
             }
@@ -203,7 +203,6 @@ Asset* LoadAsset_Model(char* path, int is_core)
         if (asset->anm != NULL && !IsModelAnimationValid(*asset->mdl, *asset->anm))
             printf("ASSET: Unable to load animations: %s\n", path);
         printf("ASSET: loaded model: %s\n", asset->filepath);
-    RELEASE(asset); // Hashmap clones
     printf("--------------------------------------\n");
     return asset;
 }
@@ -221,7 +220,6 @@ Asset* LoadAsset_Sound(char* path, int is_core)
         printf("ASSET: Unable to load sound: %s\n", path);
     else
         printf("ASSET: loaded sound: %s\n", asset->filepath);
-    RELEASE(asset); // Hashmap clones
     printf("--------------------------------------\n");
     return asset;
 }
@@ -239,7 +237,6 @@ Asset* LoadAsset_Music(char* path, int is_core)
         printf("ASSET: Unable to load music: %s\n", path);
     else
         printf("ASSET: loaded music: %s\n", asset->filepath);
-    RELEASE(asset); // Hashmap clones
     printf("--------------------------------------\n");
     return asset;
 }
@@ -257,7 +254,6 @@ Asset* LoadAsset_Material(char* path, int is_core)
         printf("ASSET: Unable to load material: %s\n", path);
     else
         printf("ASSET: loaded material: %s\n", asset->filepath);
-    RELEASE(asset); // Hashmap clones
     printf("--------------------------------------\n");
     return asset;
 }
