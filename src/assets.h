@@ -37,6 +37,7 @@ int current_game_language;
 struct hashmap* loaded_assets;
 
 typedef struct {
+    void* resource_ptr;
     int core_asset;
     char* filepath;
     Texture2D* tex;
@@ -49,7 +50,7 @@ typedef struct {
     ModelAnimation* anm;
 } Asset;
 
-#define MALLOC_ASSET(a, p, s_core) MALLOC(Asset, a, 0);a->core_asset=s_core;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;a->anm=NULL;a->anm_count=0;
+#define MALLOC_ASSET(a, p, s_core) MALLOC(Asset, a, 0);a->core_asset=s_core;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;a->anm=NULL;a->anm_count=0;a->resource_ptr=a;
 
 void UnloadAllAssets(int including_core);
 

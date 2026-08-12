@@ -5,6 +5,7 @@
 #include "cJSON.h"
 
 typedef struct {
+	void* resource_ptr;
 	char* mesh_name;
 	int mesh_index;
 } MeshInfo;

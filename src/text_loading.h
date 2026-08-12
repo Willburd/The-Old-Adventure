@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 typedef struct {
+    void* resource_ptr;
     char* key;
     char* data;
 } TextEntry;
