@@ -68,6 +68,16 @@ void LoadTextData(char* text_id)
         }
     }
     fclose(fptr);
+    
+    // Clear data if already loaded
+    TextEntry* entry = hashmap_get(loaded_text, &(const TextEntry){.key = text_id });
+    if (entry)
+    {
+        hashmap_delete(loaded_text, entry);
+        RELEASE(entry->key);
+        RELEASE(entry->data);
+        free(entry->resource_ptr);
+    }
 
     // Append the string to the database of text entries
     AddEntry(text_id, final_string);
