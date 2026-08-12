@@ -12,10 +12,8 @@ void InitWorldState()
 	rain_intensity = 0;
 
 	// Setup inventory
-	player_inventory.max_hearts = HEALTH_STARTING_HEARTS;
-	player_inventory.health = player_inventory.max_hearts * HEALTH_PER_HEART;
-
-
+	player_inventory->max_hearts = HEALTH_STARTING_HEARTS;
+	player_inventory->health = player_inventory->max_hearts * HEALTH_PER_HEART;
 }
 
 void UpdateWorldState()

@@ -141,8 +141,8 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 	// Draw health
 	const int heart_gap = 12;
 	unsigned int heart_count = 0;
-	unsigned int health_remaining = player_inventory.health;
-	while (heart_count < player_inventory.max_hearts) {
+	unsigned int health_remaining = player_inventory->health;
+	while (heart_count < player_inventory->max_hearts) {
 		// Put on hud
 		int xpos = HUD_LEFT + 5 + ((heart_count % 10) * heart_gap);
 		int ypos = HUD_TOP + 5 + ((heart_count / 10)) * heart_gap;
