@@ -20,6 +20,6 @@ typedef struct {
 	unsigned int item_slot_C;
 } Inventory;
 
-Inventory player_inventory;
+Inventory* player_inventory;
 
 #endif
