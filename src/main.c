@@ -1,3 +1,8 @@
+#ifdef _DEBUG
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#endif
+#include <stdlib.h>
 #include <stdint.h>
 #include "raylib.h"
 #include "return_codes.h"
@@ -38,6 +43,10 @@ static void game_shutdown();
 
 int main(void)
 {
+#ifdef _DEBUG
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
     printf("==============================================================================\n");
     printf("                                 BEGIN SETUP                                  \n");
     printf("==============================================================================\n");
