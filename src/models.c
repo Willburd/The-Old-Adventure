@@ -21,7 +21,8 @@ void meshdata_free(void* item) {
 	// RELEASE(item); TODO : Why can't I deallocate this?
 }
 
-#define MAX_JSON_CHARS 24000
+// Half a MB of space
+#define MAX_JSON_CHARS 524288
 // Extracts json from .glb file 
 cJSON* ParseGLTFModel(char* path)
 {
