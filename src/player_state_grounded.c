@@ -47,7 +47,7 @@ void PlayerState_Grounded_Update(struct Actor* player)
 		Quaternion input_rotator = QuaternionFromAxisAngle(VEC3UP, -Vector3GetTopDownAngle(VEC3DIRECTION(cam_main.position, player->position)));
 		move_velocity = Vector3Scale(Vector3RotateByQuaternion((Vector3) { input_analog.x, 0.0f, input_analog.y }, input_rotator), PLAYER_GROUND_ACCELERATION);
 	}
-	else if(gameplay_state & (GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE))
+	else if(CHECK_GAMESTATE( GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE ))
 	{
 		// Cutscene movement, use the rungoal vector
 		if(player_data->cutscene_run_goal.x != 0 || player_data->cutscene_run_goal.z != 0)

@@ -85,8 +85,9 @@ static void actor_exit_startleaving(struct Actor* exit, struct Actor* player)
 {
 	// Set the game into transition state
 	TriggerExitData* exit_data = exit->data;
-	gameplay_state &= ~GAMESTATE_GAMEPLAY;
-	gameplay_state |= GAMESTATE_TRANSITION;
+	EXIT_GAMESTATE(GAMESTATE_GAMEPLAY);
+	ENTER_GAMESTATE(GAMESTATE_TRANSITION);
+
 	printf("EXIT TRIGGERED\n");
 	FADEOUT_CREATE(BLACK);
 
@@ -105,8 +106,8 @@ static void actor_exit_finishleaving(struct Actor* exit)
 {
 	// Finish transitioning to the newscene
 	TriggerExitData* exit_data = exit->data;
-	gameplay_state &= ~GAMESTATE_TRANSITION;
-	gameplay_state |= GAMESTATE_GAMEPLAY;
+	EXIT_GAMESTATE(GAMESTATE_TRANSITION);
+	ENTER_GAMESTATE(GAMESTATE_GAMEPLAY);
 	printf("EXIT FINISHED\n");
 
 	// Create transition fade into new room, it's not tied to any scenes, so it fades out on it's own

@@ -27,14 +27,14 @@ void UpdateWorldState()
 		scene_config = sdat->config_flags;
 	}
 	// Cycle daynight if our scene doesn't pause time.
-	if ((gameplay_state & GAMESTATE_GAMEPLAY) && !(scene_config & SCENE_CONFIG_TIMEPAUSED))
+	if (CHECK_GAMESTATE( GAMESTATE_GAMEPLAY ) && !(scene_config & SCENE_CONFIG_TIMEPAUSED))
 	{
 		daynight_cycle += daynight_speed;
 		while (daynight_cycle > 1.0f)
 			daynight_cycle -= 1.0f;
 	}
 	// If the scene is raining, fade into the rain effect
-	if (gameplay_state & (GAMESTATE_GAMEPLAY | GAMESTATE_TEXTBOX | GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE))
+	if (CHECK_GAMESTATE( GAMESTATE_GAMEPLAY | GAMESTATE_TEXTBOX | GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE ))
 	{
 		if (scene_config & SCENE_CONFIG_ISRAINING)
 			rain_intensity += 0.01f;

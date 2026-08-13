@@ -41,8 +41,8 @@ ACTOR_INIT(pause_box)
 
 	// Pause the game
 	printf("PAUSE\n");
-	gameplay_state &= ~GAMESTATE_GAMEPLAY;
-	gameplay_state |= GAMESTATE_PAUSED;
+	EXIT_GAMESTATE(GAMESTATE_GAMEPLAY);
+	ENTER_GAMESTATE(GAMESTATE_PAUSED);
 
 	struct Actor* camera = FINDACTORTYPE(act_camera);
 	if (camera)
@@ -129,8 +129,8 @@ ACTOR_POSTDRAWWORLD(pause_box)
 ACTOR_CLEANUP(pause_box)
 {
 	// Unpause the game
-	gameplay_state &= ~GAMESTATE_PAUSED;
-	gameplay_state |= GAMESTATE_GAMEPLAY;
+	EXIT_GAMESTATE(GAMESTATE_PAUSED);
+	ENTER_GAMESTATE(GAMESTATE_GAMEPLAY);
 
 	struct Actor* camera = FINDACTORTYPE(act_camera);
 	if (camera)

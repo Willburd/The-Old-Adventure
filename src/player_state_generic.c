@@ -90,7 +90,7 @@ int PlayerCanAcceptInput(struct Actor* player)
 	int can_accept_player_input = TRUE;
 	if (cam_data->camera_mode == CAMERA_MODE_FREEMOVE)
 		can_accept_player_input = FALSE;
-	if (!(gameplay_state & GAMESTATE_GAMEPLAY))
+	if (!CHECK_GAMESTATE( GAMESTATE_GAMEPLAY ))
 		can_accept_player_input = FALSE;
 
 	return can_accept_player_input;
