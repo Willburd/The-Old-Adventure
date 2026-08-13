@@ -28,7 +28,7 @@ void LoadCoreAssets()
     // TODO - Your default models here
 
     // Set font
-    // default_font = LoadFontEx(ASSET_FONT"/font.ttf", 16, NULL, 0); // TODO - Your font here
+    default_font = LoadFontEx(ASSET_FONT"/PressStart2P-Regular.ttf", 16, NULL, 0); // TODO - Your font here
     
     // Load text
     LoadCoreTextAssets();
