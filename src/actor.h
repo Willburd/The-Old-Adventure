@@ -37,6 +37,7 @@ struct Actor {
 	int index;
 	uint64_t uuid;
 	int actor_type;
+	char* id_tag;
 	char* actor_type_name;
 	int is_destroying;
 
@@ -118,7 +119,7 @@ struct Actor {
 	void (*func_touch)(struct Actor* actor, struct Actor* other);
 };
 #define ACTOR_CLEAR(x) \
-x->uuid = 0; x->index = -1; x->actor_type = 0; x->actor_type_name = "?"; x->func_json_init = NULL; \
+x->uuid = 0;x->id_tag = NULL; x->index = -1; x->actor_type = 0; x->actor_type_name = "?"; x->func_json_init = NULL; \
 x->is_destroying = FALSE; \
 x->parent = NULL; x->current_room_index = ACTOR_HAS_NO_ROOM_INDEX; \
 x->actor_flags = 0; x->triggers_flags = 0; x->flag_group_selector = SCENE_FLAG_GROUP_TEMP; \
@@ -164,9 +165,13 @@ uint64_t current_unique_id;
 
 // Utility
 // Find an actor by its uuid
-struct Actor* FINDACTOR(uint64_t id);
+struct Actor* FINDACTOR_BYID(uint64_t id);
+// Find anactor by it's id tag
+struct Actor* FINDACTOR_BYTAG(char* id_tag);
 // Find multiple actors by their uuids
-void FINDACTORGROUP(const struct Actor* found_group[], int max_count, const uint64_t find_uuids[]);
+void FINDACTORGROUP_BYID(const struct Actor* found_group[], int max_count, const uint64_t find_uuids[]);
+// Find multiple actors by their id tags
+void FINDACTORGROUP_BYTAG(const struct Actor* found_group[], int max_count, const char* find_tags[]);
 // Get first actor of a specified type
 struct Actor* FINDACTORTYPE(int actor_type);
 // Get all actors of a specific type
