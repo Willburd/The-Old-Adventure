@@ -103,6 +103,8 @@ struct Actor {
 	void (*func_postdrawhud)(struct Actor* actor, double tick_percent);
 	// Handle activating a room within a scene
 	void (*func_activate_room)(struct Actor* actor, int room_index, int entrance);
+	// Called at the end of scene loading. Allowing modification of actors spawned by the scene itself.
+	void (*func_prepare_actors)(struct Actor* actor, int room_index, int entrance);
 	// Handle deactivating a room within a scene
 	void (*func_deactivate_room)(struct Actor* actor, int room_index);
 	// Handle animation end/loop actions
@@ -131,7 +133,7 @@ x->func_preupdate = NULL; x->func_update = NULL; x->func_postupdate = NULL; \
 x->func_append_lights = NULL; \
 x->func_predrawworld = NULL; x->func_drawworld = NULL; x->func_transparentdrawworld = NULL; x->func_postdrawworld = NULL; \
 x->func_predrawhud = NULL; x->func_drawhud = NULL; x->func_postdrawhud = NULL; \
-x->func_activate_room = NULL; x->func_deactivate_room = NULL; \
+x->func_activate_room = NULL; x->func_prepare_actors = NULL; x->func_deactivate_room = NULL; \
 x->func_animation_ended = NULL; \
 x->func_player_interact = NULL;x->func_can_interact = NULL;x->func_interaction_text = NULL;x->func_remote_interact = NULL;x->func_touch = NULL; \
 x->data = NULL;
@@ -263,6 +265,8 @@ void SceneFlagToggle(struct Actor* actor);
 #define SCENE_INIT(x) void scene_## x ##_init(struct Actor* scene)
 #define SCENE_PRELOADASSETS(x) static void scene_## x ##_preload_assets(struct Actor* scene)
 #define SCENE_ACTIVATE_ROOM(x) static void scene_## x ##_activate_room(struct Actor* scene, int room_index, int entrance)
+#define SCENE_PREPARE_ACTORS(x) static void scene_## x ##_prepare_actors(struct Actor* scene, int room_index, int entrance)
+#define SCENE_DEACTIVATE_ROOM(x) static void scene_## x ##_deactivate_room(struct Actor* scene, int room_index)
 #define SCENE_CLEANUP(x) static void scene_## x ##_cleanup(struct Actor* scene)
 
 #define SCENE_UPDATE(x) static void scene_## x ##_update(struct Actor* scene)
@@ -273,6 +277,8 @@ void SceneFlagToggle(struct Actor* actor);
 // registration boilerplate for scenes
 #define SCENE_REGISTER_PRELOADASSETS(x) scene->func_preloadassets = scene_## x ##_preload_assets
 #define SCENE_REGISTER_ACTIVATE_ROOM(x) scene->func_activate_room = scene_## x ##_activate_room
+#define SCENE_REGISTER_PREPARE_ACTORS(x) scene->func_prepare_actors = scene_## x ##_prepare_actors
+#define SCENE_REGISTER_DEACTIVATE_ROOM(x) scene->func_deactivate_room = scene_## x ##_deactivate_room
 #define SCENE_REGISTER_CLEANUP(x) scene->func_destroy = scene_## x ##_cleanup
 
 #define SCENE_REGISTER_UPDATE(x) scene->func_update = scene_## x ##_update
