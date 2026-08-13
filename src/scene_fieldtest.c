@@ -30,6 +30,7 @@
 // private header
 SCENE_PRELOADASSETS(fieldtest);
 SCENE_ACTIVATE_ROOM(fieldtest);
+SCENE_PREPARE_ACTORS(fieldtest);
 SCENE_LIGHTNODES(fieldtest);
 SCENE_DRAWWORLD(fieldtest);
 
@@ -44,6 +45,7 @@ SCENE_INIT(fieldtest)
 	SCENE_REGISTER_PRELOADASSETS(fieldtest);
 	SCENE_REGISTER_LIGHTNODES(fieldtest);
 	SCENE_REGISTER_ACTIVATE_ROOM(fieldtest);
+	SCENE_REGISTER_PREPARE_ACTORS(fieldtest);
 	SCENE_REGISTER_DRAWWORLD(fieldtest);
 }
 
@@ -69,6 +71,15 @@ SCENE_PRELOADASSETS(fieldtest)
 SCENE_ACTIVATE_ROOM(fieldtest)
 {
 	LoadCustomLayer(scene, IsDay() ? "Day" : "Night");
+}
+
+SCENE_PREPARE_ACTORS(fieldtest)
+{
+	struct Actor* act = FINDACTOR_BYTAG("test_tree");
+	if(act)
+		printf("Tree Test Actor's UUID was: %llu \n", act->uuid);
+	else
+		printf("Tree Test was not found! \n");
 }
 
 SCENE_LIGHTNODES(fieldtest)
