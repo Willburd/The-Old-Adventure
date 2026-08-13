@@ -41,6 +41,10 @@ ACTOR_INIT(scene)
 
 	// TODO - Your player scene entry logic here
 
+	// Finalize actors
+	if (ACTOR_HAS(scene, func_prepare_actors))
+		scene->func_prepare_actors(scene, scene->current_room_index, next_entrance);
+
 	printf("\n..............................................................................\n");
 	printf("CHANGE FINISHED ==> %s \n", scene->actor_type_name);
 	printf("********************************************************************************\n");
