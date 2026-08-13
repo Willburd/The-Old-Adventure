@@ -34,7 +34,7 @@ void LoadCoreAssets()
     // Adventure
 
     // Set font
-    default_font = LoadFontEx(ASSET_FONT"/LinBiolinum_Rah.ttf", 16, NULL, 0); // Adventure
+    default_font = LoadFontEx(ASSET_FONT"/LinBiolinum_Rah.ttf", 16, NULL, 0); // Adventure edit - Use a different font
 
     // Load text
     LoadCoreTextAssets();
