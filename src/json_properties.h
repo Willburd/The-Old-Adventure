@@ -2,9 +2,11 @@
 #define __JSON_PROPERTIES_HEADER__
 
 // General
-#define PROP_RADIUS "radius"
 
 // Adventure
+
+// Generic
+#define PROP_RADIUS "radius"
 
 // Exits
 #define PROP_TO_SCENE "to_scene"
