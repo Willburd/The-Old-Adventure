@@ -3,7 +3,7 @@
 #include "tools.h"
 #include "scene_entry.h"
 
-struct Actor* FINDACTOR(uint64_t find_uuid)
+struct Actor* FINDACTOR_BYID(uint64_t find_uuid)
 {
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
@@ -16,7 +16,22 @@ struct Actor* FINDACTOR(uint64_t find_uuid)
 	return NULL;
 }
 
-void FINDACTORGROUP( const struct Actor* found_group[], int max_count, const uint64_t find_uuids[])
+struct Actor* FINDACTOR_BYTAG(char* id_tag)
+{
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL)
+			continue;
+		if (!ACTOR_HAS(find_actor, id_tag))
+			continue;
+		if (STRMATCH(find_actor->id_tag, id_tag))
+			return find_actor;
+	}
+	return NULL;
+}
+
+void FINDACTORGROUP_BYID( const struct Actor* found_group[], int max_count, const uint64_t find_uuids[])
 {
 	if (find_uuids == NULL || found_group == NULL)
 		return;
@@ -36,6 +51,37 @@ void FINDACTORGROUP( const struct Actor* found_group[], int max_count, const uin
 		{
 			uint64_t check_id = find_uuids[t];
 			if (find_actor->uuid != check_id)
+				continue;
+			found_group[collected_index++] = find_actor;
+			if (collected_index < max_count)
+				continue;
+			return;
+		}
+	}
+}
+
+void FINDACTORGROUP_BYTAG(const struct Actor* found_group[], int max_count, const char* find_tags[])
+{
+	if (find_tags == NULL || found_group == NULL)
+		return;
+	// Fill the results with known values
+	for (int i = 0; i <= max_count; i++)
+	{
+		found_group[i] = NULL;
+	}
+	// Search all entities till we find our targets
+	int collected_index = 0;
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL)
+			continue;
+		for (int t = 0; t <= max_count; t++)
+		{
+			char* check_tag = find_tags[t];
+			if (!ACTOR_HAS(find_actor, id_tag))
+				continue;
+			if (!STRMATCH(find_actor->id_tag, check_tag))
 				continue;
 			found_group[collected_index++] = find_actor;
 			if (collected_index < max_count)

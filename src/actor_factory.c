@@ -10,51 +10,50 @@
 #include "collision.h"
 #include "actor_library.h"
 #include "scene_entry.h"
+#include "json_properties.h"
 
-// Creates an actor from json provided
 struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
 {
+	// Get the type of actor being created
 	if (!cJSON_IsString(cJSON_GetObjectItem(actor_data, "type")))
 		return NULL;
 	int actor_type = ACTOR_FROM_STRING(cJSON_GetObjectItem(actor_data, "type")->valuestring);
 
+	// Create the actor's spawn transform
 	Vector3 at_position = Vector3Zero();
-	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, "pos")))
+	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_POS)))
 	{
-		cJSON* pos_array = cJSON_GetObjectItem(actor_data, "pos");
+		cJSON* pos_array = cJSON_GetObjectItem(actor_data, PROP_POS);
 		at_position = (Vector3){
 			(float)cJSON_GetArrayItem(pos_array, 0)->valuedouble,
 			(float)cJSON_GetArrayItem(pos_array, 1)->valuedouble,
 			(float)cJSON_GetArrayItem(pos_array, 2)->valuedouble,
 		};
 	}
-
 	Quaternion at_rotation = QuaternionIdentity();
-	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, "rot")))
+	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_ROT)))
 	{
-		cJSON* rot_array = cJSON_GetObjectItem(actor_data, "rot");
+		cJSON* rot_array = cJSON_GetObjectItem(actor_data, PROP_ROT);
 		at_rotation = QuaternionFromEuler(
 			(float)cJSON_GetArrayItem(rot_array, 0)->valuedouble * DEG2RAD,
 			(float)cJSON_GetArrayItem(rot_array, 1)->valuedouble * DEG2RAD,
 			(float)cJSON_GetArrayItem(rot_array, 2)->valuedouble * DEG2RAD
 		);
 	}
-
 	Vector3 at_scale = Vector3One();
-	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, "scl")))
+	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_SCL)))
 	{
-		cJSON* scl_array = cJSON_GetObjectItem(actor_data, "scl");
+		cJSON* scl_array = cJSON_GetObjectItem(actor_data, PROP_SCL);
 		at_scale = (Vector3){
 			(float)cJSON_GetArrayItem(scl_array, 0)->valuedouble,
 			(float)cJSON_GetArrayItem(scl_array, 1)->valuedouble,
 			(float)cJSON_GetArrayItem(scl_array, 2)->valuedouble,
 		};
 	}
-
 	Vector3 initial_velocity = Vector3Zero();
-	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, "vel")))
+	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_VEL)))
 	{
-		cJSON* vel_array = cJSON_GetObjectItem(actor_data, "vel");
+		cJSON* vel_array = cJSON_GetObjectItem(actor_data, PROP_VEL);
 		initial_velocity = (Vector3){
 			(float)cJSON_GetArrayItem(vel_array, 0)->valuedouble,
 			(float)cJSON_GetArrayItem(vel_array, 1)->valuedouble,
@@ -63,10 +62,21 @@ struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
 
 	}
 
-	return ACTOR_FACTORY(actor_data, actor_type, actor_parent, at_position, at_rotation, at_scale, initial_velocity);
+	// Construct the actor
+	struct Actor* new_actor = ACTOR_FACTORY(actor_data, actor_type, actor_parent, at_position, at_rotation, at_scale, initial_velocity);
+	if (!new_actor)
+		return NULL;
+
+	// Apply global tags that need the actor init.
+	if (cJSON_IsString(cJSON_GetObjectItem(actor_data, PROP_IDTAG)))
+	{
+		char* idtag_data = cJSON_GetObjectItem(actor_data, PROP_IDTAG)->valuestring;
+		CHAR_STR_COPY(new_actor->id_tag, idtag_data, NULL);
+	}
+
+	return new_actor;
 }
 
-// Creates an actor in the world.
 struct Actor* ACTOR_FACTORY(cJSON* actor_data, ActorTypes actor_type, struct Actor* actor_parent, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity)
 {
 	if (current_actor_cap >= ACTOR_LIMIT)
@@ -113,7 +123,8 @@ struct Actor* ACTOR_FACTORY(cJSON* actor_data, ActorTypes actor_type, struct Act
 	ACTOR_LIBRARY(actor, actor_type);
 	if (actor_type != act_scene && ACTOR_HAS(actor, func_preloadassets)) // Scenes handle preload assets themselves at a much earlier point
 		actor->func_preloadassets(actor);
-	if (ACTOR_HAS(actor, func_json_init))
+	// Custom actor tags
+	if (ACTOR_HAS(actor, func_json_init)) 
 		actor->func_json_init(actor, actor_data);
 
 #ifdef _DEBUG
@@ -128,7 +139,6 @@ struct Actor* ACTOR_FACTORY(cJSON* actor_data, ActorTypes actor_type, struct Act
 	exit(ERR_NOALLOC);
 }
 
-// Removes an actor from the world.
 void ACTOR_DESTROY(struct Actor* actor)
 {
 	if (!ACTOR_EXISTS(actor))
@@ -155,6 +165,21 @@ void ACTOR_DESTROY_UUID(uint64_t uuid)
 		if (!ACTOR_EXISTS(check_actor))
 			continue;
 		if (check_actor->uuid != uuid)
+			continue;
+		ACTOR_DESTROY(check_actor);
+	}
+}
+
+void ACTOR_DESTROY_IDTAG(char* id_tag)
+{
+	for (int i = 0; i < current_actor_cap; i++)
+	{
+		struct Actor* check_actor = world_actors[i];
+		if (!ACTOR_EXISTS(check_actor))
+			continue;
+		if (!ACTOR_HAS(check_actor, id_tag))
+			continue;
+		if (!STRMATCH(check_actor->id_tag, id_tag))
 			continue;
 		ACTOR_DESTROY(check_actor);
 	}
@@ -217,10 +242,11 @@ void ACTOR_DESTROY_CHILDREN(struct Actor* parent)
 void HandleActorFinalCleanup(struct Actor* goner)
 {
 	total_actors--;
-	// Wipedata
 	world_actors[goner->index] = NULL;
 	if (ACTOR_HAS(goner, data))
 		RELEASE(goner->data);
+	if (ACTOR_HAS(goner, id_tag))
+		RELEASE(goner->id_tag);
 	ACTOR_CLEAR(goner);
 	RELEASE(goner);
 }

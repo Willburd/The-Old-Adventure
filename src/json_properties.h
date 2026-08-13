@@ -1,7 +1,12 @@
 #ifndef __JSON_PROPERTIES_HEADER__
 #define __JSON_PROPERTIES_HEADER__
 
-// General
+// Engine
+#define PROP_POS "pos"
+#define PROP_ROT "rot"
+#define PROP_SCL "scl"
+#define PROP_VEL "vel"
+#define PROP_IDTAG "id_tag"
 
 // Adventure
 
