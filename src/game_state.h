@@ -13,6 +13,10 @@
 // RESERVED (1 << 7)
 #define GAMESTATE_FILTER_MODES 0xFF 
 
+#define ENTER_GAMESTATE(x) gameplay_state |= x
+#define EXIT_GAMESTATE(x) gameplay_state &= ~x
+#define CHECK_GAMESTATE(x) (gameplay_state & (x))
+
 int gameplay_state;
 
 #endif

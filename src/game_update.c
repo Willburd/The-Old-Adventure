@@ -86,7 +86,7 @@ void game_update()
 			cap_actor = update_actor->index;
 
 		// Handle actor preupdate
-		if (!((update_actor->actor_flags & GAMESTATE_FILTER_MODES) & gameplay_state)) // if can update in this state
+		if (!CHECK_GAMESTATE(update_actor->actor_flags & GAMESTATE_FILTER_MODES)) // if can update in this state
 			continue;
 		if (ACTOR_HAS(update_actor, func_preupdate))
 			update_actor->func_preupdate(update_actor);
@@ -108,7 +108,7 @@ void game_update()
 		struct Actor * update_actor = world_actors[i];
 		if (!ACTOR_EXISTS(update_actor))
 			continue;
-		if (!((update_actor->actor_flags & GAMESTATE_FILTER_MODES) & gameplay_state)) // if can update in this state
+		if (!CHECK_GAMESTATE(update_actor->actor_flags & GAMESTATE_FILTER_MODES)) // if can update in this state
 			continue;
 		if (ACTOR_HAS(update_actor, func_update))
 			update_actor->func_update(update_actor);
@@ -124,7 +124,7 @@ void game_update()
 		struct Actor* update_actor = world_actors[i];
 		if (!ACTOR_EXISTS(update_actor))
 			continue;
-		if (!((update_actor->actor_flags & GAMESTATE_FILTER_MODES) & gameplay_state)) // if can update in this state
+		if (!CHECK_GAMESTATE(update_actor->actor_flags & GAMESTATE_FILTER_MODES)) // if can update in this state
 			continue;
 		if (ACTOR_HAS(update_actor, func_postupdate))
 			update_actor->func_postupdate(update_actor);

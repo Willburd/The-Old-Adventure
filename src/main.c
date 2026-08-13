@@ -141,7 +141,7 @@ static void game_setup()
     SceneNamePredef();
 
     // State
-    gameplay_state = GAMESTATE_GAMEPLAY;
+    ENTER_GAMESTATE(GAMESTATE_GAMEPLAY);
 
     // Setup renderer
     clear_background_color = BLACK;
