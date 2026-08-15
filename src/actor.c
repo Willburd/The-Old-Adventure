@@ -13,6 +13,7 @@ struct Actor* FINDACTOR_BYID(uint64_t find_uuid)
 		if (find_actor->uuid == find_uuid)
 			return find_actor;
 	}
+	printf("Actor with uuid \"%llu\" was not found!\n", find_uuid);
 	return NULL;
 }
 
@@ -28,6 +29,7 @@ struct Actor* FINDACTOR_BYTAG(char* id_tag)
 		if (STRMATCH(find_actor->id_tag, id_tag))
 			return find_actor;
 	}
+	printf("Actor with id_tag \"%s\" was not found!\n", id_tag);
 	return NULL;
 }
 
