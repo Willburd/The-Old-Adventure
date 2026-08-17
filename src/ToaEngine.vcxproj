@@ -169,6 +169,7 @@
     <ClCompile Include="input.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="materials.c" />
+    <ClCompile Include="post_processing.c" />
     <ClCompile Include="return_codes.h" />
     <ClCompile Include="scene_boot.c" />
     <ClCompile Include="scene_debugmenu.c" />
@@ -198,6 +199,7 @@
     <ClInclude Include="light_tools.h" />
     <ClInclude Include="materials.h" />
     <ClInclude Include="models.h" />
+    <ClInclude Include="post_processing.h" />
     <ClInclude Include="scene_entry.h" />
     <ClInclude Include="scene_library.h" />
     <ClInclude Include="text_loading.h" />

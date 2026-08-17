@@ -150,6 +150,9 @@
     <ClCompile Include="actor_debug.c">
       <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
+    <ClCompile Include="post_processing.c">
+      <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="actor_fade.h">
       <Filter>Header Files\engine\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="post_processing.h">
+      <Filter>Header Files\engine\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
