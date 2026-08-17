@@ -117,7 +117,8 @@ void RegisterHudPostProcessShader(Material* material, char* identifier, void* un
 static inline void UnregisterPostProcessShader(struct PostProcessingLayer* data)
 {
 	RELEASE(data->id); // allocated string
-	data->material; // Not ours
+	data->material = NULL; // Not ours
+	data->func_uniforms = NULL; // Not ours
 }
 
 void UnregisterWorldPostProcessShader(char* identifier)
