@@ -8,6 +8,7 @@
 #include "return_codes.h"
 #include "game_update.h"
 #include "game_draw.h"
+#include "post_processing.h"
 #include "camera.h"
 #include "globals.h"
 #include "actor_factory.h"
@@ -184,25 +185,13 @@ static void game_shutdown()
     hashmap_free(loaded_text);
     hashmap_free(loaded_assets);
     // Unload render textures
-    if (IsRenderTextureValid(render_tex_pre))
-        UnloadRenderTexture(render_tex_pre);
-    if (IsRenderTextureValid(render_tex_main))
-        UnloadRenderTexture(render_tex_main);
-    if (IsRenderTextureValid(render_tex_post))
-        UnloadRenderTexture(render_tex_post);
-    if (IsRenderTextureValid(render_tex_hud))
-        UnloadRenderTexture(render_tex_hud);
-    if (IsRenderTextureValid(render_tex_postworld))
-        UnloadRenderTexture(render_tex_postworld);
-    if (IsRenderTextureValid(render_tex_posthud))
-        UnloadRenderTexture(render_tex_posthud);
+    UnloadRenderTextures();
     // Render layers
-    if (IsRenderTextureValid(render_tex_background))
-        UnloadRenderTexture(render_tex_background);
-    if (IsRenderTextureValid(render_tex_tilemap))
-        UnloadRenderTexture(render_tex_tilemap);
-    if (IsRenderTextureValid(render_tex_foreground))
-        UnloadRenderTexture(render_tex_foreground);
+    UnloadRenderLayers();
+    // Post processing
+    UnloadPostProcessingTextures();
+    // Clear post processing shader data
+    ClearAllPostProcessShaders();
     // Cleanup destroyed actors
     for (int i = 0; i <= current_actor_cap; i++)
     {

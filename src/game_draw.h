@@ -37,8 +37,6 @@ RenderTexture render_tex_pre;
 RenderTexture render_tex_main;
 RenderTexture render_tex_post;
 RenderTexture render_tex_hud;
-RenderTexture render_tex_postworld;
-RenderTexture render_tex_posthud;
 
 // Not autocleared, should be updated during actor UPDATE functions and not draw, and only for changes.
 const int renderlayers_enabled;
@@ -61,5 +59,9 @@ void shader_update_lights(Shader shader);
 
 /// Extended mesh drawing
 void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix matrix, int show_backface);
+
+void LoadRenderTextures();
+void UnloadRenderTextures();
+void UnloadRenderLayers();
 
 #endif

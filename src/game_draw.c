@@ -21,8 +21,6 @@ RenderTexture render_tex_pre = { 0 };
 RenderTexture render_tex_main = { 0 };
 RenderTexture render_tex_post = { 0 };
 RenderTexture render_tex_hud = { 0 };
-RenderTexture render_tex_postworld = { 0 };
-RenderTexture render_tex_posthud = { 0 };
 
 const int renderlayers_enabled = FALSE;
 Vector2 renderlayer_pos_background = { 0 };
@@ -53,27 +51,10 @@ void game_draw(double tick_percent)
 	
 	if (want_resize)
 	{
-		// Unload previous
-		if (IsRenderTextureValid(render_tex_pre))
-			UnloadRenderTexture(render_tex_pre);
-		if (IsRenderTextureValid(render_tex_main))
-			UnloadRenderTexture(render_tex_main);
-		if (IsRenderTextureValid(render_tex_post))
-			UnloadRenderTexture(render_tex_post);
-		if (IsRenderTextureValid(render_tex_hud))
-			UnloadRenderTexture(render_tex_hud);
-		if (IsRenderTextureValid(render_tex_postworld))
-			UnloadRenderTexture(render_tex_postworld);
-		if (IsRenderTextureValid(render_tex_posthud))
-			UnloadRenderTexture(render_tex_posthud);
-
-		// Create size
-		render_tex_pre = LoadRenderTexture(renderWidth, renderHeight);
-		render_tex_main = LoadRenderTexture(renderWidth, renderHeight);
-		render_tex_post = LoadRenderTexture(renderWidth, renderHeight);
-		render_tex_hud = LoadRenderTexture(renderWidth, renderHeight);
-		render_tex_postworld = LoadRenderTexture(renderWidth, renderHeight);
-		render_tex_posthud = LoadRenderTexture(renderWidth, renderHeight);
+		UnloadRenderTextures();
+		UnloadPostProcessingTextures();
+		LoadRenderTextures();
+		LoadPostProcessingTextures();
 	}
 
 	// Clear color affects fog
@@ -358,7 +339,8 @@ void game_draw(double tick_percent)
 	EndTextureMode();
 
 	// Post processing handling
-
+	HandleWorldPostProcessing(&render_tex_postworld, src, dest, org);
+	HandleHudPostProcessing(&render_tex_posthud, src, dest, org);
 
 	// Final draw
 	org = (Vector2){ screenWidth / 2.0f, screenHeight / 2.0f };
@@ -472,4 +454,34 @@ void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix m
 	// Restore backface mode
 	if (show_backface)
 		rlEnableBackfaceCulling();
+}
+
+void LoadRenderTextures()
+{
+	render_tex_pre = LoadRenderTexture(renderWidth, renderHeight);
+	render_tex_main = LoadRenderTexture(renderWidth, renderHeight);
+	render_tex_post = LoadRenderTexture(renderWidth, renderHeight);
+	render_tex_hud = LoadRenderTexture(renderWidth, renderHeight);
+}
+
+void UnloadRenderTextures()
+{
+	if (IsRenderTextureValid(render_tex_pre))
+		UnloadRenderTexture(render_tex_pre);
+	if (IsRenderTextureValid(render_tex_main))
+		UnloadRenderTexture(render_tex_main);
+	if (IsRenderTextureValid(render_tex_post))
+		UnloadRenderTexture(render_tex_post);
+	if (IsRenderTextureValid(render_tex_hud))
+		UnloadRenderTexture(render_tex_hud);
+}
+
+void UnloadRenderLayers()
+{
+	if (IsRenderTextureValid(render_tex_background))
+		UnloadRenderTexture(render_tex_background);
+	if (IsRenderTextureValid(render_tex_tilemap))
+		UnloadRenderTexture(render_tex_tilemap);
+	if (IsRenderTextureValid(render_tex_foreground))
+		UnloadRenderTexture(render_tex_foreground);
 }
