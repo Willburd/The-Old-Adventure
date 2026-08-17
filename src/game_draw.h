@@ -37,6 +37,8 @@ RenderTexture render_tex_pre;
 RenderTexture render_tex_main;
 RenderTexture render_tex_post;
 RenderTexture render_tex_hud;
+RenderTexture render_tex_postworld;
+RenderTexture render_tex_posthud;
 
 // Not autocleared, should be updated during actor UPDATE functions and not draw, and only for changes.
 const int renderlayers_enabled;
@@ -50,12 +52,14 @@ RenderTexture render_tex_foreground;
 void game_draw(double tick_percent);
 
 void fog_set(Color col, float power, float dist);
+/// Lights are updated each frame and do not persist between them. Lights need to be "appended" to the light list each update to render. This is easier than juggling light references when wanting to animate lights.
 void lighting_append_light(Vector3 pos, float radius, Color col, float influence);
 
 void shader_update_defaultuniforms(Shader shader, struct Actor* actor);
 void shader_update_fog(Shader shader);
 void shader_update_lights(Shader shader);
 
+/// Extended mesh drawing
 void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix matrix, int show_backface);
 
 #endif

@@ -188,6 +188,7 @@
     <ClCompile Include="player_state_air.c" />
     <ClCompile Include="player_state_grounded.c" />
     <ClCompile Include="player_state_generic.c" />
+    <ClCompile Include="post_processing.c" />
     <ClCompile Include="return_codes.h" />
     <ClCompile Include="scene_boot.c" />
     <ClCompile Include="scene_debugmenu.c" />
@@ -224,6 +225,7 @@
     <ClInclude Include="materials.h" />
     <ClInclude Include="models.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="post_processing.h" />
     <ClInclude Include="scene_entry.h" />
     <ClInclude Include="scene_library.h" />
     <ClInclude Include="world_state.h" />

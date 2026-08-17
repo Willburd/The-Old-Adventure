@@ -228,6 +228,9 @@
     <ClCompile Include="actor_crate.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
+    <ClCompile Include="post_processing.c">
+      <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -325,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="json_properties.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="post_processing.h">
+      <Filter>Header Files\engine\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

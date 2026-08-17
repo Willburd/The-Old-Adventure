@@ -200,6 +200,11 @@ static void game_shutdown()
         UnloadRenderTexture(render_tex_post);
     if (IsRenderTextureValid(render_tex_hud))
         UnloadRenderTexture(render_tex_hud);
+    if (IsRenderTextureValid(render_tex_postworld))
+        UnloadRenderTexture(render_tex_postworld);
+    if (IsRenderTextureValid(render_tex_posthud))
+        UnloadRenderTexture(render_tex_posthud);
+    // Render layers
     if (IsRenderTextureValid(render_tex_background))
         UnloadRenderTexture(render_tex_background);
     if (IsRenderTextureValid(render_tex_tilemap))
