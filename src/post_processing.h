@@ -3,17 +3,23 @@
 
 #include <raylib.h>
 
-#define MAX_POST_PROCESSING_SHADERS 24
+#define MAX_POST_PROCESSING_SHADERS 128
 
-void HandleWorldPostProcessing();
-void HandleHudPostProcessing();
+RenderTexture render_tex_postworld;
+RenderTexture render_tex_posthud;
 
-void RegisterWorldPostProcessShader(Material material, char* identifier);
+void HandleWorldPostProcessing(RenderTexture* tex, Rectangle src, Rectangle dest, Vector2 org);
+void HandleHudPostProcessing(RenderTexture* tex, Rectangle src, Rectangle dest, Vector2 org);
+
+void RegisterWorldPostProcessShader(Material* material, char* identifier, void* uniforms_function);
 void UnregisterWorldPostProcessShader(char* identifier);
-void RegisterHudPostProcessShader(Material material, char* identifier);
+void RegisterHudPostProcessShader(Material* material, char* identifier, void* uniforms_function);
 void UnregisterHudPostProcessShader(char* identifier);
 void ClearAllWorldPostProcessShaders();
 void ClearAllHudPostProcessShaders();
 void ClearAllPostProcessShaders();
+
+void LoadPostProcessingTextures();
+void UnloadPostProcessingTextures();
 
 #endif
