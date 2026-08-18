@@ -42,7 +42,7 @@ ACTOR_DRAWWORLD(crate)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	Asset* model_asset = LoadAsset_Model(CRATE_MODEL, FALSE);
+	Asset* model_asset = AssetGetPackage(CRATE_MODEL);
 
 	STANDARD_SHADER_MATERIAL(crate_mat, CRATE_MATERIAL, actor);
 	ToaDrawMesh(

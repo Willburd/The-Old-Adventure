@@ -46,7 +46,7 @@ ACTOR_DRAWWORLD(tree)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	Asset* model_asset = LoadAsset_Model(TREE_MODEL, FALSE);
+	Asset* model_asset = AssetGetPackage(TREE_MODEL);
 	Matrix position = GetMatrix(actor);
 
 	STANDARD_SHADER_MATERIAL(bark_mat, TREE_MATERIAL_BARK, actor);

@@ -105,7 +105,7 @@ ACTOR_DRAWWORLD(signpost)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	Asset* model_asset = LoadAsset_Model(SIGN_MODEL, FALSE);
+	Asset* model_asset = AssetGetPackage(SIGN_MODEL);
 
 	STANDARD_SHADER_MATERIAL(sign_mat, SIGN_MATERIAL, actor);
 	ToaDrawMesh(
