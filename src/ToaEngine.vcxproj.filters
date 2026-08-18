@@ -332,6 +332,9 @@
     <ClInclude Include="post_processing.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
+    <ClInclude Include="advluts.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

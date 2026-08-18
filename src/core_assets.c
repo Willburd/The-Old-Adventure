@@ -19,10 +19,24 @@ void LoadCoreAssets()
     LoadAsset_Texture(ASSET_TEXTURES"/Hud/HealthThreeQuarter.png", TRUE, NULL);
     LoadAsset_Texture(ASSET_TEXTURES"/Hud/HealthFull.png", TRUE, NULL);
     LoadAsset_Texture(ASSET_TEXTURES"/Hud/HudButton.png", TRUE, NULL);
-
+    //Luts
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/BlowOut.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/ColdInside.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Foggy.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Meltdown.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Mono.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Neutral.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Night.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Outside.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Sepia.png", TRUE, NULL);
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Shaded.png", TRUE, NULL);
+    //LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Sickening.png", TRUE, NULL); // TODO - Investigate why this fails to load properly
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/UnderWater.png", TRUE, NULL);
+    
     // Load default materials
     LoadAsset_Material(ASSET_MATERIALS"/Engine/no_material.mat", TRUE);
     LoadAsset_Material(ASSET_MATERIALS"/Engine/example.mat", TRUE);
+    LoadAsset_Material(ASSET_MATERIALS"/LUTs/neutral.mat", TRUE);
     LoadAsset_Material(ASSET_MATERIALS"/Engine/collision_debug.mat", TRUE);
     // Adventure
 
