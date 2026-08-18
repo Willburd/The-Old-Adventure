@@ -9,7 +9,7 @@ struct PostProcessingLayer;
 struct PostProcessingLayer {
 	char* id;
 	Material* material;
-	void (*func_uniforms)(struct PostProcessingLayer* data, RenderTexture2D* render_tex);
+	void (*func_uniforms)(struct PostProcessingLayer* data, Shader* shader, RenderTexture2D* render_tex);
 };
 
 RenderTexture2D render_tex_postworld;
