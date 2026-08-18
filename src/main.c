@@ -20,6 +20,7 @@
 // Adventure
 #include "world_state.h"
 #include "inventory.h"
+#include "advluts.h"
 
 #define RAYMATH_USE_SIMD_INTRINSICS 1
 #define PLATFORM_DESKTOP 1
@@ -176,6 +177,11 @@ static void game_setup()
 
     // Enter game
     LoadScene(scene_boot, ent_title);
+
+    // Adventure edit begin - Prepare LUT shader
+    Material* mat = AssetGet_Material(ASSET_MATERIALS"/LUTs/neutral.mat");
+    RegisterWorldPostProcessShader(mat, "LUT", AdvLUTShaderUniforms);
+    // Adventure edit end
 }
 
 static void game_shutdown()
@@ -211,6 +217,10 @@ static void game_shutdown()
             continue;
         HandleActorFinalCleanup(end_actor);
     }
-    // Cleanup Adventure
+    // Adventure edit begin - Cleanup Adventure
+    // Inventory
     RELEASE(player_inventory);
+    // Release LUT shaders
+    UnregisterWorldPostProcessShader("LUT");
+    // Adventure edit end
 }
