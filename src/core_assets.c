@@ -36,9 +36,10 @@ void LoadCoreAssets()
     // Load default materials
     LoadAsset_Material(ASSET_MATERIALS"/Engine/no_material.mat", TRUE);
     LoadAsset_Material(ASSET_MATERIALS"/Engine/example.mat", TRUE);
-    LoadAsset_Material(ASSET_MATERIALS"/LUTs/neutral.mat", TRUE);
     LoadAsset_Material(ASSET_MATERIALS"/Engine/collision_debug.mat", TRUE);
     // Adventure
+    LoadAsset_Material(ASSET_MATERIALS"/LUTs/neutral.mat", TRUE);
+    LoadAsset_Material(ASSET_MATERIALS"/Effects/dither.mat", TRUE);
 
     // Load default models
     LoadAsset_Model(CUBEMAP_MODEL, TRUE);
