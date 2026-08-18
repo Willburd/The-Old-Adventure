@@ -7,16 +7,16 @@
 
 void AdvLUTShaderUniforms(struct PostProcessingLayer* data, Shader* shader, RenderTexture2D* render_tex)
 {
-    Texture2D* tex = AssetGet_Texture(ASSET_TEXTURES"/LUTs/Neutral.png");
-    Texture2D* screen_tex = &render_tex->texture;
-
     int loc = GetShaderLocation(*shader, "lut_tex");
-    SetShaderValueTexture(*shader, loc, *tex);
+    SetShaderValueTexture(*shader, loc, *AssetGet_Texture(ASSET_TEXTURES"/LUTs/Neutral.png"));
 }
 
 void AdvDitherShaderUniforms(struct PostProcessingLayer* data, Shader* shader, RenderTexture2D* render_tex)
 {
-
+    int loc = GetShaderLocation(*shader, "dither_width");
+    SetShaderValue(*shader, loc, &renderWidth, RL_SHADER_UNIFORM_INT);
+    loc = GetShaderLocation(*shader, "dither_height");
+    SetShaderValue(*shader, loc, &renderHeight, RL_SHADER_UNIFORM_INT);
 }
 
 #endif
