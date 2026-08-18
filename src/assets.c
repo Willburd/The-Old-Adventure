@@ -50,6 +50,8 @@ uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1) {
 
 void asset_free(void* item) {
     Asset* asset = item;
+    if (asset->tex == NULL && asset->mdl == NULL && asset->snd == NULL && asset->mus == NULL && asset->mat == NULL)
+        return; // TODO - Investigate this
     if (asset->tex != NULL && IsTextureValid(*asset->tex))
     {
         printf("UNLOAD TEXTURE------------------------\n");

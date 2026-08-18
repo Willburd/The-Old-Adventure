@@ -17,18 +17,18 @@ Vector4 world_light_colors[MAX_LIGHTS] = { 0 };
 
 Color clear_background_color;
 
-RenderTexture render_tex_pre = { 0 };
-RenderTexture render_tex_main = { 0 };
-RenderTexture render_tex_post = { 0 };
-RenderTexture render_tex_hud = { 0 };
+RenderTexture2D render_tex_pre = { 0 };
+RenderTexture2D render_tex_main = { 0 };
+RenderTexture2D render_tex_post = { 0 };
+RenderTexture2D render_tex_hud = { 0 };
 
 const int renderlayers_enabled = FALSE;
 Vector2 renderlayer_pos_background = { 0 };
 Vector2 renderlayer_pos_tilemap = { 0 };
 Vector2 renderlayer_pos_foreground = { 0 };
-RenderTexture render_tex_background = { 0 };
-RenderTexture render_tex_tilemap = { 0 };
-RenderTexture render_tex_foreground = { 0 };
+RenderTexture2D render_tex_background = { 0 };
+RenderTexture2D render_tex_tilemap = { 0 };
+RenderTexture2D render_tex_foreground = { 0 };
 
 void game_draw(double tick_percent)
 {
