@@ -111,24 +111,115 @@ void asset_free(void* item) {
     free(asset->resource_ptr); // Release original allocation
 }
 
-#define RETURN_EXISTING_ASSET(pth, s_core) Asset* check = AssetGetPackage(pth); if (check){if(s_core){check->core_asset=s_core;};return check;}
+/// This uses MEMSET, ensure all data is assigned before pushing to the hashmap!
+static void AssetPush(Asset* asset, int is_core, void* ext_data)
+{
+    char* path = asset->filepath;
+    Asset* replaced = hashmap_set(loaded_assets, asset);
+    if (hashmap_oom(loaded_assets))
+    {
+        printf("ASSET: ERROR, OUT OF MEMORY ON LOAD: %s\n", path);
+        return;
+    }
+    if (replaced != NULL)
+    {
+        printf("ASSET: ERROR, DUPLICATED ASSET LOADED: %s\n", path);
+        return;
+    }
+    // Check for hash collisions
+    Asset* get_collision = AssetGetPackage(path);
+    if (get_collision->resource_ptr != asset->resource_ptr) // If we don't get the same asset back, then it's wonked
+    {
+        printf("ASSET: ERROR, HASH COLLISION: %s vs %s\n", path, get_collision->filepath);
+        return;
+    }
+    // Texture loading
+    if (asset->tex != NULL)
+    {
+        if (!IsTextureValid(*asset->tex))
+        {
+            printf("ASSET: Unable to load texture: %s\n", path);
+            return;
+        }
+        // Is valid
+        if (ext_data != NULL)
+            printf("ASSET: loaded material-texture: %s\n", path);
+        else
+            printf("ASSET: loaded texture: %s\n", path);
+    }
+    // Model loading
+    if (asset->mdl != NULL)
+    {
+        if (!IsModelValid(*asset->mdl))
+        {
+            printf("ASSET: Unable to load model: %s\n", path);
+            return;
+        }
+        if (asset->anm != NULL && !IsModelAnimationValid(*asset->mdl, *asset->anm))
+        {
+            printf("ASSET: Unable to load animations: %s\n", path);
+            return;
+        }
+        // Is valid
+        if(asset->anm != NULL)
+            printf("ASSET: loaded model(has animations): %s\n", path);
+        else
+            printf("ASSET: loaded model: %s\n", path);
+    }
+    // Sound loading
+    if (asset->snd != NULL)
+    {
+        if (!IsSoundValid(*asset->snd))
+        {
+            printf("ASSET: Unable to load sound: %s\n", path);
+            return;
+        }
+        // Is valid
+        printf("ASSET: loaded sound: %s\n", path);
+    }
+    // Music loading
+    if (asset->mus != NULL)
+    {
+        if (!IsMusicValid(*asset->mus))
+        {
+            printf("ASSET: Unable to load music: %s\n", path);
+            return;
+        }
+        // Is valid
+        printf("ASSET: loaded music: %s\n", path);
+    }
+    // Material loading
+    if (asset->mat != NULL)
+    {
+        if (!IsMaterialValid(*asset->mat))
+        {
+            printf("ASSET: Unable to load material: %s\n", path);
+            return;
+        }
+        // Is valid
+        printf("ASSET: loaded material: %s\n", asset->filepath);
+    }
+}
+
+
+#define RETURN_EXISTING_ASSET(pth, s_core) Asset* check = AssetGetPackage(pth); if (check){if(s_core){check->core_asset=s_core;};printf("ASSET NOTICE: already loaded: %s\n", path);return check;}
 
 Asset* LoadAsset_Texture(char* path, int is_core, char* mat_link)
 {
-    RETURN_EXISTING_ASSET(path, is_core);
+    // Only valid for standalone textures, matlinked textures will not collide,
+    // but the RAW path may exist for something else... Ignore it, we don't use it!
+    // If it SOMEHOW does, AssetPush()'s final error checking will catch it.
+    if (mat_link == NULL) 
+    {
+        RETURN_EXISTING_ASSET(path, is_core);
+    }
+    // Load texture
     printf("NEW TEXTURE---------------------------\n");
     char* tex_name = mat_link != NULL ? TextFormat("%s[%s]", mat_link, path) : path;
     MALLOC_ASSET(asset, tex_name, is_core);
     MALLOC_SET(Texture2D, asset->tex, FALSE);
     *asset->tex = LoadTexture(path);
-    if (!IsTextureValid(*asset->tex))
-        printf("ASSET: Unable to load texture: %s\n", path);
-    // This uses MEMSET, ensure all data is assigned before hashmapping!
-    hashmap_set(loaded_assets, asset);
-    if(mat_link != NULL)
-        printf("ASSET: loaded material-texture: %s\n", asset->filepath);
-    else
-        printf("ASSET: loaded texture: %s\n", asset->filepath);
+    AssetPush(asset, is_core, mat_link);
     printf("--------------------------------------\n");
     return asset;
 }
@@ -136,10 +227,10 @@ Asset* LoadAsset_Texture(char* path, int is_core, char* mat_link)
 Asset* LoadAsset_Model(char* path, int is_core)
 {
     RETURN_EXISTING_ASSET(path, is_core);
+    // Load model
     printf("NEW MODEL-----------------------------\n");
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Model, asset->mdl, FALSE);
-    // Load model
     *asset->mdl = LoadModel(path);
     // Get the model's mesh data
     printf("ASSET: loading model meshes: %s\n", asset->filepath);
@@ -197,14 +288,7 @@ Asset* LoadAsset_Model(char* path, int is_core)
     cJSON_Delete(model_json);
     // Load animation data too
     asset->anm = LoadModelAnimations(path, &asset->anm_count);
-    // This uses MEMSET, ensure all data is assigned before hashmapping!
-    hashmap_set(loaded_assets, asset);
-    if (!IsModelValid(*asset->mdl))
-        printf("ASSET: Unable to load model: %s\n", path);
-    else
-        if (asset->anm != NULL && !IsModelAnimationValid(*asset->mdl, *asset->anm))
-            printf("ASSET: Unable to load animations: %s\n", path);
-        printf("ASSET: loaded model: %s\n", asset->filepath);
+    AssetPush(asset, is_core, NULL);
     printf("--------------------------------------\n");
     return asset;
 }
@@ -212,16 +296,12 @@ Asset* LoadAsset_Model(char* path, int is_core)
 Asset* LoadAsset_Sound(char* path, int is_core)
 {
     RETURN_EXISTING_ASSET(path, is_core);
+    // Load sound
     printf("NEW SOUND-----------------------------\n");
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Sound, asset->snd, FALSE);
     *asset->snd = LoadSound(path);
-    // This uses MEMSET, ensure all data is assigned before hashmapping!
-    hashmap_set(loaded_assets, asset);
-    if (!IsSoundValid(*asset->snd))
-        printf("ASSET: Unable to load sound: %s\n", path);
-    else
-        printf("ASSET: loaded sound: %s\n", asset->filepath);
+    AssetPush(asset, is_core, NULL);
     printf("--------------------------------------\n");
     return asset;
 }
@@ -229,16 +309,12 @@ Asset* LoadAsset_Sound(char* path, int is_core)
 Asset* LoadAsset_Music(char* path, int is_core)
 {
     RETURN_EXISTING_ASSET(path, is_core);
+    // Load music
     printf("NEW MUSIC-----------------------------\n");
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Music, asset->mus, FALSE);
     *asset->mus = LoadMusicStream(path);
-    // This uses MEMSET, ensure all data is assigned before hashmapping!
-    hashmap_set(loaded_assets, asset);
-    if (!IsMusicValid(*asset->mus))
-        printf("ASSET: Unable to load music: %s\n", path);
-    else
-        printf("ASSET: loaded music: %s\n", asset->filepath);
+    AssetPush(asset, is_core, NULL);
     printf("--------------------------------------\n");
     return asset;
 }
@@ -246,16 +322,12 @@ Asset* LoadAsset_Music(char* path, int is_core)
 Asset* LoadAsset_Material(char* path, int is_core)
 {
     RETURN_EXISTING_ASSET(path, is_core);
+    // Load material
     printf("NEW MATERIAL--------------------------\n");
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Material, asset->mat, FALSE);
     *asset->mat = LoadMaterial(asset, path, is_core);
-    // This uses MEMSET, ensure all data is assigned before hashmapping!
-    hashmap_set(loaded_assets, asset);
-    if (!IsMaterialValid(*asset->mat))
-        printf("ASSET: Unable to load material: %s\n", path);
-    else
-        printf("ASSET: loaded material: %s\n", asset->filepath);
+    AssetPush(asset, is_core, NULL);
     printf("--------------------------------------\n");
     return asset;
 }
