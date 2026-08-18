@@ -32,16 +32,14 @@ static inline void HandlePostProcessing(RenderTexture2D* tex, Rectangle src, Rec
 		ClearBackground((Color) { 0, 0, 0, 0 }); // Full Clear
 		BeginMode2D(cam_hud);
 		{
-			Shader set_shader = current_layer->material->shader;
-			BeginShaderMode(set_shader);
+			Shader* set_shader = &current_layer->material->shader;
+			BeginShaderMode(*set_shader);
 			if (current_layer->func_uniforms != NULL)
-				current_layer->func_uniforms(current_layer, render_tex_current);
-
+				current_layer->func_uniforms(current_layer, set_shader, render_tex_current);
 			if (i == 0) // Use input texture if we're the first one!
 				DrawTexturePro(tex->texture, src, dest, org, 0, WHITE);
 			else
 				DrawTexturePro(render_tex_other->texture, src, dest, org, 0, WHITE);
-
 			EndShaderMode();
 		}
 		EndMode2D();
