@@ -4,29 +4,22 @@
 #include "tools.h"
 
 // Processing layers
-struct PostProcessingLayer;
-struct PostProcessingLayer {
-	char* id;
-	Material* material;
-	void (*func_uniforms)(struct PostProcessingLayer* data);
-};
-
 int world_post_processing_shader_count = 0;
 struct PostProcessingLayer* world_post_processing_shaders[MAX_POST_PROCESSING_SHADERS] = { 0 };
 int hud_post_processing_shader_count = 0;
 struct PostProcessingLayer* hud_post_processing_shaders[MAX_POST_PROCESSING_SHADERS] = { 0 };
 
 // Input and final buffers
-RenderTexture render_tex_postworld = { 0 };
-RenderTexture render_tex_posthud = { 0 };
+RenderTexture2D render_tex_postworld = { 0 };
+RenderTexture2D render_tex_posthud = { 0 };
 
 // Leapfrog layers
-static RenderTexture render_tex_leap = { 0 };
-static RenderTexture render_tex_frog = { 0 };
-static RenderTexture* render_tex_current = NULL;
-static RenderTexture* render_tex_other = NULL;
+static RenderTexture2D render_tex_leap = { 0 };
+static RenderTexture2D render_tex_frog = { 0 };
+static RenderTexture2D* render_tex_current = NULL;
+static RenderTexture2D* render_tex_other = NULL;
 
-static inline void HandlePostProcessing(RenderTexture* tex, Rectangle src, Rectangle dest, Vector2 org, struct PostProcessingLayer* mat_arr[], int arr_limit)
+static inline void HandlePostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org, struct PostProcessingLayer* mat_arr[], int arr_limit)
 {
 	for (int i = 0; i < arr_limit; i++)
 	{
@@ -42,7 +35,7 @@ static inline void HandlePostProcessing(RenderTexture* tex, Rectangle src, Recta
 			Shader set_shader = current_layer->material->shader;
 			BeginShaderMode(set_shader);
 			if (current_layer->func_uniforms != NULL)
-				current_layer->func_uniforms(current_layer);
+				current_layer->func_uniforms(current_layer, render_tex_current);
 
 			if (i == 0) // Use input texture if we're the first one!
 				DrawTexturePro(tex->texture, src, dest, org, 0, WHITE);
@@ -71,21 +64,21 @@ static inline void HandlePostProcessing(RenderTexture* tex, Rectangle src, Recta
 	EndTextureMode();
 }
 
-void HandleWorldPostProcessing(RenderTexture* tex, Rectangle src, Rectangle dest, Vector2 org)
+void HandleWorldPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org)
 {
 	if (world_post_processing_shader_count == 0)
 		return;
 	HandlePostProcessing(tex, src, dest, org, world_post_processing_shaders, world_post_processing_shader_count);
 }
 
-void HandleHudPostProcessing(RenderTexture* tex, Rectangle src, Rectangle dest, Vector2 org)
+void HandleHudPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org)
 {
 	if (hud_post_processing_shader_count == 0)
 		return;
 	HandlePostProcessing(tex, src, dest, org, hud_post_processing_shaders, hud_post_processing_shader_count);
 }
 
-static inline int RegisterPostProcessShader(struct PostProcessingLayer* layer_array[], int layer_limit, Material* material, char* identifier, void* uniforms_function)
+static inline int RegisterPostProcessShader(struct PostProcessingLayer* layer_array[], int layer_limit, Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data))
 {
 	for (int i = 0; i <= layer_limit; i++)
 	{
@@ -102,13 +95,13 @@ static inline int RegisterPostProcessShader(struct PostProcessingLayer* layer_ar
 	return FALSE;
 }
 
-void RegisterWorldPostProcessShader(Material* material, char* identifier, void* uniforms_function)
+void RegisterWorldPostProcessShader(Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
 {
 	if (RegisterPostProcessShader(world_post_processing_shaders, world_post_processing_shader_count, material, identifier, uniforms_function))
 		world_post_processing_shader_count++;
 }
 
-void RegisterHudPostProcessShader(Material* material, char* identifier, void* uniforms_function)
+void RegisterHudPostProcessShader(Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
 {
 	if (RegisterPostProcessShader(hud_post_processing_shaders, hud_post_processing_shader_count, material, identifier, uniforms_function))
 		hud_post_processing_shader_count++;

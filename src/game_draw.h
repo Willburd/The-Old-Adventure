@@ -33,19 +33,19 @@ Vector3 fog_color;
 Color clear_background_color;
 
 // Autocleared, updated using actor DRAW functions.
-RenderTexture render_tex_pre;
-RenderTexture render_tex_main;
-RenderTexture render_tex_post;
-RenderTexture render_tex_hud;
+RenderTexture2D render_tex_pre;
+RenderTexture2D render_tex_main;
+RenderTexture2D render_tex_post;
+RenderTexture2D render_tex_hud;
 
 // Not autocleared, should be updated during actor UPDATE functions and not draw, and only for changes.
 const int renderlayers_enabled;
 Vector2 renderlayer_pos_background;
-RenderTexture render_tex_background;
+RenderTexture2D render_tex_background;
 Vector2 renderlayer_pos_tilemap;
-RenderTexture render_tex_tilemap;
+RenderTexture2D render_tex_tilemap;
 Vector2 renderlayer_pos_foreground;
-RenderTexture render_tex_foreground;
+RenderTexture2D render_tex_foreground;
 
 void game_draw(double tick_percent);
 

@@ -5,15 +5,22 @@
 
 #define MAX_POST_PROCESSING_SHADERS 128
 
-RenderTexture render_tex_postworld;
-RenderTexture render_tex_posthud;
+struct PostProcessingLayer;
+struct PostProcessingLayer {
+	char* id;
+	Material* material;
+	void (*func_uniforms)(struct PostProcessingLayer* data, RenderTexture2D* render_tex);
+};
 
-void HandleWorldPostProcessing(RenderTexture* tex, Rectangle src, Rectangle dest, Vector2 org);
-void HandleHudPostProcessing(RenderTexture* tex, Rectangle src, Rectangle dest, Vector2 org);
+RenderTexture2D render_tex_postworld;
+RenderTexture2D render_tex_posthud;
 
-void RegisterWorldPostProcessShader(Material* material, char* identifier, void* uniforms_function);
+void HandleWorldPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org);
+void HandleHudPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org);
+
+void RegisterWorldPostProcessShader(Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex));
 void UnregisterWorldPostProcessShader(char* identifier);
-void RegisterHudPostProcessShader(Material* material, char* identifier, void* uniforms_function);
+void RegisterHudPostProcessShader(Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex));
 void UnregisterHudPostProcessShader(char* identifier);
 void ClearAllWorldPostProcessShaders();
 void ClearAllHudPostProcessShaders();
