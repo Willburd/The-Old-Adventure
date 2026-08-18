@@ -338,9 +338,23 @@ void game_draw(double tick_percent)
 	EndMode2D();
 	EndTextureMode();
 
-	// Post processing handling
+	// Post processing handling, hud and world are seperate here!
 	HandleWorldPostProcessing(&render_tex_postworld, src, dest, org);
 	HandleHudPostProcessing(&render_tex_posthud, src, dest, org);
+
+	// Final render pass
+	BeginTextureMode(render_tex_postfinal);
+	ClearBackground((Color) { 0, 0, 0, 0 }); // Full Clear
+	BeginMode2D(cam_hud);
+	{
+		DrawTexturePro(render_tex_postworld.texture, src, dest, org, 0, WHITE);
+		DrawTexturePro(render_tex_posthud.texture, src, dest, org, 0, WHITE);
+	}
+	EndMode2D();
+	EndTextureMode();
+
+	// Handle last post-processing step, applies to all renders at once
+	HandleFinalPostProcessing(&render_tex_postfinal, src, dest, org);
 
 	// Final draw
 	org = (Vector2){ screenWidth / 2.0f, screenHeight / 2.0f };
@@ -348,8 +362,7 @@ void game_draw(double tick_percent)
 	dest = (Rectangle){ screenWidth / 2.0f, screenHeight / 2.0f, (float)screenWidth, (float)screenHeight };
 	BeginMode2D(cam_hud);
 	{
-		DrawTexturePro(render_tex_postworld.texture, src, dest, org, 0, WHITE);
-		DrawTexturePro(render_tex_posthud.texture, src, dest, org, 0, WHITE);
+		DrawTexturePro(render_tex_postfinal.texture, src, dest, org, 0, WHITE);
 	}
 	EndMode2D();
 

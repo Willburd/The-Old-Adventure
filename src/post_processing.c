@@ -8,10 +8,13 @@ int world_post_processing_shader_count = 0;
 struct PostProcessingLayer* world_post_processing_shaders[MAX_POST_PROCESSING_SHADERS] = { 0 };
 int hud_post_processing_shader_count = 0;
 struct PostProcessingLayer* hud_post_processing_shaders[MAX_POST_PROCESSING_SHADERS] = { 0 };
+int final_post_processing_shader_count = 0;
+struct PostProcessingLayer* final_post_processing_shaders[MAX_POST_PROCESSING_SHADERS] = { 0 };
 
 // Input and final buffers
 RenderTexture2D render_tex_postworld = { 0 };
 RenderTexture2D render_tex_posthud = { 0 };
+RenderTexture2D render_tex_postfinal = { 0 };
 
 // Leapfrog layers
 static RenderTexture2D render_tex_leap = { 0 };
@@ -76,6 +79,13 @@ void HandleHudPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest
 	HandlePostProcessing(tex, src, dest, org, hud_post_processing_shaders, hud_post_processing_shader_count);
 }
 
+void HandleFinalPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org)
+{
+	if (final_post_processing_shader_count == 0)
+		return;
+	HandlePostProcessing(tex, src, dest, org, final_post_processing_shaders, final_post_processing_shader_count);
+}
+
 static inline int RegisterPostProcessShader(struct PostProcessingLayer* layer_array[], int layer_limit, Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data))
 {
 	for (int i = 0; i <= layer_limit; i++)
@@ -103,6 +113,12 @@ void RegisterHudPostProcessShader(Material* material, char* identifier, void (*u
 {
 	if (RegisterPostProcessShader(hud_post_processing_shaders, hud_post_processing_shader_count, material, identifier, uniforms_function))
 		hud_post_processing_shader_count++;
+}
+
+void RegisterFinalPostProcessShader(Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
+{
+	if (RegisterPostProcessShader(final_post_processing_shaders, final_post_processing_shader_count, material, identifier, uniforms_function))
+		final_post_processing_shader_count++;
 }
 
 static inline void UnregisterPostProcessShader(struct PostProcessingLayer* data)
@@ -140,6 +156,20 @@ void UnregisterHudPostProcessShader(char* identifier)
 	}
 }
 
+void UnregisterFinalPostProcessShader(char* identifier)
+{
+	for (int i = 0; i < final_post_processing_shader_count; i++)
+	{
+		if (final_post_processing_shaders[i] == NULL)
+			continue;
+		if (final_post_processing_shaders[i]->id != identifier)
+			continue;
+		UnregisterPostProcessShader(final_post_processing_shaders[i]);
+		RELEASE(final_post_processing_shaders[i]);
+		return;
+	}
+}
+
 void ClearAllWorldPostProcessShaders()
 {
 	for (int i = 0; i < world_post_processing_shader_count; i++)
@@ -164,16 +194,30 @@ void ClearAllHudPostProcessShaders()
 	hud_post_processing_shader_count = 0;
 }
 
+void ClearAllFinalPostProcessShaders()
+{
+	for (int i = 0; i < final_post_processing_shader_count; i++)
+	{
+		if (final_post_processing_shaders[i] == NULL)
+			continue;
+		UnregisterPostProcessShader(final_post_processing_shaders[i]);
+		RELEASE(final_post_processing_shaders[i]);
+	}
+	final_post_processing_shader_count = 0;
+}
+
 void ClearAllPostProcessShaders()
 {
 	ClearAllWorldPostProcessShaders();
 	ClearAllHudPostProcessShaders();
+	ClearAllFinalPostProcessShaders();
 }
 
 void LoadPostProcessingTextures()
 {
 	render_tex_postworld = LoadRenderTexture(renderWidth, renderHeight);
 	render_tex_posthud = LoadRenderTexture(renderWidth, renderHeight);
+	render_tex_postfinal = LoadRenderTexture(renderWidth, renderHeight);
 	// Internals
 	render_tex_leap = LoadRenderTexture(renderWidth, renderHeight);
 	render_tex_frog = LoadRenderTexture(renderWidth, renderHeight);
@@ -187,6 +231,8 @@ void UnloadPostProcessingTextures()
 		UnloadRenderTexture(render_tex_postworld);
 	if (IsRenderTextureValid(render_tex_posthud))
 		UnloadRenderTexture(render_tex_posthud);
+	if (IsRenderTextureValid(render_tex_postfinal))
+		UnloadRenderTexture(render_tex_postfinal);
 	// Internals
 	if (IsRenderTextureValid(render_tex_leap))
 		UnloadRenderTexture(render_tex_leap);
