@@ -28,7 +28,7 @@
 	  
 	  {
 		"type": "woodtorch",
-		"pos": [-7.441, 0, 8]
+		"pos": [ 0, 0, 0]
 	  },
 	  {
 		"type": "crate",
