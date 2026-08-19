@@ -62,6 +62,7 @@ void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix m
 
 void LoadRenderTextures();
 void UnloadRenderTextures();
+void LoadRenderLayers();
 void UnloadRenderLayers();
 
 #endif
