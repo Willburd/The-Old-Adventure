@@ -5,13 +5,21 @@
 #include "post_processing.h"
 #include <raylib.h>
 
-void AdvLUTShaderUniforms(struct PostProcessingLayer* data, Shader* shader, RenderTexture2D* render_tex)
+void AdvLUTShaderUniforms(PostProcessingPhase phase, struct PostProcessingLayer* data, Shader* shader, RenderTexture2D* render_tex)
 {
     int loc = GetShaderLocation(*shader, "lut_tex");
-    SetShaderValueTexture(*shader, loc, *AssetGet_Texture(ASSET_TEXTURES"/LUTs/Neutral.png"));
+    switch (phase)
+    {
+        case post_process_world:
+            SetShaderValueTexture(*shader, loc, *AssetGet_Texture(ASSET_TEXTURES"/LUTs/Neutral.png"));
+            break;
+        case post_process_hud:
+            SetShaderValueTexture(*shader, loc, *AssetGet_Texture(ASSET_TEXTURES"/LUTs/Neutral.png"));
+            break;
+    }
 }
 
-void AdvDitherShaderUniforms(struct PostProcessingLayer* data, Shader* shader, RenderTexture2D* render_tex)
+void AdvDitherShaderUniforms(PostProcessingPhase phase, struct PostProcessingLayer* data, Shader* shader, RenderTexture2D* render_tex)
 {
     int loc = GetShaderLocation(*shader, "dither_width");
     SetShaderValue(*shader, loc, &renderWidth, RL_SHADER_UNIFORM_INT);

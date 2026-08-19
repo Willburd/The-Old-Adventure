@@ -170,11 +170,15 @@ static void game_setup()
     // Enter game
     LoadScene(scene_boot, ent_title);
 
-    // Adventure edit begin - Prepare LUT shader
-    Material* mat_dither = AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat");
-    RegisterWorldPostProcessShader(mat_dither, "Dither", 10, AdvDitherShaderUniforms);
-    Material* mat_lut = AssetGet_Material(ASSET_MATERIALS"/LUTs/neutral.mat");
-    RegisterWorldPostProcessShader(mat_lut, "LUT", 20, AdvLUTShaderUniforms);
+    // Adventure edit begin - Prepare global LUT shaders
+    RegisterWorldPostProcessShader(
+        AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat"), "WorldDither", 10, AdvDitherShaderUniforms);
+    RegisterWorldPostProcessShader(
+        AssetGet_Material(ASSET_MATERIALS"/LUTs/neutral.mat"), "WorldLUT", 20, AdvLUTShaderUniforms);
+    RegisterWorldPostProcessShader(
+        AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat"), "HudDither", 10, AdvDitherShaderUniforms);
+    RegisterHudPostProcessShader(
+        AssetGet_Material(ASSET_MATERIALS"/LUTs/neutral.mat"), "HudLUT", 20, AdvLUTShaderUniforms);
     // Adventure edit end
 }
 
@@ -199,7 +203,7 @@ static void game_shutdown()
     // Post processing
     UnloadPostProcessingTextures();
     // Clear post processing shader data
-    ClearAllPostProcessShaders();
+    UnregisterAllPostProcessShaders();
     // Cleanup destroyed actors
     for (int i = 0; i <= current_actor_cap; i++)
     {
@@ -214,8 +218,5 @@ static void game_shutdown()
     // Adventure edit begin - Cleanup Adventure
     // Inventory
     RELEASE(player_inventory);
-    // Release LUT shaders
-    UnregisterWorldPostProcessShader("LUT");
-    UnregisterWorldPostProcessShader("Dither");
     // Adventure edit end
 }
