@@ -22,7 +22,7 @@ static RenderTexture2D render_tex_frog = { 0 };
 static RenderTexture2D* render_tex_current = NULL;
 static RenderTexture2D* render_tex_other = NULL;
 
-static inline void HandlePostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org, struct PostProcessingLayer* mat_arr[], int arr_limit)
+static inline void HandlePostProcessing(PostProcessingPhase phase,RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org, struct PostProcessingLayer* mat_arr[], int arr_limit)
 {
 	for (int i = 0; i < arr_limit; i++)
 	{
@@ -38,7 +38,7 @@ static inline void HandlePostProcessing(RenderTexture2D* tex, Rectangle src, Rec
 			Shader* set_shader = &current_layer->material->shader;
 			BeginShaderMode(*set_shader);
 			if (current_layer->func_uniforms != NULL)
-				current_layer->func_uniforms(current_layer, set_shader, render_tex_current);
+				current_layer->func_uniforms(phase, current_layer, set_shader, render_tex_current);
 			if (i == 0) // Use input texture if we're the first one!
 				DrawTexturePro(tex->texture, src, dest, org, 0, WHITE);
 			else
@@ -69,24 +69,24 @@ void HandleWorldPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle de
 {
 	if (world_post_processing_shader_count == 0)
 		return;
-	HandlePostProcessing(tex, src, dest, org, world_post_processing_shaders, world_post_processing_shader_count);
+	HandlePostProcessing(post_process_world, tex, src, dest, org, world_post_processing_shaders, world_post_processing_shader_count);
 }
 
 void HandleHudPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org)
 {
 	if (hud_post_processing_shader_count == 0)
 		return;
-	HandlePostProcessing(tex, src, dest, org, hud_post_processing_shaders, hud_post_processing_shader_count);
+	HandlePostProcessing(post_process_hud, tex, src, dest, org, hud_post_processing_shaders, hud_post_processing_shader_count);
 }
 
 void HandleFinalPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org)
 {
 	if (final_post_processing_shader_count == 0)
 		return;
-	HandlePostProcessing(tex, src, dest, org, final_post_processing_shaders, final_post_processing_shader_count);
+	HandlePostProcessing(post_process_final, tex, src, dest, org, final_post_processing_shaders, final_post_processing_shader_count);
 }
 
-static inline struct PostProcessingLayer* CreateLayer(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data))
+static inline struct PostProcessingLayer* CreateLayer(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(PostProcessingPhase phase, struct PostProcessingLayer* data, RenderTexture2D* render_tex))
 {
 	MALLOC(struct PostProcessingLayer, current_layer, NULL);
 	CHAR_STR_COPY(current_layer->id, identifier, NULL);
@@ -96,7 +96,7 @@ static inline struct PostProcessingLayer* CreateLayer(Material* material, char* 
 	return current_layer;
 }
 
-static inline int RegisterPostProcessShader(struct PostProcessingLayer* layer_array[], int layer_limit, Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data))
+static inline int RegisterPostProcessShader(struct PostProcessingLayer* layer_array[], int layer_limit, Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(PostProcessingPhase phase, struct PostProcessingLayer* data, RenderTexture2D* render_tex))
 {
 	// If no layers exist, just add it.
 	if (layer_limit == 0)
@@ -144,17 +144,17 @@ static inline int RegisterPostProcessShader(struct PostProcessingLayer* layer_ar
 	}
 }
 
-void RegisterWorldPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
+void RegisterWorldPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(PostProcessingPhase phase, struct PostProcessingLayer* data, RenderTexture2D* render_tex))
 {
 	world_post_processing_shader_count = RegisterPostProcessShader(world_post_processing_shaders, world_post_processing_shader_count, material, identifier, priority, uniforms_function);
 }
 
-void RegisterHudPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
+void RegisterHudPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(PostProcessingPhase phase, struct PostProcessingLayer* data, RenderTexture2D* render_tex))
 {
 	hud_post_processing_shader_count = RegisterPostProcessShader(hud_post_processing_shaders, hud_post_processing_shader_count, material, identifier, priority, uniforms_function);
 }
 
-void RegisterFinalPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
+void RegisterFinalPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(PostProcessingPhase phase, struct PostProcessingLayer* data, RenderTexture2D* render_tex))
 {
 	final_post_processing_shader_count = RegisterPostProcessShader(final_post_processing_shaders, final_post_processing_shader_count, material, identifier, priority, uniforms_function);
 }
@@ -202,27 +202,27 @@ for (int i = 0; i < cont; i++) \
 	RELEASE(arry[i]); \
 } \
 cont = 0;
-void ClearAllWorldPostProcessShaders()
+void UnregisterAllWorldPostProcessShaders()
 {
 	CLEAR_LOOP(world_post_processing_shaders, world_post_processing_shader_count);
 }
 
-void ClearAllHudPostProcessShaders()
+void UnregisterAllHudPostProcessShaders()
 {
 	CLEAR_LOOP(hud_post_processing_shaders, hud_post_processing_shader_count);
 }
 
-void ClearAllFinalPostProcessShaders()
+void UnregisterAllFinalPostProcessShaders()
 {
 	CLEAR_LOOP(final_post_processing_shaders, final_post_processing_shader_count);
 }
 #undef CLEAR_LOOP
 
-void ClearAllPostProcessShaders()
+void UnregisterAllPostProcessShaders()
 {
-	ClearAllWorldPostProcessShaders();
-	ClearAllHudPostProcessShaders();
-	ClearAllFinalPostProcessShaders();
+	UnregisterAllWorldPostProcessShaders();
+	UnregisterAllHudPostProcessShaders();
+	UnregisterAllFinalPostProcessShaders();
 }
 
 void LoadPostProcessingTextures()

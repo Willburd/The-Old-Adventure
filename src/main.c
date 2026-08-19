@@ -183,7 +183,7 @@ static void game_shutdown()
     // Post processing
     UnloadPostProcessingTextures();
     // Clear post processing shader data
-    ClearAllPostProcessShaders();
+    UnregisterAllPostProcessShaders();
     // Cleanup destroyed actors
     for (int i = 0; i <= current_actor_cap; i++)
     {
