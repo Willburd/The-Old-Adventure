@@ -180,9 +180,9 @@ static void game_setup()
 
     // Adventure edit begin - Prepare LUT shader
     Material* mat_dither = AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat");
-    RegisterWorldPostProcessShader(mat_dither, "Dither", AdvDitherShaderUniforms);
+    RegisterWorldPostProcessShader(mat_dither, "Dither", 10, AdvDitherShaderUniforms);
     Material* mat_lut = AssetGet_Material(ASSET_MATERIALS"/LUTs/neutral.mat");
-    RegisterWorldPostProcessShader(mat_lut, "LUT", AdvLUTShaderUniforms);
+    RegisterWorldPostProcessShader(mat_lut, "LUT", 20, AdvLUTShaderUniforms);
     // Adventure edit end
 }
 
