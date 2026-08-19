@@ -156,15 +156,7 @@ static void game_setup()
     ACTOR_FACTORY(NULL, act_camera, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 
     // Prepare render layers for 2D games
-    if (renderlayers_enabled)
-    {
-        render_tex_background = LoadRenderTexture(RENDER_LAYER_SIZE, RENDER_LAYER_SIZE);
-        render_tex_tilemap = LoadRenderTexture(RENDER_LAYER_SIZE, RENDER_LAYER_SIZE);
-        render_tex_foreground = LoadRenderTexture(RENDER_LAYER_SIZE, RENDER_LAYER_SIZE);
-        SetTextureWrap(render_tex_background.texture, TEXTURE_WRAP_REPEAT);
-        SetTextureWrap(render_tex_tilemap.texture, TEXTURE_WRAP_REPEAT);
-        SetTextureWrap(render_tex_foreground.texture, TEXTURE_WRAP_REPEAT);
-    }
+    LoadRenderLayers();
 
     // Enter game
     LoadScene(scene_boot, ent_title);

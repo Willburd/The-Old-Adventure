@@ -489,6 +489,18 @@ void UnloadRenderTextures()
 		UnloadRenderTexture(render_tex_hud);
 }
 
+void LoadRenderLayers()
+{
+	if (!renderlayers_enabled)
+		return;
+	render_tex_background = LoadRenderTexture(RENDER_LAYER_SIZE, RENDER_LAYER_SIZE);
+	render_tex_tilemap = LoadRenderTexture(RENDER_LAYER_SIZE, RENDER_LAYER_SIZE);
+	render_tex_foreground = LoadRenderTexture(RENDER_LAYER_SIZE, RENDER_LAYER_SIZE);
+	SetTextureWrap(render_tex_background.texture, TEXTURE_WRAP_REPEAT);
+	SetTextureWrap(render_tex_tilemap.texture, TEXTURE_WRAP_REPEAT);
+	SetTextureWrap(render_tex_foreground.texture, TEXTURE_WRAP_REPEAT);
+}
+
 void UnloadRenderLayers()
 {
 	if (IsRenderTextureValid(render_tex_background))
