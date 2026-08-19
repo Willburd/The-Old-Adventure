@@ -86,39 +86,77 @@ void HandleFinalPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle de
 	HandlePostProcessing(tex, src, dest, org, final_post_processing_shaders, final_post_processing_shader_count);
 }
 
-static inline int RegisterPostProcessShader(struct PostProcessingLayer* layer_array[], int layer_limit, Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data))
+static inline struct PostProcessingLayer* CreateLayer(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data))
 {
+	MALLOC(struct PostProcessingLayer, current_layer, NULL);
+	CHAR_STR_COPY(current_layer->id, identifier, NULL);
+	current_layer->material = material;
+	current_layer->func_uniforms = uniforms_function;
+	current_layer->priority = priority;
+	return current_layer;
+}
+
+static inline int RegisterPostProcessShader(struct PostProcessingLayer* layer_array[], int layer_limit, Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data))
+{
+	// If no layers exist, just add it.
+	if (layer_limit == 0)
+	{
+		layer_array[0] = CreateLayer(material, identifier, priority, uniforms_function);
+		return 1;
+	}
+
+	// Store the current layers
+	struct PostProcessingLayer* temp_arr[MAX_POST_PROCESSING_SHADERS] = { NULL };
 	for (int i = 0; i <= layer_limit; i++)
 	{
-		if (i < layer_limit && layer_array[i] != NULL)
-			continue;
-		// Register to the first free slot
-		MALLOC_SET(struct PostProcessingLayer, layer_array[i], NULL);
-		struct PostProcessingLayer* current_layer = layer_array[i];
-		CHAR_STR_COPY(current_layer->id, identifier, NULL);
-		current_layer->material = material;
-		current_layer->func_uniforms = uniforms_function;
-		return (i == layer_limit);
+		if (i == layer_limit)
+		{
+			temp_arr[i] = CreateLayer(material, identifier, priority, uniforms_function);
+			layer_array[i] = NULL;
+			break;
+		}
+		temp_arr[i] = layer_array[i];
+		layer_array[i] = NULL;
 	}
-	return FALSE;
+
+	// Add each layer from lowest priority to highest
+	int write_index = 0;
+	while (TRUE)
+	{
+		int found_lowest_index = -1;
+		unsigned int find_lowest_priority = UINT32_MAX;
+		for (int i = 0; i <= layer_limit; i++)
+		{
+			if (temp_arr[i] == NULL)
+				continue;
+			if (temp_arr[i]->priority > find_lowest_priority)
+				continue;
+			// Yoink the index...
+			find_lowest_priority = temp_arr[i]->priority;
+			found_lowest_index = i;
+		}
+		// ...if we found nothing leave it...
+		if (found_lowest_index == -1)
+			return write_index;
+		// ...otherwise write it to the output list.
+		layer_array[write_index++] = temp_arr[found_lowest_index];
+		temp_arr[found_lowest_index] = NULL;
+	}
 }
 
-void RegisterWorldPostProcessShader(Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
+void RegisterWorldPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
 {
-	if (RegisterPostProcessShader(world_post_processing_shaders, world_post_processing_shader_count, material, identifier, uniforms_function))
-		world_post_processing_shader_count++;
+	world_post_processing_shader_count = RegisterPostProcessShader(world_post_processing_shaders, world_post_processing_shader_count, material, identifier, priority, uniforms_function);
 }
 
-void RegisterHudPostProcessShader(Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
+void RegisterHudPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
 {
-	if (RegisterPostProcessShader(hud_post_processing_shaders, hud_post_processing_shader_count, material, identifier, uniforms_function))
-		hud_post_processing_shader_count++;
+	hud_post_processing_shader_count = RegisterPostProcessShader(hud_post_processing_shaders, hud_post_processing_shader_count, material, identifier, priority, uniforms_function);
 }
 
-void RegisterFinalPostProcessShader(Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
+void RegisterFinalPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex))
 {
-	if (RegisterPostProcessShader(final_post_processing_shaders, final_post_processing_shader_count, material, identifier, uniforms_function))
-		final_post_processing_shader_count++;
+	final_post_processing_shader_count = RegisterPostProcessShader(final_post_processing_shaders, final_post_processing_shader_count, material, identifier, priority, uniforms_function);
 }
 
 static inline void UnregisterPostProcessShader(struct PostProcessingLayer* data)

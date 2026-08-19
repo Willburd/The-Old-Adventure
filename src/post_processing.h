@@ -9,6 +9,7 @@ struct PostProcessingLayer;
 struct PostProcessingLayer {
 	char* id;
 	Material* material;
+	unsigned int priority; // Lower numbers are inserted into the array first.
 	void (*func_uniforms)(struct PostProcessingLayer* data, Shader* shader, RenderTexture2D* render_tex);
 };
 
@@ -20,13 +21,13 @@ void HandleWorldPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle de
 void HandleHudPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org);
 void HandleFinalPostProcessing(RenderTexture2D* tex, Rectangle src, Rectangle dest, Vector2 org);
 
-void RegisterWorldPostProcessShader(Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex));
+void RegisterWorldPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex));
 void UnregisterWorldPostProcessShader(char* identifier);
 
-void RegisterHudPostProcessShader(Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex));
+void RegisterHudPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex));
 void UnregisterHudPostProcessShader(char* identifier);
 
-void RegisterFinalPostProcessShader(Material* material, char* identifier, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex));
+void RegisterFinalPostProcessShader(Material* material, char* identifier, unsigned int priority, void (*uniforms_function)(struct PostProcessingLayer* data, RenderTexture2D* render_tex));
 void UnregisterFinalPostProcessShader(char* identifier);
 
 void ClearAllWorldPostProcessShaders();
