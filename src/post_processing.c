@@ -128,83 +128,57 @@ static inline void UnregisterPostProcessShader(struct PostProcessingLayer* data)
 	data->func_uniforms = NULL; // Not ours
 }
 
+#define UNREGISTER_LOOP(arr, cont) \
+for (int i = 0; i < cont; i++) \
+{ \
+	if (arr[i] == NULL) \
+		continue; \
+	if (arr[i]->id != identifier) \
+		continue; \
+	UnregisterPostProcessShader(arr[i]); \
+	RELEASE(arr[i]); \
+	return; \
+}
 void UnregisterWorldPostProcessShader(char* identifier)
 {
-	for (int i = 0; i < world_post_processing_shader_count; i++)
-	{
-		if (world_post_processing_shaders[i] == NULL)
-			continue;
-		if (world_post_processing_shaders[i]->id != identifier)
-			continue;
-		UnregisterPostProcessShader(world_post_processing_shaders[i]);
-		RELEASE(world_post_processing_shaders[i]);
-		return;
-	}
+	UNREGISTER_LOOP(world_post_processing_shaders, world_post_processing_shader_count);
 }
 
 void UnregisterHudPostProcessShader(char* identifier)
 {
-	for (int i = 0; i < hud_post_processing_shader_count; i++)
-	{
-		if (hud_post_processing_shaders[i] == NULL)
-			continue;
-		if (hud_post_processing_shaders[i]->id != identifier)
-			continue;
-		UnregisterPostProcessShader(hud_post_processing_shaders[i]);
-		RELEASE(hud_post_processing_shaders[i]);
-		return;
-	}
+	UNREGISTER_LOOP(hud_post_processing_shaders, hud_post_processing_shader_count);
 }
 
 void UnregisterFinalPostProcessShader(char* identifier)
 {
-	for (int i = 0; i < final_post_processing_shader_count; i++)
-	{
-		if (final_post_processing_shaders[i] == NULL)
-			continue;
-		if (final_post_processing_shaders[i]->id != identifier)
-			continue;
-		UnregisterPostProcessShader(final_post_processing_shaders[i]);
-		RELEASE(final_post_processing_shaders[i]);
-		return;
-	}
+	UNREGISTER_LOOP(final_post_processing_shaders, final_post_processing_shader_count);
 }
+#undef UNREGISTER_LOOP
 
+#define CLEAR_LOOP(arry, cont) \
+for (int i = 0; i < cont; i++) \
+{ \
+	if (arry[i] == NULL) \
+		continue; \
+	UnregisterPostProcessShader(arry[i]); \
+	RELEASE(arry[i]); \
+} \
+cont = 0;
 void ClearAllWorldPostProcessShaders()
 {
-	for (int i = 0; i < world_post_processing_shader_count; i++)
-	{
-		if (world_post_processing_shaders[i] == NULL)
-			continue;
-		UnregisterPostProcessShader(world_post_processing_shaders[i]);
-		RELEASE(world_post_processing_shaders[i]);
-	}
-	world_post_processing_shader_count = 0;
+	CLEAR_LOOP(world_post_processing_shaders, world_post_processing_shader_count);
 }
 
 void ClearAllHudPostProcessShaders()
 {
-	for (int i = 0; i < hud_post_processing_shader_count; i++)
-	{
-		if (hud_post_processing_shaders[i] == NULL)
-			continue;
-		UnregisterPostProcessShader(hud_post_processing_shaders[i]);
-		RELEASE(hud_post_processing_shaders[i]);
-	}
-	hud_post_processing_shader_count = 0;
+	CLEAR_LOOP(hud_post_processing_shaders, hud_post_processing_shader_count);
 }
 
 void ClearAllFinalPostProcessShaders()
 {
-	for (int i = 0; i < final_post_processing_shader_count; i++)
-	{
-		if (final_post_processing_shaders[i] == NULL)
-			continue;
-		UnregisterPostProcessShader(final_post_processing_shaders[i]);
-		RELEASE(final_post_processing_shaders[i]);
-	}
-	final_post_processing_shader_count = 0;
+	CLEAR_LOOP(final_post_processing_shaders, final_post_processing_shader_count);
 }
+#undef CLEAR_LOOP
 
 void ClearAllPostProcessShaders()
 {
