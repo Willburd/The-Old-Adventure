@@ -52,10 +52,9 @@ ACTOR_DRAWWORLD(smallrock)
 
 	STANDARD_SHADER_MATERIAL(rock_mat, ROCK_MATERIAL, actor);
 
-	int rock_mesh_index = GetMeshIndex(model_asset->mesh_data, "Rock-Main");
 	ToaDrawMesh(
 		model_asset,
-		rock_mesh_index,
+		GetMeshIndex(model_asset->mesh_data, "Rock-Main"),
 		*rock_mat,
 		position,
 		FALSE
