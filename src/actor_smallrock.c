@@ -3,9 +3,10 @@
 #include "collision.h"
 #include "game_draw.h"
 #include "core_assets.h"
+#include <math.h>
 
 // Assets
-#define ROCK_MODEL ASSET_MODELS"/Trees/tree_A.glb"
+#define ROCK_MODEL ASSET_MODELS"/Objects/smallrock.glb"
 #define ROCK_MATERIAL ASSET_MATERIALS"/Natural/stone_B.mat"
 
 // private header
@@ -23,6 +24,9 @@ ACTOR_INIT(smallrock)
 	actor->blend_color = ColorToVector4(GOLD);
 	ACTOR_REGISTER_PRELOADASSETS(smallrock);
 	ACTOR_REGISTER_DRAWWORLD(smallrock);
+
+	// Fake random rotation per rock
+	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromAxisAngle(VEC3UP, (float)fmod((float)GetFixedRandomFloat(actor->position, 18283), 360.0f * DEG2RAD)));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

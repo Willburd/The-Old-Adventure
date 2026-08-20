@@ -72,6 +72,22 @@
 	  {
 		"type": "smallrock",
 		"pos": [10, -1.19, 7]
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [11, -1.19, 7]
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [12, -1.19, 7]
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [13, -1.19, 7]
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [14, -1.19, 7]
 	  }
    ]
 }
