@@ -23,6 +23,6 @@ void main()
     if(mod(pix_y,2.0) < 1)
         flip = 1.0;
     if(mod(pix_x + flip,2.0) < 1)
-        finalColor *= vec4(0.98, 0.98, 0.98, finalColor.a);
-    finalColor *= vec4(vec3(0.98 + (random(fragTexCoord) * 0.02)).rgb, finalColor.a);
+        finalColor *= vec4(0.995, 0.995, 0.995, finalColor.a);
+    finalColor *= vec4(vec3(0.995 + (random(fragTexCoord) * 0.005)).rgb, finalColor.a);
 }
