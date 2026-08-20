@@ -41,6 +41,10 @@
 
 #define DRAWCAPSULE(pos, hig, rad, col) DrawCapsule(Vector3Add(pos, Vector3Scale(VEC3UP, rad)), Vector3Add(pos, Vector3Scale(VEC3UP, rad + hig + rad)), rad, 7, 5, col)
 
+/// Gets a fake-random value based on the position and a custom offset.
+int GetFixedRandomInt(Vector3 pos, int offset);
+float GetFixedRandomFloat(Vector3 pos, int offset);
+
 Vector4 ColorToVector4(Color col);
 Color Vector4ToColor(Vector4 vec);
 Color Vector3ToColor(Vector3 vec, float alpha);

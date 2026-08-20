@@ -1,5 +1,18 @@
 #include "actor.h"
 #include "tools.h"
+#include <math.h>
+
+int GetFixedRandomInt(Vector3 pos, int offset)
+{
+    return (int)round((pos.x * 2323.232f) + (pos.y * 3673.245f) + (pos.z * 373.545f) + offset);
+}
+
+float GetFixedRandomFloat(Vector3 pos, int offset)
+{
+    int val = GetFixedRandomInt(pos, offset) * 213553;
+    return (float)val / 3422.4212;
+}
+
 
 Vector4 ColorToVector4(Color col)
 {
