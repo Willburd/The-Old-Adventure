@@ -117,6 +117,8 @@ int main(void)
             tick_counter++;
             update_ticker -= ticker_rate;
             game_update();
+            if (update_ticker > 10)
+                update_ticker = 0;
         }
         game_draw(update_ticker / ticker_rate);
     }
