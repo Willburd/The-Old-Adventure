@@ -48,15 +48,13 @@ ACTOR_DRAWWORLD(smallrock)
 	if (OutOfRenderRange(actor))
 		return;
 	Asset* model_asset = AssetGetPackage(ROCK_MODEL);
-	Matrix position = GetMatrix(actor);
-
 	STANDARD_SHADER_MATERIAL(rock_mat, ROCK_MATERIAL, actor);
 
 	ToaDrawMesh(
 		model_asset,
 		GetMeshIndex(model_asset->mesh_data, "Rock-Main"),
 		*rock_mat,
-		position,
+		GetMatrix(actor),
 		FALSE
 	);
 }
