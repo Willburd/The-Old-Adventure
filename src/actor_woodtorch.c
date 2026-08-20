@@ -4,6 +4,7 @@
 #include "game_draw.h"
 #include "models.h"
 #include "json_properties.h"
+#include "core_assets.h"
 
 // Assets
 #define WOODTORCH_MODEL ASSET_MODELS"/Objects/wood_torch.glb"
@@ -39,7 +40,7 @@ ACTOR_PRELOADASSETS(woodtorch)
 	LoadAsset_Material(WOODTORCH_MATERIAL, FALSE);
 
 	// Set collision data
-	REGISTER_COLLISION_MESH(actor, model_asset, DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
+	REGISTER_COLLISION_MESH(actor, AssetGetPackage(SIMPLE_ACTOR_COLLISION_MODEL), DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
 }
 
 ACTOR_JSON_INIT(woodtorch)

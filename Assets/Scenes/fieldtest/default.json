@@ -68,6 +68,10 @@
 		"type": "signpost",
 		"pos": [-7.5,-1.49,15.1],
 		"text_id": "Field_Test_Sign"
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [10, -1.19, 7]
 	  }
    ]
 }

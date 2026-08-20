@@ -34,6 +34,7 @@ typedef enum
 	act_tree,
 	act_hole,
 	act_crate,
+	act_smallrock,
 	LAST_ACTOR
 } ActorTypes;
 
@@ -59,6 +60,7 @@ ACTOR_INIT(woodtorch);
 ACTOR_INIT(tree);
 ACTOR_INIT(hole);
 ACTOR_INIT(crate);
+ACTOR_INIT(smallrock);
 
 #define ACTOR_STRING_CASE(str) if (STRMATCH(string_id, #str)) return act_## str
 inline ActorTypes ACTOR_FROM_STRING(char* string_id)
@@ -85,6 +87,7 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(tree);
 	ACTOR_STRING_CASE(hole);
 	ACTOR_STRING_CASE(crate);
+	ACTOR_STRING_CASE(smallrock);
 	return act_error;
 }
 #undef ACTOR_STRING_CASE
@@ -114,6 +117,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 	MAKE_ACTOR_INIT(tree);
 	MAKE_ACTOR_INIT(hole);
 	MAKE_ACTOR_INIT(crate);
+	MAKE_ACTOR_INIT(smallrock);
 }
 #undef MAKE_ACTOR_INIT
 

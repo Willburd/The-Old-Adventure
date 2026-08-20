@@ -162,6 +162,7 @@
     <ClCompile Include="actor_scene.c" />
     <ClCompile Include="actor_signpost.c" />
     <ClCompile Include="actor_skybox.c" />
+    <ClCompile Include="actor_smallrock.c" />
     <ClCompile Include="actor_test.c" />
     <ClCompile Include="actor_textbox.c" />
     <ClCompile Include="actor_tree.c" />

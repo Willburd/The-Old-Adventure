@@ -47,6 +47,7 @@ void LoadCoreAssets()
     LoadAsset_Model(SPRITE_MODEL, TRUE);
     LoadAsset_Model(CUBE_MODEL, TRUE);
     // Adventure
+    LoadAsset_Model(SIMPLE_ACTOR_COLLISION_MODEL, TRUE);
 
     // Set font
     default_font = LoadFontEx(ASSET_FONT"/LinBiolinum_Rah.ttf", 16, NULL, 0); // Adventure edit - Use a different font
