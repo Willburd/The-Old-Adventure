@@ -9,7 +9,7 @@
 #define SPRITE_MODEL				ASSET_MODELS"/Tools/sprite2d.glb"
 #define CUBE_MODEL					ASSET_MODELS"/Tools/unit_cube.glb"
 // Adventure
-#define SIMPLE_ACTOR_COLLISION_MODEL					ASSET_MODELS"/Tools/simple_actor_collision.glb"
+#define SIMPLE_ACTOR_COLLISION_MODEL ASSET_MODELS"/Tools/simple_actor_collision.glb"
 
 void LoadCoreAssets();
 void LoadCoreTextAssets();
