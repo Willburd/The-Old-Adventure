@@ -16,6 +16,7 @@
 #define COL_LAYER_ENEMY (1 << 4)	// Enemy hitboxes
 #define COL_LAYER_WATER (1 << 5)	// Water geometry
 #define COL_LAYER_MOVINGPLATFORM (1 << 6)	// Moving platforms
+#define COL_LAYER_PROJECTILES (1 << 7)	// Projectiles
 #define COL_LAYER_ALL (~0)
 
 #define REGISTER_COLLISION_MESH(act, mdl_ast, mesh_name, layers) CollisionRegister(act, &mdl_ast->mdl->meshes[GetMeshIndex(mdl_ast->mesh_data, mesh_name)], layers);
