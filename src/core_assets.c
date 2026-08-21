@@ -30,7 +30,7 @@ void LoadCoreAssets()
     LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Outside.png", TRUE, NULL);
     LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Sepia.png", TRUE, NULL);
     LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Shaded.png", TRUE, NULL);
-    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Sickening.png", TRUE, NULL); // TODO - Investigate why this fails to load properly
+    LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Sickening.png", TRUE, NULL);
     LoadAsset_Texture(ASSET_TEXTURES"/LUTs/UnderWater.png", TRUE, NULL);
     
     // Load default materials
