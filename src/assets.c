@@ -21,11 +21,12 @@ void UnloadAllAssets(int including_core)
     void* item;
     // Scan the hashmap for assets that are not core assets
     while (hashmap_iter(loaded_assets, &iter, &item)) {
-        const Asset* asset = item;
-        if (!including_core && asset->core_asset)
+        const Asset* search_asset = item;
+        if (!including_core && search_asset->core_asset)
             continue;
-        hashmap_delete(loaded_assets, asset);
-        asset_free(asset);
+        Asset* found_asset = hashmap_delete(loaded_assets, search_asset);
+        if(found_asset != NULL)
+            asset_free(found_asset);
     }
     if (including_core)
     {
@@ -50,8 +51,6 @@ uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1) {
 
 void asset_free(void* item) {
     Asset* asset = item;
-    if (asset->tex == NULL && asset->mdl == NULL && asset->snd == NULL && asset->mus == NULL && asset->mat == NULL)
-        return; // TODO - Investigate this
     if (asset->tex != NULL && IsTextureValid(*asset->tex))
     {
         printf("UNLOAD TEXTURE------------------------\n");
