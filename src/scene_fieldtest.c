@@ -20,13 +20,12 @@
 
 // Assets
 #define FIELD_MODEL ASSET_MODELS"/Scenes/test_field.glb"
-#define FIELD_MATERIAL_BRIDGE ASSET_MATERIALS"/Objects/wood_door_a.mat"
-#define FIELD_MATERIAL_GRASS ASSET_MATERIALS"/Natural/grass_A.mat"
-#define FIELD_MATERIAL_STONE ASSET_MATERIALS"/Natural/stone_B.mat"
-#define FIELD_MATERIAL_RAILWAY ASSET_MATERIALS"/Construction/railway_A.mat"
-
-// Meshes
-#define FIELD_MESH_BASE "test_field"
+static char* loaded_materials[] = {
+	ASSET_MATERIALS"/Natural/grass_A.mat",
+	ASSET_MATERIALS"/Objects/wood_door_a.mat",
+	ASSET_MATERIALS"/Natural/stone_B.mat",
+	ASSET_MATERIALS"/Construction/railway_A.mat"
+};
 
 // private header
 SCENE_PRELOADASSETS(fieldtest);
@@ -58,17 +57,11 @@ SCENE_INIT(fieldtest)
 SCENE_PRELOADASSETS(fieldtest)
 {
 	// Load model
-	Asset* model_asset = LoadAsset_Model(FIELD_MODEL, FALSE);
-	LoadAsset_Material(FIELD_MATERIAL_BRIDGE, FALSE);
-	LoadAsset_Material(FIELD_MATERIAL_GRASS, FALSE);
-	LoadAsset_Material(FIELD_MATERIAL_STONE, FALSE);
-	LoadAsset_Material(FIELD_MATERIAL_RAILWAY, FALSE);
+	LoadAsset_Model(FIELD_MODEL, FALSE);
+	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
 
 	// Set collision data
-	REGISTER_COLLISION_MESH(scene, model_asset, FIELD_MESH_BASE"-Bridge", COL_LAYER_WORLD | COL_LAYER_CAMERA);
-	REGISTER_COLLISION_MESH(scene, model_asset, FIELD_MESH_BASE"-Grass", COL_LAYER_WORLD | COL_LAYER_CAMERA);
-	REGISTER_COLLISION_MESH(scene, model_asset, FIELD_MESH_BASE"-Rockwalls", COL_LAYER_WORLD | COL_LAYER_CAMERA);
-	REGISTER_COLLISION_MESH(scene, model_asset, FIELD_MESH_BASE"-Railway", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	RegisterAllCollisionMeshes(scene, FIELD_MODEL, COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_ACTIVATE_ROOM(fieldtest)
@@ -92,38 +85,5 @@ SCENE_LIGHTNODES(fieldtest)
 
 SCENE_DRAWWORLD(fieldtest)
 {
-	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
-	STANDARD_SHADER_MATERIAL(stone_mat, FIELD_MATERIAL_STONE, scene);
-	STANDARD_SHADER_MATERIAL(grass_mat, FIELD_MATERIAL_GRASS, scene);
-	STANDARD_SHADER_MATERIAL(bridge_mat, FIELD_MATERIAL_BRIDGE, scene);
-	STANDARD_SHADER_MATERIAL(railway_mat, FIELD_MATERIAL_RAILWAY, scene);
-
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, FIELD_MESH_BASE"-Rockwalls"),
-		*stone_mat,
-		GetMatrix(scene),
-		FALSE
-	);
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, FIELD_MESH_BASE"-Grass"),
-		*grass_mat,
-		GetMatrix(scene),
-		FALSE
-	);
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, FIELD_MESH_BASE"-Bridge"),
-		*bridge_mat,
-		GetMatrix(scene),
-		FALSE
-	);
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, FIELD_MESH_BASE"-Railway"),
-		*railway_mat,
-		GetMatrix(scene),
-		FALSE
-	);
+	DrawAllModelMeshes(scene, FIELD_MODEL, loaded_materials);
 }
