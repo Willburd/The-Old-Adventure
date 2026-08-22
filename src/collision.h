@@ -19,7 +19,8 @@
 #define COL_LAYER_PROJECTILES (1 << 7)	// Projectiles
 #define COL_LAYER_ALL (~0)
 
-#define REGISTER_COLLISION_MESH(act, mdl_ast, mesh_name, layers) CollisionRegister(act, &mdl_ast->mdl->meshes[GetMeshIndex(mdl_ast->mesh_data, mesh_name)], layers);printf("Registered collision mesh: %s\n", mesh_name);
+#define REGISTER_COLLISION_MESH(act, mdl_ast, mesh_name, layers) CollisionRegister(act, &mdl_ast->mdl->meshes[GetMeshIndex(mdl_ast->mesh_data, mesh_name)], layers);printf("COLLISION: register mesh: %s\n", mesh_name);
+#define RESIGN_COLLISION_MESH(act, mdl_ast, mesh_name) CollisionResign(act, &mdl_ast->mdl->meshes[GetMeshIndex(mdl_ast->mesh_data, mesh_name)]);printf("COLLISION: resign mesh: %s\n", mesh_name);
 
 #include "tools.h"
 
