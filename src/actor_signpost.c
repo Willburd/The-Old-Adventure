@@ -11,7 +11,7 @@
 // Assets
 #define SIGN_MODEL ASSET_MODELS"/Objects/wood_sign.glb"
 static const char* loaded_materials[] = {
-	ASSET_MATERIALS"/Objects/wood_sign_a.mat"
+	ASSET_MATERIALS"/Objects/wood_sign_a.mat" // Sign
 };
 
 // private header
