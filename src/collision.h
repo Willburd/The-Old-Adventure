@@ -44,4 +44,6 @@ void CollisionCleanup(struct Actor* owner);
 RayCollision CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask);
 RayCollision CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask);
 
+void RegisterAllCollisionMeshes(struct Actor* actor, char* model_path, int collision_mask);
+
 #endif
