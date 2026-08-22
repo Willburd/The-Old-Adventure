@@ -364,5 +364,9 @@ Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_MATERIALS"/En
 void LoadMaterialArray(char* mat_list[], int length)
 {
     for (int i = 0; i < length; i++)
+    {
+        if (mat_list[i] == NULL) // Skip
+            continue;
         LoadAsset_Material(mat_list[i], FALSE);
+    }
 }

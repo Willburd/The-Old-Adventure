@@ -12,6 +12,7 @@
 #include "actor_fade.h"
 
 // Assets
+static const char* loaded_materials[] = { NULL };
 
 // Utility
 #define MENUINDEX utilityA1

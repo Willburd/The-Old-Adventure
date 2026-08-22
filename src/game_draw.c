@@ -480,7 +480,9 @@ void DrawAllModelMeshes(struct Actor* actor, char* model_path, char* material_pa
 	void* item;
 	while (hashmap_iter(model_asset->mesh_data, &iter, &item)) {
 		const MeshInfo* search_mesh = item;
-		char* mat_path = material_paths[index];
+		char* mat_path = material_paths[index++];
+		if (mat_path == NULL) // Skip
+			continue;
 		STANDARD_SHADER_MATERIAL(current_mat, mat_path, actor);
 		ToaDrawMesh(
 			model_asset,
@@ -489,7 +491,6 @@ void DrawAllModelMeshes(struct Actor* actor, char* model_path, char* material_pa
 			GetMatrix(actor),
 			FALSE
 		);
-		index++;
 	}
 }
 

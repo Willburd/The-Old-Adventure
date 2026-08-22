@@ -19,7 +19,7 @@
 #define COL_LAYER_PROJECTILES (1 << 7)	// Projectiles
 #define COL_LAYER_ALL (~0)
 
-#define REGISTER_COLLISION_MESH(act, mdl_ast, mesh_name, layers) CollisionRegister(act, &mdl_ast->mdl->meshes[GetMeshIndex(mdl_ast->mesh_data, mesh_name)], layers);
+#define REGISTER_COLLISION_MESH(act, mdl_ast, mesh_name, layers) CollisionRegister(act, &mdl_ast->mdl->meshes[GetMeshIndex(mdl_ast->mesh_data, mesh_name)], layers);printf("Registered collision mesh: %s\n", mesh_name);
 
 #include "tools.h"
 
