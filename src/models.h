@@ -7,6 +7,7 @@
 typedef struct {
 	void* resource_ptr;
 	char* mesh_name;
+	char* mat_name;
 	int mesh_index;
 } MeshInfo;
 

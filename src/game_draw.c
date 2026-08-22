@@ -469,6 +469,30 @@ void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix m
 		rlEnableBackfaceCulling();
 }
 
+void DrawAllModelMeshes(struct Actor* actor, char* model_path, char* material_paths[])
+{
+	Asset* model_asset = AssetGetPackage(model_path);
+	if (model_asset == NULL)
+		return;
+
+	int index = 0;
+	size_t iter = 0;
+	void* item;
+	while (hashmap_iter(model_asset->mesh_data, &iter, &item)) {
+		const MeshInfo* search_mesh = item;
+		char* mat_path = material_paths[index];
+		STANDARD_SHADER_MATERIAL(current_mat, mat_path, actor);
+		ToaDrawMesh(
+			model_asset,
+			GetMeshIndex(model_asset->mesh_data, search_mesh->mesh_name),
+			*current_mat,
+			GetMatrix(actor),
+			FALSE
+		);
+		index++;
+	}
+}
+
 void LoadRenderTextures()
 {
 	render_tex_pre = LoadRenderTexture(renderWidth, renderHeight);

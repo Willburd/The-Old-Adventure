@@ -259,12 +259,13 @@ Asset* LoadAsset_Model(char* path, int is_core)
                 cJSON* primitive_array = cJSON_GetObjectItem(mesh_entry, "primitives");
                 for (int p = 0; p < cJSON_GetArraySize(primitive_array); p++)
                 {
+                    char* material_data_name = "?";
                     cJSON* primative_entry = cJSON_GetArrayItem(primitive_array, p);
                     if (cJSON_HasObjectItem(primative_entry, "material"))
                     {
                         int prim_mat_index = cJSON_GetObjectItem(primative_entry, "material")->valueint;
                         cJSON* material_entry = cJSON_GetArrayItem(material_array, prim_mat_index);
-                        char* material_data_name = cJSON_GetObjectItem(material_entry, "name")->valuestring;
+                        material_data_name = cJSON_GetObjectItem(material_entry, "name")->valuestring;
                         mesh_identifier = TextFormat("%s-%s", node_data_name, material_data_name);
                     }
                     else
@@ -277,6 +278,8 @@ Asset* LoadAsset_Model(char* path, int is_core)
                     mesh_inf->resource_ptr = mesh_inf;
                     CHAR_STR_COPY(mesh_inf->mesh_name, mesh_identifier, NULL);
                     mesh_inf->mesh_index = mesh_load_index++;
+                    CHAR_STR_COPY(mesh_inf->mat_name, material_data_name, NULL);
+                    // Get material data for future reference
                     hashmap_set(asset->mesh_data, mesh_inf);
                     printf(" ->%s\n", mesh_inf->mesh_name);
                 }
@@ -357,3 +360,9 @@ Model* AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_MODELS"/Tools/unit_
 Sound* AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Engine/no_texture.png", snd);
 Music* AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_TEXTURES"/Engine/no_texture.png", mus);
 Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_MATERIALS"/Engine/no_material.mat", mat);
+
+void LoadMaterialArray(char* mat_list[], int length)
+{
+    for (int i = 0; i < length; i++)
+        LoadAsset_Material(mat_list[i], FALSE);
+}

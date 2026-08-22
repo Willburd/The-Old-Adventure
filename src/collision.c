@@ -162,3 +162,16 @@ RayCollision CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask
 	}
 	return furthest;
 }
+
+void RegisterAllCollisionMeshes(struct Actor* actor, char* model_path, int collision_mask)
+{
+	Asset* model_asset = AssetGetPackage(model_path);
+	if (model_asset == NULL)
+		return;
+	size_t iter = 0;
+	void* item;
+	while (hashmap_iter(model_asset->mesh_data, &iter, &item)) {
+		const MeshInfo* search_mesh = item;
+		REGISTER_COLLISION_MESH(actor, model_asset, search_mesh->mesh_name, collision_mask);
+	}
+}

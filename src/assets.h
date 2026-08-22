@@ -66,10 +66,11 @@ Asset* LoadAsset_Material(char* path, int is_core);
 int AssetExists(char* path);
 Asset* AssetGetPackage(char* path);
 
-int AssetExists(char* path);
 Texture2D* AssetGet_Texture(char* path);
 Model* AssetGet_Model(char* path);
 Sound* AssetGet_Sound(char* path);
 Music* AssetGet_Music(char* path);
 Material* AssetGet_Material(char* path);
+
+void LoadMaterialArray(char* mat_list[], int length);
 #endif
