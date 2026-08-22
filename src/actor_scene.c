@@ -7,6 +7,8 @@
 #include "assets.h"
 #include "tools.h"
 #include "game_draw.h"
+// Adventure
+#include "actor_entrance.h"
 
 // private header
 SceneID next_scene;
@@ -39,7 +41,33 @@ ACTOR_INIT(scene)
 		scene->func_preloadassets(scene);
 	ChangeSceneRoom(scene, 0, FALSE); // Activate the first room inside the scene.
 
-	// TODO - Your player scene entry logic here
+	// Adventure edit begin - Check for entrance actors, find the one we're using.
+	struct Actor* found_group[LAST_ENTRANCE] = { 0 };
+	FINDALLACTORTYPE(found_group, LAST_ENTRANCE, act_entrance);
+	struct Actor* entrance = NULL;
+	struct Actor* entrance_backup = NULL;
+	for (int i = 0; i < LAST_ENTRANCE; i++)
+	{
+		struct Actor* check_entrance = found_group[i];
+		if (!ACTOR_EXISTS(check_entrance))
+			continue;
+		// Check if the entrance type is valid for use
+		EntranceData* data = check_entrance->data;
+		if (data->entrance_id == next_entrance)
+			entrance = check_entrance;
+		if (data->entrance_id == ent_debugentrance)
+			entrance_backup = check_entrance;
+	}
+
+	// Spawn player
+	ACTOR_DESTROY_TYPE(act_player); // Only a single player
+	if (next_entrance < NO_PLAYER_SCENE)
+	{
+		ACTOR_FACTORY(NULL, act_player, current_scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+		if (entrance != NULL) // Enter the scene from this entrance if we have one
+			actor_entrance_startentry(entrance);
+	}
+	// Adventure edit end
 
 	// Finalize actors
 	if (ACTOR_HAS(scene, func_prepare_actors))
@@ -110,7 +138,7 @@ void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player)
 	struct Actor* player = NULL;
 	if (keep_player)
 	{
-		struct Actor* player = NULL; // FINDACTORTYPE(act_player); // TODO - Your player actor type here
+		struct Actor* player = FINDACTORTYPE(act_player); // Adventure edit - Use our player actor
 		if (player)
 			player->current_room_index = ACTOR_HAS_NO_ROOM_INDEX;
 	}

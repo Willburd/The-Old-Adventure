@@ -8,7 +8,28 @@
 #define PROP_VEL "vel"
 #define PROP_IDTAG "id_tag"
 
-// TODO - Your json property defines here
+// Adventure
 
+// Generic
+#define PROP_RADIUS "radius"
+
+// Exits
+#define PROP_TO_SCENE "to_scene"
+#define PROP_TO_ENTRANCE "to_entrance"
+
+// Entrance
+#define PROP_IS_ENTRANCE "is_entrance"
+#define PROP_ENDPOS "end_pos"
+
+// Torchs
+#define PROP_FIRECOLOR "fire_color"
+#define PROP_BURNEDOUT "burned_out"
+
+// Skybox
+#define PROP_SKYCAVE_ENABLED "is_cave"
+#define PROP_SKYCAVE_LIGHT "cave_light"
+
+// Signs
+#define PROP_TEXT_ID "text_id"
 
 #endif

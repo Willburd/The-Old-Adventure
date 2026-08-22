@@ -16,7 +16,10 @@ typedef enum
 	scene_boot,
 	// Debug
 	scene_debugmenu,
-	// TODO - Your scenes here
+	// Adventure
+	scene_title,
+	scene_test,
+	scene_fieldtest,
 	LAST_SCENE
 } SceneID;
 char* all_scene_names[500];
@@ -25,7 +28,10 @@ char* all_scene_names[500];
 SCENE_INIT(boot);
 // Debug
 SCENE_INIT(debugmenu);
-// TODO - Your scenes here
+// Adventure
+SCENE_INIT(title);
+SCENE_INIT(test);
+SCENE_INIT(fieldtest);
 
 #define SCENE_STRING_CASE(str) if (STRMATCH(string_id, #str)) return scene_## str
 inline SceneID SCENE_FROM_STRING(char* string_id)
@@ -34,7 +40,10 @@ inline SceneID SCENE_FROM_STRING(char* string_id)
 	SCENE_STRING_CASE(boot);
 	// Debug
 	SCENE_STRING_CASE(debugmenu);
-	// TODO - Your scenes here
+	// Adventure
+	SCENE_STRING_CASE(title);
+	SCENE_STRING_CASE(test);
+	SCENE_STRING_CASE(fieldtest);
 	return LAST_SCENE;
 }
 #undef SCENE_STRING_CASE
@@ -47,7 +56,10 @@ inline void SceneNamePredef()
 	PREDEF_SCENE(boot);
 	// Debug
 	PREDEF_SCENE(debugmenu);
-	// TODO - Your scenes here
+	// Adventure
+	PREDEF_SCENE(title);
+	PREDEF_SCENE(test);
+	PREDEF_SCENE(fieldtest);
 }
 #undef PREDEF_SCENE
 
@@ -58,7 +70,10 @@ inline void SCENE_LIBRARY(struct Actor* scene, SceneID scene_id)
 	MAKE_SCENE_INIT(boot);
 	// Debug
 	MAKE_SCENE_INIT(debugmenu);
-	// TODO - Your scenes here
+	// Adventure
+	MAKE_SCENE_INIT(title);
+	MAKE_SCENE_INIT(test);
+	MAKE_SCENE_INIT(fieldtest);
 
 
 	printf("********************************************************************************\n");

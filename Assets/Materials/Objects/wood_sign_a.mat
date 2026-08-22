@@ -1,0 +1,5 @@
+// Textures
+#ALBED /Objects/sign_wood_a.png FILT_BI WRAP_REPEAT
+
+// Shader
+#SHADR /standard.vert /standard.frag

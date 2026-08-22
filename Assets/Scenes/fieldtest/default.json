@@ -1,0 +1,93 @@
+{
+   "time_paused": 0,
+   "is_hot": 0,
+   "is_cold": 0,
+   "is_raining": 0,
+   "actors":[
+	  {
+		"type": "skybox"
+	  },
+	  
+	  {
+		"type": "entrance",
+		"is_entrance": "debugentrance",
+		"pos": [2, 0, 2],
+		"end_pos": [-1, 0, 2]
+	  },
+	  {
+		"type": "entrance",
+		"is_entrance": "caveA",
+		"pos": [-0.2, -1.1, 17.5],
+		"end_pos": [-0.21, -1.1, 12]
+	  },
+	  
+	  {
+		"type": "trigger_exit",
+		"pos": [0,0,36],
+		"to_scene": "test",
+		"to_entrance": "debugentrance",
+		"radius": 18
+	  },
+	  
+	  {
+		"type": "woodtorch",
+		"pos": [8.3, -1.3, 12.42],
+		"fire_color": [ 0, 255, 0, 255]
+	  },
+	  {
+		"type": "woodtorch",
+		"pos": [-10.3, -1.0, 13.04]
+	  },
+	  {
+		"type": "woodtorch",
+		"pos": [6.11, 0.16, -14.42],
+		"burned_out": 1
+	  },
+	  {
+		"type": "hole",
+		"pos": [-6.67, 0.16, -14.74],
+		"to_scene": "fieldtest",
+		"to_entrance": "caveA",
+		"radius": 1
+	  },
+	  {
+		"type": "crate",
+		"pos": [14.3, -1.6, -1.2]
+	  },
+	  {
+		"type": "crate",
+		"pos": [14.2, -1.6, -3.45],
+		"rot": [0, 12, 0]
+	  },
+	  {
+		"type": "crate",
+		"pos": [14.2, 0.3, -2.1],
+		"rot": [0, 40, 0]
+	  },
+	  {
+		"type": "signpost",
+		"pos": [-7.5,-1.49,15.1],
+		"text_id": "Field_Test_Sign"
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [10, -1.19, 7]
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [11, -1.19, 7]
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [12, -1.19, 7]
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [13, -1.19, 7]
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [14, -1.19, 7]
+	  }
+   ]
+}

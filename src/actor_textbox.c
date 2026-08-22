@@ -39,8 +39,8 @@ static void AdvanceText(struct Actor* textbox);
 ACTOR_INIT(textbox)
 {
 	// Lock to textbox gamestate
-	gameplay_state &= ~GAMESTATE_GAMEPLAY;
-	gameplay_state |= GAMESTATE_TEXTBOX;
+	EXIT_GAMESTATE(GAMESTATE_GAMEPLAY);
+	ENTER_GAMESTATE(GAMESTATE_TEXTBOX);
 
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_TEXTBOX;
@@ -108,9 +108,9 @@ ACTOR_CLEANUP(textbox)
 	TextboxData* textbox_data = (TextboxData*)actor->data;
 	RELEASE(textbox_data->current_segment_buffer);
 	// Return gameplay
-	gameplay_state &= ~GAMESTATE_TEXTBOX;
-	if(!(gameplay_state & GAMESTATE_CUTSCENE)) // If we are not in a cutscene
-		gameplay_state |= GAMESTATE_GAMEPLAY; // Return to normal gameplay
+	EXIT_GAMESTATE( GAMESTATE_TEXTBOX );
+	if(!CHECK_GAMESTATE( GAMESTATE_CUTSCENE )) // If we are not in a cutscene
+		ENTER_GAMESTATE( GAMESTATE_GAMEPLAY ); // Return to normal gameplay
 }
 
 ACTOR_POSTDRAWHUD(textbox)
@@ -163,10 +163,48 @@ static void ProgressSegment(struct Actor* textbox)
 		}
 		break;
 
-		case 'C': // Start cutscene
+		case 'I': // Interact with id_tag, but don't start cutscene or end textbox.
+		case 'C': // Start cutscene with id_tag, end text box as well.
 		{
-			gameplay_state |= GAMESTATE_CUTSCENE; // engage cutscene mode
-			ACTOR_DESTROY(textbox);
+			// Extract id_tag
+			textbox_data->token_index++; // Advance after token
+			textbox_data->text_end_index++;
+			textbox_data->token_index++; // Advance after :
+			textbox_data->text_end_index++;
+			// Store the id_tag ahead
+			unsigned int buf_index = 0;
+			MALLOC_SIZE(char, 128, buffer, '\0', NULL)
+			// Scan buffer
+			char current_char = textbox_data->current_text[textbox_data->token_index];
+			while (current_char != ' ' && current_char != '\0' && current_char != '\n')
+			{
+				// Built id tag
+				buffer[buf_index] = current_char;
+				// Advance
+				textbox_data->token_index++;
+				textbox_data->text_end_index++;
+				buf_index++;
+				current_char = textbox_data->current_text[textbox_data->token_index];
+			}
+			textbox_data->token_index++; // Advance after space
+
+			// Trigger interaction
+			struct Actor* linked_actor = FINDACTOR_BYTAG(buffer);
+			if (linked_actor != NULL && ACTOR_HAS(linked_actor, func_remote_interact))
+				linked_actor->func_remote_interact(linked_actor, textbox);
+			RELEASE(buffer);
+
+			// engage cutscene mode
+			if (token == 'C')
+			{
+				ENTER_GAMESTATE(GAMESTATE_CUTSCENE);
+				ACTOR_DESTROY(textbox);
+				break;
+			}
+			// Advance text
+			textbox_data->text_progress = 0.0f;
+			textbox_data->current_segment_index = 0;
+			AdvanceText(textbox);
 		}
 		break;
 	}
@@ -184,6 +222,7 @@ static int ScanToken(struct Actor* textbox, unsigned int index)
 	{
 	case 'A': // Advance
 	case 'E': // End
+	case 'I':
 	case 'C': // Start cutscene
 		textbox_data->current_segment_buffer[textbox_data->current_segment_index++] = '\0'; // ensure current buffer is ended
 		return TRUE;
