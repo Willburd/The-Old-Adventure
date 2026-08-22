@@ -7,7 +7,9 @@
 
 // Assets
 #define ROCK_MODEL ASSET_MODELS"/Objects/smallrock.glb"
-#define ROCK_MATERIAL ASSET_MATERIALS"/Natural/stone_B.mat"
+static const char* loaded_materials[] = {
+	ASSET_MATERIALS"/Natural/stone_B.mat"
+};
 
 // private header
 ACTOR_PRELOADASSETS(smallrock);
@@ -36,8 +38,8 @@ ACTOR_INIT(smallrock)
 ACTOR_PRELOADASSETS(smallrock)
 {
 	// Load model
-	Asset* model_asset = LoadAsset_Model(ROCK_MODEL, FALSE);
-	LoadAsset_Material(ROCK_MATERIAL, FALSE);
+	LoadAsset_Model(ROCK_MODEL, FALSE);
+	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(actor, AssetGetPackage(SIMPLE_ACTOR_COLLISION_MODEL), DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
@@ -47,14 +49,5 @@ ACTOR_DRAWWORLD(smallrock)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	Asset* model_asset = AssetGetPackage(ROCK_MODEL);
-	STANDARD_SHADER_MATERIAL(rock_mat, ROCK_MATERIAL, actor);
-
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "Rock-Main"),
-		*rock_mat,
-		GetMatrix(actor),
-		FALSE
-	);
+	DrawAllModelMeshes(actor, ROCK_MODEL, loaded_materials);
 }

@@ -8,7 +8,9 @@
 
 // Assets
 #define WOODTORCH_MODEL ASSET_MODELS"/Objects/wood_torch.glb"
-#define WOODTORCH_MATERIAL ASSET_MATERIALS"/Objects/wood_door_a.mat"
+static const char* loaded_materials[] = {
+	ASSET_MATERIALS"/Objects/wood_door_a.mat"
+};
 
 // private header
 ACTOR_PRELOADASSETS(woodtorch);
@@ -36,8 +38,8 @@ ACTOR_INIT(woodtorch)
 ACTOR_PRELOADASSETS(woodtorch)
 {
 	// Load model
-	Asset* model_asset = LoadAsset_Model(WOODTORCH_MODEL, FALSE);
-	LoadAsset_Material(WOODTORCH_MATERIAL, FALSE);
+	LoadAsset_Model(WOODTORCH_MODEL, FALSE);
+	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(actor, AssetGetPackage(SIMPLE_ACTOR_COLLISION_MODEL), DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
@@ -70,15 +72,5 @@ ACTOR_DRAWWORLD(woodtorch)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	Asset* model_asset = AssetGetPackage(WOODTORCH_MODEL);
-	STANDARD_SHADER_MATERIAL(mat, WOODTORCH_MATERIAL, actor);
-
-	int main_mesh_index = GetMeshIndex(model_asset->mesh_data, "Torch-Torch");
-	ToaDrawMesh(
-		model_asset,
-		main_mesh_index,
-		*mat,
-		GetMatrix(actor),
-		TRUE
-	);
+	DrawAllModelMeshes(actor, WOODTORCH_MODEL, loaded_materials);
 }

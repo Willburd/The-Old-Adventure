@@ -5,7 +5,9 @@
 
 // Assets
 #define CRATE_MODEL ASSET_MODELS"/Objects/crate.glb"
-#define CRATE_MATERIAL ASSET_MATERIALS"/Objects/wood_crate_a.mat"
+static const char* loaded_materials[] = {
+	ASSET_MATERIALS"/Objects/wood_crate_a.mat"
+};
 
 // private header
 ACTOR_PRELOADASSETS(crate);
@@ -31,25 +33,16 @@ ACTOR_INIT(crate)
 ACTOR_PRELOADASSETS(crate)
 {
 	// Load model
-	Asset* model_asset = LoadAsset_Model(CRATE_MODEL, FALSE);
-	LoadAsset_Material(CRATE_MATERIAL, FALSE);
+	LoadAsset_Model(CRATE_MODEL, FALSE);
+	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
 
 	// Set collision data
-	REGISTER_COLLISION_MESH(actor, model_asset, "Crate-Main", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	RegisterAllCollisionMeshes(actor, CRATE_MODEL, COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 ACTOR_DRAWWORLD(crate)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	Asset* model_asset = AssetGetPackage(CRATE_MODEL);
-
-	STANDARD_SHADER_MATERIAL(crate_mat, CRATE_MATERIAL, actor);
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "Crate-Main"),
-		*crate_mat,
-		GetMatrix(actor),
-		FALSE
-	);
+	DrawAllModelMeshes(actor, CRATE_MODEL, loaded_materials);
 }

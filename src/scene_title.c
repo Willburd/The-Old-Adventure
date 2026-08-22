@@ -6,6 +6,7 @@
 #include "scene_entry.h"
 
 // Assets
+static const char* loaded_materials[] = { NULL };
 
 // private header
 SCENE_ACTIVATE_ROOM(title);

@@ -20,7 +20,7 @@
 
 // Assets
 #define FIELD_MODEL ASSET_MODELS"/Scenes/test_field.glb"
-static char* loaded_materials[] = {
+static const char* loaded_materials[] = {
 	ASSET_MATERIALS"/Natural/grass_A.mat",
 	ASSET_MATERIALS"/Objects/wood_door_a.mat",
 	ASSET_MATERIALS"/Natural/stone_B.mat",

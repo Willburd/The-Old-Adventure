@@ -5,7 +5,7 @@
 #include "game_draw.h"
 
 // Assets
-#define MATERIAL_ANIM_TEST ASSET_MATERIALS"/Objects/skinned_example.mat"
+#define MATERIAL_ANIM_TEST ASSET_MATERIALS"/Engine/skinned_example.mat"
 #define MODEL_ANIM_TEST ASSET_MODELS"/Tools/robot.glb"
 
 // private header

@@ -13,8 +13,8 @@
 
 // Assets
 #define TESTROOM_MODEL ASSET_MODELS"/Scenes/test_room.glb"
-static char* loaded_materials[] = {
-	ASSET_MATERIALS"/Engine/example.mat",
+static const char* loaded_materials[] = {
+	NULL, // reference cube
 	ASSET_MATERIALS"/Natural/stone_B.mat"
 };
 
@@ -43,11 +43,11 @@ SCENE_INIT(test)
 SCENE_PRELOADASSETS(test)
 {
 	// Load model
-	LoadAsset_Model(TESTROOM_MODEL, FALSE);
+	Asset* mdl_asset = LoadAsset_Model(TESTROOM_MODEL, FALSE);
 	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
 
 	// Set collision data
-	RegisterAllCollisionMeshes(scene, TESTROOM_MODEL, COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, mdl_asset, "test_room-Main", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_ACTIVATE_ROOM(test)

@@ -10,7 +10,9 @@
 
 // Assets
 #define SIGN_MODEL ASSET_MODELS"/Objects/wood_sign.glb"
-#define SIGN_MATERIAL ASSET_MATERIALS"/Objects/wood_sign_a.mat"
+static const char* loaded_materials[] = {
+	ASSET_MATERIALS"/Objects/wood_sign_a.mat"
+};
 
 // private header
 ACTOR_PRELOADASSETS(signpost);
@@ -49,8 +51,8 @@ ACTOR_INIT(signpost)
 ACTOR_PRELOADASSETS(signpost)
 {
 	// Load model
-	Asset* model_asset = LoadAsset_Model(SIGN_MODEL, FALSE);
-	LoadAsset_Material(SIGN_MATERIAL, FALSE);
+	LoadAsset_Model(SIGN_MODEL, FALSE);
+	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(actor, AssetGetPackage(SIMPLE_ACTOR_COLLISION_MODEL), DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
@@ -105,16 +107,7 @@ ACTOR_DRAWWORLD(signpost)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	Asset* model_asset = AssetGetPackage(SIGN_MODEL);
-
-	STANDARD_SHADER_MATERIAL(sign_mat, SIGN_MATERIAL, actor);
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "Sign-Main"),
-		*sign_mat,
-		GetMatrix(actor),
-		FALSE
-	);
+	DrawAllModelMeshes(actor, SIGN_MODEL, loaded_materials);
 }
 
 ACTOR_CLEANUP(signpost)
