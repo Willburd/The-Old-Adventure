@@ -19,7 +19,7 @@ uint64_t text_hash(const void* item, uint64_t seed0, uint64_t seed1);
 void text_free(void* item);
 
 void LoadBuiltinText();
-void LoadTextData(char* text_file_path);
+void LoadTextData(char* text_id);
 void DumpTextData();
 char* GetText(char* string_id);
 
