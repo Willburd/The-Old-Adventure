@@ -73,7 +73,7 @@ ACTOR_POSTUPDATE(roomfade)
 	if (Vector3DotProduct(Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation), VEC3DIRECTION(actor->position, player->position)) > 0)
 		return;
 	RoomFadeData* fade_data = actor->data;
-	ChangeSceneRoom(GetCurrentScene(), fade_data->goal_room, TRUE);
+	ChangeSceneRoom(GetCurrentScene(), fade_data->goal_room, TRUE, FALSE);
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE;
 }
 
