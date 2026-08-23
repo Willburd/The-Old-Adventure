@@ -53,9 +53,38 @@ SCENE_PRELOADASSETS(test)
 
 SCENE_ACTIVATE_ROOM(test)
 {
+
 }
 
 SCENE_DRAWWORLD(test)
 {
-	DrawAllModelMeshes(scene, TESTROOM_MODEL, loaded_materials);
+	Asset* model_asset = AssetGetPackage(TESTROOM_MODEL);
+	STANDARD_SHADER_MATERIAL(stone_mat, loaded_materials[1], scene);
+
+	switch (scene->current_room_index)
+	{
+		case 0:
+		{
+			ToaDrawMesh(
+				model_asset,
+				GetMeshIndex(model_asset->mesh_data, "test_room-Main"),
+				*stone_mat,
+				GetMatrix(scene),
+				FALSE
+			);
+		}
+		break;
+
+		case 1:
+		{
+			ToaDrawMesh(
+				model_asset,
+				GetMeshIndex(model_asset->mesh_data, "side_room-Main"),
+				*stone_mat,
+				GetMatrix(scene),
+				FALSE
+			);
+		}
+		break;
+	}
 }

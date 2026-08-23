@@ -28,7 +28,7 @@ static void actor_hole_finishleaving(struct Actor* exit);
 
 ACTOR_INIT(hole)
 {
-	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | GAMESTATE_TRANSITION;
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION;
 	ACTOR_REGISTER_PRELOADASSETS(hole);
 	ACTOR_REGISTER_JSON_INIT(hole);
 	ACTOR_REGISTER_UPDATE(hole);
@@ -92,7 +92,7 @@ ACTOR_TRANSPARENTDRAWWORLD(hole)
 	STANDARD_SHADER_MATERIAL(hole_mat, HOLE_MATERIAL_MAIN, actor);
 	Transform hole_transform = {
 		.translation = Vector3Add(actor->position, (Vector3) { 0.0f, 0.1f, 0.0f }),
-		.rotation = QuaternionMultiply(QuaternionFlatLookAt(cam_main.position, actor->position, VEC3UP), QuaternionFromEuler(270.0f * DEG2RAD, 0.0f, 0.0f)),
+		.rotation = QuaternionMultiply(QuaternionFlatLookAt(actor->position, cam_main.position, VEC3UP), QuaternionFromEuler(90.0f * DEG2RAD, 0.0f, 0.0f)),
 		.scale = Vector3Multiply(actor->scale, (Vector3) { 2.0f, 2.0f, 2.0f })
 	};
 

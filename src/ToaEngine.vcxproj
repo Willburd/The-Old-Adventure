@@ -159,6 +159,7 @@
     <ClCompile Include="actor_player.c" />
     <ClCompile Include="actor_factory.c" />
     <ClCompile Include="actor_fadeout.c" />
+    <ClCompile Include="actor_roomfade.c" />
     <ClCompile Include="actor_scene.c" />
     <ClCompile Include="actor_signpost.c" />
     <ClCompile Include="actor_skybox.c" />
