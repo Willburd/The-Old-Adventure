@@ -9,11 +9,13 @@
 #include "game_draw.h"
 
 // private header
-SceneID next_scene;
-EntranceID next_entrance;
-struct Actor* current_scene = NULL;
-int unload_previous_scene = TRUE;
+static SceneID next_scene;
+static int next_room = -1;
+static EntranceID next_entrance;
+static struct Actor* current_scene = NULL;
+static int unload_previous_scene = TRUE;
 static void LoadRoomLayer(struct Actor* scene, char* layer_path);
+static void FinalizeRoomChange();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -37,7 +39,7 @@ ACTOR_INIT(scene)
 	// Load assets. This has polymorphed to the SCENE'S assets since the initial call to preloadassets in actor library.
 	if (ACTOR_HAS(scene, func_preloadassets))
 		scene->func_preloadassets(scene);
-	ChangeSceneRoom(scene, 0, FALSE); // Activate the first room inside the scene.
+	ChangeSceneRoom(scene, 0, FALSE, TRUE); // Activate the first room inside the scene.
 
 	// TODO - Your player scene entry logic here
 
@@ -72,10 +74,12 @@ struct Actor* GetCurrentScene()
 // Loads the next scene. Called before the preupdate loop in gametick to avoid being mangled by unloading assets.
 void HandleLoadNextScene()
 {
-	if (next_scene < 0)
-		return;
-	ACTOR_FACTORY(NULL, act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
-	next_scene = -1;
+	if (next_scene >= 0)
+	{
+		ACTOR_FACTORY(NULL, act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+		next_scene = -1;
+	}
+	FinalizeRoomChange();
 }
 
 // Destroys all actors that are children of the current scene, and the scene itself. Optionally unloading all non-core loaded assets with it.
@@ -104,7 +108,7 @@ void LoadCustomLayer(struct Actor* scene, char* custom_layer)
 }
 
 // Loads the specified room index of the current scene, while deleting all actors outside of it. Resets the current room if used to go to the same index as current.
-void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player)
+void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, int instant)
 {
 	// If we're retaining the player we need to do some magic.
 	struct Actor* player = NULL;
@@ -121,14 +125,15 @@ void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player)
 	if (ACTOR_HAS(scene, func_deactivate_room))
 		scene->func_deactivate_room(scene, scene->current_room_index);
 	ACTOR_DESTROY_IN_ROOM(current_scene->current_room_index);
+	printf(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n");
+	printf("CHANGED ROOM: %i -> %i \n", scene->current_room_index, new_room_index);
+	printf("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''\n");
+	next_room = new_room_index;
 	// Activate the first room inside the scene.
-	scene->current_room_index = new_room_index;
-	if (ACTOR_HAS(scene, func_activate_room))
-		scene->func_activate_room(scene, scene->current_room_index, next_entrance);
-	LoadSceneJSONActors(scene);
-	// Restore player's room link
 	if (player)
 		player->current_room_index = current_scene->current_room_index;
+	if (instant)
+		FinalizeRoomChange();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,4 +174,15 @@ static void LoadRoomLayer(struct Actor* scene, char* layer_path)
 
 	// Cleanup
 	cJSON_Delete(json_data);
+}
+
+static void FinalizeRoomChange()
+{
+	if (next_room < 0)
+		return;
+	current_scene->current_room_index = next_room;
+	next_room = -1;
+	if (ACTOR_HAS(current_scene, func_activate_room))
+		current_scene->func_activate_room(current_scene, current_scene->current_room_index, next_entrance);
+	LoadSceneJSONActors(current_scene);
 }
