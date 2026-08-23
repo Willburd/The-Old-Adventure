@@ -32,4 +32,7 @@
 // Signs
 #define PROP_TEXT_ID "text_id"
 
+// RoomFade
+#define PROP_GOALROOM "goal_room"
+
 #endif

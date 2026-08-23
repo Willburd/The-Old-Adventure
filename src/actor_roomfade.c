@@ -3,6 +3,7 @@
 #include "game_draw.h"
 #include "core_assets.h"
 #include "actor_scene.h"
+#include "json_properties.h"
 
 // Utility
 #define FADE_LIMIT actor->scale.z
@@ -14,6 +15,12 @@
 ACTOR_PRELOADASSETS(roomfade);
 ACTOR_TRANSPARENTDRAWWORLD(roomfade);
 ACTOR_POSTUPDATE(roomfade);
+ACTOR_JSON_INIT(roomfade);
+
+typedef struct
+{
+	int goal_room;
+} RoomFadeData;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,6 +32,7 @@ ACTOR_INIT(roomfade)
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;
 	actor->blend_color = ColorToVector4(BLACK);
 	ACTOR_REGISTER_PRELOADASSETS(roomfade);
+	ACTOR_REGISTER_JSON_INIT(roomfade);
 	ACTOR_REGISTER_POSTUPDATE(roomfade);
 	ACTOR_REGISTER_TRANSPARENTDRAWWORLD(roomfade);
 }
@@ -35,7 +43,22 @@ ACTOR_INIT(roomfade)
 
 ACTOR_PRELOADASSETS(roomfade)
 {
+	// Set data
+	MALLOC_ACTOR_DATA(RoomFadeData, actor->data);
+	RoomFadeData* sign_data = actor->data;
+	sign_data->goal_room = 0;
+}
 
+ACTOR_JSON_INIT(roomfade)
+{
+	if (file_data == NULL)
+		return;
+
+	RoomFadeData* fade_data = actor->data;
+	if (cJSON_GetObjectItem(file_data, PROP_GOALROOM))
+	{
+		fade_data->goal_room = cJSON_GetObjectItem(file_data, PROP_GOALROOM)->valueint;
+	}
 }
 
 ACTOR_POSTUPDATE(roomfade)
