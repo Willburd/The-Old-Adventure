@@ -4,12 +4,6 @@
 		"type": "tree",
 		"id_tag": "test_tree",
 		"pos": [34.24, -8.18, 8.59]
-	  },
-	  
-	  {
-		"type": "roomfade",
-		"pos": [46, -8, 0],
-		"scl": [10, 10, 10]
 	  }
    ]
 }

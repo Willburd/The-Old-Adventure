@@ -24,19 +24,6 @@
 		"to_scene": "fieldtest",
 		"to_entrance": "caveA",
 		"radius": 10
-	  },
-	  
-	  {
-		"type": "woodtorch",
-		"pos": [ 0, 0, 0]
-	  },
-	  {
-		"type": "crate",
-		"pos": [3.8, 0, -8.8]
-	  },
-	  {
-		"type": "animationtest",
-		"pos": [ -4, 0, -5]
 	  }
 	]
 }

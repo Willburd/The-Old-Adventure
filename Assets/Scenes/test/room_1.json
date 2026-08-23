@@ -1,0 +1,24 @@
+{
+   "actors":[
+	  {
+		"type": "skybox",
+		"is_cave": 1,
+		"cave_light": 0.1
+	  },
+	  {
+		"type": "roomfade",
+		"pos": [-10, 1, -2.5],
+		"rot": [0, 90, 0],
+		"scl": [10, 10, 15]
+	  },
+	  
+	  {
+		"type": "woodtorch",
+		"pos": [ -30, 0, 10]
+	  },
+	  {
+		"type": "woodtorch",
+		"pos": [ -30, 0, -15]
+	  }
+	]
+}
