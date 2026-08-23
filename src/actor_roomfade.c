@@ -45,8 +45,8 @@ ACTOR_PRELOADASSETS(roomfade)
 {
 	// Set data
 	MALLOC_ACTOR_DATA(RoomFadeData, actor->data);
-	RoomFadeData* sign_data = actor->data;
-	sign_data->goal_room = 0;
+	RoomFadeData* fade_data = actor->data;
+	fade_data->goal_room = 0;
 }
 
 ACTOR_JSON_INIT(roomfade)
@@ -72,7 +72,8 @@ ACTOR_POSTUPDATE(roomfade)
 	// We should ONLY ever exist for THAT room! Don't be in a global layer!!
 	if (Vector3DotProduct(Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation), VEC3DIRECTION(actor->position, player->position)) > 0)
 		return;
-	ChangeSceneRoom(GetCurrentScene(), 1, TRUE);
+	RoomFadeData* fade_data = actor->data;
+	ChangeSceneRoom(GetCurrentScene(), fade_data->goal_room, TRUE);
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE;
 }
 
