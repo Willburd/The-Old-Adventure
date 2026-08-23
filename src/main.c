@@ -99,7 +99,7 @@ int main(void)
             LoadCoreTextAssets();
             // Reload current room without clearing player
             struct Actor* current_scene = GetCurrentScene();
-            ChangeSceneRoom(current_scene, current_scene->current_room_index, TRUE);
+            ChangeSceneRoom(current_scene, current_scene->current_room_index, TRUE, FALSE);
         }
         if (IsKeyPressed(KEY_F6)) // Collision Debug
         {
