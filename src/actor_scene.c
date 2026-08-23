@@ -43,10 +43,6 @@ ACTOR_INIT(scene)
 
 	// TODO - Your player scene entry logic here
 
-	// Finalize actors
-	if (ACTOR_HAS(scene, func_prepare_actors))
-		scene->func_prepare_actors(scene, scene->current_room_index, next_entrance);
-
 	printf("\n..............................................................................\n");
 	printf("CHANGE FINISHED ==> %s \n", scene->actor_type_name);
 	printf("********************************************************************************\n");
@@ -125,13 +121,13 @@ void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, i
 	if (ACTOR_HAS(scene, func_deactivate_room))
 		scene->func_deactivate_room(scene, scene->current_room_index);
 	ACTOR_DESTROY_IN_ROOM(current_scene->current_room_index);
-	printf(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n");
-	printf("CHANGED ROOM: %i -> %i \n", scene->current_room_index, new_room_index);
-	printf("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''\n");
+	// Prepare to enter the new room. Will happen next update, unless this was called with instant = TRUE.
 	next_room = new_room_index;
-	// Activate the first room inside the scene.
+	printf(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n");
+	printf("CHANGED ROOM: %i -> %i \n", scene->current_room_index, next_room);
+	printf("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''\n");
 	if (player)
-		player->current_room_index = current_scene->current_room_index;
+		player->current_room_index = next_room;
 	if (instant)
 		FinalizeRoomChange();
 }
@@ -181,9 +177,13 @@ static void FinalizeRoomChange()
 {
 	if (next_room < 0)
 		return;
+	// Enter room index
 	current_scene->current_room_index = next_room;
 	next_room = -1;
 	if (ACTOR_HAS(current_scene, func_activate_room))
 		current_scene->func_activate_room(current_scene, current_scene->current_room_index, next_entrance);
 	LoadSceneJSONActors(current_scene);
+	// Finalize actors
+	if (ACTOR_HAS(current_scene, func_prepare_actors))
+		current_scene->func_prepare_actors(current_scene, current_scene->current_room_index, next_entrance);
 }
