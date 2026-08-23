@@ -1,0 +1,5 @@
+// Textures
+#ALBED /Engine/white.png FILT_BI WRAP_REPEAT
+
+// Shader
+#SHADR /unshaded.vert /unshaded.frag
