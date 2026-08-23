@@ -127,13 +127,13 @@ ACTOR_PREDRAWWORLD(skybox)
 	float orbit_distance = 500.0f;
 	Transform sun_transform = {
 		.translation = Vector3Add(actor->position, Vector3Scale(Vector3RotateByQuaternion(VEC3RIGHT, QuaternionFromEuler(0.0f, 0.0f, orbit_angle)), orbit_distance)),
-		.rotation = QuaternionFromVector3ToVector3(VEC3BACKWARD, VEC3DIRECTION(sun_transform.translation, actor->position)),
+		.rotation = QuaternionFromVector3ToVector3(VEC3FORWARD, VEC3DIRECTION(sun_transform.translation, actor->position)),
 		.scale = (Vector3){ sun_scale, sun_scale, sun_scale }
 	};
 	float moon_scale = Lerp(80.0f, 200.0f, GetDawnIntensity() + GetDuskIntensity()); // So the moon does the horizon thing
 	Transform moon_transform = {
 		.translation = Vector3Add(actor->position, Vector3Scale(Vector3RotateByQuaternion(VEC3LEFT, QuaternionFromEuler(0.0f, 0.0f, orbit_angle)), orbit_distance)),
-		.rotation = QuaternionFromVector3ToVector3(VEC3BACKWARD, VEC3DIRECTION(moon_transform.translation, actor->position)),
+		.rotation = QuaternionFromVector3ToVector3(VEC3FORWARD, VEC3DIRECTION(moon_transform.translation, actor->position)),
 		.scale = (Vector3){ moon_scale, moon_scale, moon_scale }
 	};
 
