@@ -135,7 +135,7 @@ void LoadCustomLayer(struct Actor* scene, char* custom_layer)
 	LoadRoomLayer(scene, TextFormat("%s/%s/%s.json", ASSET_SCENE, scene->actor_type_name, custom_layer));
 }
 
-// Loads the specified room index of the current scene, while deleting all actors outside of it. Resets the current room if used to go to the same index as current.
+// Loads the specified room index of the current scene, while deleting all actors outside of it. Resets the current room if used to go to the same index as current. Instant argument should only be used when loading a newly created scene actor, and not during room changes.
 void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, int instant)
 {
 	// If we're retaining the player we need to do some magic.
@@ -204,6 +204,7 @@ static void LoadRoomLayer(struct Actor* scene, char* layer_path)
 	cJSON_Delete(json_data);
 }
 
+// Actors require a gap between loading and unloading entire scenes. This is called from the game update before pre-update. At the same time when scene-loading is handled. Can also be called instantly from ChangeSceneRoom() on a scene's first load.
 static void FinalizeRoomChange()
 {
 	if (next_room < 0)
