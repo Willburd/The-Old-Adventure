@@ -6,7 +6,7 @@
 		"cave_light": 0.1
 	  },
 	  {
-		"type": "roomfade",
+		"type": "roomswap",
 		"pos": [-10, 1, -2.5],
 		"rot": [0, 90, 0],
 		"scl": [10, 10, 15],

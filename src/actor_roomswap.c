@@ -12,56 +12,56 @@
 #define DARKNESS_MATERIAL_MAIN ASSET_MATERIALS"/Engine/black.mat"
 
 // private header
-ACTOR_PRELOADASSETS(roomfade);
-ACTOR_TRANSPARENTDRAWWORLD(roomfade);
-ACTOR_POSTUPDATE(roomfade);
-ACTOR_JSON_INIT(roomfade);
+ACTOR_PRELOADASSETS(roomswap);
+ACTOR_TRANSPARENTDRAWWORLD(roomswap);
+ACTOR_POSTUPDATE(roomswap);
+ACTOR_JSON_INIT(roomswap);
 
 typedef struct
 {
 	int goal_room;
-} RoomFadeData;
+} RoomSwapData;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ACTOR_INIT(roomfade)
+ACTOR_INIT(roomswap)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;
 	actor->blend_color = ColorToVector4(BLACK);
-	ACTOR_REGISTER_PRELOADASSETS(roomfade);
-	ACTOR_REGISTER_JSON_INIT(roomfade);
-	ACTOR_REGISTER_POSTUPDATE(roomfade);
-	ACTOR_REGISTER_TRANSPARENTDRAWWORLD(roomfade);
+	ACTOR_REGISTER_PRELOADASSETS(roomswap);
+	ACTOR_REGISTER_JSON_INIT(roomswap);
+	ACTOR_REGISTER_POSTUPDATE(roomswap);
+	ACTOR_REGISTER_TRANSPARENTDRAWWORLD(roomswap);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ACTOR_PRELOADASSETS(roomfade)
+ACTOR_PRELOADASSETS(roomswap)
 {
 	// Set data
-	MALLOC_ACTOR_DATA(RoomFadeData, actor->data);
-	RoomFadeData* fade_data = actor->data;
+	MALLOC_ACTOR_DATA(RoomSwapData, actor->data);
+	RoomSwapData* fade_data = actor->data;
 	fade_data->goal_room = 0;
 }
 
-ACTOR_JSON_INIT(roomfade)
+ACTOR_JSON_INIT(roomswap)
 {
 	if (file_data == NULL)
 		return;
 
-	RoomFadeData* fade_data = actor->data;
+	RoomSwapData* swap_data = actor->data;
 	if (cJSON_GetObjectItem(file_data, PROP_GOALROOM))
 	{
-		fade_data->goal_room = cJSON_GetObjectItem(file_data, PROP_GOALROOM)->valueint;
+		swap_data->goal_room = cJSON_GetObjectItem(file_data, PROP_GOALROOM)->valueint;
 	}
 }
 
-ACTOR_POSTUPDATE(roomfade)
+ACTOR_POSTUPDATE(roomswap)
 {
 	struct Actor* player = FINDACTORTYPE(act_player);
 	if (player == NULL)
@@ -72,12 +72,12 @@ ACTOR_POSTUPDATE(roomfade)
 	// We should ONLY ever exist for THAT room! Don't be in a global layer!!
 	if (Vector3DotProduct(Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation), VEC3DIRECTION(actor->position, player->position)) > 0)
 		return;
-	RoomFadeData* fade_data = actor->data;
-	ChangeSceneRoom(GetCurrentScene(), fade_data->goal_room, TRUE, FALSE);
+	RoomSwapData* swap_data = actor->data;
+	ChangeSceneRoom(GetCurrentScene(), swap_data->goal_room, TRUE, FALSE);
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE;
 }
 
-ACTOR_TRANSPARENTDRAWWORLD(roomfade)
+ACTOR_TRANSPARENTDRAWWORLD(roomswap)
 {
 	if (OutOfRenderRange(actor))
 		return;

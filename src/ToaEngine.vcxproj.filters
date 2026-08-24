@@ -234,7 +234,7 @@
     <ClCompile Include="actor_smallrock.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
-    <ClCompile Include="actor_roomfade.c">
+    <ClCompile Include="actor_roomswap.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
   </ItemGroup>
