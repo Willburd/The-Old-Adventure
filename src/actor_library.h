@@ -36,6 +36,7 @@ typedef enum
 	act_crate,
 	act_smallrock,
 	act_roomswap,
+	act_occluder,
 	LAST_ACTOR
 } ActorTypes;
 
@@ -63,6 +64,7 @@ ACTOR_INIT(hole);
 ACTOR_INIT(crate);
 ACTOR_INIT(smallrock);
 ACTOR_INIT(roomswap);
+ACTOR_INIT(occluder);
 
 #define ACTOR_STRING_CASE(str) if (STRMATCH(string_id, #str)) return act_## str
 inline ActorTypes ACTOR_FROM_STRING(char* string_id)
@@ -91,6 +93,7 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(crate);
 	ACTOR_STRING_CASE(smallrock);
 	ACTOR_STRING_CASE(roomswap);
+	ACTOR_STRING_CASE(occluder);
 	return act_error;
 }
 #undef ACTOR_STRING_CASE
@@ -98,30 +101,34 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 #define MAKE_ACTOR_INIT(x) if(actor_type == act_## x){actor->actor_type_name = #x ;actor->func_init = actor_## x ##_init;if(actor->func_init != NULL) actor->func_init(actor);return;}
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 {
-	// debugging
-	MAKE_ACTOR_INIT(debug);
-	// Gameengine
-	MAKE_ACTOR_INIT(scene);
-	MAKE_ACTOR_INIT(fadein);
-	MAKE_ACTOR_INIT(fadeout);
-	MAKE_ACTOR_INIT(camera);
-	// Adventure
-	MAKE_ACTOR_INIT(test);
-	MAKE_ACTOR_INIT(animationtest);
-	MAKE_ACTOR_INIT(entrance);
-	MAKE_ACTOR_INIT(trigger_exit);
-	MAKE_ACTOR_INIT(skybox);
-	MAKE_ACTOR_INIT(textbox);
-	MAKE_ACTOR_INIT(player);
-	MAKE_ACTOR_INIT(pause_box);
-	MAKE_ACTOR_INIT(signpost);
-	MAKE_ACTOR_INIT(fire);
-	MAKE_ACTOR_INIT(woodtorch);
-	MAKE_ACTOR_INIT(tree);
-	MAKE_ACTOR_INIT(hole);
-	MAKE_ACTOR_INIT(crate);
-	MAKE_ACTOR_INIT(smallrock);
-	MAKE_ACTOR_INIT(roomswap);
+	switch (actor_type)
+	{
+		// debugging
+		MAKE_ACTOR_INIT(debug);
+		// Gameengine
+		MAKE_ACTOR_INIT(scene);
+		MAKE_ACTOR_INIT(fadein);
+		MAKE_ACTOR_INIT(fadeout);
+		MAKE_ACTOR_INIT(camera);
+		// Adventure
+		MAKE_ACTOR_INIT(test);
+		MAKE_ACTOR_INIT(animationtest);
+		MAKE_ACTOR_INIT(entrance);
+		MAKE_ACTOR_INIT(trigger_exit);
+		MAKE_ACTOR_INIT(skybox);
+		MAKE_ACTOR_INIT(textbox);
+		MAKE_ACTOR_INIT(player);
+		MAKE_ACTOR_INIT(pause_box);
+		MAKE_ACTOR_INIT(signpost);
+		MAKE_ACTOR_INIT(fire);
+		MAKE_ACTOR_INIT(woodtorch);
+		MAKE_ACTOR_INIT(tree);
+		MAKE_ACTOR_INIT(hole);
+		MAKE_ACTOR_INIT(crate);
+		MAKE_ACTOR_INIT(smallrock);
+		MAKE_ACTOR_INIT(roomswap);
+		MAKE_ACTOR_INIT(occluder);
+	}
 }
 #undef MAKE_ACTOR_INIT
 

@@ -237,6 +237,9 @@
     <ClCompile Include="actor_roomswap.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_occluder.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
