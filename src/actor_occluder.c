@@ -46,7 +46,10 @@ ACTOR_POSTUPDATE(occluder)
 
 ACTOR_TRANSPARENTDRAWWORLD(occluder)
 {
+	// TODO - Use color blend shader, pass the blending_color into it
+	// TODO - Set the blend_color of an actor by json as a default parameter
 	STANDARD_SHADER_MATERIAL(transition_mat, DARKNESS_MATERIAL_MAIN, actor);
+
 	DrawMesh(
 		AssetGet_Model(SPRITE_MODEL)->meshes[0],
 		*transition_mat,

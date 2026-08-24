@@ -80,6 +80,7 @@ SCENE_PREPARE_ACTORS(fieldtest)
 
 SCENE_LIGHTNODES(fieldtest)
 {
+	// TODO - Move this to be data driven
 	LIGHT_NODE_CAVE(-1.5f, 0.15f, 36.0f, 15.0f);
 }
 
