@@ -98,7 +98,7 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 }
 #undef ACTOR_STRING_CASE
 
-#define MAKE_ACTOR_INIT(x) if(actor_type == act_## x){actor->actor_type_name = #x ;actor->func_init = actor_## x ##_init;if(actor->func_init != NULL) actor->func_init(actor);return;}
+#define MAKE_ACTOR_INIT(x) case act_## x:{actor->actor_type_name = #x ;actor->func_init = actor_## x ##_init;if(actor->func_init != NULL) actor->func_init(actor);return;}break;
 inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 {
 	switch (actor_type)
