@@ -155,6 +155,7 @@
     <ClCompile Include="actor_fadein.c" />
     <ClCompile Include="actor_fire.c" />
     <ClCompile Include="actor_hole.c" />
+    <ClCompile Include="actor_minimap.c" />
     <ClCompile Include="actor_occluder.c" />
     <ClCompile Include="actor_pause_box.c" />
     <ClCompile Include="actor_player.c" />

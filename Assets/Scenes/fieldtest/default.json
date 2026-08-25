@@ -7,6 +7,12 @@
 	  {
 		"type": "skybox"
 	  },
+	  {
+		"type": "minimap",
+		"pos": [-480, 0, 0],
+		"scl": [0.05, 0.05, 0.05]
+	  },
+	  
 	  
 	  {
 		"type": "entrance",

@@ -6,6 +6,12 @@
 		"cave_light": 0.1
 	  },
 	  {
+		"type": "minimap",
+		"pos": [0, 0, 0],
+		"scl": [1, 1, 1]
+	  },
+	  
+	  {
 		"type": "roomswap",
 		"pos": [-15, 2, -2.5],
 		"rot": [0, 270, 0],
