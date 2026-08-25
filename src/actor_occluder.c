@@ -4,12 +4,13 @@
 #include "core_assets.h"
 #include "actor_scene.h"
 #include "json_properties.h"
+#include <math.h>
 
 // Utility
 #define FADE_LIMIT actor->scale.z
 
 // Assets
-#define DARKNESS_MATERIAL_MAIN ASSET_MATERIALS"/Engine/black.mat"
+#define BLEND_MATERIAL_MAIN ASSET_MATERIALS"/Engine/color_blend.mat"
 
 // private header
 ACTOR_PRELOADASSETS(occluder);
@@ -38,17 +39,24 @@ ACTOR_POSTUPDATE(occluder)
 	struct Actor* player = FINDACTORTYPE(act_player);
 	if (player == NULL)
 		return;
-	if (Vector3Distance(player->position, actor->position) > FADE_LIMIT)
+	float dist = Vector3FlatDistance(player->position, actor->position);
+	if (dist > FADE_LIMIT)
 		return;
-	if (Vector3DotProduct(Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation), VEC3DIRECTION(actor->position, player->position)) > 0)
+	if (Vector3DotProduct(Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation), VEC3DIRECTION(actor->position, player->position)) < 0)
+	{
+		actor->blend_color.w = 0.0f;
 		return;
+	}
+	actor->blend_color.w = Clamp(dist / FADE_LIMIT, 0.0f, 1.0f);
 }
 
 ACTOR_TRANSPARENTDRAWWORLD(occluder)
 {
-	// TODO - Use color blend shader, pass the blending_color into it
-	// TODO - Set the blend_color of an actor by json as a default parameter
-	STANDARD_SHADER_MATERIAL(transition_mat, DARKNESS_MATERIAL_MAIN, actor);
+	Material* transition_mat = AssetGet_Material(BLEND_MATERIAL_MAIN);
+	shader_update_defaultuniforms(transition_mat->shader, actor);
+
+	int blend_loc = GetShaderLocation(transition_mat->shader, "blend_color");
+	SetShaderValue(transition_mat->shader, blend_loc, &actor->blend_color, SHADER_UNIFORM_VEC4);
 
 	DrawMesh(
 		AssetGet_Model(SPRITE_MODEL)->meshes[0],
