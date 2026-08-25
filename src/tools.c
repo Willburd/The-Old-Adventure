@@ -46,6 +46,13 @@ Vector3 Vector3FlatDirection(Vector3 start, Vector3 end)
     return VEC3DIRECTION(start, end);
 }
 
+float Vector3FlatDistance(Vector3 start, Vector3 end)
+{
+    start.y = 0;
+    end.y = 0;
+    return Vector3Distance(start, end);
+}
+
 Quaternion QuaternionLookAt(Vector3 start, Vector3 end, Vector3 up)
 {
     return QuaternionFromMatrix(MatrixInvert(MatrixLookAt(start, end, up)));

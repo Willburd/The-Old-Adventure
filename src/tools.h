@@ -51,6 +51,7 @@ Color Vector4ToColor(Vector4 vec);
 Color Vector3ToColor(Vector3 vec, float alpha);
 float Vector3GetTopDownAngle(Vector3 direction);
 Vector3 Vector3FlatDirection(Vector3 start, Vector3 end);
+float Vector3FlatDistance(Vector3 start, Vector3 end);
 Quaternion QuaternionLookAt(Vector3 start, Vector3 end, Vector3 up);
 Quaternion QuaternionFlatLookAt(Vector3 start, Vector3 end, Vector3 up);
 Quaternion QuaternionGetFlat(Quaternion source, Vector3 up);

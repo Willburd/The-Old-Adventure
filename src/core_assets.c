@@ -40,6 +40,7 @@ void LoadCoreAssets()
     LoadAsset_Material(ASSET_MATERIALS"/Engine/example.mat", TRUE);
     LoadAsset_Material(ASSET_MATERIALS"/Engine/black.mat", TRUE);
     LoadAsset_Material(ASSET_MATERIALS"/Engine/white.mat", TRUE);
+    LoadAsset_Material(ASSET_MATERIALS"/Engine/color_blend.mat", TRUE);
     LoadAsset_Material(ASSET_MATERIALS"/Engine/collision_debug.mat", TRUE);
     // Adventure
     LoadAsset_Material(ASSET_MATERIALS"/LUTs/neutral.mat", TRUE);
