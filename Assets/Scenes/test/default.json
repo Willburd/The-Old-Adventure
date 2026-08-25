@@ -6,12 +6,6 @@
    "sky_color": [ 0, 0, 0, 1 ],
    "actors":[
 	  {
-		"type": "skybox",
-		"is_cave": 1,
-		"cave_light": 0.1
-	  },
-	  
-	  {
 		"type": "entrance",
 		"is_entrance": "debugentrance",
 		"pos": [-2.35, 0, 10],
@@ -26,12 +20,5 @@
 		"radius": 10
 	  }
 	],
-	"lights":[
-		{
-			"pos": [0,0,0],
-			"radius": 10,
-			"color": [1,1,1,1],
-			"influence": 1.0
-		}
-	]
+	"lights":[]
 }

@@ -26,5 +26,13 @@
 		"type": "woodtorch",
 		"pos": [ -30, 0, -15]
 	  }
+	],
+	"lights":[
+		{
+			"pos": [-50, 0, 0],
+			"radius": 10,
+			"color": [1,1,1],
+			"influence": 1
+		}
 	]
 }
