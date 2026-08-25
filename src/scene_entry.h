@@ -3,6 +3,7 @@
 
 #include "stdint.h"
 #include "scene_library.h"
+#include "game_draw.h"
 
 typedef enum
 {
@@ -162,6 +163,13 @@ inline EntranceID ENTRANCE_FROM_STRING(char* string_id)
 #define SCENE_CONFIG_ISRAINING	(1 << 3)
 
 typedef struct {
+	Vector3 pos;
+	float radius;
+	Vector3 color;
+	float influence;
+} LightNodeData;
+
+typedef struct {
 	uint64_t config_flags;	// Persistant settings assigned during scene creation or subroom entry
 	uint64_t temp_flags;	// Temp flags set by actors in the scene to preserve state until the scene is unloaded.
 	uint64_t perm_flags;	// Permanent flags set and loaded by the save file. So that state is preserved between scene reloads. 
@@ -175,9 +183,22 @@ typedef struct {
 	float utilityB2;
 	float utilityB3;
 	float utilityB4;
+	// Light data from json
+	int light_count;
+	LightNodeData lights[MAX_LIGHTS];
 } SceneData;
 
-#define SCENEDATA_CLEAR(x) {SceneData* __dat = (SceneData*)x;__dat->config_flags = 0;__dat->temp_flags = 0;__dat->perm_flags = 0;__dat->puzzle_flags = 0;__dat->utilityA1 = 0;__dat->utilityA2 = 0;__dat->utilityA3 = 0;__dat->utilityA4 = 0;__dat->utilityB1 = 0.0f;__dat->utilityB2 = 0.0f;__dat->utilityB3 = 0.0f;__dat->utilityB4 = 0.0f;}
+#define CLEAR_SCENE_LIGHT_DATA(x) x->light_count = 0;for (int _mi = 0;_mi < MAX_LIGHTS; ++_mi) {x->lights[_mi] = (LightNodeData){ 0 };}
+#define SCENEDATA_CLEAR(x) { \
+	SceneData* __dat = (SceneData*)scene->data; \
+	__dat->config_flags = 0;__dat->temp_flags = 0; \
+	__dat->perm_flags = 0;__dat->puzzle_flags = 0; \
+	__dat->utilityA1 = 0;__dat->utilityA2 = 0; \
+	__dat->utilityA3 = 0;__dat->utilityA4 = 0; \
+	__dat->utilityB1 = 0.0f;__dat->utilityB2 = 0.0f; \
+	__dat->utilityB3 = 0.0f;__dat->utilityB4 = 0.0f; \
+	CLEAR_SCENE_LIGHT_DATA(__dat); \
+}
 
 void LoadScene(SceneID id, EntranceID entrance);
 void TransferScene(SceneID id, EntranceID entrance);
@@ -187,5 +208,6 @@ void HandleLoadNextScene();
 void UnloadScene(int clear_assets);
 void LoadSceneJSONActors(struct Actor* scene);
 void LoadCustomLayer(struct Actor* scene, char* custom_layer);
+void DefaultSceneLightAppend(struct Actor scene);
 
 #endif

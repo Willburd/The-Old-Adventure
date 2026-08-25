@@ -46,6 +46,7 @@ int GetFixedRandomInt(Vector3 pos, int offset);
 float GetFixedRandomFloat(Vector3 pos, int offset);
 
 Vector4 ColorToVector4(Color col);
+Vector3 ColorToVector3(Color col);
 Color Vector4ToColor(Vector4 vec);
 Color Vector3ToColor(Vector3 vec, float alpha);
 float Vector3GetTopDownAngle(Vector3 direction);
