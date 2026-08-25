@@ -7,6 +7,9 @@
 #define PROP_SCL "scl"
 #define PROP_VEL "vel"
 #define PROP_IDTAG "id_tag"
+#define PROP_RADIUS "radius"
+#define PROP_COLOR "color"
+#define PROP_INFLUENCE "influence"
 
 // TODO - Your json property defines here
 

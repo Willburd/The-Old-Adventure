@@ -1,6 +1,6 @@
 #version 330
 
-#define MAX_LIGHTS 24
+#define MAX_LIGHTS 48
 in vec3 vertexPosition;
 in vec2 vertexTexCoord;
 in vec3 vertexNormal;

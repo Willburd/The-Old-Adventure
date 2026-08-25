@@ -6,6 +6,8 @@
 #include "globals.h"
 #include "assets.h"
 #include "tools.h"
+#include "light_tools.h"
+#include "json_properties.h"
 #include "game_draw.h"
 
 // private header
@@ -35,6 +37,9 @@ ACTOR_INIT(scene)
 	// Set default scene data.
 	MALLOC_ACTOR_DATA(SceneData, scene->data);
 	SCENEDATA_CLEAR(scene->data);
+
+	// Default light appending function
+	scene->func_append_lights = DefaultSceneLightAppend;
 
 	// Load assets. This has polymorphed to the SCENE'S assets since the initial call to preloadassets in actor library.
 	if (ACTOR_HAS(scene, func_preloadassets))
@@ -132,6 +137,16 @@ void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, i
 		FinalizeRoomChange();
 }
 
+void DefaultSceneLightAppend(struct Actor* scene)
+{
+	SceneData* scene_data = (SceneData*)scene->data;
+	for (int i = 0; i < scene_data->light_count; i++)
+	{
+		LightNodeData* node = &scene_data->lights[i];
+		lighting_append_light(node->pos, node->radius, Vector3ToColor(node->color, 1.0f), node->influence);
+	}
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,6 +183,49 @@ static void LoadRoomLayer(struct Actor* scene, char* layer_path)
 	for (int i = 0; i < cJSON_GetArraySize(actor_array); i++)
 		JSON_ACTOR_FACTORY(cJSON_GetArrayItem(actor_array, i), scene);
 
+	// Create lightnode array. range: [{Object array}]
+	cJSON* lightnode_array = cJSON_GetObjectItem(json_data, "lights");
+	SceneData* scene_data = (SceneData*)scene->data;
+	if (cJSON_IsArray(lightnode_array))
+	{
+		for (int i = 0; i < cJSON_GetArraySize(lightnode_array); i++)
+		{
+			cJSON* light_entry = cJSON_GetArrayItem(lightnode_array, i);
+			if (!cJSON_IsObject(light_entry))
+				continue;
+			LightNodeData* light_data = &scene_data->lights[scene_data->light_count];
+			// position
+			{
+				light_data->pos = (Vector3){ 0, 0, 0 };
+				cJSON* light_pos = cJSON_GetObjectItem(light_entry, PROP_POS);
+				if (cJSON_IsArray(light_pos))
+					light_data->pos = (Vector3){ (float)cJSON_GetArrayItem(light_pos, 0)->valuedouble, (float)cJSON_GetArrayItem(light_pos, 1)->valuedouble, (float)cJSON_GetArrayItem(light_pos, 2)->valuedouble };
+			}
+			// Radius
+			{
+				light_data->radius = 0;
+				cJSON* light_rad = cJSON_GetObjectItem(light_entry, PROP_RADIUS);
+				if (cJSON_IsNumber(light_rad))
+					light_data->radius = (float)light_rad->valuedouble;
+			}
+			// Color
+			{
+				light_data->color = ColorToVector3(WHITE);
+				cJSON* light_col = cJSON_GetObjectItem(light_entry, PROP_COLOR);
+				if (cJSON_IsArray(light_col))
+					light_data->color = (Vector3){ (float)cJSON_GetArrayItem(light_col, 0)->valuedouble, (float)cJSON_GetArrayItem(light_col, 1)->valuedouble, (float)cJSON_GetArrayItem(light_col, 2)->valuedouble };
+			}
+			// Influence
+			{
+				light_data->influence = 1.0f;
+				cJSON* light_inf = cJSON_GetObjectItem(light_entry, PROP_INFLUENCE);
+				if (cJSON_IsNumber(light_inf))
+					light_data->influence = (float)light_inf->valuedouble;
+			}
+			scene_data->light_count++;
+		}
+	}
+
 	// Cleanup
 	cJSON_Delete(json_data);
 }
@@ -182,6 +240,9 @@ static void FinalizeRoomChange()
 	next_room = -1;
 	if (ACTOR_HAS(current_scene, func_activate_room))
 		current_scene->func_activate_room(current_scene, current_scene->current_room_index, next_entrance);
+	// Reset lights
+	SceneData* dat = (SceneData*)current_scene->data;
+	CLEAR_SCENE_LIGHT_DATA(dat);
 	LoadSceneJSONActors(current_scene);
 	// Finalize actors
 	if (ACTOR_HAS(current_scene, func_prepare_actors))
