@@ -13,9 +13,6 @@
 
 // Adventure
 
-// Generic
-#define PROP_RADIUS "radius"
-
 // Exits
 #define PROP_TO_SCENE "to_scene"
 #define PROP_TO_ENTRANCE "to_entrance"
