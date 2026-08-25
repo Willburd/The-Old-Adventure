@@ -25,5 +25,13 @@
 		"to_entrance": "caveA",
 		"radius": 10
 	  }
+	],
+	"lights":[
+		{
+			"pos": [0,0,0],
+			"radius": 10,
+			"color": [1,1,1,1],
+			"influence": 1.0
+		}
 	]
 }
