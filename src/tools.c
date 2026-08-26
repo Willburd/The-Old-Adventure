@@ -71,6 +71,11 @@ Quaternion QuaternionGetFlat(Quaternion source, Vector3 up)
     return QuaternionFlatLookAt(Vector3Zero(), vec, up);
 }
 
+float QuaternionGetTopDownAngle(Quaternion source)
+{
+    return Vector3GetTopDownAngle(Vector3RotateByQuaternion(VEC3FORWARD, source));
+}
+
 #define APPLY_FRICTION(component) \
 if (actor->velocity.component > 0.0f) \
 { \
@@ -118,4 +123,12 @@ cJSON* ParseJsonFile(char* path)
     free(buffer);
 
     return parsed_data;
+}
+
+void DrawPivotTexture(Texture tex, Vector2 pos, Vector2 pivot, float angle, float scale, Color color)
+{
+    DrawTextureEx(tex, (Vector2){ 
+        pos.x + (sin(angle) * pivot.x) - (cos(angle) * pivot.y),
+        pos.y - (sin(angle) * pivot.y) - (cos(angle) * pivot.x)
+    }, angle * RAD2DEG, scale, color);
 }
