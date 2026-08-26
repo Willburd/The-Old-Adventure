@@ -202,6 +202,7 @@ static void AssetPush(Asset* asset, int is_core, void* ext_data)
 
 
 #define RETURN_EXISTING_ASSET(pth, s_core) Asset* check = AssetGetPackage(pth); if (check){if(s_core){check->core_asset=s_core;};printf("ASSET NOTICE: already loaded: %s\n", path);return check;}
+#define RETURN_IF_NO_FILE(pth) if (!FileExists(pth)) {printf("!!!!! INVALID PATH: %s !!!!! \n", pth);printf("--------------------------------------\n");return NULL;}
 
 Asset* LoadAsset_Texture(char* path, int is_core, char* mat_link)
 {
@@ -214,6 +215,7 @@ Asset* LoadAsset_Texture(char* path, int is_core, char* mat_link)
     }
     // Load texture
     printf("NEW TEXTURE---------------------------\n");
+    RETURN_IF_NO_FILE(path);
     char* tex_name = mat_link != NULL ? TextFormat("%s[%s]", mat_link, path) : path;
     MALLOC_ASSET(asset, tex_name, is_core);
     MALLOC_SET(Texture2D, asset->tex, FALSE);
@@ -228,6 +230,7 @@ Asset* LoadAsset_Model(char* path, int is_core)
     RETURN_EXISTING_ASSET(path, is_core);
     // Load model
     printf("NEW MODEL-----------------------------\n");
+    RETURN_IF_NO_FILE(path);
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Model, asset->mdl, FALSE);
     *asset->mdl = LoadModel(path);
@@ -300,6 +303,7 @@ Asset* LoadAsset_Sound(char* path, int is_core)
     RETURN_EXISTING_ASSET(path, is_core);
     // Load sound
     printf("NEW SOUND-----------------------------\n");
+    RETURN_IF_NO_FILE(path);
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Sound, asset->snd, FALSE);
     *asset->snd = LoadSound(path);
@@ -313,6 +317,7 @@ Asset* LoadAsset_Music(char* path, int is_core)
     RETURN_EXISTING_ASSET(path, is_core);
     // Load music
     printf("NEW MUSIC-----------------------------\n");
+    RETURN_IF_NO_FILE(path);
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Music, asset->mus, FALSE);
     *asset->mus = LoadMusicStream(path);
@@ -326,6 +331,7 @@ Asset* LoadAsset_Material(char* path, int is_core)
     RETURN_EXISTING_ASSET(path, is_core);
     // Load material
     printf("NEW MATERIAL--------------------------\n");
+    RETURN_IF_NO_FILE(path);
     MALLOC_ASSET(asset, path, is_core);
     MALLOC_SET(Material, asset->mat, FALSE);
     *asset->mat = LoadMaterial(asset, path, is_core);
