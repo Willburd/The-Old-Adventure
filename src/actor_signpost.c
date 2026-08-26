@@ -95,7 +95,7 @@ ACTOR_INTERACT_TEXT(signpost)
 ACTOR_PLAYER_INTERACT(signpost)
 {
 	// Start camera focus
-	struct Actor* camera = FINDACTORTYPE(act_camera);
+	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
 	CameraSetMode(camera, CAMERA_MODE_FOCUS_CUTSCENE_SLOW);
 	SetCutsceneCameraLookPos(camera, Vector3Add(actor->position, VEC3UP));
 	// Textbox display

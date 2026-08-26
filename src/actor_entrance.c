@@ -61,8 +61,8 @@ void actor_entrance_startentry(struct Actor* entrance)
 	Vector3 end_pos = actor_entrance_get_end(entrance);
 	Vector3 cam_pos = actor_entrance_get_camerastart(entrance);
 
-	struct Actor* player = FINDACTORTYPE(act_player);
-	struct Actor* camera = FINDACTORTYPE(act_camera);
+	struct Actor* player = FINDACTOR_BYTYPE(act_player);
+	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
 	if (ACTOR_EXISTS(player))
 	{
 		ACTOR_POS_SNAP(player, entrance->position);

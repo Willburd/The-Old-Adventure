@@ -58,7 +58,7 @@ ACTOR_JSON_INIT(roomswap)
 
 ACTOR_POSTUPDATE(roomswap)
 {
-	struct Actor* player = FINDACTORTYPE(act_player);
+	struct Actor* player = FINDACTOR_BYTYPE(act_player);
 	if (player == NULL)
 		return;
 	if (Vector3Distance(player->position, actor->position) > 5.0f)

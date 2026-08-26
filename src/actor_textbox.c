@@ -157,7 +157,7 @@ static void ProgressSegment(struct Actor* textbox)
 
 		case 'E': // End
 		{
-			struct Actor* camera = FINDACTORTYPE(act_camera);
+			struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
 			CameraSetMode(camera, CAMERA_MODE_FOLLOW);
 			ACTOR_DESTROY(textbox);
 		}

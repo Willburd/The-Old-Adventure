@@ -51,7 +51,7 @@ ACTOR_JSON_INIT(trigger_exit)
 ACTOR_PREUPDATE(trigger_exit)
 {
 	TriggerExitData* exit_data = actor->data;
-	struct Actor* fade_actor = FINDACTORTYPE(act_fadeout);
+	struct Actor* fade_actor = FINDACTOR_BYTYPE(act_fadeout);
 	if (fade_actor)
 	{
 		// Wait for fadeout before entering the new scene
@@ -65,7 +65,7 @@ ACTOR_PREUPDATE(trigger_exit)
 		return;
 	}
 	// Wait for player to enter trigger
-	struct Actor* player = FINDACTORTYPE(act_player);
+	struct Actor* player = FINDACTOR_BYTYPE(act_player);
 	if (!player)
 		return;
 	if (Vector3Distance(actor->position, player->position) > exit_data->radius)
@@ -97,7 +97,7 @@ static void actor_exit_startleaving(struct Actor* exit, struct Actor* player)
 	player_data->cutscene_run_factor = 1.0f;
 
 	// Lock the camera in place
-	struct Actor* camera = FINDACTORTYPE(act_camera);
+	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
 	if (camera)
 		CameraSetMode(camera, CAMERA_MODE_ONLYWATCH);
 }

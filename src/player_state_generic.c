@@ -84,7 +84,7 @@ void PlayerState_Generic_Exit(struct Actor* player)
 
 int PlayerCanAcceptInput(struct Actor* player)
 {
-	struct Actor* camera = FINDACTORTYPE(act_camera);
+	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
 	CameraData* cam_data = (CameraData*)camera->data;
 
 	int can_accept_player_input = TRUE;
@@ -187,7 +187,7 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 
 void PlayerStandardPauseActivate(struct Actor* player)
 {
-	if (FINDACTORTYPE(act_pause_box))
+	if (FINDACTOR_BYTYPE(act_pause_box))
 		return;
 	ACTOR_FACTORY(NULL, act_pause_box, GETSCENE(player), Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }

@@ -35,7 +35,7 @@ ACTOR_INIT(minimap)
 
 ACTOR_POSTUPDATE(minimap)
 {
-	struct Actor* player = FINDACTORTYPE(act_player);
+	struct Actor* player = FINDACTOR_BYTYPE(act_player);
 	if (player == NULL)
 	{
 		actor->actor_flags |= ACTOR_FLAG_IS_INVISIBLE;
@@ -51,7 +51,7 @@ ACTOR_DRAWHUD(minimap)
 	float map_top = (float)(HUD_BOTTOM - (MAP_RESOLUTION + MAP_EDGE_BORDER));
 	DrawRectangleLines(map_left, map_top, MAP_RESOLUTION, MAP_RESOLUTION, WHITE);
 
-	struct Actor* player = FINDACTORTYPE(act_player);
+	struct Actor* player = FINDACTOR_BYTYPE(act_player);
 	if (player != NULL)
 	{
 		// Draw player position
@@ -61,7 +61,7 @@ ACTOR_DRAWHUD(minimap)
 
 	{	// Draw map exits
 		struct Actor* found_exits[32] = { NULL };
-		int found_count = FINDALLACTORTYPE(found_exits, 32, act_trigger_exit);
+		int found_count = FINDACTORGROUP_BYTYPE(found_exits, 32, act_trigger_exit);
 		if (found_count > 0)
 		{
 			for (int i = 0; i < found_count; i++)
@@ -76,7 +76,7 @@ ACTOR_DRAWHUD(minimap)
 	}
 	{	// Draw room swappers
 		struct Actor* found_roomswaps[32] = { NULL };
-		int found_count = FINDALLACTORTYPE(found_roomswaps, 32, act_roomswap);
+		int found_count = FINDACTORGROUP_BYTYPE(found_roomswaps, 32, act_roomswap);
 		if (found_count > 0)
 		{
 			for (int i = 0; i < found_count; i++)
@@ -91,7 +91,7 @@ ACTOR_DRAWHUD(minimap)
 	}
 	{	// Draw POIs
 		struct Actor* found_pois[32] = { NULL };
-		int found_count = FINDALLACTORTYPE(found_pois, 32, act_mappoi);
+		int found_count = FINDACTORGROUP_BYTYPE(found_pois, 32, act_mappoi);
 		if (found_count > 0)
 		{
 			for (int i = 0; i < found_count; i++)

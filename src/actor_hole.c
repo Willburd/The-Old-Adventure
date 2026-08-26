@@ -61,7 +61,7 @@ ACTOR_PRELOADASSETS(hole)
 ACTOR_UPDATE(hole)
 {
 	TriggerExitData* exit_data = actor->data;
-	struct Actor* fade_actor = FINDACTORTYPE(act_fadeout);
+	struct Actor* fade_actor = FINDACTOR_BYTYPE(act_fadeout);
 	if (fade_actor)
 	{
 		// Wait for fadeout before entering the new scene
@@ -75,7 +75,7 @@ ACTOR_UPDATE(hole)
 		return;
 	}
 	// Wait for player to enter trigger
-	struct Actor* player = FINDACTORTYPE(act_player);
+	struct Actor* player = FINDACTOR_BYTYPE(act_player);
 	if (!player)
 		return;
 	if (abs(player->position.y - actor->position.y) > 0.1f)
@@ -120,7 +120,7 @@ static void actor_hole_startleaving(struct Actor* exit, struct Actor* player)
 	player->velocity.y = original_y_vel - 0.2f;
 
 	// Lock the camera in place
-	struct Actor* camera = FINDACTORTYPE(act_camera);
+	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
 	if (camera)
 		CameraSetMode(camera, CAMERA_MODE_ONLYWATCH);
 }
