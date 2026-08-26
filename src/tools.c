@@ -128,7 +128,7 @@ cJSON* ParseJsonFile(char* path)
 void DrawPivotTexture(Texture tex, Vector2 pos, Vector2 pivot, float angle, float scale, Color color)
 {
     DrawTextureEx(tex, (Vector2){ 
-        pos.x + (sin(angle) * pivot.x) - (cos(angle) * pivot.y),
-        pos.y - (sin(angle) * pivot.y) - (cos(angle) * pivot.x)
+        pos.x - ((cos(angle) * pivot.x) - (sin(angle) * pivot.y)),
+        pos.y - ((sin(angle) * pivot.x) + (cos(angle) * pivot.y))
     }, angle * RAD2DEG, scale, color);
 }
