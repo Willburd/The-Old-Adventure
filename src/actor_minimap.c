@@ -10,6 +10,7 @@
 
 // Assets
 #define BLEND_MATERIAL_MAIN ASSET_MATERIALS"/Engine/color_blend.mat"
+#define MAP_TEXTURE_PATH TextFormat(ASSET_TEXTURES"/Minimaps/%s_%i.png", scene->actor_type_name, scene->current_room_index)
 
 // private header
 ACTOR_PRELOADASSETS(minimap);
@@ -36,7 +37,8 @@ ACTOR_INIT(minimap)
 
 ACTOR_PRELOADASSETS(minimap)
 {
-	LoadAsset_Texture(ASSET_TEXTURES"/Minimaps/TestField.png", FALSE, NULL);
+ 	struct Actor* scene = GetCurrentScene();
+	LoadAsset_Texture(MAP_TEXTURE_PATH, FALSE, NULL);
 }
 
 ACTOR_POSTUPDATE(minimap)
@@ -57,7 +59,11 @@ ACTOR_DRAWHUD(minimap)
 	float map_top = (float)(HUD_BOTTOM - (MAP_RESOLUTION + MAP_EDGE_BORDER));
 	//DrawRectangleLines(map_left, map_top, MAP_RESOLUTION, MAP_RESOLUTION, WHITE);
 
-	Texture* tex = AssetGet_Texture(ASSET_TEXTURES"/Minimaps/TestField.png");
+	struct Actor* scene = GetCurrentScene();
+	if (!AssetExists(MAP_TEXTURE_PATH))
+		return;
+	Texture* tex = AssetGet_Texture(MAP_TEXTURE_PATH);
+
 	float scale_div = MAP_RESOLUTION / tex->width;
 	DrawTextureEx(*tex, (Vector2) { map_left, map_top }, 0.0f, scale_div, WHITE);
 
