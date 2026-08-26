@@ -9,7 +9,6 @@
 #define MAP_EDGE_BORDER 10.0f
 
 // Assets
-#define BLEND_MATERIAL_MAIN ASSET_MATERIALS"/Engine/color_blend.mat"
 #define MAP_TEXTURE_PATH TextFormat(ASSET_TEXTURES"/Minimaps/%s_%i.png", scene->actor_type_name, scene->current_room_index)
 
 // private header
@@ -63,14 +62,14 @@ ACTOR_DRAWHUD(minimap)
 	if (!AssetExists(MAP_TEXTURE_PATH))
 	{
 		// Invalid maps just show a rectangle
-		DrawRectangleLines(map_left, map_top, MAP_RESOLUTION, MAP_RESOLUTION, WHITE);
+		DrawRectangleLines(map_left, map_top, MAP_RESOLUTION, MAP_RESOLUTION, GREEN);
 	}
 	else
 	{
 		// Find and load the texture for the room
 		Texture* tex = AssetGet_Texture(MAP_TEXTURE_PATH);
 		float scale_div = MAP_RESOLUTION / tex->width;
-		DrawTextureEx(*tex, (Vector2) { map_left, map_top }, 0.0f, scale_div, WHITE);
+		DrawTextureEx(*tex, (Vector2) { map_left, map_top }, 0.0f, scale_div, GREEN);
 	}
 
 	struct Actor* player = FINDACTOR_BYTYPE(act_player);
