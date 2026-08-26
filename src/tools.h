@@ -55,9 +55,11 @@ float Vector3FlatDistance(Vector3 start, Vector3 end);
 Quaternion QuaternionLookAt(Vector3 start, Vector3 end, Vector3 up);
 Quaternion QuaternionFlatLookAt(Vector3 start, Vector3 end, Vector3 up);
 Quaternion QuaternionGetFlat(Quaternion source, Vector3 up);
+float QuaternionGetTopDownAngle(Quaternion source);
 void ApplyFriction(struct Actor* actor, float amount);
 void ApplyFlatFriction(struct Actor* actor, float amount);
 cJSON* ParseJsonFile(char* path);
+void DrawPivotTexture(Texture tex, Vector2 pos, Vector2 pivot, float angle, float scale, Color color);
 
 #endif
 
