@@ -80,8 +80,7 @@ ACTOR_DRAWHUD(minimap)
 		// Draw player position
 		Texture* tex = AssetGet_Texture(ARROW_TEXTURE);
 		Vector2 pos = ScaleToMap(actor, player->position);
-		DrawTextureEx(*tex, (Vector2) { pos.x-4, pos.y-4 }, 0.0f, 1.0f, YELLOW);
-
+		DrawPivotTexture(*tex, pos, (Vector2){ 4, 4}, QuaternionGetTopDownAngle(player->rotation), 1.0f, YELLOW);
 	}
 
 	{	// Draw POIs
