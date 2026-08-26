@@ -57,15 +57,21 @@ ACTOR_DRAWHUD(minimap)
 {
 	float map_left = (float)(HUD_RIGHT - (MAP_RESOLUTION + MAP_EDGE_BORDER));
 	float map_top = (float)(HUD_BOTTOM - (MAP_RESOLUTION + MAP_EDGE_BORDER));
-	//DrawRectangleLines(map_left, map_top, MAP_RESOLUTION, MAP_RESOLUTION, WHITE);
+
 
 	struct Actor* scene = GetCurrentScene();
 	if (!AssetExists(MAP_TEXTURE_PATH))
-		return;
-	Texture* tex = AssetGet_Texture(MAP_TEXTURE_PATH);
-
-	float scale_div = MAP_RESOLUTION / tex->width;
-	DrawTextureEx(*tex, (Vector2) { map_left, map_top }, 0.0f, scale_div, WHITE);
+	{
+		// Invalid maps just show a rectangle
+		DrawRectangleLines(map_left, map_top, MAP_RESOLUTION, MAP_RESOLUTION, WHITE);
+	}
+	else
+	{
+		// Find and load the texture for the room
+		Texture* tex = AssetGet_Texture(MAP_TEXTURE_PATH);
+		float scale_div = MAP_RESOLUTION / tex->width;
+		DrawTextureEx(*tex, (Vector2) { map_left, map_top }, 0.0f, scale_div, WHITE);
+	}
 
 	struct Actor* player = FINDACTOR_BYTYPE(act_player);
 	if (player != NULL)
