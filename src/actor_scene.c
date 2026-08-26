@@ -50,7 +50,7 @@ ACTOR_INIT(scene)
 
 	// Adventure edit begin - Check for entrance actors, find the one we're using.
 	struct Actor* found_group[LAST_ENTRANCE] = { 0 };
-	FINDALLACTORTYPE(found_group, LAST_ENTRANCE, act_entrance);
+	FINDACTORGROUP_BYTYPE(found_group, LAST_ENTRANCE, act_entrance);
 	struct Actor* entrance = NULL;
 	struct Actor* entrance_backup = NULL;
 	for (int i = 0; i < LAST_ENTRANCE; i++)
@@ -143,7 +143,7 @@ void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, i
 	struct Actor* player = NULL;
 	if (keep_player)
 	{
-		struct Actor* player = FINDACTORTYPE(act_player); // Adventure edit - Use our player actor
+		struct Actor* player = FINDACTOR_BYTYPE(act_player); // Adventure edit - Use our player actor
 		if (player)
 			player->current_room_index = ACTOR_HAS_NO_ROOM_INDEX;
 	}
