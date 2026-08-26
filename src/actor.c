@@ -33,10 +33,23 @@ struct Actor* FINDACTOR_BYTAG(char* id_tag)
 	return NULL;
 }
 
-void FINDACTORGROUP_BYID( const struct Actor* found_group[], int max_count, const uint64_t find_uuids[])
+struct Actor* FINDACTOR_BYTYPE(int actor_type)
+{
+	for (int i = 0; i <= current_actor_cap; i++)
+	{
+		struct Actor* find_actor = world_actors[i];
+		if (find_actor == NULL)
+			continue;
+		if (find_actor->actor_type == actor_type)
+			return find_actor;
+	}
+	return NULL;
+}
+
+int FINDACTORGROUP_BYID( const struct Actor* found_group[], int max_count, const uint64_t find_uuids[])
 {
 	if (find_uuids == NULL || found_group == NULL)
-		return;
+		return 0;
 	// Fill the results with known values
 	for (int i = 0; i <= max_count; i++)
 	{
@@ -57,15 +70,16 @@ void FINDACTORGROUP_BYID( const struct Actor* found_group[], int max_count, cons
 			found_group[collected_index++] = find_actor;
 			if (collected_index < max_count)
 				continue;
-			return;
+			return collected_index;
 		}
 	}
+	return collected_index;
 }
 
-void FINDACTORGROUP_BYTAG(const struct Actor* found_group[], int max_count, const char* find_tags[])
+int FINDACTORGROUP_BYTAG(const struct Actor* found_group[], int max_count, const char* find_tags[])
 {
 	if (find_tags == NULL || found_group == NULL)
-		return;
+		return 0;
 	// Fill the results with known values
 	for (int i = 0; i <= max_count; i++)
 	{
@@ -88,25 +102,13 @@ void FINDACTORGROUP_BYTAG(const struct Actor* found_group[], int max_count, cons
 			found_group[collected_index++] = find_actor;
 			if (collected_index < max_count)
 				continue;
-			return;
+			return collected_index;
 		}
 	}
+	return collected_index;
 }
 
-struct Actor* FINDACTORTYPE(int actor_type)
-{
-	for (int i = 0; i <= current_actor_cap; i++)
-	{
-		struct Actor* find_actor = world_actors[i];
-		if (find_actor == NULL)
-			continue;
-		if (find_actor->actor_type == actor_type)
-			return find_actor;
-	}
-	return NULL;
-}
-
-void FINDALLACTORTYPE(const struct Actor* found_group[], int max_count, int actor_type)
+int FINDACTORGROUP_BYTYPE(const struct Actor* found_group[], int max_count, int actor_type)
 {
 	// Fill the results with known values
 	for (int i = 0; i < max_count; i++)
@@ -125,8 +127,9 @@ void FINDALLACTORTYPE(const struct Actor* found_group[], int max_count, int acto
 		found_group[collected_index++] = find_actor;
 		if (collected_index < max_count)
 			continue;
-		return;
+		return collected_index;
 	}
+	return collected_index;
 }
 
 struct Actor* FINDACTORNEAREST(Vector3 at_pos, struct Actor* ignored_actor)

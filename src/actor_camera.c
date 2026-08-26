@@ -94,7 +94,7 @@ ACTOR_PREUPDATE(camera)
         return;
 
     // Update camera logic
-    struct Actor* player = NULL; // FINDACTORTYPE(act_player); // TODO - Your player actor here
+    struct Actor* player = NULL; // FINDACTOR_BYTYPE(act_player); // TODO - Your player actor here
     switch (cam_data->camera_mode)
     {
         case CAMERA_MODE_FOLLOW:

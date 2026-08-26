@@ -43,7 +43,7 @@ SCENE_INIT(debugmenu)
 SCENE_ACTIVATE_ROOM(debugmenu)
 {
 	// Debug info actor
-	if (!FINDACTORTYPE(act_debug))
+	if (!FINDACTOR_BYTYPE(act_debug))
 		ACTOR_FACTORY(NULL, act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 }
 

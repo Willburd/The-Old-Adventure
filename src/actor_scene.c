@@ -115,7 +115,7 @@ void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, i
 	struct Actor* player = NULL;
 	if (keep_player)
 	{
-		struct Actor* player = NULL; // FINDACTORTYPE(act_player); // TODO - Your player actor type here
+		struct Actor* player = NULL; // FINDACTOR_BYTYPE(act_player); // TODO - Your player actor type here
 		if (player)
 			player->current_room_index = ACTOR_HAS_NO_ROOM_INDEX;
 	}
