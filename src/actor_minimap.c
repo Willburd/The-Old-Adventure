@@ -50,13 +50,59 @@ ACTOR_DRAWHUD(minimap)
 	float map_left = (float)(HUD_RIGHT - (MAP_RESOLUTION + MAP_EDGE_BORDER));
 	float map_top = (float)(HUD_BOTTOM - (MAP_RESOLUTION + MAP_EDGE_BORDER));
 	DrawRectangleLines(map_left, map_top, MAP_RESOLUTION, MAP_RESOLUTION, WHITE);
-	
+
 	struct Actor* player = FINDACTORTYPE(act_player);
 	if (player != NULL)
 	{
 		// Draw player position
 		Vector2 pos = ScaleToMap(actor, player->position);
 		DrawCircle(pos.x, pos.y, 2, YELLOW);
+	}
+
+	{	// Draw map exits
+		struct Actor* found_exits[32] = { NULL };
+		int found_count = FINDALLACTORTYPE(found_exits, 32, act_trigger_exit);
+		if (found_count > 0)
+		{
+			for (int i = 0; i < found_count; i++)
+			{
+				struct Actor* poi = found_exits[i];
+				if (poi == NULL)
+					continue;
+				Vector2 pos = ScaleToMap(actor, poi->position);
+				DrawCircle(pos.x, pos.y, 1, WHITE);
+			}
+		}
+	}
+	{	// Draw room swappers
+		struct Actor* found_roomswaps[32] = { NULL };
+		int found_count = FINDALLACTORTYPE(found_roomswaps, 32, act_roomswap);
+		if (found_count > 0)
+		{
+			for (int i = 0; i < found_count; i++)
+			{
+				struct Actor* poi = found_roomswaps[i];
+				if (poi == NULL)
+					continue;
+				Vector2 pos = ScaleToMap(actor, poi->position);
+				DrawCircle(pos.x, pos.y, 1, WHITE);
+			}
+		}
+	}
+	{	// Draw POIs
+		struct Actor* found_pois[32] = { NULL };
+		int found_count = FINDALLACTORTYPE(found_pois, 32, act_mappoi);
+		if (found_count > 0)
+		{
+			for (int i = 0; i < found_count; i++)
+			{
+				struct Actor* poi = found_pois[i];
+				if (poi == NULL)
+					continue;
+				Vector2 pos = ScaleToMap(actor, poi->position);
+				DrawCircle(pos.x, pos.y, 1, RED);
+			}
+		}
 	}
 }
 

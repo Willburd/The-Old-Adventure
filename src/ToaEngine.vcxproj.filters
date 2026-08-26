@@ -243,6 +243,9 @@
     <ClCompile Include="actor_minimap.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
+    <ClCompile Include="actor_mappoi.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">

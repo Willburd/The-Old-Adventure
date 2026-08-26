@@ -29,6 +29,7 @@ typedef enum
 	act_player,
 	act_pause_box,
 	act_minimap,
+	act_mappoi,
 	act_signpost,
 	act_fire,
 	act_woodtorch,
@@ -58,6 +59,7 @@ ACTOR_INIT(textbox);
 ACTOR_INIT(player);
 ACTOR_INIT(pause_box);
 ACTOR_INIT(minimap);
+ACTOR_INIT(mappoi);
 ACTOR_INIT(signpost);
 ACTOR_INIT(fire);
 ACTOR_INIT(woodtorch);
@@ -88,6 +90,7 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(player);
 	ACTOR_STRING_CASE(pause_box);
 	ACTOR_STRING_CASE(minimap);
+	ACTOR_STRING_CASE(mappoi);
 	ACTOR_STRING_CASE(signpost);
 	ACTOR_STRING_CASE(fire);
 	ACTOR_STRING_CASE(woodtorch);
@@ -123,6 +126,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 		MAKE_ACTOR_INIT(player);
 		MAKE_ACTOR_INIT(pause_box);
 		MAKE_ACTOR_INIT(minimap);
+		MAKE_ACTOR_INIT(mappoi);
 		MAKE_ACTOR_INIT(signpost);
 		MAKE_ACTOR_INIT(fire);
 		MAKE_ACTOR_INIT(woodtorch);
