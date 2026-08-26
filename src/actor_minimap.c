@@ -25,6 +25,7 @@ Vector2 ScaleToMap(struct Actor* actor, Vector3 pos);
 ACTOR_INIT(minimap)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_TEXTBOX;
+	ACTOR_REGISTER_PRELOADASSETS(minimap);
 	ACTOR_REGISTER_POSTUPDATE(minimap);
 	ACTOR_REGISTER_DRAWHUD(minimap);
 }
@@ -32,6 +33,11 @@ ACTOR_INIT(minimap)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ACTOR_PRELOADASSETS(minimap)
+{
+	LoadAsset_Texture(ASSET_TEXTURES"/Minimaps/TestField.png", FALSE, NULL);
+}
 
 ACTOR_POSTUPDATE(minimap)
 {
@@ -49,7 +55,11 @@ ACTOR_DRAWHUD(minimap)
 {
 	float map_left = (float)(HUD_RIGHT - (MAP_RESOLUTION + MAP_EDGE_BORDER));
 	float map_top = (float)(HUD_BOTTOM - (MAP_RESOLUTION + MAP_EDGE_BORDER));
-	DrawRectangleLines(map_left, map_top, MAP_RESOLUTION, MAP_RESOLUTION, WHITE);
+	//DrawRectangleLines(map_left, map_top, MAP_RESOLUTION, MAP_RESOLUTION, WHITE);
+
+	Texture* tex = AssetGet_Texture(ASSET_TEXTURES"/Minimaps/TestField.png");
+	float scale_div = MAP_RESOLUTION / tex->width;
+	DrawTextureEx(*tex, (Vector2) { map_left, map_top }, 0.0f, scale_div, WHITE);
 
 	struct Actor* player = FINDACTOR_BYTYPE(act_player);
 	if (player != NULL)
@@ -59,36 +69,6 @@ ACTOR_DRAWHUD(minimap)
 		DrawCircle(pos.x, pos.y, 2, YELLOW);
 	}
 
-	{	// Draw map exits
-		struct Actor* found_exits[32] = { NULL };
-		int found_count = FINDACTORGROUP_BYTYPE(found_exits, 32, act_trigger_exit);
-		if (found_count > 0)
-		{
-			for (int i = 0; i < found_count; i++)
-			{
-				struct Actor* poi = found_exits[i];
-				if (poi == NULL)
-					continue;
-				Vector2 pos = ScaleToMap(actor, poi->position);
-				DrawCircle(pos.x, pos.y, 1, WHITE);
-			}
-		}
-	}
-	{	// Draw room swappers
-		struct Actor* found_roomswaps[32] = { NULL };
-		int found_count = FINDACTORGROUP_BYTYPE(found_roomswaps, 32, act_roomswap);
-		if (found_count > 0)
-		{
-			for (int i = 0; i < found_count; i++)
-			{
-				struct Actor* poi = found_roomswaps[i];
-				if (poi == NULL)
-					continue;
-				Vector2 pos = ScaleToMap(actor, poi->position);
-				DrawCircle(pos.x, pos.y, 1, WHITE);
-			}
-		}
-	}
 	{	// Draw POIs
 		struct Actor* found_pois[32] = { NULL };
 		int found_count = FINDACTORGROUP_BYTYPE(found_pois, 32, act_mappoi);
