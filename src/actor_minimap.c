@@ -9,6 +9,7 @@
 #define MAP_EDGE_BORDER 10.0f
 
 // Assets
+#define ARROW_TEXTURE ASSET_TEXTURES"/Minimaps/Arrow.png"
 #define MAP_TEXTURE_PATH TextFormat(ASSET_TEXTURES"/Minimaps/%s_%i.png", scene->actor_type_name, scene->current_room_index)
 
 // private header
@@ -38,6 +39,7 @@ ACTOR_PRELOADASSETS(minimap)
 {
  	struct Actor* scene = GetCurrentScene();
 	LoadAsset_Texture(MAP_TEXTURE_PATH, FALSE, NULL);
+	LoadAsset_Texture(ARROW_TEXTURE, FALSE, NULL);
 }
 
 ACTOR_POSTUPDATE(minimap)
@@ -76,8 +78,10 @@ ACTOR_DRAWHUD(minimap)
 	if (player != NULL)
 	{
 		// Draw player position
+		Texture* tex = AssetGet_Texture(ARROW_TEXTURE);
 		Vector2 pos = ScaleToMap(actor, player->position);
-		DrawCircle(pos.x, pos.y, 2, YELLOW);
+		DrawTextureEx(*tex, (Vector2) { pos.x-4, pos.y-4 }, 0.0f, 1.0f, YELLOW);
+
 	}
 
 	{	// Draw POIs

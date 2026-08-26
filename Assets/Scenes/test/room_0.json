@@ -35,6 +35,47 @@
 	  {
 		"type": "crate",
 		"pos": [3.8, 0, -8.8]
+	  },
+	  
+	  {
+		"type": "mappoi",
+		"pos": [-9.3, 0, 9.3]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-9.3, 0, -9.3]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [9.3, 0, -9.3]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [9.3, 0, 9.3]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-9.4, 0, -4.8]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-9.4, 0, 0.5]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-5, 0, 9.4]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [0.2, 0, 9.4]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [4.4, 0, -9.3]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [4.4, 0, 5.1]
 	  }
 	]
 }

@@ -31,6 +31,31 @@
 	  {
 		"type": "woodtorch",
 		"pos": [ -30, 0, -15]
+	  },
+	  
+	  {
+		"type": "mappoi",
+		"pos": [-13.7, 0, 17.5]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-13.7, 0, -22.5]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-50.4, 0, -22.5]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-50.4, 0, 17.5]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-20.4, 0, 0.4]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-20.4, 0, -5.4]
 	  }
 	],
 	"lights":[
