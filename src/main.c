@@ -176,11 +176,11 @@ static void game_setup()
     RegisterWorldPostProcessShader(
         AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat"), "WorldDither", 10, AdvDitherShaderUniforms);
     RegisterWorldPostProcessShader(
-        AssetGet_Material(ASSET_MATERIALS"/LUTs/neutral.mat"), "WorldLUT", 20, AdvLUTShaderUniforms);
+        AssetGet_Material(ASSET_MATERIALS"/Effects/look_up_table.mat"), "WorldLUT", 20, AdvLUTShaderUniforms);
     RegisterWorldPostProcessShader(
         AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat"), "HudDither", 10, AdvDitherShaderUniforms);
     RegisterHudPostProcessShader(
-        AssetGet_Material(ASSET_MATERIALS"/LUTs/neutral.mat"), "HudLUT", 20, AdvLUTShaderUniforms);
+        AssetGet_Material(ASSET_MATERIALS"/Effects/look_up_table.mat"), "HudLUT", 20, AdvLUTShaderUniforms);
     // Adventure edit end
 }
 
