@@ -11,16 +11,17 @@
 int draw_debug_info = FALSE;
 int draw_collider_info = FALSE;
 
-int light_count = 0;
-Vector4 world_light_positions[MAX_LIGHTS] = { 0 };
-Vector4 world_light_colors[MAX_LIGHTS] = { 0 };
+static int light_count = 0;
+static Vector4 world_light_positions[MAX_LIGHTS] = { 0 }; // XYZpos, Wradiance
+static Vector4 world_light_colors[MAX_LIGHTS] = { 0 }; // XYZcolor, Walpha
 
 Color clear_background_color;
 
-RenderTexture2D render_tex_pre = { 0 };
-RenderTexture2D render_tex_main = { 0 };
-RenderTexture2D render_tex_post = { 0 };
-RenderTexture2D render_tex_hud = { 0 };
+// Autocleared, updated using actor DRAW functions.
+static RenderTexture2D render_tex_pre = { 0 };
+static RenderTexture2D render_tex_main = { 0 };
+static RenderTexture2D render_tex_post = { 0 };
+static RenderTexture2D render_tex_hud = { 0 };
 
 const int renderlayers_enabled = FALSE;
 Vector2 renderlayer_pos_background = { 0 };
@@ -397,7 +398,7 @@ void fog_set(Color col, float power, float dist)
 	fog_color = (Vector3){ (float)col.r / 255.0f, (float)col.g / 255.0f, (float)col.b / 255.0f };
 }
 
-void lighting_append_light(Vector3 pos, float radius, Color col, float influence)
+void AppendLight(Vector3 pos, float radius, Color col, float influence)
 {
 	/*
 	// Calculate range affected intensity
@@ -444,13 +445,23 @@ void lighting_append_light(Vector3 pos, float radius, Color col, float influence
 		light_count = MAX_LIGHTS;
 }
 
-void shader_update_defaultuniforms(Shader shader, struct Actor* actor)
+void ResetLightCount()
+{
+	light_count = 0;
+}
+
+int GetLightCount()
+{
+	return light_count;
+}
+
+void ShaderUpdateDefaultUniforms(Shader shader, struct Actor* actor)
 {
 	int pos_loc = GetShaderLocation(shader, "uWorldPos");
 	SetShaderValue(shader, pos_loc, &actor->position, SHADER_UNIFORM_VEC3);
 }
 
-void shader_update_fog(Shader shader)
+void ShaderUpdateFogUniforms(Shader shader)
 {
 	int fog_loc = GetShaderLocation(shader, "uFogColor");
 	SetShaderValue(shader, fog_loc, &fog_color, SHADER_UNIFORM_VEC3);
@@ -460,7 +471,7 @@ void shader_update_fog(Shader shader)
 	SetShaderValue(shader, fog_loc, &fog_distance, SHADER_UNIFORM_FLOAT);
 }
 
-void shader_update_lights(Shader shader)
+void ShaderUpdateLightUniforms(Shader shader)
 {
 	// Pass number of lights
 	int light_loc = GetShaderLocation(shader, "uLightCount");

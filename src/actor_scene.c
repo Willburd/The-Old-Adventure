@@ -143,7 +143,7 @@ void DefaultSceneLightAppend(struct Actor* scene)
 	for (int i = 0; i < scene_data->light_count; i++)
 	{
 		LightNodeData* node = &scene_data->lights[i];
-		lighting_append_light(node->pos, node->radius, Vector3ToColor(node->color, 1.0f), node->influence);
+		AppendLight(node->pos, node->radius, Vector3ToColor(node->color, 1.0f), node->influence);
 	}
 }
 
