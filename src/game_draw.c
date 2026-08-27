@@ -6,6 +6,7 @@
 #include "tools.h"
 #include "collision.h"
 #include "assets.h"
+#include "scene_entry.h"
 #include "post_processing.h"
 
 int draw_debug_info = FALSE;
@@ -374,16 +375,19 @@ void game_draw(double tick_percent)
 	// Handle last post-processing step, applies to all renders at once
 	HandleFinalPostProcessing(&render_tex_postfinal, src, dest, org);
 
-	// Final draw
-	org = (Vector2){ screenWidth / 2.0f, screenHeight / 2.0f };
-	src = (Rectangle){ 0, 0, (float)renderWidth, (float)-renderHeight };
-	dest = (Rectangle){ screenWidth / 2.0f, screenHeight / 2.0f, (float)screenWidth, (float)screenHeight };
-	BeginMode2D(cam_hud);
+	// We're moving to a new scene, don't update the screen till we're cleared.
+	if (!NewSceneOrRoomRequested())
 	{
-		DrawTexturePro(render_tex_postfinal.texture, src, dest, org, 0, WHITE);
+		// Final draw
+		org = (Vector2){ screenWidth / 2.0f, screenHeight / 2.0f };
+		src = (Rectangle){ 0, 0, (float)renderWidth, (float)-renderHeight };
+		dest = (Rectangle){ screenWidth / 2.0f, screenHeight / 2.0f, (float)screenWidth, (float)screenHeight };
+		BeginMode2D(cam_hud);
+		{
+			DrawTexturePro(render_tex_postfinal.texture, src, dest, org, 0, WHITE);
+		}
+		EndMode2D();
 	}
-	EndMode2D();
-
 	EndDrawing();
 }
 
