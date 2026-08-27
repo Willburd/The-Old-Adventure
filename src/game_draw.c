@@ -30,6 +30,10 @@ RenderTexture2D render_tex_background = { 0 };
 RenderTexture2D render_tex_tilemap = { 0 };
 RenderTexture2D render_tex_foreground = { 0 };
 
+static int transparent_draw_actor_count = 0;
+static struct Actor* transparent_draw_array[ACTOR_LIMIT] = { 0 };
+static struct Actor* transparent_sort_array[ACTOR_LIMIT] = { 0 };
+
 void game_draw(double tick_percent)
 {
 	// Recalculate render size
@@ -64,11 +68,11 @@ void game_draw(double tick_percent)
 	// Predraw
 	////////////////////////////////////////////////////////////////////////
 	int has_main_draw = FALSE;
-	int has_transparent_draw = FALSE;
 	int has_main_postdraw = FALSE;
 	int has_hud_predraw = FALSE;
 	int has_hud_draw = FALSE;
 	int has_hud_postdraw = FALSE;
+	transparent_draw_actor_count = 0;
 	BeginTextureMode(render_tex_pre);
 	ClearBackground(clear_background_color);
 	BeginMode3D(cam_main);
@@ -87,8 +91,8 @@ void game_draw(double tick_percent)
 		// Check for future draw events. We don't need to loop over all actors in the future if we check now!
 		if (ACTOR_HAS(draw_actor, func_drawworld))
 			has_main_draw = TRUE;
-		if(ACTOR_HAS(draw_actor, func_transparentdrawworld))
-			has_transparent_draw = TRUE;
+		if (ACTOR_HAS(draw_actor, func_transparentdrawworld))
+			transparent_draw_array[transparent_draw_actor_count++] = draw_actor;
 		if (ACTOR_HAS(draw_actor, func_postdrawworld))
 			has_main_postdraw = TRUE;
 		if (ACTOR_HAS(draw_actor, func_predrawhud))
@@ -126,21 +130,38 @@ void game_draw(double tick_percent)
 			}
 			EndMode3D();
 		}
-		if (has_transparent_draw)
+		if (transparent_draw_actor_count > 0)
 		{
-			// TODO - Solve transparency blending and render order
 			BeginMode3D(cam_main);
 			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE, RL_FUNC_ADD, RL_FUNC_ADD);
-			// Transparent pass
-			for (int i = 0; i <= current_actor_cap; i++)
+			// Transparent sort order
+			int sorted_count = 0;
+			while (sorted_count < transparent_draw_actor_count)
 			{
-				struct Actor* draw_actor = world_actors[i];
-				if (!ACTOR_EXISTS(draw_actor))
-					continue;
-				if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
-					continue;
-				if (ACTOR_HAS(draw_actor, func_transparentdrawworld))
-					draw_actor->func_transparentdrawworld(draw_actor, tick_percent);
+				int furthest_actor_index = -1;
+				for (int i = 0; i < transparent_draw_actor_count; i++)
+				{
+					if (transparent_draw_array[i] == NULL)
+						continue;
+					struct Actor* current_actor = transparent_draw_array[i];
+					if (furthest_actor_index == -1)
+					{
+						furthest_actor_index = i;
+						continue;
+					}
+					struct Actor* compare_actor = transparent_draw_array[furthest_actor_index];
+					if (Vector3Distance(cam_main.position, current_actor->position) < Vector3Distance(cam_main.position, compare_actor->position))
+						continue;
+					furthest_actor_index = i;
+				}
+				transparent_sort_array[sorted_count++] = transparent_draw_array[furthest_actor_index];
+				transparent_draw_array[furthest_actor_index] = NULL;
+			}
+			// Transparent render pass
+			for (int i = 0; i < transparent_draw_actor_count; i++)
+			{
+				struct Actor* draw_actor = transparent_sort_array[i];
+				draw_actor->func_transparentdrawworld(draw_actor, tick_percent);
 			}
 			EndMode3D();
 		}
