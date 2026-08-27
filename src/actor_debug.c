@@ -48,5 +48,5 @@ ACTOR_POSTDRAWHUD(debug)
 	if (scene)
 		room_index = scene->current_room_index;
 	DrawFPS(5, 5);
-	DrawText(TextFormat("[act: %i] [col: %i] [lig: %i]", current_actor_cap, max_collision, light_count), 5, 25, 4, WHITE);
+	DrawText(TextFormat("[act: %i] [col: %i] [lig: %i]", current_actor_cap, max_collision, GetLightCount()), 5, 25, 4, WHITE);
 }

@@ -85,7 +85,7 @@ ACTOR_LIGHTNODES(skybox)
 {
 	if (is_cave)
 	{ 
-		lighting_append_light(Vector3Zero(), LIGHT_WORLD_RANGE, WHITE, cave_light);
+		AppendLight(Vector3Zero(), LIGHT_WORLD_RANGE, WHITE, cave_light);
 		return;
 	}
 	LIGHT_NODE_SKYBOX;

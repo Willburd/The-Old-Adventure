@@ -53,7 +53,7 @@ ACTOR_POSTUPDATE(occluder)
 ACTOR_TRANSPARENTDRAWWORLD(occluder)
 {
 	Material* transition_mat = AssetGet_Material(BLEND_MATERIAL_MAIN);
-	shader_update_defaultuniforms(transition_mat->shader, actor);
+	ShaderUpdateDefaultUniforms(transition_mat->shader, actor);
 
 	int blend_loc = GetShaderLocation(transition_mat->shader, "blend_color");
 	SetShaderValue(transition_mat->shader, blend_loc, &actor->blend_color, SHADER_UNIFORM_VEC4);
