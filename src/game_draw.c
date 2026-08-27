@@ -207,7 +207,7 @@ void game_draw(double tick_percent)
 		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
 		// Get collision material
 		Material* mat_col = AssetGet_Material(ASSET_MATERIALS"/Engine/collision_debug.mat");
-		for (int i = 0; i <= max_collision; i++)
+		for (int i = 0; i <= GetColliderCount(); i++)
 		{
 			struct ColliderData* col = GetCollider(i);
 			Matrix position = GetMatrix(col->owner);
@@ -246,11 +246,7 @@ void game_draw(double tick_percent)
 				MATRIX_ASSEMBLE(facing_transform)
 			);
 		}
-		// Draw raycast lines
-		for (int i = 0; i < debug_current_rays; i++)
-		{
-			DrawLine3D(debug_ray_starts[i], debug_ray_ends[i], debug_ray_hits[i] ? RED : BLUE);
-		}
+		DebugDrawCollisionRays();
 		EndMode3D();
 		EndTextureMode();
 	}

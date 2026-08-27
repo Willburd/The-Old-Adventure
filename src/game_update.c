@@ -32,8 +32,11 @@ void game_update()
 	// Prepare world and renderer
 	////////////////////////////////////////////////////////////////////////
 
-	debug_current_rays = 0; // reset debug info
-	UpdateWorldState();	// Adventure edit begin - Update our worldstate
+	// Adventure edit begin - Update adventure's abstract data
+	UpdateWorldState();	// Update our worldstate
+	// Adventure edit end
+
+	ResetDebugRayCount();
 	ResetLightCount();
 	HandleLoadNextScene();
 

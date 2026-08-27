@@ -28,23 +28,32 @@ struct ColliderData {
 	struct Actor* owner;
 	Mesh* mesh;
 	unsigned int flags;
-} ;
+};
 
-int max_collision;
+// Get the number of colliders currently registered.
+int GetColliderCount();
+// Gets current number of collider rays done this tick.
+int GetDebugColliderRayCount();
+// Reset the current debug ray counter.
+void ResetDebugRayCount();
+// Draws all collision rays done this update tick.
+void DebugDrawCollisionRays();
 
-int debug_current_rays;
-Vector3 debug_ray_starts[];
-Vector3 debug_ray_ends[];
-int debug_ray_hits[];
-
+// Get a collision using it's index in the collider array. Shouldn't be used for anything except iterating all colliders outside of collision.c
 struct ColliderData* GetCollider(int index);
+// Allocate collision to the game's collision system. DO NOT FORGET TO RESIGN IT.
 void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collision_flags);
+// Resigns a collision from the game's collision system.
 void CollisionResign(struct Actor* owner, Mesh* collider);
+// Cleans up all colliders tied to an actor
 void CollisionCleanup(struct Actor* owner);
 
+// Get the nearest point. May not return a valid collision.
 RayCollision CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask);
+// Get the furthest point. May not return a valid collision.
 RayCollision CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask);
 
+// Register all meshes present in a model as colliders.
 void RegisterAllCollisionMeshes(struct Actor* actor, char* model_path, int collision_mask);
 
 #endif
