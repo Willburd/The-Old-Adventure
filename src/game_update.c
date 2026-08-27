@@ -30,7 +30,7 @@ void game_update()
 	// Prepare world and renderer
 	////////////////////////////////////////////////////////////////////////
 
-	debug_current_rays = 0; // reset debug info
+	ResetDebugRayCount();
 	ResetLightCount();
 	HandleLoadNextScene();
 

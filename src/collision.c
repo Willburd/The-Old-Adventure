@@ -4,15 +4,38 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int max_collision = -1;
-struct ColliderData world_colliders[MAX_COLLIDERS] = { NULL };
+static int max_collision = -1;
+static struct ColliderData world_colliders[MAX_COLLIDERS] = { NULL };
 
-int debug_current_rays = 0;
-Vector3 debug_ray_starts[MAX_COLLIDERS] = { 0,0,0 };
-Vector3 debug_ray_ends[MAX_COLLIDERS] = { 0,0,0 };
-int debug_ray_hits[MAX_COLLIDERS] = { FALSE };
+static int debug_current_rays = 0;
+static Vector3 debug_ray_starts[MAX_COLLIDERS] = { 0,0,0 };
+static Vector3 debug_ray_ends[MAX_COLLIDERS] = { 0,0,0 };
+static int debug_ray_hits[MAX_COLLIDERS] = { FALSE };
 
-// Get a collision using it's index in the collider array. Shouldn't be used for anything except iterating all colliders outside of collision.c
+int GetColliderCount()
+{
+	return max_collision;
+}
+
+int GetDebugColliderRayCount()
+{
+	return debug_current_rays;
+}
+
+void ResetDebugRayCount() 
+{
+	debug_current_rays = 0;
+}
+
+void DebugDrawCollisionRays()
+{
+	// Draw raycast lines
+	for (int i = 0; i < debug_current_rays; i++)
+	{
+		DrawLine3D(debug_ray_starts[i], debug_ray_ends[i], debug_ray_hits[i] ? RED : BLUE);
+	}
+}
+
 struct ColliderData* GetCollider(int index)
 {
 	if (index > max_collision)
@@ -22,7 +45,6 @@ struct ColliderData* GetCollider(int index)
 	return &world_colliders[index];
 }
 
-// Allocate collision to the game's collision system. DO NOT FORGET TO RESIGN IT.
 void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collision_flags)
 {
 	for (int i = 0; i < MAX_COLLIDERS; i++)
@@ -40,7 +62,6 @@ void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collisi
 	printf("Unable to allocate collider for: [%llu] %s\n", owner->uuid, owner->actor_type_name);
 }
 
-// Resigns a collision from the game's collision system.
 void CollisionResign(struct Actor* owner, Mesh* collider)
 {
 	// Find and remove the matching entry
@@ -75,7 +96,6 @@ void CollisionResign(struct Actor* owner, Mesh* collider)
 	max_collision--;
 }
 
-// Cleans up all colliders tied to an actor
 void CollisionCleanup(struct Actor* owner)
 {
 	int index_counter = 0;
@@ -119,7 +139,6 @@ static void CollisionTest(Ray raycast, float max_dist, unsigned int mask)
 	debug_current_rays++; // Next ray
 }
 
-// Get the nearest point. May not return a valid collision.
 RayCollision CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask)
 {
 	CollisionTest(raycast, max_dist, mask);
@@ -141,7 +160,6 @@ RayCollision CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask)
 	return nearest;
 }
 
-// Get the furthest point. May not return a valid collision.
 RayCollision CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask)
 {
 	CollisionTest(raycast, max_dist, mask);
