@@ -128,9 +128,9 @@ void game_draw(double tick_percent)
 		}
 		if (has_transparent_draw)
 		{
+			// TODO - Solve transparency blending and render order
 			BeginMode3D(cam_main);
-			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
-			BeginBlendMode(BLEND_CUSTOM_SEPARATE);
+			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE, RL_FUNC_ADD, RL_FUNC_ADD);
 			// Transparent pass
 			for (int i = 0; i <= current_actor_cap; i++)
 			{
