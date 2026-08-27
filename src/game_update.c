@@ -33,7 +33,7 @@ void game_update()
 	////////////////////////////////////////////////////////////////////////
 
 	// Adventure edit begin - Update adventure's abstract data
-	UpdateWorldState();	// Update our worldstate
+	UpdateWorldState();
 	// Adventure edit end
 
 	ResetDebugRayCount();
