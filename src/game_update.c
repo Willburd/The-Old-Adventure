@@ -33,8 +33,8 @@ void game_update()
 	////////////////////////////////////////////////////////////////////////
 
 	debug_current_rays = 0; // reset debug info
-	light_count = 0;
 	UpdateWorldState();	// Adventure edit begin - Update our worldstate
+	ResetLightCount();
 	HandleLoadNextScene();
 
 	////////////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ void game_update()
 		struct Actor* update_actor = world_actors[i];
 		if (update_actor == NULL)
 		{
-			// Store the first free slot 
+			// Store the first free slot
 			if (shift_index == -1)
 				shift_index = i;
 			continue;
