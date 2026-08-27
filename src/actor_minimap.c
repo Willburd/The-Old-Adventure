@@ -2,6 +2,7 @@
 #include "tools.h"
 #include "game_draw.h"
 #include "actor_scene.h"
+#include "game_state.h"
 #include "hud.h"
 
 // Utility
@@ -56,10 +57,11 @@ ACTOR_POSTUPDATE(minimap)
 
 ACTOR_DRAWHUD(minimap)
 {
+	if (!CHECK_GAMESTATE(GAMESTATE_GAMEPLAY))
+		return;
+
 	float map_left = (float)(HUD_RIGHT - (MAP_RESOLUTION + MAP_EDGE_BORDER));
 	float map_top = (float)(HUD_BOTTOM - (MAP_RESOLUTION + MAP_EDGE_BORDER));
-
-
 	struct Actor* scene = GetCurrentScene();
 	if (!AssetExists(MAP_TEXTURE_PATH))
 	{
