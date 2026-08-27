@@ -204,6 +204,7 @@ void LoadScene(SceneID id, EntranceID entrance);
 void TransferScene(SceneID id, EntranceID entrance);
 void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, int instant);
 struct Actor* GetCurrentScene();
+int NewSceneOrRoomRequested();
 void HandleLoadNextScene();
 void UnloadScene(int clear_assets);
 void LoadSceneJSONActors(struct Actor* scene);

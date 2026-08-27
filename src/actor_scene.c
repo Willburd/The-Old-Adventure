@@ -72,6 +72,11 @@ struct Actor* GetCurrentScene()
 	return current_scene;
 }
 
+int NewSceneOrRoomRequested()
+{
+	return (next_scene >= 0) || (next_room >= 0);
+}
+
 // Loads the next scene. Called before the preupdate loop in gametick to avoid being mangled by unloading assets.
 void HandleLoadNextScene()
 {

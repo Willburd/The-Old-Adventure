@@ -111,7 +111,10 @@ int main(void)
         while (update_ticker >= ticker_rate)
         {
             tick_counter++;
-            update_ticker -= ticker_rate;
+            if (!NewSceneOrRoomRequested())
+                update_ticker -= ticker_rate;
+            else
+                update_ticker = fmod(update_ticker, ticker_rate); // So we don't jitter when we finish loading
             game_update();
             if (update_ticker > 10)
                 update_ticker = 0;
