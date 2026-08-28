@@ -47,7 +47,7 @@ void ShaderUpdateFogUniforms(Shader shader);
 void ShaderUpdateLightUniforms(Shader shader);
 
 /// Extended mesh drawing
-void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix matrix, int show_backface);
+void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix matrix);
 void DrawAllModelMeshes(struct Actor* actor, char* model_path, char* material_paths[]);
 
 void LoadRenderTextures();

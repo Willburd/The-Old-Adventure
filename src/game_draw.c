@@ -485,9 +485,10 @@ void ShaderUpdateLightUniforms(Shader shader)
 	SetShaderValueV(shader, light_loc, &world_light_colors, SHADER_UNIFORM_VEC4, light_count);
 }
 
-void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix matrix, int show_backface)
+void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix matrix)
 {
 	// Backface culling
+	int show_backface = TRUE;
 	if(show_backface)
 		rlDisableBackfaceCulling();
 	// Draw
@@ -520,8 +521,7 @@ void DrawAllModelMeshes(struct Actor* actor, char* model_path, char* material_pa
 			model_asset,
 			GetMeshIndex(model_asset->mesh_data, search_mesh->mesh_name),
 			*current_mat,
-			GetMatrix(actor),
-			FALSE
+			GetMatrix(actor)
 		);
 	}
 }

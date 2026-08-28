@@ -34,8 +34,6 @@ enum GameLanguages
 };
 int current_game_language;
 
-struct hashmap* loaded_assets;
-
 typedef struct {
     void* resource_ptr;
     int core_asset;
@@ -52,11 +50,11 @@ typedef struct {
 
 #define MALLOC_ASSET(a, p, s_core) MALLOC(Asset, a, 0);a->core_asset=s_core;CHAR_STR_COPY(a->filepath, p, 0);a->tex=NULL;a->mdl=NULL;a->mesh_data=NULL;a->snd=NULL;a->mus=NULL;a->mat=NULL;a->anm=NULL;a->anm_count=0;a->resource_ptr=a;
 
+// Remove all assets from the hashmap. Normally ignores core assets.
+void AssetHashmapCreate();
+void AssetHashmapDestroy();
+void AssetHashmapClear();
 void UnloadAllAssets(int including_core);
-
-int asset_compare(const void* a, const void* b, void* udata);
-uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1);
-void asset_free(const void* item);
 
 Asset* LoadAsset_Texture(char* path, int is_core, char* mat_link);
 Asset* LoadAsset_Model(char* path, int is_core);
@@ -72,5 +70,11 @@ Sound* AssetGet_Sound(char* path);
 Music* AssetGet_Music(char* path);
 Material* AssetGet_Material(char* path);
 
+// Loads all material paths provided from an array
 void LoadMaterialArray(char* mat_list[], int length);
+
+// Set's material bitflags
+void SetMaterialFlag(Material* mat, int flag, int enable);
+// Reads material bitflags
+int GetMaterialFlag(Material* mat, int flag);
 #endif

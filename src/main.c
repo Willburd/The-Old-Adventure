@@ -94,7 +94,7 @@ int main(void)
         if (IsKeyPressed(KEY_F5)) // Reload game data
         {
             // Reload text assets
-            hashmap_clear(loaded_text, FALSE);
+            TextHashmapClear();
             LoadBuiltinText();
             LoadCoreTextAssets();
             // Reload current room without clearing player
@@ -156,11 +156,11 @@ static void game_setup()
     // Adventure edit end
 
     // Load text data
-    loaded_text = hashmap_new(sizeof(TextEntry), MAX_TEXT_ENTRIES, 0, 0, text_hash, text_compare, text_free, NULL);
+    TextHashmapCreate();
     LoadBuiltinText();
 
     // Create asset cache
-    loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
+    AssetHashmapCreate();
     LoadCoreAssets();
 
     // Spawn camera
@@ -195,9 +195,8 @@ static void game_shutdown()
         ACTOR_DESTROY(destroy_actor);
     }
     // Clear assets and the actor id map
-    UnloadAllAssets(TRUE);
-    hashmap_free(loaded_text);
-    hashmap_free(loaded_assets);
+    TextHashmapDestroy();
+    AssetHashmapDestroy();
     // Unload render textures
     UnloadRenderTextures();
     // Render layers
