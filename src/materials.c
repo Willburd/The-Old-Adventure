@@ -10,6 +10,8 @@
 
 static void MaterialMapSet(Material * mat, int map_layer, float value, Color col, Texture2D * texture);
 static void MaterialShaderSet(Material * mat, Shader * shader);
+static void ProcessTokens();
+static void MaterialFlagInit(Material * mat);
 
 ///////////////////////////////////////////////////////////////
 //
@@ -97,22 +99,36 @@ Material LoadMaterial(Asset* asset, char* path, int is_core_asset)
 			ADVANCETOKEN(tag_data);
 			Texture2D* tex = LoadAsset_Texture(TextFormat("%s%s", ASSET_TEXTURES, tag_data), is_core_asset, path)->tex;
 			MaterialMapSet(&mat, map_type, 1.0f, WHITE, tex);
+			MaterialFlagInit(&mat);
 
-			// Additional texture properties
-			ADVANCETOKEN(tag_data); // Filtering
-			if (STRMATCH(tag_data, "FILT_POINT")) SetTextureFilter(*tex, TEXTURE_FILTER_POINT);
-			if (STRMATCH(tag_data, "FILT_BI")) SetTextureFilter(*tex, TEXTURE_FILTER_BILINEAR);
-			if (STRMATCH(tag_data, "FILT_TRI")) SetTextureFilter(*tex, TEXTURE_FILTER_TRILINEAR);
-
-			ADVANCETOKEN(tag_data); // Wrapping
-			if (STRMATCH(tag_data, "WRAP_REPEAT")) SetTextureWrap(*tex, TEXTURE_WRAP_REPEAT);
-			if (STRMATCH(tag_data, "WRAP_CLAMP")) SetTextureWrap(*tex, TEXTURE_WRAP_CLAMP);
-			if (STRMATCH(tag_data, "WRAP_MIRROR")) SetTextureWrap(*tex, TEXTURE_WRAP_MIRROR_REPEAT);
-			if (STRMATCH(tag_data, "WRAP_CLAMP_MIRROR")) SetTextureWrap(*tex, TEXTURE_WRAP_MIRROR_CLAMP);
+			// Additional properties
+			ADVANCETOKEN(tag_data);
+			while (tag_data != NULL)
+			{
+				ProcessTokens(tag_data, &mat, tex);
+				ADVANCETOKEN(tag_data);
+			}
 		}
 	}
 	fclose(fptr);
 	return mat;
+}
+
+static void ProcessTokens(char* tag_data, Material *mat, Texture* tex)
+{
+	// Filtering
+	if (STRMATCH(tag_data, "FILT_POINT")) SetTextureFilter(*tex, TEXTURE_FILTER_POINT);
+	if (STRMATCH(tag_data, "FILT_BI")) SetTextureFilter(*tex, TEXTURE_FILTER_BILINEAR);
+	if (STRMATCH(tag_data, "FILT_TRI")) SetTextureFilter(*tex, TEXTURE_FILTER_TRILINEAR);
+
+	// Wrapping
+	if (STRMATCH(tag_data, "WRAP_REPEAT")) SetTextureWrap(*tex, TEXTURE_WRAP_REPEAT);
+	if (STRMATCH(tag_data, "WRAP_CLAMP")) SetTextureWrap(*tex, TEXTURE_WRAP_CLAMP);
+	if (STRMATCH(tag_data, "WRAP_MIRROR")) SetTextureWrap(*tex, TEXTURE_WRAP_MIRROR_REPEAT);
+	if (STRMATCH(tag_data, "WRAP_CLAMP_MIRROR")) SetTextureWrap(*tex, TEXTURE_WRAP_MIRROR_CLAMP);
+
+	// Rendering
+	if (STRMATCH(tag_data, "BOTH_SIDES")) MaterialFlagSet(mat, MATFLAG_BOTH_FACES, TRUE);
 }
 
 static void MaterialMapSet(Material* mat,int map_layer, float value, Color col, Texture2D* texture)
@@ -126,3 +142,33 @@ static void MaterialShaderSet(Material* mat, Shader* shader)
 {
 	mat->shader = *shader;
 }
+
+// Notice, following functions are a bit unsafe if int/float ever change length...
+
+static void MaterialFlagInit(Material* mat)
+{
+	uint32_t temp;
+	memcpy(&temp, &mat->params[0], sizeof(mat->params[0]));
+	temp = 0;
+	memcpy(&mat->params[0], &temp, sizeof(mat->params[0]));
+}
+
+void MaterialFlagSet(Material* mat, uint32_t matflag, int enable)
+{
+	uint32_t temp;
+	memcpy(&temp, &mat->params[0], sizeof(mat->params[0]));
+	if (enable)
+		temp |= matflag;
+	else
+		temp &= ~matflag;
+	memcpy(&mat->params[0], &temp, sizeof(mat->params[0]));
+}
+
+uint32_t MaterialFlagGet(Material* mat, uint32_t matflag)
+{
+	uint32_t temp;
+	memcpy(&temp, &mat->params[0], sizeof(mat->params[0]));
+	return (temp & matflag);
+}
+
+// End notice.

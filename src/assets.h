@@ -72,9 +72,4 @@ Material* AssetGet_Material(char* path);
 
 // Loads all material paths provided from an array
 void LoadMaterialArray(char* mat_list[], int length);
-
-// Set's material bitflags
-void SetMaterialFlag(Material* mat, int flag, int enable);
-// Reads material bitflags
-int GetMaterialFlag(Material* mat, int flag);
 #endif
