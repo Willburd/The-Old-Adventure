@@ -12,11 +12,9 @@ typedef struct {
 #define MAX_TEXT_ENTRIES 4096
 #define MAX_TEXT_ENTRY_LENGTH 4096
 
-struct hashmap* loaded_text;
-
-int text_compare(const void* a, const void* b, void* udata);
-uint64_t text_hash(const void* item, uint64_t seed0, uint64_t seed1);
-void text_free(void* item);
+void TextHashmapCreate();
+void TextHashmapDestroy();
+void TextHashmapClear();
 
 void LoadBuiltinText();
 void LoadTextData(char* text_id);

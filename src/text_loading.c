@@ -5,22 +5,39 @@
 #include "hashmap.h"
 #include "tools.h"
 
-int text_compare(const void* a, const void* b, void* udata) {
+static struct hashmap* loaded_text;
+
+static int text_compare(const void* a, const void* b, void* udata) {
     TextEntry* ua = a;
     TextEntry* ub = b;
     return strcmp(ua->key, ub->key);
 }
 
-uint64_t text_hash(const void* item, uint64_t seed0, uint64_t seed1) {
+static uint64_t text_hash(const void* item, uint64_t seed0, uint64_t seed1) {
     const TextEntry* entry = item;
     return hashmap_sip(entry->key, strlen(entry->key), seed0, seed1);
 }
 
-void text_free(void* item) { 
+static void text_free(void* item) {
     TextEntry* entry = item;
     RELEASE(entry->key);
     RELEASE(entry->data);
     free(entry->resource_ptr);
+}
+
+void TextHashmapCreate()
+{
+    loaded_text = hashmap_new(sizeof(TextEntry), MAX_TEXT_ENTRIES, 0, 0, text_hash, text_compare, text_free, NULL);
+}
+
+void TextHashmapDestroy()
+{
+    hashmap_free(loaded_text);
+}
+
+void TextHashmapClear()
+{
+    hashmap_clear(loaded_text, FALSE);
 }
 
 static int AddEntry(char* string_id, char* string_data)

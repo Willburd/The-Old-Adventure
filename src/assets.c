@@ -7,49 +7,21 @@
 #include "tools.h"
 #include "rlgl.h"
 
-// Remove all assets from the hashmap. Normally ignores core assets.
-void UnloadAllAssets(int including_core)
-{
-    printf("==============================================================================\n");
-    if(!including_core)
-        printf("                             UNLOADING ASSETS                                 \n");
-    else
-        printf("                          UNLOADING CORE ASSETS                               \n");
-    printf("==============================================================================\n");
+static struct hashmap* loaded_assets;
 
-    size_t iter = 0;
-    void* item;
-    // Scan the hashmap for assets that are not core assets
-    while (hashmap_iter(loaded_assets, &iter, &item)) {
-        const Asset* search_asset = item;
-        if (!including_core && search_asset->core_asset)
-            continue;
-        Asset* found_asset = hashmap_delete(loaded_assets, search_asset);
-        if(found_asset != NULL)
-            asset_free(found_asset);
-    }
-    if (including_core)
-    {
-        UnloadFont(default_font);
-    }
 
-    printf("==============================================================================\n");
-    printf("                             UNLOADING FINISHED                               \n");
-    printf("==============================================================================\n");
-}
-
-int asset_compare(const void* a, const void* b, void* udata) {
+static int asset_compare(const void* a, const void* b, void* udata) {
     const Asset* ua = a;
     const Asset* ub = b;
     return strcmp(ua->filepath, ub->filepath);
 }
 
-uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1) {
+static uint64_t asset_hash(const void* item, uint64_t seed0, uint64_t seed1) {
     const Asset* asset = item;
     return hashmap_sip(asset->filepath, strlen(asset->filepath), seed0, seed1);
 }
 
-void asset_free(void* item) {
+static void asset_free(void* item) {
     Asset* asset = item;
     if (asset->tex != NULL && IsTextureValid(*asset->tex))
     {
@@ -108,6 +80,53 @@ void asset_free(void* item) {
     }
     RELEASE(asset->filepath); // malloc char* string
     free(asset->resource_ptr); // Release original allocation
+}
+
+void AssetHashmapCreate()
+{
+    loaded_assets = hashmap_new(sizeof(Asset), ASSET_LIMIT, 0, 0, asset_hash, asset_compare, asset_free, NULL);
+}
+
+void AssetHashmapDestroy()
+{
+    UnloadAllAssets(TRUE);
+    hashmap_free(loaded_assets);
+}
+
+void AssetHashmapClear()
+{
+    UnloadAllAssets(TRUE);
+    hashmap_clear(loaded_assets, FALSE);
+}
+
+void UnloadAllAssets(int including_core)
+{
+    printf("==============================================================================\n");
+    if(!including_core)
+        printf("                             UNLOADING ASSETS                                 \n");
+    else
+        printf("                          UNLOADING CORE ASSETS                               \n");
+    printf("==============================================================================\n");
+
+    size_t iter = 0;
+    void* item;
+    // Scan the hashmap for assets that are not core assets
+    while (hashmap_iter(loaded_assets, &iter, &item)) {
+        const Asset* search_asset = item;
+        if (!including_core && search_asset->core_asset)
+            continue;
+        Asset* found_asset = hashmap_delete(loaded_assets, search_asset);
+        if(found_asset != NULL)
+            asset_free(found_asset);
+    }
+    if (including_core)
+    {
+        UnloadFont(default_font);
+    }
+
+    printf("==============================================================================\n");
+    printf("                             UNLOADING FINISHED                               \n");
+    printf("==============================================================================\n");
 }
 
 /// This uses MEMSET, ensure all data is assigned before pushing to the hashmap!
@@ -376,3 +395,17 @@ void LoadMaterialArray(char* mat_list[], int length)
         LoadAsset_Material(mat_list[i], FALSE);
     }
 }
+
+// Notice, following functions are a bit unsafe if int/float ever change length...
+
+void SetMaterialFlag(Material* mat, int flag, int enable)
+{
+
+}
+
+int GetMaterialFlag(Material* mat, int flag)
+{
+
+}
+
+// End notice.
