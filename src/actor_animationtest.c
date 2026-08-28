@@ -86,8 +86,7 @@ ACTOR_DRAWWORLD(animationtest)
 			model_asset,
 			i,
 			*mat,
-			actor_matrix,
-			FALSE
+			actor_matrix
 		);
 	}
 }

@@ -69,8 +69,7 @@ SCENE_DRAWWORLD(test)
 				model_asset,
 				GetMeshIndex(model_asset->mesh_data, "test_room-Main"),
 				*stone_mat,
-				GetMatrix(scene),
-				FALSE
+				GetMatrix(scene)
 			);
 		}
 		break;
@@ -81,8 +80,7 @@ SCENE_DRAWWORLD(test)
 				model_asset,
 				GetMeshIndex(model_asset->mesh_data, "side_room-Main"),
 				*stone_mat,
-				GetMatrix(scene),
-				FALSE
+				GetMatrix(scene)
 			);
 		}
 		break;

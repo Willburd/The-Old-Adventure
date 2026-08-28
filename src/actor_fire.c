@@ -79,8 +79,7 @@ ACTOR_TRANSPARENTDRAWWORLD(fire)
 		AssetGetPackage(SPRITE_MODEL),
 		0,
 		*AssetGet_Material(FIRE_MATERIAL),
-		MATRIX_ASSEMBLE(fire_transform),
-		FALSE
+		MATRIX_ASSEMBLE(fire_transform)
 	);
 	EndShaderMode();
 }
