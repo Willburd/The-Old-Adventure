@@ -30,9 +30,9 @@
 	  {
 		"type": "trigger_exit",
 		"pos": [0,0,36],
-		"to_scene": "test",
-		"to_entrance": "debugentrance",
-		"radius": 18
+		"to_scene": "cavetest",
+		"to_entrance": "caveA",
+		"radius": 17
 	  },
 	  
 	  {
@@ -52,8 +52,8 @@
 	  {
 		"type": "hole",
 		"pos": [-6.67, 0.16, -14.74],
-		"to_scene": "fieldtest",
-		"to_entrance": "caveA",
+		"to_scene": "test",
+		"to_entrance": "debugentrance",
 		"radius": 1
 	  },
 	  {

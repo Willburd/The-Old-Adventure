@@ -24,7 +24,7 @@ static void actor_exit_finishleaving(struct Actor* exit);
 ACTOR_INIT(trigger_exit)
 {
 	// Configure actor
-	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_TRANSITION;
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE;
 	ACTOR_REGISTER_JSON_INIT(trigger_exit);
 	ACTOR_REGISTER_PREUPDATE(trigger_exit);
 	ACTOR_REGISTER_DRAWWORLD(trigger_exit);
@@ -70,6 +70,7 @@ ACTOR_PREUPDATE(trigger_exit)
 		return;
 	if (Vector3Distance(actor->position, player->position) > exit_data->radius)
 		return;
+	actor->actor_flags |= ACTOR_FLAG_TICKDURING_TRANSITION;
 	actor_exit_startleaving(actor, player);
 }
 

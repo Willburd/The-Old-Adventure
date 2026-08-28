@@ -20,6 +20,7 @@ typedef enum
 	scene_title,
 	scene_test,
 	scene_fieldtest,
+	scene_cavetest,
 	LAST_SCENE
 } SceneID;
 char* all_scene_names[500];
@@ -32,6 +33,7 @@ SCENE_INIT(debugmenu);
 SCENE_INIT(title);
 SCENE_INIT(test);
 SCENE_INIT(fieldtest);
+SCENE_INIT(cavetest);
 
 #define SCENE_STRING_CASE(str) if (STRMATCH(string_id, #str)) return scene_## str
 inline SceneID SCENE_FROM_STRING(char* string_id)
@@ -44,6 +46,7 @@ inline SceneID SCENE_FROM_STRING(char* string_id)
 	SCENE_STRING_CASE(title);
 	SCENE_STRING_CASE(test);
 	SCENE_STRING_CASE(fieldtest);
+	SCENE_STRING_CASE(cavetest);
 	return LAST_SCENE;
 }
 #undef SCENE_STRING_CASE
@@ -60,6 +63,7 @@ inline void SceneNamePredef()
 	PREDEF_SCENE(title);
 	PREDEF_SCENE(test);
 	PREDEF_SCENE(fieldtest);
+	PREDEF_SCENE(cavetest);
 }
 #undef PREDEF_SCENE
 
@@ -76,6 +80,7 @@ inline void SCENE_LIBRARY(struct Actor* scene, SceneID scene_id)
 		MAKE_SCENE_INIT(title);
 		MAKE_SCENE_INIT(test);
 		MAKE_SCENE_INIT(fieldtest);
+		MAKE_SCENE_INIT(cavetest);
 	}
 
 	printf("********************************************************************************\n");

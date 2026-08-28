@@ -179,6 +179,7 @@
     <ClCompile Include="collision.c" />
     <ClCompile Include="core_assets.c" />
     <ClCompile Include="models.c" />
+    <ClCompile Include="scene_cavetest.c" />
     <ClCompile Include="world_state.c" />
     <ClCompile Include="game_draw.c" />
     <ClCompile Include="game_update.c" />

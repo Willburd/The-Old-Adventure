@@ -28,7 +28,7 @@ static void actor_hole_finishleaving(struct Actor* exit);
 
 ACTOR_INIT(hole)
 {
-	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION;
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;
 	ACTOR_REGISTER_PRELOADASSETS(hole);
 	ACTOR_REGISTER_JSON_INIT(hole);
 	ACTOR_REGISTER_UPDATE(hole);
@@ -82,6 +82,7 @@ ACTOR_UPDATE(hole)
 		return;
 	if (Vector3Distance(actor->position, player->position) > exit_data->radius)
 		return;
+	actor->actor_flags |= ACTOR_FLAG_TICKDURING_TRANSITION;
 	actor_hole_startleaving(actor, player);
 }
 
