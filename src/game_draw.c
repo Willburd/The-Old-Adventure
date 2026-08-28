@@ -208,6 +208,7 @@ void game_draw(double tick_percent)
 		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
 		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
 		// Get collision material
+		rlDisableBackfaceCulling();
 		Material* mat_col = AssetGet_Material(ASSET_MATERIALS"/Engine/collision_debug.mat");
 		for (int i = 0; i <= GetColliderCount(); i++)
 		{
@@ -219,6 +220,7 @@ void game_draw(double tick_percent)
 				position
 			);
 		}
+		rlEnableBackfaceCulling();
 		EndMode3D();
 		EndTextureMode();
 
