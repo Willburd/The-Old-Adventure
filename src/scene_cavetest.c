@@ -10,9 +10,12 @@
 ********************************************/
 
 // Assets
-#define FIELD_MODEL ASSET_MODELS"/Scenes/test_cave.glb"
+#define CAVE_MODEL ASSET_MODELS"/Scenes/test_cave.glb"
 static const char* loaded_materials[] = {
+	ASSET_MATERIALS"/Construction/rope_A.mat",		// room 0: Bridge-rope
+	ASSET_MATERIALS"/Objects/wood_door_A.mat",		// room 0: wooden poles
 	ASSET_MATERIALS"/Natural/stone_B.mat",			// room 0: Stone Walls
+	ASSET_MATERIALS"/Construction/bridge_A.mat",	// room 0: Bridge-wood
 };
 
 // private header
@@ -39,14 +42,18 @@ SCENE_INIT(cavetest)
 SCENE_PRELOADASSETS(cavetest)
 {
 	// Load model
-	LoadAsset_Model(FIELD_MODEL, FALSE);
+	LoadAsset_Model(CAVE_MODEL, FALSE);
 	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
 
 	// Set collision data
-	RegisterAllCollisionMeshes(scene, FIELD_MODEL, COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	Asset* model_asset = AssetGetPackage(CAVE_MODEL);
+	REGISTER_COLLISION_MESH(scene, model_asset, "Cave-Stone", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "Cave-Bridge", COL_LAYER_WORLD);
+	REGISTER_COLLISION_MESH(scene, model_asset, "Cave-Wood", COL_LAYER_WORLD);
+	REGISTER_COLLISION_MESH(scene, model_asset, "Cave-Rope", COL_LAYER_WORLD);
 }
 
 SCENE_DRAWWORLD(cavetest)
 {
-	DrawAllModelMeshes(scene, FIELD_MODEL, loaded_materials);
+	DrawAllModelMeshes(scene, CAVE_MODEL, loaded_materials);
 }

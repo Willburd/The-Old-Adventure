@@ -5,7 +5,9 @@
    "is_raining": 0,
    "actors":[
 	  {
-		"type": "skybox"
+		"type": "skybox",
+		"is_cave": 1,
+		"cave_light": 0.4
 	  },
 	  {
 		"type": "minimap",
@@ -32,6 +34,12 @@
 		"to_scene": "fieldtest",
 		"to_entrance": "caveA",
 		"radius": 10
+	  },
+	  {
+		"type": "occluder",
+		"pos": [-37, 5, 27.5],
+		"rot": [0, 325, 0],
+		"scl": [8, 12, 36]
 	  },
 	  
 	  {
