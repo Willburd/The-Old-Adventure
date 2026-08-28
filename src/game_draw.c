@@ -6,6 +6,7 @@
 #include "tools.h"
 #include "collision.h"
 #include "assets.h"
+#include "materials.h"
 #include "scene_entry.h"
 #include "post_processing.h"
 
@@ -488,7 +489,7 @@ void ShaderUpdateLightUniforms(Shader shader)
 void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix matrix)
 {
 	// Backface culling
-	int show_backface = TRUE;
+	int show_backface = MaterialFlagGet(&material, MATFLAG_BOTH_FACES);
 	if(show_backface)
 		rlDisableBackfaceCulling();
 	// Draw

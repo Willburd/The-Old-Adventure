@@ -395,17 +395,3 @@ void LoadMaterialArray(char* mat_list[], int length)
         LoadAsset_Material(mat_list[i], FALSE);
     }
 }
-
-// Notice, following functions are a bit unsafe if int/float ever change length...
-
-void SetMaterialFlag(Material* mat, int flag, int enable)
-{
-
-}
-
-int GetMaterialFlag(Material* mat, int flag)
-{
-
-}
-
-// End notice.
