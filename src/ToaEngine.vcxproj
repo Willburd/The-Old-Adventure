@@ -162,7 +162,6 @@
     <ClCompile Include="models.c" />
     <ClCompile Include="Module\actor_animationtest.c" />
     <ClCompile Include="Module\actor_crate.c" />
-    <ClCompile Include="Module\actor_debug.c" />
     <ClCompile Include="Module\actor_entrance.c" />
     <ClCompile Include="Module\actor_fire.c" />
     <ClCompile Include="Module\actor_hole.c" />
@@ -180,6 +179,7 @@
     <ClCompile Include="Module\actor_tree.c" />
     <ClCompile Include="Module\actor_trigger_exit.c" />
     <ClCompile Include="Module\actor_woodtorch.c" />
+    <ClCompile Include="Module\core_assets.c" />
     <ClCompile Include="Module\inventory.c" />
     <ClCompile Include="Module\player_state_air.c" />
     <ClCompile Include="Module\player_state_generic.c" />

@@ -85,6 +85,9 @@
     <Filter Include="Source Files\module\actors\StateMachines">
       <UniqueIdentifier>{afa91f3f-706d-4058-8c6c-fa6add821603}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\module\assets">
+      <UniqueIdentifier>{eeb67a0b-f277-4b26-81fd-2e098fc14e79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -168,9 +171,6 @@
     <ClCompile Include="Module\actor_crate.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
-    <ClCompile Include="Module\actor_debug.c">
-      <Filter>Source Files\module\actors</Filter>
-    </ClCompile>
     <ClCompile Include="Module\actor_entrance.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
@@ -249,6 +249,9 @@
     <ClCompile Include="Module\player_state_grounded.c">
       <Filter>Source Files\module\actors\StateMachines</Filter>
     </ClCompile>
+    <ClCompile Include="Module\core_assets.c">
+      <Filter>Source Files\module\assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -311,12 +314,6 @@
     <ClInclude Include="post_processing.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
-    <ClInclude Include="Module\actor_library.h">
-      <Filter>Header Files\module</Filter>
-    </ClInclude>
-    <ClInclude Include="Module\core_assets.h">
-      <Filter>Header Files\module</Filter>
-    </ClInclude>
     <ClInclude Include="Module\json_properties.h">
       <Filter>Header Files\module</Filter>
     </ClInclude>
@@ -352,6 +349,12 @@
     </ClInclude>
     <ClInclude Include="Module\inventory.h">
       <Filter>Header Files\module\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\core_assets.h">
+      <Filter>Header Files\module\assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\actor_library.h">
+      <Filter>Header Files\module</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
