@@ -161,6 +161,8 @@
     <ClCompile Include="Module\actor_animationtest.c" />
     <ClCompile Include="Module\actor_crate.c" />
     <ClCompile Include="Module\actor_entrance.c" />
+    <ClCompile Include="Module\actor_fadein.c" />
+    <ClCompile Include="Module\actor_fadeout.c" />
     <ClCompile Include="Module\actor_fire.c" />
     <ClCompile Include="Module\actor_hole.c" />
     <ClCompile Include="Module\actor_mappoi.c" />
@@ -219,6 +221,7 @@
     <ClInclude Include="light_tools.h" />
     <ClInclude Include="materials.h" />
     <ClInclude Include="models.h" />
+    <ClInclude Include="Module\actor_fade.h" />
     <ClInclude Include="Module\actor_textbox.h" />
     <ClInclude Include="Module\actor_trigger_exit.h" />
     <ClInclude Include="Module\adv_postprocessing.h" />

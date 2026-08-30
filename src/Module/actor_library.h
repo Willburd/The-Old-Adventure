@@ -22,6 +22,8 @@ typedef enum
 	act_animationtest,
 	act_entrance,
 	act_trigger_exit,
+	act_fadein,
+	act_fadeout,
 	act_skybox,
 	act_textbox,
 	act_player,
@@ -44,14 +46,14 @@ typedef enum
 ACTOR_INIT(debug);
 // Gameengine
 ACTOR_INIT(scene);
-ACTOR_INIT(fadein);
-ACTOR_INIT(fadeout);
 ACTOR_INIT(camera);
 // Adventure
 ACTOR_INIT(test);
 ACTOR_INIT(animationtest);
 ACTOR_INIT(entrance);
 ACTOR_INIT(trigger_exit);
+ACTOR_INIT(fadein);
+ACTOR_INIT(fadeout);
 ACTOR_INIT(skybox);
 ACTOR_INIT(textbox);
 ACTOR_INIT(player);
@@ -81,6 +83,8 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(animationtest);
 	ACTOR_STRING_CASE(entrance);
 	ACTOR_STRING_CASE(trigger_exit);
+	ACTOR_STRING_CASE(fadein);
+	ACTOR_STRING_CASE(fadeout);
 	ACTOR_STRING_CASE(skybox);
 	ACTOR_STRING_CASE(textbox);
 	ACTOR_STRING_CASE(player);
@@ -115,6 +119,8 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 		MAKE_ACTOR_INIT(animationtest);
 		MAKE_ACTOR_INIT(entrance);
 		MAKE_ACTOR_INIT(trigger_exit);
+		MAKE_ACTOR_INIT(fadein);
+		MAKE_ACTOR_INIT(fadeout);
 		MAKE_ACTOR_INIT(skybox);
 		MAKE_ACTOR_INIT(textbox);
 		MAKE_ACTOR_INIT(player);

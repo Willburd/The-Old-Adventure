@@ -6,7 +6,7 @@
 #include "../game_state.h"
 #include "player.h"
 #include "../game_draw.h"
-#include "../actor_fade.h"
+#include "actor_fade.h"
 #include "json_properties.h"
 
 // private header
