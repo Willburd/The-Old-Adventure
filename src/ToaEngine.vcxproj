@@ -149,9 +149,7 @@
     <ClCompile Include="actor.c" />
     <ClCompile Include="actor_camera.c" />
     <ClCompile Include="actor_debug.c" />
-    <ClCompile Include="actor_fadein.c" />
     <ClCompile Include="actor_factory.c" />
-    <ClCompile Include="actor_fadeout.c" />
     <ClCompile Include="actor_scene.c" />
     <ClCompile Include="animation.c" />
     <ClCompile Include="assets.c" />
@@ -203,7 +201,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor.h" />
-    <ClInclude Include="actor_fade.h" />
     <ClInclude Include="actor_factory.h" />
     <ClInclude Include="actor_scene.h" />
     <ClInclude Include="animation.h" />
