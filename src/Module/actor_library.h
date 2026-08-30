@@ -26,8 +26,6 @@ typedef enum
 ACTOR_INIT(debug);
 // Gameengine
 ACTOR_INIT(scene);
-ACTOR_INIT(fadein);
-ACTOR_INIT(fadeout);
 ACTOR_INIT(camera);
 // TODO - Your entities here
 
