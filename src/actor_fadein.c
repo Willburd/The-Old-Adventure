@@ -13,9 +13,6 @@ ACTOR_POSTDRAWHUD(fadein);
 
 ACTOR_INIT(fadein)
 {
-	// Remove previous fades if somehow multiple happen
-	ACTOR_DESTROY_TYPE(act_fadein);
-
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_PAUSED;
 	ACTOR_REGISTER_UPDATE(fadein);
@@ -32,6 +29,8 @@ ACTOR_INIT(fadein)
 
 struct Actor* FADEIN_CREATE(Color color)
 {
+	// Remove previous fades if somehow multiple happen
+	ACTOR_DESTROY_TYPE(act_fadein);
 	struct Actor* fadein = ACTOR_FACTORY(NULL, act_fadein, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 	FadeInData* fadein_data = (FadeInData*)fadein->data;
 	fadein_data->blend_color = color;
