@@ -13,9 +13,6 @@ ACTOR_POSTDRAWHUD(fadeout);
 
 ACTOR_INIT(fadeout)
 {
-	// Remove previous fades if somehow multiple happen
-	ACTOR_DESTROY_TYPE(act_fadeout);
-
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_PAUSED;
 	ACTOR_REGISTER_UPDATE(fadeout);
@@ -32,6 +29,8 @@ ACTOR_INIT(fadeout)
 
 struct Actor* FADEOUT_CREATE(Color color)
 {
+	// Remove previous fades if somehow multiple happen
+	ACTOR_DESTROY_TYPE(act_fadeout);
 	struct Actor* fadeout = ACTOR_FACTORY(NULL, act_fadeout, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
 	FadeInData* fadeout_data = (FadeInData*)fadeout->data;
 	fadeout_data->blend_color = color;

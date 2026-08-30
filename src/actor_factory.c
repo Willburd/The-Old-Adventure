@@ -159,7 +159,7 @@ void ACTOR_DESTROY(struct Actor* actor)
 
 void ACTOR_DESTROY_UUID(uint64_t uuid)
 {
-	for (int i = 0; i < current_actor_cap; i++)
+	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* check_actor = world_actors[i];
 		if (!ACTOR_EXISTS(check_actor))
@@ -172,7 +172,7 @@ void ACTOR_DESTROY_UUID(uint64_t uuid)
 
 void ACTOR_DESTROY_IDTAG(char* id_tag)
 {
-	for (int i = 0; i < current_actor_cap; i++)
+	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* check_actor = world_actors[i];
 		if (!ACTOR_EXISTS(check_actor))
@@ -187,7 +187,7 @@ void ACTOR_DESTROY_IDTAG(char* id_tag)
 
 void ACTOR_DESTROY_TYPE(ActorTypes actor_type)
 {
-	for (int i = 0; i < current_actor_cap; i++)
+	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* check_actor = world_actors[i];
 		if (!ACTOR_EXISTS(check_actor))
@@ -200,7 +200,7 @@ void ACTOR_DESTROY_TYPE(ActorTypes actor_type)
 
 void ACTOR_DESTROY_ALL()
 {
-	for (int i = 0; i < current_actor_cap; i++)
+	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* check_actor = world_actors[i];
 		if (!ACTOR_EXISTS(check_actor))
@@ -213,7 +213,7 @@ void ACTOR_DESTROY_IN_ROOM(int room_index)
 {
 	if (room_index == -1)
 		return;
-	for (int i = 0; i < current_actor_cap; i++)
+	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* check_actor = world_actors[i];
 		if (!ACTOR_EXISTS(check_actor))
@@ -228,7 +228,7 @@ void ACTOR_DESTROY_IN_ROOM(int room_index)
 
 void ACTOR_DESTROY_CHILDREN(struct Actor* parent)
 {
-	for (int i = 0; i < current_actor_cap; i++)
+	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* check_actor = world_actors[i];
 		if (!ACTOR_EXISTS(check_actor))
