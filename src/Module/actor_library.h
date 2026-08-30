@@ -16,8 +16,6 @@ typedef enum
 	act_debug,
 	// Gameengine
 	act_scene,
-	act_fadein,
-	act_fadeout,
 	act_camera,
 	// TODO - Your entities here
 	LAST_ACTOR
@@ -40,8 +38,6 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(debug);
 	// Gameengine
 	ACTOR_STRING_CASE(scene);
-	ACTOR_STRING_CASE(fadein);
-	ACTOR_STRING_CASE(fadeout);
 	ACTOR_STRING_CASE(camera);
 	// TODO - Your entities here
 	return act_error;
@@ -57,8 +53,6 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 		MAKE_ACTOR_INIT(debug);
 		// Gameengine
 		MAKE_ACTOR_INIT(scene);
-		MAKE_ACTOR_INIT(fadein);
-		MAKE_ACTOR_INIT(fadeout);
 		MAKE_ACTOR_INIT(camera);
 		// TODO - Your entities here
 	}

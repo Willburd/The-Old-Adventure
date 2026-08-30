@@ -9,7 +9,6 @@
 #include "../camera.h"
 #include "../globals.h"
 #include "../input.h"
-#include "../actor_fade.h"
 
 // Assets
 static const char* loaded_materials[] = { NULL };
@@ -64,7 +63,6 @@ SCENE_UPDATE(debugmenu)
 
 	if (CHECK_INPUTPRESSED(input_confirm))
 	{
-		FADEIN_CREATE(BLACK);
 		TransferScene(our_data->MENUINDEX, ent_debugentrance);
 		return;
 	}
