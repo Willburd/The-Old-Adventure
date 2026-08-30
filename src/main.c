@@ -13,7 +13,7 @@
 #include "globals.h"
 #include "actor_factory.h"
 #include "scene_entry.h"
-#include "core_assets.h"
+#include "Module/core_assets.h"
 #include "tools.h"
 #include "game_state.h"
 #include "text_loading.h"

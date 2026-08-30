@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "tools.h"
-#include "actor_factory.h"
-#include "actor_scene.h"
-#include "scene_entry.h"
+#include "../tools.h"
+#include "../actor_factory.h"
+#include "../actor_scene.h"
+#include "../scene_entry.h"
 
 // Assets
 static const char* loaded_materials[] = { NULL };

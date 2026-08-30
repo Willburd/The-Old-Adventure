@@ -2,9 +2,9 @@
 #define __ENTITY_HEADER__
 
 #include <stdint.h>
-#include "cJSON.h"
+#include "cJSON/cJSON.h"
 #include "actor.h"
-#include "actor_library.h"
+#include "Module/actor_library.h"
 #include "raylib.h"
 
 struct Actor;

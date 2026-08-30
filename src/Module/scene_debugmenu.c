@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "tools.h"
-#include "actor_factory.h"
-#include "actor_scene.h"
-#include "scene_library.h"
-#include "scene_entry.h"
-#include "game_draw.h"
-#include "camera.h"
-#include "globals.h"
-#include "input.h"
-#include "actor_fade.h"
+#include "../tools.h"
+#include "../actor_factory.h"
+#include "../actor_scene.h"
+#include "../Module/scene_library.h"
+#include "../scene_entry.h"
+#include "../game_draw.h"
+#include "../camera.h"
+#include "../globals.h"
+#include "../input.h"
+#include "../actor_fade.h"
 
 // Assets
 static const char* loaded_materials[] = { NULL };

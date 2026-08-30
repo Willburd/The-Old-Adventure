@@ -174,19 +174,15 @@
     <ClCompile Include="actor_woodtorch.c" />
     <ClCompile Include="animation.c" />
     <ClCompile Include="assets.c" />
-    <ClCompile Include="cJSON.c" />
-    <ClCompile Include="cJSON_Utils.c" />
+    <ClCompile Include="cJSON\cJSON.c" />
+    <ClCompile Include="cJSON\cJSON_Utils.c" />
     <ClCompile Include="collision.c" />
-    <ClCompile Include="core_assets.c" />
+    <ClCompile Include="Hashmap\hashmap.c" />
     <ClCompile Include="models.c" />
     <ClCompile Include="scene_cavetest.c" />
     <ClCompile Include="world_state.c" />
     <ClCompile Include="game_draw.c" />
     <ClCompile Include="game_update.c" />
-    <ClCompile Include="hashmap.c">
-      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </DisableSpecificWarnings>
-    </ClCompile>
     <ClCompile Include="input.c" />
     <ClCompile Include="inventory.c" />
     <ClCompile Include="main.c" />
@@ -196,8 +192,8 @@
     <ClCompile Include="player_state_generic.c" />
     <ClCompile Include="post_processing.c" />
     <ClCompile Include="return_codes.h" />
-    <ClCompile Include="scene_boot.c" />
-    <ClCompile Include="scene_debugmenu.c" />
+    <ClCompile Include="Module\scene_boot.c" />
+    <ClCompile Include="Module\scene_debugmenu.c" />
     <ClCompile Include="scene_fieldtest.c" />
     <ClCompile Include="scene_test.c" />
     <ClCompile Include="scene_title.c" />
@@ -207,7 +203,6 @@
   <ItemGroup>
     <ClInclude Include="actor.h" />
     <ClInclude Include="actor_fade.h" />
-    <ClInclude Include="actor_library.h" />
     <ClInclude Include="actor_factory.h" />
     <ClInclude Include="actor_scene.h" />
     <ClInclude Include="actor_textbox.h" />
@@ -215,15 +210,14 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="assets.h" />
     <ClInclude Include="camera.h" />
-    <ClInclude Include="cJSON.h" />
-    <ClInclude Include="cJSON_Utils.h" />
+    <ClInclude Include="cJSON\cJSON.h" />
+    <ClInclude Include="cJSON\cJSON_Utils.h" />
     <ClInclude Include="collision.h" />
-    <ClInclude Include="core_assets.h" />
     <ClInclude Include="game_draw.h" />
     <ClInclude Include="game_state.h" />
     <ClInclude Include="game_update.h" />
     <ClInclude Include="globals.h" />
-    <ClInclude Include="hashmap.h" />
+    <ClInclude Include="Hashmap\hashmap.h" />
     <ClInclude Include="hud.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="json_properties.h" />
@@ -234,7 +228,10 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="post_processing.h" />
     <ClInclude Include="scene_entry.h" />
-    <ClInclude Include="scene_library.h" />
+    <ClInclude Include="Module\actor_library.h" />
+    <ClInclude Include="Module\core_assets.h" />
+    <ClInclude Include="Module\json_properties.h" />
+    <ClInclude Include="Module\scene_library.h" />
     <ClInclude Include="world_state.h" />
     <ClInclude Include="text_loading.h" />
     <ClInclude Include="tools.h" />

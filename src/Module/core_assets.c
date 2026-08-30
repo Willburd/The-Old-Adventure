@@ -1,5 +1,5 @@
 #include "core_assets.h"
-#include "text_loading.h"
+#include "../text_loading.h"
 
 // Loads all core assets, and flags them as core assets.
 void LoadCoreAssets()

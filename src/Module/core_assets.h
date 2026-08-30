@@ -2,7 +2,7 @@
 #define __CORE_ASSETS_HEADER__
 
 #include "raylib.h"
-#include "assets.h"
+#include "../assets.h"
 
 #define CUBEMAP_MODEL				ASSET_MODELS"/Tools/cube_map.glb"
 #define QUAD_MODEL					ASSET_MODELS"/Tools/quad2d.glb"

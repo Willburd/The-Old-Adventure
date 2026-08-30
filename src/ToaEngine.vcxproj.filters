@@ -147,9 +147,6 @@
     <ClCompile Include="materials.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
-    <ClCompile Include="core_assets.c">
-      <Filter>Source Files\module\assets</Filter>
-    </ClCompile>
     <ClCompile Include="collision.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
@@ -161,9 +158,6 @@
     </ClCompile>
     <ClCompile Include="animation.c">
       <Filter>Source Files\engine\game</Filter>
-    </ClCompile>
-    <ClCompile Include="hashmap.c">
-      <Filter>Source Files\hashmap</Filter>
     </ClCompile>
     <ClCompile Include="player_state_grounded.c">
       <Filter>Source Files\module\actors\player_states</Filter>
@@ -200,12 +194,6 @@
     </ClCompile>
     <ClCompile Include="actor_tree.c">
       <Filter>Source Files\module\actors</Filter>
-    </ClCompile>
-    <ClCompile Include="cJSON.c">
-      <Filter>Source Files\cjson</Filter>
-    </ClCompile>
-    <ClCompile Include="cJSON_Utils.c">
-      <Filter>Source Files\cjson</Filter>
     </ClCompile>
     <ClCompile Include="models.c">
       <Filter>Source Files\engine\game</Filter>
@@ -245,6 +233,23 @@
     </ClCompile>
     <ClCompile Include="actor_mappoi.c">
       <Filter>Source Files\module\actors</Filter>
+    <ClCompile Include="Module\core_assets.c">
+      <Filter>Source Files\module\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\scene_boot.c">
+      <Filter>Source Files\module\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\scene_debugmenu.c">
+      <Filter>Source Files\module\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Hashmap\hashmap.c">
+      <Filter>Source Files\hashmap</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON\cJSON.c">
+      <Filter>Source Files\cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON\cJSON_Utils.c">
+      <Filter>Source Files\cjson</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -290,9 +295,6 @@
     <ClInclude Include="animation.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
-    <ClInclude Include="hashmap.h">
-      <Filter>Header Files\hashmap</Filter>
-    </ClInclude>
     <ClInclude Include="player.h">
       <Filter>Header Files\module\actors\player_states</Filter>
     </ClInclude>
@@ -308,35 +310,17 @@
     <ClInclude Include="actor_textbox.h">
       <Filter>Header Files\engine\actors</Filter>
     </ClInclude>
-    <ClInclude Include="actor_library.h">
-      <Filter>Header Files\module</Filter>
-    </ClInclude>
-    <ClInclude Include="scene_library.h">
-      <Filter>Header Files\module</Filter>
-    </ClInclude>
     <ClInclude Include="inventory.h">
       <Filter>Header Files\module</Filter>
     </ClInclude>
     <ClInclude Include="world_state.h">
       <Filter>Header Files\module</Filter>
     </ClInclude>
-    <ClInclude Include="core_assets.h">
-      <Filter>Header Files\module</Filter>
-    </ClInclude>
     <ClInclude Include="game_state.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
-    <ClInclude Include="cJSON.h">
-      <Filter>Header Files\cjson</Filter>
-    </ClInclude>
-    <ClInclude Include="cJSON_Utils.h">
-      <Filter>Header Files\cjson</Filter>
-    </ClInclude>
     <ClInclude Include="models.h">
       <Filter>Header Files\engine\game</Filter>
-    </ClInclude>
-    <ClInclude Include="json_properties.h">
-      <Filter>Header Files\module</Filter>
     </ClInclude>
     <ClInclude Include="actor_fade.h">
       <Filter>Header Files\engine\actors</Filter>
@@ -349,6 +333,26 @@
     </ClInclude>
     <ClInclude Include="adv_postprocessing.h">
       <Filter>Header Files</Filter>
+    <ClInclude Include="Module\actor_library.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\core_assets.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\json_properties.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\scene_library.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="Hashmap\hashmap.h">
+      <Filter>Header Files\hashmap</Filter>
+    </ClInclude>
+    <ClInclude Include="cJSON\cJSON.h">
+      <Filter>Header Files\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="cJSON\cJSON_Utils.h">
+      <Filter>Header Files\cjson</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

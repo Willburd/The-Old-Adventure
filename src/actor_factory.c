@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "hashmap.h"
+#include "Hashmap/hashmap.h"
 #include "tools.h"
 #include "return_codes.h"
 #include "actor_factory.h"
 #include "game_update.h"
 #include "animation.h"
 #include "collision.h"
-#include "actor_library.h"
+#include "Module/actor_library.h"
 #include "scene_entry.h"
-#include "json_properties.h"
+#include "Module/json_properties.h"
 
 struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
 {
