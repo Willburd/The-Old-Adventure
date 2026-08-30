@@ -12,7 +12,7 @@
 #include "input.h"
 #include "game_state.h"
 // Adventure
-#include "world_state.h"
+#include "Module/world_state.h"
 
 
 int current_actor_cap = 0;

@@ -18,9 +18,9 @@
 #include "game_state.h"
 #include "text_loading.h"
 // Adventure
-#include "world_state.h"
-#include "inventory.h"
-#include "adv_postprocessing.h"
+#include "Module/world_state.h"
+#include "Module/inventory.h"
+#include "Module/adv_postprocessing.h"
 
 #define RAYMATH_USE_SIMD_INTRINSICS 1
 #define PLATFORM_DESKTOP 1

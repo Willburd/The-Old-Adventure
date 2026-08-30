@@ -10,7 +10,7 @@
 #include "Module/json_properties.h"
 #include "game_draw.h"
 // Adventure
-#include "actor_entrance.h"
+#include "Module/actor_entrance.h"
 
 // private header
 static SceneID next_scene;
