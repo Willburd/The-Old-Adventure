@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include "globals.h"
 #include "raylib.h"
-#include "hashmap.h"
-#include "cJSON.h"
+#include "Hashmap/hashmap.h"
+#include "cJSON/cJSON.h"
 
 // TODO - Properly set something up for this
 #ifdef _RELEASE

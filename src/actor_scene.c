@@ -1,13 +1,13 @@
 #include "actor_scene.h"
 #include "scene_entry.h"
-#include "scene_library.h"
+#include "Module/scene_library.h"
 #include "actor_factory.h"
 #include "raylib.h"
 #include "globals.h"
 #include "assets.h"
 #include "tools.h"
 #include "light_tools.h"
-#include "json_properties.h"
+#include "Module/json_properties.h"
 #include "game_draw.h"
 
 // private header

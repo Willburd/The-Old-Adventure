@@ -2,7 +2,7 @@
 #include <string.h>
 #include "assets.h"
 #include "text_loading.h"
-#include "hashmap.h"
+#include "Hashmap/hashmap.h"
 #include "tools.h"
 
 static struct hashmap* loaded_text;

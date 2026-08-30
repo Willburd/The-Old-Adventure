@@ -5,7 +5,7 @@
 #include "raymath.h"
 #include "return_codes.h"
 #include "stdlib.h"
-#include "cJSON.h"
+#include "cJSON/cJSON.h"
 
 #define MALLOC(t,name,err) t* name = (t*)malloc(sizeof(t));if(name == NULL){printf("Failed malloc");exit(ERR_NOALLOC);return err;};
 #define MALLOC_SET(t,name,err) name = (t*)malloc(sizeof(t));if(name == NULL){printf("Failed malloc");exit(ERR_NOALLOC);return err;};

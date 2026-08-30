@@ -2,7 +2,7 @@
 #define __MODELDATA_HEADER__
 
 #include "raylib.h"
-#include "cJSON.h"
+#include "cJSON/cJSON.h"
 
 typedef struct {
 	void* resource_ptr;

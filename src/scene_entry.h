@@ -2,7 +2,7 @@
 #define __SCENE_ENTRY_HEADER__
 
 #include "stdint.h"
-#include "scene_library.h"
+#include "Module/scene_library.h"
 #include "game_draw.h"
 
 typedef enum
