@@ -169,6 +169,7 @@
     <ClCompile Include="Module\actor_minimap.c" />
     <ClCompile Include="Module\actor_occluder.c" />
     <ClCompile Include="Module\actor_pause_box.c" />
+    <ClCompile Include="Module\actor_platform.c" />
     <ClCompile Include="Module\actor_player.c" />
     <ClCompile Include="Module\actor_roomswap.c" />
     <ClCompile Include="Module\actor_signpost.c" />

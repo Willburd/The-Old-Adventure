@@ -39,6 +39,7 @@ typedef enum
 	act_smallrock,
 	act_roomswap,
 	act_occluder,
+	act_platform,
 	LAST_ACTOR
 } ActorTypes;
 
@@ -69,6 +70,7 @@ ACTOR_INIT(crate);
 ACTOR_INIT(smallrock);
 ACTOR_INIT(roomswap);
 ACTOR_INIT(occluder);
+ACTOR_INIT(platform);
 
 #define ACTOR_STRING_CASE(str) if (STRMATCH(string_id, #str)) return act_## str
 inline ActorTypes ACTOR_FROM_STRING(char* string_id)
@@ -100,6 +102,7 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(smallrock);
 	ACTOR_STRING_CASE(roomswap);
 	ACTOR_STRING_CASE(occluder);
+	ACTOR_STRING_CASE(platform);
 	return act_error;
 }
 #undef ACTOR_STRING_CASE
@@ -136,6 +139,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 		MAKE_ACTOR_INIT(smallrock);
 		MAKE_ACTOR_INIT(roomswap);
 		MAKE_ACTOR_INIT(occluder);
+		MAKE_ACTOR_INIT(platform);
 	}
 }
 #undef MAKE_ACTOR_INIT

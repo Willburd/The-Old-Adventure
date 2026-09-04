@@ -35,6 +35,22 @@
 	  {
 		"type": "crate",
 		"pos": [3.8, 0, -8.8]
+	  },
+	  {
+		"type": "platform",
+		"pos": [3, 4.5, -7.8]
+	  },
+	  {
+		"type": "platform",
+		"pos": [-1, 4.5, -7.8]
+	  },
+	  {
+		"type": "platform",
+		"pos": [-5, 4.5, -7.8]
+	  },
+	  {
+		"type": "platform",
+		"pos": [-9, 4.5, -7.8]
 	  }
 	]
 }

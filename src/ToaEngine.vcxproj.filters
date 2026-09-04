@@ -132,12 +132,6 @@
     <ClCompile Include="animation.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
-    <ClCompile Include="actor_fadein.c">
-      <Filter>Source Files\engine\actors</Filter>
-    </ClCompile>
-    <ClCompile Include="actor_fadeout.c">
-      <Filter>Source Files\engine\actors</Filter>
-    </ClCompile>
     <ClCompile Include="text_loading.c">
       <Filter>Source Files\engine\localization</Filter>
     </ClCompile>
@@ -213,9 +207,6 @@
     <ClCompile Include="Module\actor_textbox.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
-    <ClCompile Include="Module\actor_tree.c">
-      <Filter>Source Files\module\actors</Filter>
-    </ClCompile>
     <ClCompile Include="Module\actor_trigger_exit.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
@@ -251,6 +242,18 @@
     </ClCompile>
     <ClCompile Include="Module\core_assets.c">
       <Filter>Source Files\module\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_fadein.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_fadeout.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_platform.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_tree.c">
+      <Filter>Source Files\module\actors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -308,9 +311,6 @@
     <ClInclude Include="models.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
-    <ClInclude Include="actor_fade.h">
-      <Filter>Header Files\engine\actors</Filter>
-    </ClInclude>
     <ClInclude Include="post_processing.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
@@ -355,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="Module\actor_library.h">
       <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\actor_fade.h">
+      <Filter>Header Files\module\actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
