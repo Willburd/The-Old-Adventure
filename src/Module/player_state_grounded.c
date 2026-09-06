@@ -112,8 +112,8 @@ void PlayerState_Grounded_Update(struct Actor* player)
 		.position = Vector3Add(player->position, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT)),
 		.direction = VEC3DOWN
 	};
-	RayCollision collision = CollisionGetNearest(downray, PLAYER_COLLISION_MID_HEIGHT + PLAYER_COLLISION_FLOOR_SENSOR_LENGTH, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
-	if (player_data->disable_collision || !collision.hit)
+	RayHitData collision = CollisionGetNearest(downray, PLAYER_COLLISION_MID_HEIGHT + PLAYER_COLLISION_FLOOR_SENSOR_LENGTH, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
+	if (player_data->disable_collision || !collision.ray_col.hit)
 	{
 		// We must fall...
 		PlayerChangeState(player, plysta_air);
@@ -121,7 +121,9 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	}
 
 	// Snap to floors and go up steps
-	player->position = collision.point;
+	player->position = collision.ray_col.point;
+	if (collision.hit_colider->flags & COL_LAYER_MOVINGPLATFORM) // Moving platforms make us move too
+		player->position = Vector3Add(player->position, collision.hit_colider->owner->velocity);
 
 	// Get the nearest interactable actor and update the hud with it
 	Vector3 ahead_pos = Vector3Add(player->position, Vector3RotateByQuaternion(VEC3FORWARD, player->rotation));

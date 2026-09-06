@@ -108,9 +108,9 @@ static Vector3 actor_entrance_get_start(struct Actor* entrance)
 		.position = entrance->position,
 		.direction = VEC3DOWN
 	};
-	RayCollision collision = CollisionGetNearest(raycast, 1.0f, COL_LAYER_WORLD);
-	if (collision.hit)
-		return collision.point;
+	RayHitData collision = CollisionGetNearest(raycast, 1.0f, COL_LAYER_WORLD);
+	if (collision.ray_col.hit)
+		return collision.ray_col.point;
 	return raycast.position;
 }
 
@@ -120,9 +120,9 @@ static Vector3 actor_entrance_get_end(struct Actor* entrance)
 		.position = Vector3Add(entrance->position, Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, entrance->scale.x), entrance->rotation)),
 		.direction = VEC3DOWN
 	};
-	RayCollision collision = CollisionGetNearest(raycast, 1.0f, COL_LAYER_WORLD);
-	if (collision.hit)
-		return collision.point;
+	RayHitData collision = CollisionGetNearest(raycast, 1.0f, COL_LAYER_WORLD);
+	if (collision.ray_col.hit)
+		return collision.ray_col.point;
 	return raycast.position;
 }
 

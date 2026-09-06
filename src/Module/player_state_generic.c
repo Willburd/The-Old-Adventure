@@ -102,14 +102,14 @@ int PlayerCollisionEject(struct Actor* player, Vector3 start_offset, Vector3 dir
 		.position = Vector3Add(player->position, start_offset),
 		.direction = dirvec
 	};
-	RayCollision collision = CollisionGetNearest(check_ray, radius, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
-	if (!collision.hit)
+	RayHitData collision = CollisionGetNearest(check_ray, radius, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
+	if (!collision.ray_col.hit)
 		return FALSE;
-	float slope_check = Vector3DotProduct(VEC3UP, collision.normal);
+	float slope_check = Vector3DotProduct(VEC3UP, collision.ray_col.normal);
 	if (slope_check >= PLAYER_FLOOR_SLOPE_DOTTHRESHOLD) // It's a floor, we're probably going up steps
 		return FALSE;
 	// Eject player by the remaining distance of the hit
-	float remaining_dist = radius - collision.distance;
+	float remaining_dist = radius - collision.ray_col.distance;
 	player->position = Vector3Subtract(player->position, Vector3Scale(dirvec, remaining_dist));
 	return TRUE;
 }

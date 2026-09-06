@@ -45,8 +45,8 @@ void PlayerState_Air_Update(struct Actor* player)
 		.position = Vector3Add(player->position, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT)),
 		.direction = VEC3DOWN
 	};
-	RayCollision collision = CollisionGetNearest(downray, PLAYER_COLLISION_MID_HEIGHT + PLAYER_COLLISION_FLOOR_SENSOR_LENGTH, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
-	if (player_data->disable_collision || !collision.hit)
+	RayHitData collision = CollisionGetNearest(downray, PLAYER_COLLISION_MID_HEIGHT + PLAYER_COLLISION_FLOOR_SENSOR_LENGTH, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
+	if (player_data->disable_collision || !collision.ray_col.hit)
 	{
 		// Falling down!
 		if (player->velocity.y > PLAYER_TERMINAL_VELOCITY)
@@ -54,7 +54,7 @@ void PlayerState_Air_Update(struct Actor* player)
 		return;
 	}
 	// Snap to floor on landing
-	player->position = collision.point;
+	player->position = collision.ray_col.point;
 	PlayerChangeState(player, plysta_grounded);
 }
 
