@@ -1,5 +1,6 @@
 #include "player.h"
 #include "../text_loading.h"
+#include "actor_platform.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Grounded player state
@@ -123,10 +124,7 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	// Snap to floors and go up steps
 	player->position = collision.ray_col.point;
 	if (collision.hit_colider->flags & COL_LAYER_MOVINGPLATFORM) // Moving platforms make us move too
-	{
-		player->position = Vector3Add(player->position, collision.hit_colider->owner->velocity);
-		// TODO - Handle rotational offsets of spinning platforms
-	}
+		ApplyPlatformRotation(player, collision.hit_colider->owner, TRUE);
 
 	// Get the nearest interactable actor and update the hud with it
 	Vector3 ahead_pos = Vector3Add(player->position, Vector3RotateByQuaternion(VEC3FORWARD, player->rotation));

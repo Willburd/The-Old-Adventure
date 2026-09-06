@@ -102,6 +102,20 @@ void HandlePlatformMove(struct Actor* actor)
 	CHAR_STR_COPY(platform_data->target_node, next_node->id_tag, NULL);
 }
 
+void ApplyPlatformRotation(struct Actor* actor, struct Actor* platform, int influence_rotation)
+{
+	Vector3 offset_position = Vector3Subtract(actor->position, platform->position);
+	Vector3 rotation_delta = platform->angular_velocity;
+	Quaternion rotation_quat = QuaternionFromEuler(rotation_delta.x, rotation_delta.y, rotation_delta.z);
+	offset_position = Vector3RotateByQuaternion(offset_position, rotation_quat);
+	actor->position = Vector3Add(platform->position, offset_position);
+	actor->position = Vector3Add(actor->position, platform->velocity);
+	if (influence_rotation == TRUE)
+		actor->rotation = QuaternionMultiply(actor->rotation, QuaternionGetFlat(rotation_quat, VEC3UP)); // Only topdown rotation.
+	else if (influence_rotation == 2) // Alternate
+		actor->rotation = QuaternionMultiply(actor->rotation, rotation_quat); // Directly apply it.
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -65,7 +65,7 @@
 		"prev_node": "path_A1",
 		"alt_node": "path_A3B",
 		"pos": [-5, 4.5, 7],
-		"rot": [ 0, 0, 90]
+		"rot": [ 0, 90, 0]
 	  },
 	  {
 		"type": "node",
@@ -73,7 +73,7 @@
 		"next_node": "path_A4",
 		"prev_node": "path_A2",
 		"pos": [-5, 12, 7],
-		"rot": [ 90, 0, 90]
+		"rot": [ 0, 180, 0]
 	  },
 	  {
 		"type": "node",
@@ -81,7 +81,7 @@
 		"next_node": "path_A1",
 		"prev_node": "path_A3",
 		"pos": [-5, 12, -7.8],
-		"rot": [ 90, 0, 0]
+		"rot": [ 0, 270, 0]
 	  },
 	  {
 		"type": "node",
