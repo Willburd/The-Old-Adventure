@@ -76,6 +76,11 @@ float QuaternionGetTopDownAngle(Quaternion source)
     return Vector3GetTopDownAngle(Vector3RotateByQuaternion(VEC3FORWARD, source));
 }
 
+double AngleDifference(double target, double source) 
+{
+    return atan2(sin(target - source), cos(target - source));
+}
+
 #define APPLY_FRICTION(component) \
 if (actor->velocity.component > 0.0f) \
 { \

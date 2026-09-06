@@ -12,7 +12,7 @@ struct Actor;
 // Creates an actor from json provided
 struct Actor* JSON_ACTOR_FACTORY(cJSON* file_data, struct Actor* actor_parent);
 // Creates an actor in the world.
-struct Actor* ACTOR_FACTORY(cJSON* file_data, ActorTypes actor_type, struct Actor* parent, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity);
+struct Actor* ACTOR_FACTORY(cJSON* file_data, ActorTypes actor_type, struct Actor* parent, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity, Vector3 initial_angular_velocity);
 // Removes an actor from the world.
 void ACTOR_DESTROY(struct Actor* actor);
 // Destroy actor by it's specific uuid

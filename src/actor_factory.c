@@ -61,9 +61,20 @@ struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
 		};
 
 	}
+	Vector3 initial_angular_velocity = Vector3Zero();
+	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_ANGVEL)))
+	{
+		cJSON* vel_array = cJSON_GetObjectItem(actor_data, PROP_ANGVEL);
+		initial_angular_velocity = (Vector3){
+			(float)cJSON_GetArrayItem(vel_array, 0)->valuedouble * DEG2RAD,
+			(float)cJSON_GetArrayItem(vel_array, 1)->valuedouble * DEG2RAD,
+			(float)cJSON_GetArrayItem(vel_array, 2)->valuedouble * DEG2RAD,
+		};
+
+	}
 
 	// Construct the actor
-	struct Actor* new_actor = ACTOR_FACTORY(actor_data, actor_type, actor_parent, at_position, at_rotation, at_scale, initial_velocity);
+	struct Actor* new_actor = ACTOR_FACTORY(actor_data, actor_type, actor_parent, at_position, at_rotation, at_scale, initial_velocity, initial_angular_velocity);
 	if (!new_actor)
 		return NULL;
 
@@ -77,7 +88,7 @@ struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
 	return new_actor;
 }
 
-struct Actor* ACTOR_FACTORY(cJSON* actor_data, ActorTypes actor_type, struct Actor* actor_parent, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity)
+struct Actor* ACTOR_FACTORY(cJSON* actor_data, ActorTypes actor_type, struct Actor* actor_parent, Vector3 at_position, Quaternion at_rotation, Vector3 at_scale, Vector3 initial_velocity, Vector3 initial_angular_velocity)
 {
 	if (current_actor_cap >= ACTOR_LIMIT)
 	{
@@ -101,7 +112,7 @@ struct Actor* ACTOR_FACTORY(cJSON* actor_data, ActorTypes actor_type, struct Act
 	ACTOR_POS_SNAP(actor, at_position);
 	ACTOR_ROT_SNAP(actor, at_rotation);
 	ACTOR_SCALE_SNAP(actor, at_scale);
-	ACTOR_VEL_RESET(actor, initial_velocity);
+	ACTOR_VEL_RESET(actor, initial_velocity, initial_angular_velocity);
 
 	// Create animation layers
 	for (int i = 0; i < ANIMATION_LAYER_MAX; i++)

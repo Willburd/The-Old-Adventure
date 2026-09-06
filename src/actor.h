@@ -49,6 +49,7 @@ struct Actor {
 	Quaternion rotation;
 	Vector3 scale;
 	Vector3 velocity;
+	Vector3 angular_velocity;
 
 	Vector3 last_position;
 	Quaternion last_rotation;
@@ -141,7 +142,7 @@ x->data = NULL;
 #define ACTOR_POS_SNAP(x, pos) x->position = pos;x->last_position = pos;
 #define ACTOR_ROT_SNAP(x, rot) x->rotation = rot;x->last_rotation = rot;
 #define ACTOR_SCALE_SNAP(x, scl) x->scale = scl;x->last_scale = scl;
-#define ACTOR_VEL_RESET(x, vel) x->velocity = vel;x->last_velocity = vel;
+#define ACTOR_VEL_RESET(x, vel, avl) x->velocity = vel;x->last_velocity = vel;x->angular_velocity = avl;
 #define ACTOR_EXISTS(x) (x != NULL && !x->is_destroying)
 #define ACTOR_HAS(x, func) (x->func != NULL)
 
