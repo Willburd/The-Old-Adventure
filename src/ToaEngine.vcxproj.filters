@@ -73,6 +73,21 @@
     <Filter Include="Header Files\cjson">
       <UniqueIdentifier>{64ff0ffb-3c0d-4202-b5c2-a09c09af5433}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\module\actors">
+      <UniqueIdentifier>{58fb21b0-4690-4fa2-a902-f74e561a369c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\module\game">
+      <UniqueIdentifier>{55d2c7f4-efe3-4daf-a7fe-fca54af27c54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\module\game">
+      <UniqueIdentifier>{616655fd-9520-4354-9066-da569274079b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\module\actors\StateMachines">
+      <UniqueIdentifier>{afa91f3f-706d-4058-8c6c-fa6add821603}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\module\assets">
+      <UniqueIdentifier>{eeb67a0b-f277-4b26-81fd-2e098fc14e79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -117,12 +132,6 @@
     <ClCompile Include="animation.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
-    <ClCompile Include="actor_fadein.c">
-      <Filter>Source Files\engine\actors</Filter>
-    </ClCompile>
-    <ClCompile Include="actor_fadeout.c">
-      <Filter>Source Files\engine\actors</Filter>
-    </ClCompile>
     <ClCompile Include="text_loading.c">
       <Filter>Source Files\engine\localization</Filter>
     </ClCompile>
@@ -134,9 +143,6 @@
     </ClCompile>
     <ClCompile Include="post_processing.c">
       <Filter>Source Files\engine\game</Filter>
-    </ClCompile>
-    <ClCompile Include="Module\core_assets.c">
-      <Filter>Source Files\module\assets</Filter>
     </ClCompile>
     <ClCompile Include="Module\scene_boot.c">
       <Filter>Source Files\module\scenes</Filter>
@@ -152,6 +158,105 @@
     </ClCompile>
     <ClCompile Include="cJSON\cJSON_Utils.c">
       <Filter>Source Files\cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_animationtest.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_crate.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_entrance.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_fire.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_hole.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_mappoi.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_minimap.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_occluder.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_pause_box.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_player.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_roomswap.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_signpost.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_skybox.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_smallrock.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_test.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_textbox.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_trigger_exit.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_woodtorch.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\scene_cavetest.c">
+      <Filter>Source Files\module\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\scene_fieldtest.c">
+      <Filter>Source Files\module\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\scene_test.c">
+      <Filter>Source Files\module\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\scene_title.c">
+      <Filter>Source Files\module\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\world_state.c">
+      <Filter>Source Files\module\game</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\inventory.c">
+      <Filter>Source Files\module\game</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\player_state_air.c">
+      <Filter>Source Files\module\actors\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\player_state_generic.c">
+      <Filter>Source Files\module\actors\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\player_state_grounded.c">
+      <Filter>Source Files\module\actors\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\core_assets.c">
+      <Filter>Source Files\module\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_platform.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_tree.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_node.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_fadein.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_fadeout.c">
+      <Filter>Source Files\module\actors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,17 +314,8 @@
     <ClInclude Include="models.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
-    <ClInclude Include="actor_fade.h">
-      <Filter>Header Files\engine\actors</Filter>
-    </ClInclude>
     <ClInclude Include="post_processing.h">
       <Filter>Header Files\engine\game</Filter>
-    </ClInclude>
-    <ClInclude Include="Module\actor_library.h">
-      <Filter>Header Files\module</Filter>
-    </ClInclude>
-    <ClInclude Include="Module\core_assets.h">
-      <Filter>Header Files\module</Filter>
     </ClInclude>
     <ClInclude Include="Module\json_properties.h">
       <Filter>Header Files\module</Filter>
@@ -235,6 +331,42 @@
     </ClInclude>
     <ClInclude Include="cJSON\cJSON_Utils.h">
       <Filter>Header Files\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="json_properties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\actor_textbox.h">
+      <Filter>Header Files\module\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\actor_trigger_exit.h">
+      <Filter>Header Files\module\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\player.h">
+      <Filter>Header Files\module\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\world_state.h">
+      <Filter>Header Files\module\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\adv_postprocessing.h">
+      <Filter>Header Files\module\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\inventory.h">
+      <Filter>Header Files\module\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\core_assets.h">
+      <Filter>Header Files\module\assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\actor_library.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\actor_fade.h">
+      <Filter>Header Files\module\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\actor_node.h">
+      <Filter>Header Files\module\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\actor_platform.h">
+      <Filter>Header Files\module\actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,9 @@
+{
+   "actors":[
+	  {
+		"type": "tree",
+		"id_tag": "test_tree",
+		"pos": [34.24, -8.18, 8.59]
+	  }
+   ]
+}

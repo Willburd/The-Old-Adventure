@@ -1,0 +1,86 @@
+{
+   "time_paused": 0,
+   "is_hot": 1,
+   "is_cold": 0,
+   "is_raining": 0,
+   "actors":[
+	  {
+		"type": "skybox",
+		"is_cave": 1,
+		"cave_light": 0.4
+	  },
+	  {
+		"type": "minimap",
+		"pos": [-400, 0, 0],
+		"scl": [0.065, 0.065, 0.065]
+	  },
+	  
+	  {
+		"type": "entrance",
+		"is_entrance": "debugentrance",
+		"pos": [-63.7, -7.10, 1.9],
+		"end_pos": [1, 0.5, 0]
+	  },
+	  {
+		"type": "entrance",
+		"is_entrance": "caveA",
+		"pos": [-5.12, -0.14, 0.24],
+		"end_pos": [5, 0.5, 0]
+	  },
+	  
+	  {
+		"type": "trigger_exit",
+		"pos": [9,0,0],
+		"to_scene": "fieldtest",
+		"to_entrance": "caveA",
+		"radius": 10
+	  },
+	  {
+		"type": "occluder",
+		"pos": [-37, 5, 27.5],
+		"rot": [0, 325, 0],
+		"scl": [8, 12, 36]
+	  },
+	  
+	  {
+		"type": "woodtorch",
+		"pos": [-13.3, 0.74, -9.72]
+	  },
+	  {
+		"type": "woodtorch",
+		"pos": [-64, -6.84, -2.63]
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [-22.44, 2.71, 15.53]
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [-23.24, 2.68, 14.06]
+	  },
+	  {
+		"type": "smallrock",
+		"pos": [-25, -4.32, -1.44]
+	  }
+	],
+	"lights":[
+		{
+			"pos": [-17, -40, 14.0],
+			"radius": 15.0,
+			"color": [1,0,0],
+			"influence": 1.0
+		},
+		{
+			"pos": [-17, -40, 0.0],
+			"radius": 15.0,
+			"color": [1,0,0],
+			"influence": 1.0
+		},
+		{
+			"pos": [-17, -40, -14.0],
+			"radius": 15.0,
+			"color": [1,0,0],
+			"influence": 1.0
+		}
+	]
+}

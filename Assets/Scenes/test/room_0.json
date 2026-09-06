@@ -1,0 +1,94 @@
+{
+   "actors":[
+	  {
+		"type": "skybox",
+		"is_cave": 1,
+		"cave_light": 0.1
+	  },
+	  {
+		"type": "minimap",
+		"pos": [0, 0, 0],
+		"scl": [2, 2, 2]
+	  },
+	  
+	  {
+		"type": "roomswap",
+		"pos": [-15, 2, -2.5],
+		"rot": [0, 270, 0],
+		"goal_room": 1
+	  },
+	  {
+		"type": "occluder",
+		"pos": [-10, 2, -2.5],
+		"rot": [0, 90, 0],
+		"scl": [7, 7, 3]
+	  },
+	  
+	  {
+		"type": "woodtorch",
+		"pos": [ 0, 0, 0]
+	  },
+	  {
+		"type": "crate",
+		"pos": [3.8, 0, -8.8]
+	  },
+	  {
+		"type": "platform",
+		"pos": [3, 4.5, -7.8]
+	  },
+	  {
+		"type": "platform",
+		"pos": [-1, 4.5, -7.8]
+	  },
+	  {
+		"type": "platform",
+		"start_node": "path_A1",
+		"path_speed": 0.1,
+		"pos": [-5, 4.5, -7.8]
+	  },
+	  {
+		"type": "platform",
+		"pos": [-9, 4.5, -7.8]
+	  },
+	  
+	  {
+		"type": "node",
+		"id_tag": "path_A1",
+		"next_node": "path_A2",
+		"prev_node": "path_A4",
+		"pos": [-5, 4.5, -7.8]
+	  },
+	  {
+		"type": "node",
+		"id_tag": "path_A2",
+		"next_node": "path_A3",
+		"prev_node": "path_A1",
+		"alt_node": "path_A3B",
+		"pos": [-5, 4.5, 7],
+		"rot": [ 0, 0, 90]
+	  },
+	  {
+		"type": "node",
+		"id_tag": "path_A3",
+		"next_node": "path_A4",
+		"prev_node": "path_A2",
+		"pos": [-5, 12, 7],
+		"rot": [ 90, 0, 90]
+	  },
+	  {
+		"type": "node",
+		"id_tag": "path_A4",
+		"next_node": "path_A1",
+		"prev_node": "path_A3",
+		"pos": [-5, 12, -7.8],
+		"rot": [ 90, 0, 0]
+	  },
+	  {
+		"type": "node",
+		"id_tag": "path_A3B",
+		"next_node": "path_A4",
+		"prev_node": "path_A2",
+		"pos": [8, 12, 0]
+	  }
+	]
+}

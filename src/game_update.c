@@ -11,6 +11,8 @@
 #include "globals.h"
 #include "input.h"
 #include "game_state.h"
+// Adventure
+#include "Module/world_state.h"
 
 
 int current_actor_cap = 0;
@@ -29,6 +31,10 @@ void game_update()
 	////////////////////////////////////////////////////////////////////////
 	// Prepare world and renderer
 	////////////////////////////////////////////////////////////////////////
+
+	// Adventure edit begin - Update adventure's abstract data
+	UpdateWorldState();
+	// Adventure edit end
 
 	ResetDebugRayCount();
 	ResetLightCount();

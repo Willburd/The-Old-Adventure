@@ -1,13 +1,13 @@
-#include "tools.h"
-#include "assets.h"
-#include "actor_factory.h"
+#include "../tools.h"
+#include "../assets.h"
+#include "../actor_factory.h"
 #include "actor_textbox.h"
-#include "game_state.h"
-#include "hud.h"
-#include "input.h"
+#include "../game_state.h"
+#include "../hud.h"
+#include "../input.h"
 #include <string.h>
-#include "text_loading.h"
-#include "camera.h"
+#include "../text_loading.h"
+#include "../camera.h"
 
 // Private Data
 typedef struct
@@ -67,7 +67,7 @@ struct Actor* TEXTBOX_CREATE(struct Actor* owner, struct Actor* player, char* te
 	ACTOR_DESTROY_TYPE(act_textbox);
 	
 	// Create our textbox
-	struct Actor* textbox = ACTOR_FACTORY(NULL, act_textbox, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	struct Actor* textbox = ACTOR_FACTORY(NULL, act_textbox, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
 	TextboxData* textbox_data = (TextboxData*)textbox->data;
 	textbox_data->current_text = GetText(text_id);
 	textbox_data->text_speed = text_speed;
@@ -157,7 +157,7 @@ static void ProgressSegment(struct Actor* textbox)
 
 		case 'E': // End
 		{
-			struct Actor* camera = FINDACTORTYPE(act_camera);
+			struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
 			CameraSetMode(camera, CAMERA_MODE_FOLLOW);
 			ACTOR_DESTROY(textbox);
 		}
