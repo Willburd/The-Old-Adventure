@@ -6,6 +6,7 @@
 #define PROP_ROT "rot"
 #define PROP_SCL "scl"
 #define PROP_VEL "vel"
+#define PROP_ANGVEL "avl"
 #define PROP_IDTAG "id_tag"
 #define PROP_RADIUS "radius"
 #define PROP_COLOR "color"

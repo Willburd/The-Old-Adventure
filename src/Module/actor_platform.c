@@ -19,7 +19,7 @@ typedef struct
 } PlatformData;
 ACTOR_PRELOADASSETS(platform);
 ACTOR_JSON_INIT(platform);
-ACTOR_UPDATE(platform);
+ACTOR_PREUPDATE(platform);
 ACTOR_CLEANUP(platform);
 ACTOR_DRAWWORLD(platform);
 
@@ -33,7 +33,7 @@ ACTOR_INIT(platform)
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
 	ACTOR_REGISTER_PRELOADASSETS(platform);
 	ACTOR_REGISTER_JSON_INIT(platform);
-	ACTOR_REGISTER_UPDATE(platform);
+	ACTOR_REGISTER_PREUPDATE(platform);
 	ACTOR_REGISTER_CLEANUP(platform);
 	ACTOR_REGISTER_DRAWWORLD(platform);
 }
@@ -79,7 +79,7 @@ ACTOR_JSON_INIT(platform)
 	}
 }
 
-ACTOR_UPDATE(platform)
+ACTOR_PREUPDATE(platform)
 {
 	PlatformData* platform_data = (PlatformData*)actor->data;
 	if (platform_data->speed == 0)
@@ -91,26 +91,42 @@ ACTOR_UPDATE(platform)
 	struct Actor* target_goal = FINDACTOR_BYTAG(platform_data->target_node);
 	if (target_goal == NULL)
 		return;
+	NodeData* target_data = target_goal->data;
 	Vector3 dir = VEC3DIRECTION(actor->position, target_goal->position);
 	float remaining_distance = Vector3Distance(actor->position, target_goal->position) - platform_data->speed;
 	actor->velocity = Vector3Scale(dir, min(platform_data->speed, max(remaining_distance, 0.0f)));
 
-	// Snap stop!
-	if (remaining_distance < 0.01)
-	{
-		actor->position = target_goal->position;
-		actor->velocity = Vector3Zero();
-		remaining_distance = 0;
-	}
-
-	// Next node time!
-	if (remaining_distance > 0)
+	// Next node time! Snap if we are near enough.
+	if (remaining_distance >= 0.01)
 		return;
-	NodeData* next_node_data = target_goal->data;
-	if (next_node_data->next_node_tag == NULL)
+	actor->position = target_goal->position;
+	actor->rotation = target_goal->rotation;
+	actor->velocity = Vector3Zero();
+	actor->angular_velocity = Vector3Zero();
+	remaining_distance = 0;
+
+	// Check if the next node exists
+	if (target_data->next_node_tag == NULL)
+		return;
+	// Transfer node id
+	struct Actor* next_node = FINDACTOR_BYTAG(target_data->next_node_tag);
+	if (next_node == NULL)
 		return;
 	RELEASE(platform_data->target_node);
-	CHAR_STR_COPY(platform_data->target_node, next_node_data->next_node_tag, NULL);
+	CHAR_STR_COPY(platform_data->target_node, next_node->id_tag, NULL);
+
+	// Set the initial velocity
+	actor->velocity = Vector3Scale(VEC3DIRECTION(actor->position, next_node->position), platform_data->speed);
+	// Set the rotation, it should automatically rotate into final position when it arrives!
+	float total_distance = Vector3Distance(actor->position, next_node->position);
+	float rotation_mult = platform_data->speed / total_distance;
+	Vector3 current_eulars = QuaternionToEuler(actor->rotation);
+	Vector3 goal_eulars = QuaternionToEuler(next_node->rotation);
+	actor->angular_velocity = (Vector3){ // TODO - Rotations here aren't behaving correctly when chained multiple times...
+											(float)AngleDifference(current_eulars.z, goal_eulars.z) * -rotation_mult, 
+											(float)AngleDifference(current_eulars.y, goal_eulars.y) * -rotation_mult,
+											(float)AngleDifference(current_eulars.x, goal_eulars.x) * -rotation_mult
+										};
 }
 
 ACTOR_CLEANUP(platform)

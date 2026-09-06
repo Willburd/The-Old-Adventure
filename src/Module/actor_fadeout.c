@@ -31,7 +31,7 @@ struct Actor* FADEOUT_CREATE(Color color)
 {
 	// Remove previous fades if somehow multiple happen
 	ACTOR_DESTROY_TYPE(act_fadeout);
-	struct Actor* fadeout = ACTOR_FACTORY(NULL, act_fadeout, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	struct Actor* fadeout = ACTOR_FACTORY(NULL, act_fadeout, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
 	FadeInData* fadeout_data = (FadeInData*)fadeout->data;
 	fadeout_data->blend_color = color;
 	return fadeout;

@@ -67,7 +67,7 @@ struct Actor* TEXTBOX_CREATE(struct Actor* owner, struct Actor* player, char* te
 	ACTOR_DESTROY_TYPE(act_textbox);
 	
 	// Create our textbox
-	struct Actor* textbox = ACTOR_FACTORY(NULL, act_textbox, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	struct Actor* textbox = ACTOR_FACTORY(NULL, act_textbox, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
 	TextboxData* textbox_data = (TextboxData*)textbox->data;
 	textbox_data->current_text = GetText(text_id);
 	textbox_data->text_speed = text_speed;

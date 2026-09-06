@@ -31,7 +31,7 @@ struct Actor* FADEIN_CREATE(Color color)
 {
 	// Remove previous fades if somehow multiple happen
 	ACTOR_DESTROY_TYPE(act_fadein);
-	struct Actor* fadein = ACTOR_FACTORY(NULL, act_fadein, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+	struct Actor* fadein = ACTOR_FACTORY(NULL, act_fadein, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
 	FadeInData* fadein_data = (FadeInData*)fadein->data;
 	fadein_data->blend_color = color;
 	return fadein;
