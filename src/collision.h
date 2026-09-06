@@ -30,6 +30,11 @@ struct ColliderData {
 	unsigned int flags;
 };
 
+typedef struct {
+	RayCollision ray_col;
+	struct ColliderData* hit_colider;
+} RayHitData;
+
 // Get the number of colliders currently registered.
 int GetColliderCount();
 // Gets current number of collider rays done this tick.
@@ -49,9 +54,9 @@ void CollisionResign(struct Actor* owner, Mesh* collider);
 void CollisionCleanup(struct Actor* owner);
 
 // Get the nearest point. May not return a valid collision.
-RayCollision CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask);
+RayHitData CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask);
 // Get the furthest point. May not return a valid collision.
-RayCollision CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask);
+RayHitData CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask);
 
 // Register all meshes present in a model as colliders.
 void RegisterAllCollisionMeshes(struct Actor* actor, char* model_path, int collision_mask);

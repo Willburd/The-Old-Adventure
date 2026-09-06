@@ -113,6 +113,7 @@ void CollisionCleanup(struct Actor* owner)
 
 // Lets keep this off the heap
 static RayCollision collision_test_list[MAX_COLLIDERS];
+static struct Collider* collision_test_collider_hit[MAX_COLLIDERS];
 
 // Get a list of collisions, tested against all active colliders. This is internal. Other functions should use it and return results. Uses an pre-allocated and cleaned array instead of a heap object due to memory footprint.
 static void CollisionTest(Ray raycast, float max_dist, unsigned int mask)
@@ -133,50 +134,53 @@ static void CollisionTest(Ray raycast, float max_dist, unsigned int mask)
 			continue;
 		if (hit.distance > max_dist)
 			continue;
+		collision_test_collider_hit[detected_collisions] = &world_colliders[i];
 		collision_test_list[detected_collisions++] = hit;
 		debug_ray_hits[debug_current_rays] = TRUE;
 	}
 	debug_current_rays++; // Next ray
 }
 
-RayCollision CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask)
+RayHitData CollisionGetNearest(Ray raycast, float max_dist, unsigned int mask)
 {
 	CollisionTest(raycast, max_dist, mask);
 	// Search for the nearest hit
 	float nearest_point = INFINITY;
-	RayCollision nearest = { 0 };
+	RayHitData nearest = { 0 };
 	for (int i = 0; i <= min(max_collision, MAX_COLLIDERS); i++)
 	{
 		if (!collision_test_list[i].hit)
 			continue;
 		if (collision_test_list[i].distance >= nearest_point)
 			continue;
-		nearest.distance = collision_test_list[i].distance;
-		nearest.hit = collision_test_list[i].hit;
-		nearest.point = collision_test_list[i].point;
-		nearest.normal = collision_test_list[i].normal;
-		nearest_point = nearest.distance;
+		nearest.hit_colider = collision_test_collider_hit[i];
+		nearest.ray_col.distance = collision_test_list[i].distance;
+		nearest.ray_col.hit = collision_test_list[i].hit;
+		nearest.ray_col.point = collision_test_list[i].point;
+		nearest.ray_col.normal = collision_test_list[i].normal;
+		nearest_point = nearest.ray_col.distance;
 	}
 	return nearest;
 }
 
-RayCollision CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask)
+RayHitData CollisionGetFurthest(Ray raycast, float max_dist, unsigned int mask)
 {
 	CollisionTest(raycast, max_dist, mask);
 	// Search for the furthest hit
 	float furthest_point = 0;
-	RayCollision furthest = { 0 };
+	RayHitData furthest = { 0 };
 	for (int i = 0; i < max_collision; i++)
 	{
 		if (!collision_test_list[i].hit)
 			continue;
 		if (collision_test_list[i].distance < furthest_point)
 			continue;
-		furthest.distance = collision_test_list[i].distance;
-		furthest.hit = collision_test_list[i].hit;
-		furthest.point = collision_test_list[i].point;
-		furthest.normal = collision_test_list[i].normal;
-		furthest_point = furthest.distance;
+		furthest.hit_colider = collision_test_collider_hit[i];
+		furthest.ray_col.distance = collision_test_list[i].distance;
+		furthest.ray_col.hit = collision_test_list[i].hit;
+		furthest.ray_col.point = collision_test_list[i].point;
+		furthest.ray_col.normal = collision_test_list[i].normal;
+		furthest_point = furthest.ray_col.distance;
 	}
 	return furthest;
 }
