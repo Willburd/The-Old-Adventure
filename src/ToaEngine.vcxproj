@@ -167,6 +167,7 @@
     <ClCompile Include="Module\actor_hole.c" />
     <ClCompile Include="Module\actor_mappoi.c" />
     <ClCompile Include="Module\actor_minimap.c" />
+    <ClCompile Include="Module\actor_node.c" />
     <ClCompile Include="Module\actor_occluder.c" />
     <ClCompile Include="Module\actor_pause_box.c" />
     <ClCompile Include="Module\actor_platform.c" />

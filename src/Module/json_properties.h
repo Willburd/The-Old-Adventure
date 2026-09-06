@@ -35,4 +35,9 @@
 // RoomFade
 #define PROP_GOALROOM "goal_room"
 
+// Nodes
+#define PROP_NEXTNODE "next_node"
+#define PROP_PREVNODE "prev_node"
+#define PROP_ALTNODE "alt_node"
+
 #endif

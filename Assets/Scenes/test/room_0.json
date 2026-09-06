@@ -51,6 +51,43 @@
 	  {
 		"type": "platform",
 		"pos": [-9, 4.5, -7.8]
+	  },
+	  
+	  {
+		"type": "node",
+		"id_tag": "path_A1",
+		"next_node": "path_A2",
+		"prev_node": "path_A4",
+		"pos": [-5, 4.5, -7.8]
+	  },
+	  {
+		"type": "node",
+		"id_tag": "path_A2",
+		"next_node": "path_A3",
+		"prev_node": "path_A1",
+		"alt_node": "path_A3B",
+		"pos": [-5, 4.5, 7]
+	  },
+	  {
+		"type": "node",
+		"id_tag": "path_A3",
+		"next_node": "path_A4",
+		"prev_node": "path_A2",
+		"pos": [-5, 12, 7]
+	  },
+	  {
+		"type": "node",
+		"id_tag": "path_A4",
+		"next_node": "path_A1",
+		"prev_node": "path_A3",
+		"pos": [-5, 12, -7.8]
+	  },
+	  {
+		"type": "node",
+		"id_tag": "path_A3B",
+		"next_node": "path_A4",
+		"prev_node": "path_A2",
+		"pos": [8, 12, 0]
 	  }
 	]
 }
