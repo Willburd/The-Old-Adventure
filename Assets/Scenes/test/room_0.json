@@ -46,6 +46,8 @@
 	  },
 	  {
 		"type": "platform",
+		"start_node": "path_A1",
+		"path_speed": 0.1,
 		"pos": [-5, 4.5, -7.8]
 	  },
 	  {

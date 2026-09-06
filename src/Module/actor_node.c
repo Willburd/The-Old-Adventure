@@ -2,17 +2,12 @@
 #include "../tools.h"
 #include "../collision.h"
 #include "../game_draw.h"
+#include "actor_node.h"
 #include "json_properties.h"
 
 // Assets
 
 // private header
-typedef struct
-{
-	char* next_node_tag;
-	char* prev_node_tag;
-	char* alt_node_tag;
-} NodeData;
 ACTOR_JSON_INIT(node);
 ACTOR_CLEANUP(node);
 ACTOR_POSTDRAWWORLD(node);
@@ -71,6 +66,10 @@ ACTOR_CLEANUP(node)
 	NodeData* node_data = (NodeData*)actor->data;
 	if(node_data->next_node_tag != NULL)
 		RELEASE(node_data->next_node_tag);
+	if (node_data->prev_node_tag != NULL)
+		RELEASE(node_data->prev_node_tag);
+	if (node_data->alt_node_tag != NULL)
+		RELEASE(node_data->alt_node_tag);
 }
 
 ACTOR_POSTDRAWWORLD(node)
