@@ -26,7 +26,7 @@ static void FinalizeRoomChange();
 ACTOR_INIT(scene)
 {
 	// Use this for clarity
-	struct Actor* scene = actor; 
+	struct Actor* scene = actor;
 
 	// Unload previous scene
 	current_scene = scene;
@@ -82,7 +82,7 @@ void HandleLoadNextScene()
 {
 	if (next_scene >= 0)
 	{
-		ACTOR_FACTORY(NULL, act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+		ACTOR_FACTORY(NULL, act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
 		next_scene = -1;
 	}
 	FinalizeRoomChange();

@@ -93,6 +93,10 @@ void game_update()
 			update_actor->position.y += update_actor->velocity.y;
 			update_actor->position.z += update_actor->velocity.z;
 		}
+		if (Vector3Distance(Vector3Zero(), update_actor->angular_velocity) > 0.0) // Rotate actor if they have velocity
+		{
+			update_actor->rotation = QuaternionMultiply(update_actor->rotation, QuaternionFromEuler(update_actor->angular_velocity.z, update_actor->angular_velocity.y, update_actor->angular_velocity.x));
+		}
 	}
 	current_actor_cap = cap_actor;
 
