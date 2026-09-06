@@ -70,7 +70,7 @@ ACTOR_INIT(scene)
 	ACTOR_DESTROY_TYPE(act_player); // Only a single player
 	if (next_entrance < NO_PLAYER_SCENE)
 	{
-		ACTOR_FACTORY(NULL, act_player, current_scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero());
+		ACTOR_FACTORY(NULL, act_player, current_scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
 		if (entrance != NULL) // Enter the scene from this entrance if we have one
 			actor_entrance_startentry(entrance);
 	}
