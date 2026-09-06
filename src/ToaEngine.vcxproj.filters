@@ -243,12 +243,6 @@
     <ClCompile Include="Module\core_assets.c">
       <Filter>Source Files\module\assets</Filter>
     </ClCompile>
-    <ClCompile Include="Module\actor_fadein.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Module\actor_fadeout.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Module\actor_platform.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
@@ -256,6 +250,12 @@
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
     <ClCompile Include="Module\actor_node.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_fadein.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\actor_fadeout.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
   </ItemGroup>
@@ -363,6 +363,9 @@
       <Filter>Header Files\module\actors</Filter>
     </ClInclude>
     <ClInclude Include="Module\actor_node.h">
+      <Filter>Header Files\module\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\actor_platform.h">
       <Filter>Header Files\module\actors</Filter>
     </ClInclude>
   </ItemGroup>

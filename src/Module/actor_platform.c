@@ -2,6 +2,7 @@
 #include "../tools.h"
 #include "../collision.h"
 #include "../game_draw.h"
+#include "actor_platform.h"
 #include "actor_node.h"
 #include "json_properties.h"
 
@@ -16,6 +17,10 @@ typedef struct
 {
 	char* target_node;
 	float speed;
+	float percent;
+	Vector3 last_node_pos;
+	Quaternion last_node_rot;
+	Vector3 start_pos;
 } PlatformData;
 ACTOR_PRELOADASSETS(platform);
 ACTOR_JSON_INIT(platform);
@@ -38,6 +43,65 @@ ACTOR_INIT(platform)
 	ACTOR_REGISTER_DRAWWORLD(platform);
 }
 
+void InitPlatformData(struct Actor* actor, float speed)
+{
+	PlatformData* platform_data = (PlatformData*)actor->data;
+	platform_data->target_node = NULL;
+	platform_data->speed = speed;
+	platform_data->percent = 0.0f;
+	platform_data->last_node_pos = actor->position;
+	platform_data->last_node_rot = actor->rotation;
+	platform_data->start_pos = actor->position;
+}
+
+void HandlePlatformMove(struct Actor* actor)
+{
+	PlatformData* platform_data = (PlatformData*)actor->data;
+	if (platform_data->speed == 0)
+		return;
+	if (platform_data->target_node == NULL)
+		return;
+	struct Actor* target_goal = FINDACTOR_BYTAG(platform_data->target_node);
+	if (target_goal == NULL)
+		return;
+
+	// Move to the current target
+	float distance = Vector3Distance(platform_data->last_node_pos, target_goal->position);
+	float move_percent = 1.0f; // Assume we've arrived at the end node so that we...
+	if (distance > 0.0f) // Prevent dividing by 0 on instant snap nodes.
+		move_percent = platform_data->speed / distance;
+
+	// Advance platform along the path ahead
+	float current_percent = platform_data->percent;
+	platform_data->percent = min(platform_data->percent + move_percent, 1.0f);
+	if (current_percent < 1.0f)
+	{
+		// Put the platform at the current position it should be
+		actor->position = Vector3Lerp(platform_data->last_node_pos, target_goal->position, current_percent);
+		Vector3 new_position = Vector3Lerp(platform_data->last_node_pos, target_goal->position, platform_data->percent);
+		actor->rotation = QuaternionSlerp(platform_data->last_node_rot, target_goal->rotation, current_percent);
+		Quaternion new_rotation = QuaternionSlerp(platform_data->last_node_rot, target_goal->rotation, platform_data->percent);
+
+		// Apply velocity for the movement with the difference of the current position to the goal next frame!
+		actor->velocity = Vector3Subtract(new_position, actor->position);
+		actor->angular_velocity = QuaternionToEuler(QuaternionMultiply(new_rotation, QuaternionInvert(actor->rotation))); // Get the difference
+		return;
+	}
+
+	// Next node time! Snap!
+	InitPlatformData(actor, platform_data->speed);
+	// Check if the next node exists
+	NodeData* target_data = target_goal->data;
+	if (target_data->next_node_tag == NULL)
+		return;
+	// Transfer node id
+	struct Actor* next_node = FINDACTOR_BYTAG(target_data->next_node_tag);
+	if (next_node == NULL)
+		return;
+	RELEASE(platform_data->target_node);
+	CHAR_STR_COPY(platform_data->target_node, next_node->id_tag, NULL);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,9 +118,7 @@ ACTOR_PRELOADASSETS(platform)
 	// Set data
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;
 	MALLOC_ACTOR_DATA(PlatformData, actor->data);
-	PlatformData* platform_data = (PlatformData*)actor->data;
-	platform_data->target_node = NULL;
-	platform_data->speed = 0.0f;
+	InitPlatformData(actor, 0.0f);
 }
 
 ACTOR_JSON_INIT(platform)
@@ -81,52 +143,7 @@ ACTOR_JSON_INIT(platform)
 
 ACTOR_PREUPDATE(platform)
 {
-	PlatformData* platform_data = (PlatformData*)actor->data;
-	if (platform_data->speed == 0)
-		return;
-	if (platform_data->target_node == NULL)
-		return;
-
-	// Move to the current target
-	struct Actor* target_goal = FINDACTOR_BYTAG(platform_data->target_node);
-	if (target_goal == NULL)
-		return;
-	NodeData* target_data = target_goal->data;
-	Vector3 dir = VEC3DIRECTION(actor->position, target_goal->position);
-	float remaining_distance = Vector3Distance(actor->position, target_goal->position) - platform_data->speed;
-	actor->velocity = Vector3Scale(dir, min(platform_data->speed, max(remaining_distance, 0.0f)));
-
-	// Next node time! Snap if we are near enough.
-	if (remaining_distance >= 0.01)
-		return;
-	actor->position = target_goal->position;
-	actor->rotation = target_goal->rotation;
-	actor->velocity = Vector3Zero();
-	actor->angular_velocity = Vector3Zero();
-	remaining_distance = 0;
-
-	// Check if the next node exists
-	if (target_data->next_node_tag == NULL)
-		return;
-	// Transfer node id
-	struct Actor* next_node = FINDACTOR_BYTAG(target_data->next_node_tag);
-	if (next_node == NULL)
-		return;
-	RELEASE(platform_data->target_node);
-	CHAR_STR_COPY(platform_data->target_node, next_node->id_tag, NULL);
-
-	// Set the initial velocity
-	actor->velocity = Vector3Scale(VEC3DIRECTION(actor->position, next_node->position), platform_data->speed);
-	// Set the rotation, it should automatically rotate into final position when it arrives!
-	float total_distance = Vector3Distance(actor->position, next_node->position);
-	float rotation_mult = platform_data->speed / total_distance;
-	Vector3 current_eulars = QuaternionToEuler(actor->rotation);
-	Vector3 goal_eulars = QuaternionToEuler(next_node->rotation);
-	actor->angular_velocity = (Vector3){ // TODO - Rotations here aren't behaving correctly when chained multiple times...
-											(float)AngleDifference(current_eulars.z, goal_eulars.z) * -rotation_mult, 
-											(float)AngleDifference(current_eulars.y, goal_eulars.y) * -rotation_mult,
-											(float)AngleDifference(current_eulars.x, goal_eulars.x) * -rotation_mult
-										};
+	HandlePlatformMove(actor);
 }
 
 ACTOR_CLEANUP(platform)

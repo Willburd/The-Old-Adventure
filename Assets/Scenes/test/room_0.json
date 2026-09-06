@@ -25,10 +25,6 @@
 	  },
 	  
 	  {
-		"type": "animationtest",
-		"pos": [ -4, 0, -5]
-	  },
-	  {
 		"type": "woodtorch",
 		"pos": [ 0, 0, 0]
 	  },

@@ -47,10 +47,10 @@ void PlayerState_Grounded_Update(struct Actor* player)
 		Quaternion input_rotator = QuaternionFromAxisAngle(VEC3UP, -Vector3GetTopDownAngle(VEC3DIRECTION(cam_main.position, player->position)));
 		move_velocity = Vector3Scale(Vector3RotateByQuaternion((Vector3) { input_analog.x, 0.0f, input_analog.y }, input_rotator), PLAYER_GROUND_ACCELERATION);
 	}
-	else if(CHECK_GAMESTATE( GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE ))
+	else if (CHECK_GAMESTATE(GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE))
 	{
 		// Cutscene movement, use the rungoal vector
-		if(player_data->cutscene_run_goal.x != 0 || player_data->cutscene_run_goal.z != 0)
+		if (player_data->cutscene_run_goal.x != 0 || player_data->cutscene_run_goal.z != 0)
 			move_velocity = Vector3Scale(Vector3FlatDirection(player->position, player_data->cutscene_run_goal), PLAYER_GROUND_ACCELERATION * player_data->cutscene_run_factor);
 	}
 
@@ -89,7 +89,7 @@ void PlayerState_Grounded_Update(struct Actor* player)
 		Vector2 dirvec = Vector2Normalize(flat_velocity);
 
 		Vector3 facing_dir = Vector3RotateByQuaternion(VEC3FORWARD, player->rotation);
-		Vector2 flat_facing = Vector2Normalize((Vector2){ facing_dir.x, facing_dir.z });
+		Vector2 flat_facing = Vector2Normalize((Vector2) { facing_dir.x, facing_dir.z });
 
 		float turn_modifier = 1.0f;
 		float angle_modifier = Vector2Angle(dirvec, flat_facing);
@@ -123,7 +123,10 @@ void PlayerState_Grounded_Update(struct Actor* player)
 	// Snap to floors and go up steps
 	player->position = collision.ray_col.point;
 	if (collision.hit_colider->flags & COL_LAYER_MOVINGPLATFORM) // Moving platforms make us move too
+	{
 		player->position = Vector3Add(player->position, collision.hit_colider->owner->velocity);
+		// TODO - Handle rotational offsets of spinning platforms
+	}
 
 	// Get the nearest interactable actor and update the hud with it
 	Vector3 ahead_pos = Vector3Add(player->position, Vector3RotateByQuaternion(VEC3FORWARD, player->rotation));
