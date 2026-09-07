@@ -54,6 +54,23 @@ void InitPlatformData(struct Actor* actor, float speed)
 	platform_data->start_pos = actor->position;
 }
 
+void InitPlatformJson(struct Actor* actor, cJSON* file_data)
+{
+	PlatformData* platform_data = (PlatformData*)actor->data;
+	cJSON* get_str = cJSON_GetObjectItem(file_data, PROP_PLATFORM_STARTNODE);
+	if (cJSON_IsString(get_str))
+	{
+		char* str = get_str->valuestring;
+		CHAR_STR_COPY(platform_data->target_node, str, NULL);
+	}
+
+	cJSON* get_spd = cJSON_GetObjectItem(file_data, PROP_PLATFORM_PATHSPEED);
+	if (cJSON_IsNumber(get_spd))
+	{
+		platform_data->speed = (float)get_spd->valuedouble;
+	}
+}
+
 void HandlePlatformMove(struct Actor* actor)
 {
 	PlatformData* platform_data = (PlatformData*)actor->data;
@@ -63,7 +80,10 @@ void HandlePlatformMove(struct Actor* actor)
 		return;
 	struct Actor* target_goal = FINDACTOR_BYTAG(platform_data->target_node);
 	if (target_goal == NULL)
+	{
+		RELEASE(platform_data->target_node); // The target might of been deleted, just give up and deallocate it
 		return;
+	}
 
 	// Move to the current target
 	float distance = Vector3Distance(platform_data->last_node_pos, target_goal->position);
@@ -89,6 +109,7 @@ void HandlePlatformMove(struct Actor* actor)
 	}
 
 	// Next node time! Snap!
+	RELEASE(platform_data->target_node); // Release before we find out if the next node exists
 	InitPlatformData(actor, platform_data->speed);
 	// Check if the next node exists
 	NodeData* target_data = target_goal->data;
@@ -98,7 +119,7 @@ void HandlePlatformMove(struct Actor* actor)
 	struct Actor* next_node = FINDACTOR_BYTAG(target_data->next_node_tag);
 	if (next_node == NULL)
 		return;
-	RELEASE(platform_data->target_node);
+	// Allocate the next goal now that we know it exists
 	CHAR_STR_COPY(platform_data->target_node, next_node->id_tag, NULL);
 }
 
@@ -112,8 +133,14 @@ void ApplyPlatformRotation(struct Actor* actor, struct Actor* platform, int infl
 	actor->position = Vector3Add(actor->position, platform->velocity);
 	if (influence_rotation == TRUE)
 		actor->rotation = QuaternionMultiply(actor->rotation, QuaternionGetFlat(rotation_quat, VEC3UP)); // Only topdown rotation.
-	else if (influence_rotation == 2) // Alternate
+	else if (influence_rotation == 2) // Alternate, ugly implementation but oh well.
 		actor->rotation = QuaternionMultiply(actor->rotation, rotation_quat); // Directly apply it.
+}
+
+void HandlePlatformCleanup(struct Actor* actor)
+{
+	PlatformData* platform_data = (PlatformData*)actor->data;
+	RELEASE(platform_data->target_node);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,20 +166,7 @@ ACTOR_JSON_INIT(platform)
 {
 	if (file_data == NULL)
 		return;
-
-	PlatformData* platform_data = (PlatformData*)actor->data;
-	cJSON* get_str = cJSON_GetObjectItem(file_data, PROP_PLATFORM_STARTNODE);
-	if (cJSON_IsString(get_str))
-	{
-		char* str = get_str->valuestring;
-		CHAR_STR_COPY(platform_data->target_node, str, NULL);
-	}
-
-	cJSON* get_spd = cJSON_GetObjectItem(file_data, PROP_PLATFORM_PATHSPEED);
-	if (cJSON_IsNumber(get_spd))
-	{
-		platform_data->speed = (float)get_spd->valuedouble;
-	}
+	InitPlatformJson(actor, file_data);
 }
 
 ACTOR_PREUPDATE(platform)
@@ -162,8 +176,7 @@ ACTOR_PREUPDATE(platform)
 
 ACTOR_CLEANUP(platform)
 {
-	PlatformData* platform_data = (PlatformData*)actor->data;
-	RELEASE(platform_data->target_node);
+	HandlePlatformCleanup(actor);
 }
 
 ACTOR_DRAWWORLD(platform)
