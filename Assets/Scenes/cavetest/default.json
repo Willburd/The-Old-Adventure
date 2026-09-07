@@ -36,6 +36,13 @@
 		"radius": 10
 	  },
 	  {
+		"type": "trigger_exit",
+		"pos": [-90, -6, 3],
+		"to_scene": "test",
+		"to_entrance": "debugentrance",
+		"radius": 17
+	  },
+	  {
 		"type": "occluder",
 		"pos": [-37, 5, 27.5],
 		"rot": [0, 325, 0],

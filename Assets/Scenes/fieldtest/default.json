@@ -109,7 +109,24 @@
 	  },
 	  {
 		"type": "platform",
+		"start_node": "path_A1",
+		"path_speed": 0.15,
 		"pos": [29, -2, 4]
+	  },
+	  
+	  {
+		"type": "node",
+		"id_tag": "path_A1",
+		"next_node": "path_A2",
+		"prev_node": "path_A2",
+		"pos": [29, -2, 4]
+	  },
+	  {
+		"type": "node",
+		"id_tag": "path_A2",
+		"next_node": "path_A1",
+		"prev_node": "path_A1",
+		"pos": [29, 80, 4]
 	  }
    ],
 	"lights":[
