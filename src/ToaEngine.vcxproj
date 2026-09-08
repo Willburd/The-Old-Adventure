@@ -165,6 +165,7 @@
     <ClCompile Include="Module\actor_fadeout.c" />
     <ClCompile Include="Module\actor_fire.c" />
     <ClCompile Include="Module\actor_hole.c" />
+    <ClCompile Include="Module\actor_logical.c" />
     <ClCompile Include="Module\actor_mappoi.c" />
     <ClCompile Include="Module\actor_minimap.c" />
     <ClCompile Include="Module\actor_node.c" />

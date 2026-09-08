@@ -22,6 +22,10 @@ typedef enum
 	act_animationtest,
 	act_entrance,
 	act_trigger_exit,
+	act_logic_or,
+	act_logic_and,
+	act_logic_xor,
+	act_logic_counter,
 	act_fadein,
 	act_fadeout,
 	act_skybox,
@@ -54,6 +58,10 @@ ACTOR_INIT(test);
 ACTOR_INIT(animationtest);
 ACTOR_INIT(entrance);
 ACTOR_INIT(trigger_exit);
+ACTOR_INIT(logic_or);
+ACTOR_INIT(logic_and);
+ACTOR_INIT(logic_xor);
+ACTOR_INIT(logic_counter);
 ACTOR_INIT(fadein);
 ACTOR_INIT(fadeout);
 ACTOR_INIT(skybox);
@@ -87,6 +95,10 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(animationtest);
 	ACTOR_STRING_CASE(entrance);
 	ACTOR_STRING_CASE(trigger_exit);
+	ACTOR_STRING_CASE(logic_or);
+	ACTOR_STRING_CASE(logic_and);
+	ACTOR_STRING_CASE(logic_xor);
+	ACTOR_STRING_CASE(logic_counter);
 	ACTOR_STRING_CASE(fadein);
 	ACTOR_STRING_CASE(fadeout);
 	ACTOR_STRING_CASE(skybox);
@@ -125,6 +137,10 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 		MAKE_ACTOR_INIT(animationtest);
 		MAKE_ACTOR_INIT(entrance);
 		MAKE_ACTOR_INIT(trigger_exit);
+		MAKE_ACTOR_INIT(logic_or);
+		MAKE_ACTOR_INIT(logic_and);
+		MAKE_ACTOR_INIT(logic_xor);
+		MAKE_ACTOR_INIT(logic_counter);
 		MAKE_ACTOR_INIT(fadein);
 		MAKE_ACTOR_INIT(fadeout);
 		MAKE_ACTOR_INIT(skybox);
