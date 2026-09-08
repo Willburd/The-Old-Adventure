@@ -13,15 +13,13 @@ typedef struct {
 	int fire_once;
 	// Number of times the element has fired
 	int fired_count;
-	// id_tag of the first actor to check
-	char* check_tag_A;
-	// id_tag of the second actor to check
-	char* check_tag_B;
+	// UUID of the first actor to trigger this element
+	uint64_t uuid_cache;
 } LogicData;
 static void InitData(struct Actor* actor);
 static void JsonSetupData(struct Actor* actor, cJSON* file_data);
 static void CleanupData(struct Actor* actor);
-static void TriggerEvent(struct Actor* actor);
+static int TriggerEvent(struct Actor* actor);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -30,14 +28,20 @@ static void TriggerEvent(struct Actor* actor);
 // Lets automagic this a bit more with so many elements here to handle
 #define MAKE_LOGIC_ACTOR(x) \
 ACTOR_JSON_INIT(x); \
+ACTOR_PLAYER_INTERACT(x); \
 ACTOR_REMOTE_INTERACT(x); \
 ACTOR_CLEANUP(x); \
 ACTOR_INIT(x) { \
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE; \
 	ACTOR_REGISTER_JSON_INIT(x); \
+	ACTOR_REGISTER_PLAYER_INTERACT(x); \
 	ACTOR_REGISTER_REMOTE_INTERACT(x); \
 	ACTOR_REGISTER_CLEANUP(x); \
 	InitData(actor); \
+} \
+/* This assumes player interaction will trigger remote interaction too! */ \
+ACTOR_PLAYER_INTERACT(x) { \
+	actor->func_remote_interact(actor, player); \
 } \
 ACTOR_JSON_INIT(x) { \
 	if (file_data == NULL) { \
@@ -51,8 +55,10 @@ ACTOR_CLEANUP(x) { \
 
 MAKE_LOGIC_ACTOR(logic_or)
 MAKE_LOGIC_ACTOR(logic_and)
-MAKE_LOGIC_ACTOR(logic_xor)
 MAKE_LOGIC_ACTOR(logic_counter)
+MAKE_LOGIC_ACTOR(logic_setflag)
+MAKE_LOGIC_ACTOR(logic_clearflag)
+MAKE_LOGIC_ACTOR(logic_toggleflag)
 
 #undef MAKE_LOGIC_ACTOR
 
@@ -65,11 +71,10 @@ static void InitData(struct Actor* actor)
 	LogicData* logic_data = (LogicData*)actor->data;
 	logic_data->target = NULL;
 	logic_data->trigger_count = 0;
-	logic_data->trigger_count_goal = 0;
+	logic_data->trigger_count_goal = 1;
 	logic_data->fire_once = 0;
 	logic_data->fired_count = 0;
-	logic_data->check_tag_A = NULL;
-	logic_data->check_tag_B = NULL;
+	logic_data->uuid_cache = 0;
 }
 
 static void CleanupData(struct Actor* actor)
@@ -85,46 +90,78 @@ static void JsonSetupData(struct Actor* actor, cJSON* file_data)
 
 }
 
-static void TriggerEvent(struct Actor* actor)
+static int TriggerEvent(struct Actor* actor)
 {
 	LogicData* logic_data = (LogicData*)actor->data;
+
+	// Incriment number of times this element was triggered
+	logic_data->trigger_count += 1;
+	if (logic_data->trigger_count < logic_data->trigger_count_goal)
+		return FALSE;
+
+	// Forbid firing if we only fire once
 	if (logic_data->fire_once && logic_data->fired_count > 0)
-		return;
+		return FALSE;
 	logic_data->fired_count += 1;
 
 	// Find target actor
 	struct Actor* target = FINDACTOR_BYTAG(logic_data->target);
 	if (!ACTOR_EXISTS(target))
-		return;
+		return FALSE;
 	if (ACTOR_HAS(target, func_remote_interact))
 		target->func_remote_interact(target, actor);
+	return TRUE;
 }
 
 ACTOR_REMOTE_INTERACT(logic_or)
 {
-	// Any input is relayed
+	// Any input is relayed ahead to the target, allowing multiple inputs to one actor.
 	LogicData* logic_data = (LogicData*)actor->data;
 	TriggerEvent(actor);
 }
 
 ACTOR_REMOTE_INTERACT(logic_and)
 {
-	// Requires two different triggers
+	// Requires two different trigger actors 
 	LogicData* logic_data = (LogicData*)actor->data;
 
-}
-
-ACTOR_REMOTE_INTERACT(logic_xor)
-{
-	// Requires 
-	LogicData* logic_data = (LogicData*)actor->data;
-
+	// First triggering. Await second
+	if (logic_data->uuid_cache == 0)
+		logic_data->uuid_cache = other->uuid;
+	// Check if it's the same actor as before
+	if (logic_data->uuid_cache == other->uuid)
+		return;
+	// Second triggering means it's a success!
+	logic_data->uuid_cache = 0; // Reset
+	TriggerEvent(actor);
 }
 
 ACTOR_REMOTE_INTERACT(logic_counter)
 {
-	LogicData* logic_data = (LogicData*)actor->data;
-	logic_data->trigger_count += 1;
-	if (logic_data->trigger_count >= logic_data->trigger_count)
-		TriggerEvent(actor);
+	// Counts up the number of triggers, then fires if it meets the minimum needed.
+	TriggerEvent(actor);
+}
+
+ACTOR_REMOTE_INTERACT(logic_setflag)
+{
+	if (!TriggerEvent(actor))
+		return;
+	// Set flags for the current scene, uses this actor's flag_group_selector and triggers_flags.
+	SceneFlagTrigger(actor);
+}
+
+ACTOR_REMOTE_INTERACT(logic_clearflag)
+{
+	if (!TriggerEvent(actor))
+		return;
+	// Clears flags for the current scene, uses this actor's flag_group_selector and triggers_flags.
+	SceneFlagClear(actor);
+}
+
+ACTOR_REMOTE_INTERACT(logic_toggleflag)
+{
+	if (!TriggerEvent(actor))
+		return;
+	// Toggles flags for the current scene, uses this actor's flag_group_selector and triggers_flags.
+	SceneFlagClear(actor);
 }
