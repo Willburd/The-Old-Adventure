@@ -43,6 +43,9 @@
 #define PROP_PREVNODE "prev_node"
 #define PROP_ALTNODE "alt_node"
 
+// Events
+#define PROP_PLATFORM_CAMERASPEED "camera_speed"
+
 // Platform
 #define PROP_PLATFORM_STARTNODE "start_node"
 #define PROP_PLATFORM_PATHSPEED "path_speed"
