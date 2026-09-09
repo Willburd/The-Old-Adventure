@@ -338,9 +338,6 @@
     <ClInclude Include="cJSON\cJSON_Utils.h">
       <Filter>Header Files\cjson</Filter>
     </ClInclude>
-    <ClInclude Include="json_properties.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Module\actor_textbox.h">
       <Filter>Header Files\module\actors</Filter>
     </ClInclude>
