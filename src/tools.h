@@ -24,8 +24,6 @@
 #define STRMATCH(x,y) (strcmp(x,y)==0)
 #define STRENDLINETERMINATE(x) x[strcspn(x, "\n")] = '\0'
 
-#define CHECK_JSON_BOOL(d, x) (cJSON_GetObjectItem(d, x) && cJSON_GetObjectItem(d, x)->valueint > 0)
-
 #define VEC3UP ((Vector3){0,1,0})
 #define VEC3DOWN ((Vector3){0,-1,0})
 #define VEC3FORWARD ((Vector3){0,0,-1})
@@ -61,6 +59,69 @@ void ApplyFriction(struct Actor* actor, float amount);
 void ApplyFlatFriction(struct Actor* actor, float amount);
 cJSON* ParseJsonFile(char* path);
 void DrawPivotTexture(Texture tex, Vector2 pos, Vector2 pivot, float angle, float scale, Color color);
+
+#define JSON_GET_BOOL(d, x) (cJSON_GetObjectItem(d, x) && cJSON_GetObjectItem(d, x)->valueint > 0)
+
+#define JSON_GET_STRING(var, data, tag, def) \
+var = def; \
+if (cJSON_IsString(cJSON_GetObjectItem(data, tag))) \
+{ \
+	char* str = cJSON_GetObjectItem(data, tag)->valuestring; \
+	CHAR_STR_COPY(var, str, NULL); \
+}
+
+#define JSON_GET_INT(var, data, tag, def) \
+var = def; \
+if (cJSON_IsNumber(cJSON_GetObjectItem(data, tag))) \
+{ \
+	var = (int)cJSON_GetObjectItem(data, tag)->valuedouble; \
+}
+
+#define JSON_GET_FLOAT(var, data, tag, def) \
+var = def; \
+if (cJSON_IsNumber(cJSON_GetObjectItem(data, tag))) \
+{ \
+	var = (float)cJSON_GetObjectItem(data, tag)->valuedouble; \
+}
+
+#define JSON_GET_VECTOR3(var, data, tag, def) \
+var = def; \
+if (cJSON_IsArray(cJSON_GetObjectItem(data, tag))) \
+{ \
+	cJSON* array = cJSON_GetObjectItem(data, tag); \
+	var = (Vector3){ \
+		(float)cJSON_GetArrayItem(array, 0)->valuedouble, \
+		(float)cJSON_GetArrayItem(array, 1)->valuedouble, \
+		(float)cJSON_GetArrayItem(array, 2)->valuedouble, \
+	}; \
+}
+
+#define JSON_GET_VECTOR4(var, data, tag, def) \
+var = def; \
+if (cJSON_IsArray(cJSON_GetObjectItem(data, tag))) \
+{ \
+	cJSON* array = cJSON_GetObjectItem(data, tag); \
+	var = (Vector4){ \
+		(float)cJSON_GetArrayItem(array, 0)->valuedouble, \
+		(float)cJSON_GetArrayItem(array, 1)->valuedouble, \
+		(float)cJSON_GetArrayItem(array, 2)->valuedouble, \
+		(float)cJSON_GetArrayItem(array, 3)->valuedouble, \
+	}; \
+}
+
+#define JSON_GET_COLOR(var, data, tag, def) \
+var = def; \
+if (cJSON_IsArray(cJSON_GetObjectItem(data, tag))) \
+{ \
+	cJSON* array = cJSON_GetObjectItem(data, tag); \
+	Vector4 vec = (Vector4){ \
+		(float)cJSON_GetArrayItem(array, 0)->valuedouble, \
+		(float)cJSON_GetArrayItem(array, 1)->valuedouble, \
+		(float)cJSON_GetArrayItem(array, 2)->valuedouble, \
+		(float)cJSON_GetArrayItem(array, 3)->valuedouble, \
+	}; \
+	var = Vector4ToColor(vec); \
+}
 
 #endif
 
