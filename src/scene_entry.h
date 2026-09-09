@@ -173,7 +173,7 @@ typedef struct {
 	uint64_t config_flags;	// Persistant settings assigned during scene creation or subroom entry
 	uint64_t temp_flags;	// Temp flags set by actors in the scene to preserve state until the scene is unloaded.
 	uint64_t perm_flags;	// Permanent flags set and loaded by the save file. So that state is preserved between scene reloads. 
-	uint64_t puzzle_flags;	// Temp flags set by actors in the scene. Resets on room change instead of scene unload like temp_flags.
+	uint64_t room_flags;	// Temp flags set by actors in the scene. Resets on room change instead of scene unload like temp_flags.
 	// Misc utility vars, used for giving scenes quickly usable variables without needing custom data, or a dedicated flag.
 	int utilityA1;
 	int utilityA2;
@@ -192,7 +192,7 @@ typedef struct {
 #define SCENEDATA_CLEAR(x) { \
 	SceneData* __dat = (SceneData*)scene->data; \
 	__dat->config_flags = 0;__dat->temp_flags = 0; \
-	__dat->perm_flags = 0;__dat->puzzle_flags = 0; \
+	__dat->perm_flags = 0;__dat->room_flags = 0; \
 	__dat->utilityA1 = 0;__dat->utilityA2 = 0; \
 	__dat->utilityA3 = 0;__dat->utilityA4 = 0; \
 	__dat->utilityB1 = 0.0f;__dat->utilityB2 = 0.0f; \

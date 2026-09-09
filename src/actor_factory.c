@@ -85,6 +85,18 @@ struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
 		CHAR_STR_COPY(new_actor->id_tag, idtag_data, NULL);
 	}
 
+	// Flag index
+	if (cJSON_IsNumber(cJSON_GetObjectItem(actor_data, PROP_TRIGGERFLAG)))
+	{
+		new_actor->triggers_flags = (int)cJSON_GetObjectItem(actor_data, PROP_TRIGGERFLAG)->valuedouble;
+	}
+
+	// Flag type
+	if (cJSON_IsNumber(cJSON_GetObjectItem(actor_data, PROP_FLAGGROUP)))
+	{
+		new_actor->flag_group_selector = (int)cJSON_GetObjectItem(actor_data, PROP_FLAGGROUP)->valuedouble;
+	}
+
 	return new_actor;
 }
 

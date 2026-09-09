@@ -301,8 +301,8 @@ void SceneFlagTrigger(struct Actor* actor)
 	case SCENE_FLAG_GROUP_PERM:
 		data->perm_flags |= actor->triggers_flags;
 		break;
-	case SCENE_FLAG_GROUP_PUZZLE:
-		data->puzzle_flags |= actor->triggers_flags;
+	case SCENE_FLAG_GROUP_ROOM:
+		data->room_flags |= actor->triggers_flags;
 		break;
 	}
 }
@@ -321,8 +321,8 @@ void SceneFlagClear(struct Actor* actor)
 	case SCENE_FLAG_GROUP_PERM:
 		data->perm_flags &= actor->triggers_flags;
 		break;
-	case SCENE_FLAG_GROUP_PUZZLE:
-		data->puzzle_flags &= actor->triggers_flags;
+	case SCENE_FLAG_GROUP_ROOM:
+		data->room_flags &= actor->triggers_flags;
 		break;
 	}
 }
@@ -341,8 +341,8 @@ void SceneFlagToggle(struct Actor* actor)
 	case SCENE_FLAG_GROUP_PERM:
 		data->perm_flags ^= actor->triggers_flags;
 		break;
-	case SCENE_FLAG_GROUP_PUZZLE:
-		data->puzzle_flags ^= actor->triggers_flags;
+	case SCENE_FLAG_GROUP_ROOM:
+		data->room_flags ^= actor->triggers_flags;
 		break;
 	}
 }

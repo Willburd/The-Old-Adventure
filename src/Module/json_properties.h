@@ -11,6 +11,8 @@
 #define PROP_RADIUS "radius"
 #define PROP_COLOR "color"
 #define PROP_INFLUENCE "influence"
+#define PROP_TRIGGERFLAG "trigger_flag"
+#define PROP_FLAGGROUP "flag_group"
 
 // TODO - Your json property defines here
 
