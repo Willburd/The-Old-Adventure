@@ -193,23 +193,13 @@ static void LoadRoomLayer(struct Actor* scene, char* layer_path)
 
 	// Get data config
 	SceneData* data = (SceneData*)scene->data;
-	data->config_flags |= CHECK_JSON_BOOL(json_data, "time_paused") ? SCENE_CONFIG_TIMEPAUSED : 0; // range: [0 - 1]
-	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_hot") ? SCENE_CONFIG_HOTROOM : 0; // range: [0 - 1]
-	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_cold") ? SCENE_CONFIG_COLDROOM : 0; // range: [0 - 1]
-	data->config_flags |= CHECK_JSON_BOOL(json_data, "is_raining") ? SCENE_CONFIG_ISRAINING : 0; // range: [0 - 1]
+	data->config_flags |= JSON_GET_BOOL(json_data, "time_paused") ? SCENE_CONFIG_TIMEPAUSED : 0; // range: [0 - 1]
+	data->config_flags |= JSON_GET_BOOL(json_data, "is_hot") ? SCENE_CONFIG_HOTROOM : 0; // range: [0 - 1]
+	data->config_flags |= JSON_GET_BOOL(json_data, "is_cold") ? SCENE_CONFIG_COLDROOM : 0; // range: [0 - 1]
+	data->config_flags |= JSON_GET_BOOL(json_data, "is_raining") ? SCENE_CONFIG_ISRAINING : 0; // range: [0 - 1]
 
-	// Set sky color. range: [0 - 1]
-	if (cJSON_IsArray(cJSON_GetObjectItem(json_data, "sky_color")))
-	{
-		cJSON* array = cJSON_GetObjectItem(json_data, "sky_color");
-		Vector4 solved_color = {
-			(float)cJSON_GetArrayItem(array, 0)->valuedouble,
-			(float)cJSON_GetArrayItem(array, 1)->valuedouble,
-			(float)cJSON_GetArrayItem(array, 2)->valuedouble,
-			(float)cJSON_GetArrayItem(array, 3)->valuedouble
-		};
-		clear_background_color = Vector4ToColor(solved_color);
-	}
+	// Set sky color. vec4 range: [0 - 1]
+	JSON_GET_COLOR(clear_background_color, json_data, "sky_color", WHITE);
 
 	// Create actors from actors array in json. range: [{Object array}]
 	cJSON* actor_array = cJSON_GetObjectItem(json_data, "actors");
