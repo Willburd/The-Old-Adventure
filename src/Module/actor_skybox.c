@@ -67,10 +67,7 @@ ACTOR_JSON_INIT(skybox)
 	fog_set(BLACK, FOG_DEFAULT_POWER, FOG_DEFAULT_RANGE);
 
 	// Set cave lighting
-	cJSON* cave_intensity_light = cJSON_GetObjectItem(file_data, PROP_SKYCAVE_LIGHT);
-	if (cave_intensity_light == NULL)
-		return;
-	cave_light = (float)cave_intensity_light->valuedouble;
+	JSON_GET_FLOAT(cave_light, file_data, PROP_SKYCAVE_LIGHT, 0.0f);
 }
 
 ACTOR_UPDATE(skybox)

@@ -49,11 +49,9 @@ ACTOR_JSON_INIT(roomswap)
 {
 	if (file_data == NULL)
 		return;
+
 	RoomSwapData* swap_data = actor->data;
-	if (cJSON_GetObjectItem(file_data, PROP_GOALROOM))
-	{
-		swap_data->goal_room = cJSON_GetObjectItem(file_data, PROP_GOALROOM)->valueint;
-	}
+	JSON_GET_INT(swap_data->goal_room, file_data, PROP_GOALROOM, 0);
 }
 
 ACTOR_POSTUPDATE(roomswap)

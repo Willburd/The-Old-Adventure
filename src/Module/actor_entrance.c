@@ -39,16 +39,8 @@ ACTOR_JSON_INIT(entrance)
 	if (file_data == NULL)
 		return;
 
-	Vector3 end_posi = Vector3Zero();
-	if (cJSON_IsArray(cJSON_GetObjectItem(file_data, PROP_ENDPOS)))
-	{
-		cJSON* pos_array = cJSON_GetObjectItem(file_data, PROP_ENDPOS);
-		end_posi = (Vector3){
-			(float)cJSON_GetArrayItem(pos_array, 0)->valuedouble,
-			(float)cJSON_GetArrayItem(pos_array, 1)->valuedouble,
-			(float)cJSON_GetArrayItem(pos_array, 2)->valuedouble,
-		};
-	}
+	Vector3 end_posi;
+	JSON_GET_VECTOR3(end_posi, file_data, PROP_ENDPOS, Vector3Zero());
 
 	actor_entrance_setup(actor, actor->position, end_posi);
 	EntranceData* entrance_data = actor->data;

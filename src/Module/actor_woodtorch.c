@@ -51,19 +51,10 @@ ACTOR_JSON_INIT(woodtorch)
 		return;
 
 	// Array4 color
-	if (cJSON_IsArray(cJSON_GetObjectItem(file_data, PROP_FIRECOLOR)))
-	{
-		cJSON* array = cJSON_GetObjectItem(file_data, PROP_FIRECOLOR);
-		actor->blend_color = (Vector4){
-			(float)cJSON_GetArrayItem(array, 0)->valuedouble,
-			(float)cJSON_GetArrayItem(array, 1)->valuedouble,
-			(float)cJSON_GetArrayItem(array, 2)->valuedouble,
-			(float)cJSON_GetArrayItem(array, 3)->valuedouble,
-		};
-	}
+	JSON_GET_VECTOR4(actor->blend_color, file_data, PROP_FIRECOLOR, Vector4Zero());
 
 	// Spawn child fire object
-	int burned_out = CHECK_JSON_BOOL(file_data, PROP_BURNEDOUT);
+	int burned_out = JSON_GET_BOOL(file_data, PROP_BURNEDOUT);
 	if(!burned_out)
 		ACTOR_FACTORY(NULL, act_fire, actor, Vector3RotateByQuaternion(Vector3Add(actor->position, Vector3Scale(VEC3UP, 3.0f)), actor->rotation), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
 }

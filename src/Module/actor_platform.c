@@ -57,18 +57,8 @@ void InitPlatformData(struct Actor* actor, float speed)
 void InitPlatformJson(struct Actor* actor, cJSON* file_data)
 {
 	PlatformData* platform_data = (PlatformData*)actor->data;
-	cJSON* get_str = cJSON_GetObjectItem(file_data, PROP_PLATFORM_STARTNODE);
-	if (cJSON_IsString(get_str))
-	{
-		char* str = get_str->valuestring;
-		CHAR_STR_COPY(platform_data->target_node, str, NULL);
-	}
-
-	cJSON* get_spd = cJSON_GetObjectItem(file_data, PROP_PLATFORM_PATHSPEED);
-	if (cJSON_IsNumber(get_spd))
-	{
-		platform_data->speed = (float)get_spd->valuedouble;
-	}
+	JSON_GET_STRING(platform_data->target_node, file_data, PROP_PLATFORM_STARTNODE, NULL);
+	JSON_GET_FLOAT(platform_data->speed, file_data, PROP_PLATFORM_PATHSPEED, 0.0f);
 }
 
 void HandlePlatformMove(struct Actor* actor)

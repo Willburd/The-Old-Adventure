@@ -41,7 +41,7 @@ ACTOR_JSON_INIT(trigger_exit)
 	TriggerExitData* exit_data = actor->data;
 	exit_data->dest_scene = SCENE_FROM_STRING(cJSON_GetObjectItem(file_data, PROP_TO_SCENE)->valuestring);
 	exit_data->dest_entrance = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, PROP_TO_ENTRANCE)->valuestring);
-	exit_data->radius = (float)cJSON_GetObjectItem(file_data, PROP_RADIUS)->valuedouble;
+	JSON_GET_FLOAT(exit_data->radius, file_data, PROP_RADIUS, 0.0f);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

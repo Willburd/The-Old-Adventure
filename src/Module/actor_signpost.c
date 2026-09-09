@@ -69,13 +69,8 @@ ACTOR_JSON_INIT(signpost)
 		return;
 
 	SignData* sign_data = actor->data;
-	sign_data->text_entry_id = TEXT_TEST_DEBUG;
-	if (cJSON_GetObjectItem(file_data, PROP_TEXT_ID))
-	{
-		char* text_id_data = cJSON_GetObjectItem(file_data, PROP_TEXT_ID)->valuestring;
-		CHAR_STR_COPY(sign_data->text_entry_id, text_id_data, NULL);
-		LoadTextData(sign_data->text_entry_id);
-	}
+	JSON_GET_STRING(sign_data->text_entry_id, file_data, PROP_TEXT_ID, TEXT_TEST_DEBUG);
+	LoadTextData(sign_data->text_entry_id);
 }
 
 ACTOR_CAN_INTERACT(signpost)

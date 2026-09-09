@@ -39,26 +39,9 @@ ACTOR_JSON_INIT(node)
 		return;
 
 	NodeData* node_data = (NodeData*)actor->data;
-	cJSON* get_str = cJSON_GetObjectItem(file_data, PROP_NEXTNODE);
-	if (cJSON_IsString(get_str))
-	{
-		char* str = get_str->valuestring;
-		CHAR_STR_COPY(node_data->next_node_tag, str, NULL);
-	}
-
-	get_str = cJSON_GetObjectItem(file_data, PROP_PREVNODE);
-	if (cJSON_IsString(get_str))
-	{
-		char* str = get_str->valuestring;
-		CHAR_STR_COPY(node_data->prev_node_tag, str, NULL);
-	}
-	
-	get_str = cJSON_GetObjectItem(file_data, PROP_ALTNODE);
-	if (cJSON_IsString(get_str))
-	{
-		char* str = get_str->valuestring;
-		CHAR_STR_COPY(node_data->alt_node_tag, str, NULL);
-	}
+	JSON_GET_STRING(node_data->next_node_tag, file_data, PROP_NEXTNODE, NULL);
+	JSON_GET_STRING(node_data->prev_node_tag, file_data, PROP_PREVNODE, NULL);
+	JSON_GET_STRING(node_data->alt_node_tag, file_data, PROP_ALTNODE, NULL);
 }
 
 ACTOR_CLEANUP(node)
