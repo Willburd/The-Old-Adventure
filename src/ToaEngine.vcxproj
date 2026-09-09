@@ -161,6 +161,7 @@
     <ClCompile Include="Module\actor_animationtest.c" />
     <ClCompile Include="Module\actor_crate.c" />
     <ClCompile Include="Module\actor_entrance.c" />
+    <ClCompile Include="Module\actor_event.c" />
     <ClCompile Include="Module\actor_fadein.c" />
     <ClCompile Include="Module\actor_fadeout.c" />
     <ClCompile Include="Module\actor_fire.c" />

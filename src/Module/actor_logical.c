@@ -56,9 +56,6 @@ ACTOR_CLEANUP(x) { \
 MAKE_LOGIC_ACTOR(logic_or)
 MAKE_LOGIC_ACTOR(logic_and)
 MAKE_LOGIC_ACTOR(logic_counter)
-MAKE_LOGIC_ACTOR(logic_setflag)
-MAKE_LOGIC_ACTOR(logic_clearflag)
-MAKE_LOGIC_ACTOR(logic_toggleflag)
 
 #undef MAKE_LOGIC_ACTOR
 
@@ -151,28 +148,4 @@ ACTOR_REMOTE_INTERACT(logic_counter)
 {
 	// Counts up the number of triggers, then fires if it meets the minimum needed.
 	TriggerEvent(actor);
-}
-
-ACTOR_REMOTE_INTERACT(logic_setflag)
-{
-	if (!TriggerEvent(actor))
-		return;
-	// Set flags for the current scene, uses this actor's flag_group_selector and triggers_flags.
-	SceneFlagTrigger(actor);
-}
-
-ACTOR_REMOTE_INTERACT(logic_clearflag)
-{
-	if (!TriggerEvent(actor))
-		return;
-	// Clears flags for the current scene, uses this actor's flag_group_selector and triggers_flags.
-	SceneFlagClear(actor);
-}
-
-ACTOR_REMOTE_INTERACT(logic_toggleflag)
-{
-	if (!TriggerEvent(actor))
-		return;
-	// Toggles flags for the current scene, uses this actor's flag_group_selector and triggers_flags.
-	SceneFlagClear(actor);
 }
