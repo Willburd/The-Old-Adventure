@@ -28,9 +28,9 @@
 
 #define ACTOR_HAS_NO_ROOM_INDEX -1
 
-#define SCENE_FLAG_GROUP_TEMP 0
-#define SCENE_FLAG_GROUP_PERM 1
-#define SCENE_FLAG_GROUP_PUZZLE 2
+#define SCENE_FLAG_GROUP_TEMP 0 // Flags stay set till scene unloads
+#define SCENE_FLAG_GROUP_PERM 1 // Flags saved to file
+#define SCENE_FLAG_GROUP_ROOM 2 // Flags stay set till room change
 
 struct Actor;
 struct Actor {

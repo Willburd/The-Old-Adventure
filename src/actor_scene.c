@@ -154,7 +154,7 @@ void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, i
 	}
 	// Clear puzzle flag
 	SceneData* scene_data = (SceneData*)scene->data;
-	scene_data->puzzle_flags = 0; // Clear puzzle flags on room change
+	scene_data->room_flags = 0; // Clear puzzle flags on room change
 	// Remove prior actors
 	if (ACTOR_HAS(scene, func_deactivate_room))
 		scene->func_deactivate_room(scene, scene->current_room_index);
