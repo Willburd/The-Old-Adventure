@@ -104,12 +104,23 @@ static int TriggerEvent(struct Actor* actor)
 		return FALSE;
 	logic_data->fired_count += 1;
 
-	// Find target actor
-	struct Actor* target = FINDACTOR_BYTAG(logic_data->target);
-	if (!ACTOR_EXISTS(target))
+	// If we have nothing to target, ASSUME WE WERE SUCCESSFUL!
+	if (logic_data->target == NULL)
+		return TRUE;
+
+	// Otherwise, find target actors, we can have multiple we trigger! They just all need the same id_tag.
+	const struct Actor* targets[64] = { NULL };
+	int found_count = FINDACTORGROUP_BYTAG(targets, 64, (const char* []) { logic_data->target });
+	if (!found_count)
 		return FALSE;
-	if (ACTOR_HAS(target, func_remote_interact))
-		target->func_remote_interact(target, actor);
+	for (int i = 0; i < found_count; i++)
+	{
+		struct Actor* target = targets[i];
+		if (target == NULL)
+			continue;
+		if (ACTOR_HAS(target, func_remote_interact))
+			target->func_remote_interact(target, actor);
+	}
 	return TRUE;
 }
 
