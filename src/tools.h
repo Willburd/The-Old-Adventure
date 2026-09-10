@@ -32,6 +32,7 @@
 #define VEC3LEFT ((Vector3){-1,0,0})
 #define VEC3DIRECTION(s,e) Vector3Normalize(Vector3Subtract((e), (s)))
 #define VEC2DIRECTION(s,e) Vector2Normalize(Vector2Subtract((e), (s)))
+#define VEC3MAGNITUDE(v) max(v.x, v.y, v.z)
 
 #define RELEASE(x) free(x);x = NULL;
 
