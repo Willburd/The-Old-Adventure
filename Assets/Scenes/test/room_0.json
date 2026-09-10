@@ -25,9 +25,23 @@
 	  },
 	  
 	  {
+		"type": "logic_roomstart",
+		"target": "toggling_torch"
+	  },
+	  {
+		"type": "logic_timer",
+		"id_tag": "toggling_torch",
+		"delay": 6,
+		"target": "toggling_torch"
+	  },
+	  {
 		"type": "woodtorch",
+		"id_tag": "toggling_torch",
 		"pos": [ 0, 0, 0]
 	  },
+	  
+	  
+	  
 	  {
 		"type": "crate",
 		"pos": [3.8, 0, -8.8]

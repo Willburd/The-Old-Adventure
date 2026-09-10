@@ -38,6 +38,10 @@ ACTOR_PRELOADASSETS(fire)
 
 ACTOR_LIGHTNODES(fire)
 {
+	float scl = VEC3MAGNITUDE(actor->scale);
+	if (scl < 0.001)
+		return;
+
 	// Sync with parent torch if we are a children of one.
 	struct Actor* parent = ACTOR_PARENT(actor);
 	if (parent && parent->actor_type == act_woodtorch)
@@ -45,13 +49,16 @@ ACTOR_LIGHTNODES(fire)
 
 	// Apply fire blend color
 	Color fire_col_blend = Vector4ToColor(Vector4Lerp(actor->blend_color, ColorToVector4(WHITE), 0.5f));
-	LIGHT_NODE_TORCH(actor->position.x, actor->position.y, actor->position.z, 15.0f, fire_col_blend);
+	LIGHT_NODE_TORCH(actor->position.x, actor->position.y, actor->position.z, 15.0f * scl, fire_col_blend);
 }
 
 ACTOR_TRANSPARENTDRAWWORLD(fire)
 {
 	if (OutOfRenderRange(actor))
 		return;
+	if (VEC3MAGNITUDE(actor->scale) < 0.001)
+		return;
+
 	Transform fire_transform = {
 		.translation = actor->position,
 		.rotation = QuaternionFlatLookAt( actor->position, cam_main.position, VEC3UP),
