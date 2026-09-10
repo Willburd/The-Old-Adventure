@@ -6,6 +6,7 @@
 #include "actor_factory.h"
 #include "game_update.h"
 #include "collision.h"
+#include "timer.h"
 #include "game_draw.h"
 #include "scene_entry.h"
 #include "globals.h"
@@ -33,6 +34,7 @@ void game_update()
 	ResetDebugRayCount();
 	ResetLightCount();
 	HandleLoadNextScene();
+	ProcessTimers();
 
 	////////////////////////////////////////////////////////////////////////
 	// Preupdate and state control

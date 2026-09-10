@@ -169,6 +169,7 @@
     <ClCompile Include="post_processing.c" />
     <ClCompile Include="return_codes.h" />
     <ClCompile Include="text_loading.c" />
+    <ClCompile Include="timer.c" />
     <ClCompile Include="tools.c" />
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +198,7 @@
     <ClInclude Include="post_processing.h" />
     <ClInclude Include="scene_entry.h" />
     <ClInclude Include="text_loading.h" />
+    <ClInclude Include="timer.h" />
     <ClInclude Include="tools.h" />
   </ItemGroup>
   <ItemGroup>
