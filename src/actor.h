@@ -173,10 +173,8 @@ struct Actor* FINDACTOR_BYID(uint64_t id);
 struct Actor* FINDACTOR_BYTAG(char* id_tag);
 // Get first actor of a specified type
 struct Actor* FINDACTOR_BYTYPE(int actor_type);
-// Find multiple actors by their uuids
-int FINDACTORGROUP_BYID(const struct Actor* found_group[], int max_count, const uint64_t find_uuids[]);
 // Find multiple actors by their id tags
-int FINDACTORGROUP_BYTAG(const struct Actor* found_group[], int max_count, const char* find_tags[]);
+int FINDACTORGROUP_BYTAG(const struct Actor* found_group[], int max_count, char* find_tag);
 // Find multiple actors of a specific type
 int FINDACTORGROUP_BYTYPE(const struct Actor* found_group[], int max_count, int actor_type);
 // Find actor nearest to a specified point, also allows filtering out a specified actor during the search
