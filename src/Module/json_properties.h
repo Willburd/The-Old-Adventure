@@ -43,6 +43,12 @@
 #define PROP_PREVNODE "prev_node"
 #define PROP_ALTNODE "alt_node"
 
+// Logic
+#define PROP_TARGETID "target"
+#define PROP_TRIGGERS_REQUIRED "triggers_required"
+#define PROP_FIRES_ONCE "fires_once"
+#define PROP_TIMER_DELAY "delay"
+
 // Events
 #define PROP_PLATFORM_CAMERASPEED "camera_speed"
 

@@ -62,9 +62,11 @@ typedef struct {
 } CameraMoveData;
 
 ACTOR_REMOTE_INTERACT(event_movecamera);
+ACTOR_JSON_INIT(event_movecamera);
 ACTOR_UPDATE(event_movecamera);
 ACTOR_INIT(event_movecamera) {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_TEXTBOX | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_IS_INVISIBLE;
+	ACTOR_REGISTER_JSON_INIT(event_movecamera);
 	ACTOR_REGISTER_REMOTE_INTERACT(event_movecamera);
 	ACTOR_REGISTER_UPDATE(event_movecamera);
 
@@ -74,6 +76,13 @@ ACTOR_INIT(event_movecamera) {
 	camera_data->speed = 1.0f;
 	camera_data->start_pos = Vector3Zero();
 	camera_data->start_rot = QuaternionIdentity();
+}
+ACTOR_JSON_INIT(event_movecamera)
+{
+	if (file_data == NULL) 
+		return;
+	CameraMoveData* camera_data = (CameraMoveData*)actor->data;
+	JSON_GET_FLOAT(camera_data->speed, file_data, PROP_PLATFORM_CAMERASPEED, 1.0f);
 }
 ACTOR_REMOTE_INTERACT(event_movecamera)
 {
