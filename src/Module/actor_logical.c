@@ -1,6 +1,7 @@
 #include "../tools.h"
 #include "../actor_factory.h"
 #include "json_properties.h"
+#include "../timer.h"
 
 // private header
 typedef struct {
@@ -16,7 +17,7 @@ typedef struct {
 	// UUID of the first actor to trigger this element
 	uint64_t uuid_cache;
 	// Tick where timer will fire
-	uint64_t timer_tick;
+	double timer_seconds;
 } LogicData;
 static void InitData(struct Actor* actor);
 static void JsonSetupData(struct Actor* actor, cJSON* file_data);
@@ -60,7 +61,8 @@ ACTOR_CLEANUP(x) { \
 MAKE_LOGIC_ACTOR(logic_or, ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE);
 MAKE_LOGIC_ACTOR(logic_and, ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE);
 MAKE_LOGIC_ACTOR(logic_counter, ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE);
-MAKE_LOGIC_ACTOR(logic_timer, ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TEXTBOX | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_IS_INVISIBLE);
+MAKE_LOGIC_ACTOR(logic_timer, ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE);
+MAKE_LOGIC_ACTOR(logic_roomstart, ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TEXTBOX | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_IS_INVISIBLE);
 
 #undef MAKE_LOGIC_ACTOR
 
@@ -78,7 +80,7 @@ static void InitData(struct Actor* actor)
 	logic_data->fire_once = 0;
 	logic_data->fired_count = 0;
 	logic_data->uuid_cache = 0;
-	logic_data->timer_tick = 0;
+	logic_data->timer_seconds = 0.0;
 }
 
 static void CleanupData(struct Actor* actor)
@@ -98,7 +100,8 @@ static void JsonSetupData(struct Actor* actor, cJSON* file_data)
 	JSON_GET_INT(logic_data->timer_tick, file_data, PROP_TIMER_DELAY, 0);
 }
 
-static int TriggerEvent(struct Actor* actor)
+// Handle trigger counter
+static int ProcessTrigger(struct Actor* actor)
 {
 	LogicData* logic_data = (LogicData*)actor->data;
 
@@ -106,20 +109,29 @@ static int TriggerEvent(struct Actor* actor)
 	logic_data->trigger_count += 1;
 	if (logic_data->trigger_count < logic_data->trigger_count_goal)
 		return FALSE;
+	// Check if we're still allowed to fire
+	if (logic_data->fire_once && logic_data->fired_count > 0)
+		return FALSE;
+	return TRUE;
+}
+
+static int TriggerSendSignal(struct Actor* actor)
+{
+	LogicData* logic_data = (LogicData*)actor->data;
 
 	// Forbid firing if we only fire once
 	if (logic_data->fire_once && logic_data->fired_count > 0)
 		return FALSE;
 	logic_data->fired_count += 1;
 
-	// If we have nothing to target, ASSUME WE WERE SUCCESSFUL!
+	// If we have nothing to target... Why were we placed?
 	if (logic_data->target == NULL)
-		return TRUE;
+		return FALSE;
 
 	// Otherwise, find target actors, we can have multiple we trigger! They just all need the same id_tag.
 	const struct Actor* targets[64] = { NULL };
 	int found_count = FINDACTORGROUP_BYTAG(targets, 64, (const char* []) { logic_data->target });
-	if (!found_count)
+	if (!found_count) // Nothing found, so we failed to trigger
 		return FALSE;
 	for (int i = 0; i < found_count; i++)
 	{
@@ -132,7 +144,15 @@ static int TriggerEvent(struct Actor* actor)
 	return TRUE;
 }
 
+static int TriggerEvent(struct Actor* actor)
+{
+	LogicData* logic_data = (LogicData*)actor->data;
+	if (!ProcessTrigger(actor))
+		return FALSE;
+	return TriggerSendSignal(actor);
+}
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR_REMOTE_INTERACT(logic_or)
 {
 	// Any input is relayed ahead to the target, allowing multiple inputs to one actor.
@@ -142,6 +162,7 @@ ACTOR_REMOTE_INTERACT(logic_or)
 ACTOR_UPDATE(logic_or) {}
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR_REMOTE_INTERACT(logic_and)
 {
 	// Requires two different trigger actors 
@@ -155,11 +176,13 @@ ACTOR_REMOTE_INTERACT(logic_and)
 		return;
 	// Second triggering means it's a success!
 	logic_data->uuid_cache = 0; // Reset
+
 	TriggerEvent(actor);
 }
 ACTOR_UPDATE(logic_and) {}
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR_REMOTE_INTERACT(logic_counter)
 {
 	// Counts up the number of triggers, then fires if it meets the minimum needed.
@@ -168,17 +191,21 @@ ACTOR_REMOTE_INTERACT(logic_counter)
 ACTOR_UPDATE(logic_counter) {}
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR_REMOTE_INTERACT(logic_timer)
 {
-
-}
-ACTOR_UPDATE(logic_timer) 
-{
 	LogicData* logic_data = (LogicData*)actor->data;
-	
-	if (logic_data->timer_tick == 0)
+	if (!ProcessTrigger(actor))
 		return;
+	TimerAdd(actor, logic_data->timer_seconds, TriggerSendSignal);
+}
+ACTOR_UPDATE(logic_timer) { }
 
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
+ACTOR_REMOTE_INTERACT(logic_roomstart) { }
+ACTOR_UPDATE(logic_roomstart)
+{
+	TriggerSendSignal(actor);
+	ACTOR_DESTROY(actor);
 }
