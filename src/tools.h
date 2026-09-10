@@ -84,6 +84,13 @@ if (cJSON_IsNumber(cJSON_GetObjectItem(data, tag))) \
 	var = (float)cJSON_GetObjectItem(data, tag)->valuedouble; \
 }
 
+#define JSON_GET_DOUBLE(var, data, tag, def) \
+var = def; \
+if (cJSON_IsNumber(cJSON_GetObjectItem(data, tag))) \
+{ \
+	var = cJSON_GetObjectItem(data, tag)->valuedouble; \
+}
+
 #define JSON_GET_VECTOR3(var, data, tag, def) \
 var = def; \
 if (cJSON_IsArray(cJSON_GetObjectItem(data, tag))) \
