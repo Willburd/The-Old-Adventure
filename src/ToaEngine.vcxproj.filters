@@ -264,6 +264,9 @@
     <ClCompile Include="Module\actor_event.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
+    <ClCompile Include="timer.c">
+      <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -370,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="Module\actor_platform.h">
       <Filter>Header Files\module\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>Header Files\engine\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
