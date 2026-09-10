@@ -10,18 +10,18 @@ typedef struct {
 
 #define MAX_TIMERS 256
 
-int highest_timer = 0;
+int highest_timer = -1;
 static TimerEvent timers[MAX_TIMERS] = { { .time = 0, .func_callback = NULL, .source_uuid = 0, .active = FALSE } };
 
 void ProcessTimers()
 {
-	int new_highest_timer = 0;
-	for (int i = 0; i < highest_timer; i++)
+	int new_highest_timer = -1;
+	for (int i = 0; i <= highest_timer; i++)
 	{
 		if (!timers[i].active)
 			continue;
 		new_highest_timer = i;
-		if (timers[i].time < tick_counter)
+		if (tick_counter < timers[i].time)
 			continue;
 		struct Actor* find_actor = FINDACTOR_BYID(timers[i].source_uuid);
 		if (find_actor != NULL)

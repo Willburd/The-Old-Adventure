@@ -46,42 +46,12 @@ struct Actor* FINDACTOR_BYTYPE(int actor_type)
 	return NULL;
 }
 
-int FINDACTORGROUP_BYID( const struct Actor* found_group[], int max_count, const uint64_t find_uuids[])
+int FINDACTORGROUP_BYTAG(const struct Actor* found_group[], int max_count, char* find_tag)
 {
-	if (find_uuids == NULL || found_group == NULL)
+	if (find_tag == NULL || found_group == NULL)
 		return 0;
 	// Fill the results with known values
-	for (int i = 0; i <= max_count; i++)
-	{
-		found_group[i] = NULL; 
-	}
-	// Search all entities till we find our targets
-	int collected_index = 0;
-	for (int i = 0; i <= current_actor_cap; i++)
-	{
-		struct Actor* find_actor = world_actors[i];
-		if (find_actor == NULL)
-			continue;
-		for (int t = 0; t <= max_count; t++)
-		{
-			uint64_t check_id = find_uuids[t];
-			if (find_actor->uuid != check_id)
-				continue;
-			found_group[collected_index++] = find_actor;
-			if (collected_index < max_count)
-				continue;
-			return collected_index;
-		}
-	}
-	return collected_index;
-}
-
-int FINDACTORGROUP_BYTAG(const struct Actor* found_group[], int max_count, const char* find_tags[])
-{
-	if (find_tags == NULL || found_group == NULL)
-		return 0;
-	// Fill the results with known values
-	for (int i = 0; i <= max_count; i++)
+	for (int i = 0; i < max_count; i++)
 	{
 		found_group[i] = NULL;
 	}
@@ -92,18 +62,14 @@ int FINDACTORGROUP_BYTAG(const struct Actor* found_group[], int max_count, const
 		struct Actor* find_actor = world_actors[i];
 		if (find_actor == NULL)
 			continue;
-		for (int t = 0; t <= max_count; t++)
-		{
-			char* check_tag = find_tags[t];
-			if (!ACTOR_HAS(find_actor, id_tag))
-				continue;
-			if (!STRMATCH(find_actor->id_tag, check_tag))
-				continue;
-			found_group[collected_index++] = find_actor;
-			if (collected_index < max_count)
-				continue;
-			return collected_index;
-		}
+		if (!ACTOR_HAS(find_actor, id_tag))
+			continue;
+		if (!STRMATCH(find_actor->id_tag, find_tag))
+			continue;
+		found_group[collected_index++] = find_actor;
+		if (collected_index < max_count)
+			continue;
+		return collected_index;
 	}
 	return collected_index;
 }
