@@ -25,16 +25,6 @@
 	  },
 	  
 	  {
-		"type": "logic_roomstart",
-		"target": "toggling_torch"
-	  },
-	  {
-		"type": "logic_timer",
-		"id_tag": "toggling_torch",
-		"delay": 6,
-		"target": "toggling_torch"
-	  },
-	  {
 		"type": "woodtorch",
 		"id_tag": "toggling_torch",
 		"pos": [ 0, 0, 0]
@@ -104,6 +94,7 @@
 		"id_tag": "path_A3B",
 		"next_node": "path_A4",
 		"prev_node": "path_A2",
+		"target": "toggling_torch",
 		"pos": [8, 12, 0]
 	  },
 	  
