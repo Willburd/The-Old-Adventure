@@ -117,12 +117,6 @@
     <ClCompile Include="animation.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
-    <ClCompile Include="actor_fadein.c">
-      <Filter>Source Files\engine\actors</Filter>
-    </ClCompile>
-    <ClCompile Include="actor_fadeout.c">
-      <Filter>Source Files\engine\actors</Filter>
-    </ClCompile>
     <ClCompile Include="text_loading.c">
       <Filter>Source Files\engine\localization</Filter>
     </ClCompile>
@@ -152,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="cJSON\cJSON_Utils.c">
       <Filter>Source Files\cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.c">
+      <Filter>Source Files\engine\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,9 +206,6 @@
     <ClInclude Include="models.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
-    <ClInclude Include="actor_fade.h">
-      <Filter>Header Files\engine\actors</Filter>
-    </ClInclude>
     <ClInclude Include="post_processing.h">
       <Filter>Header Files\engine\game</Filter>
     </ClInclude>
@@ -235,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="cJSON\cJSON_Utils.h">
       <Filter>Header Files\cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>Header Files\engine\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
