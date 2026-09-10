@@ -97,7 +97,7 @@ static void JsonSetupData(struct Actor* actor, cJSON* file_data)
 	JSON_GET_STRING(logic_data->target, file_data, PROP_TARGETID, NULL);
 	JSON_GET_INT(logic_data->trigger_count_goal, file_data, PROP_TRIGGERS_REQUIRED, 1);
 	JSON_GET_INT(logic_data->fire_once, file_data, PROP_FIRES_ONCE, 0);
-	JSON_GET_INT(logic_data->timer_tick, file_data, PROP_TIMER_DELAY, 0);
+	JSON_GET_DOUBLE(logic_data->timer_seconds, file_data, PROP_TIMER_DELAY, 0);
 }
 
 // Handle trigger counter
