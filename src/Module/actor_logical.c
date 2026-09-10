@@ -85,7 +85,6 @@ static void InitData(struct Actor* actor)
 
 static void CleanupData(struct Actor* actor)
 {
-	MALLOC_ACTOR_DATA(LogicData, actor->data);
 	LogicData* logic_data = (LogicData*)actor->data;
 	if (logic_data->target != NULL)
 		RELEASE(logic_data->target);
@@ -129,8 +128,8 @@ static int TriggerSendSignal(struct Actor* actor)
 		return FALSE;
 
 	// Otherwise, find target actors, we can have multiple we trigger! They just all need the same id_tag.
-	const struct Actor* targets[64] = { NULL };
-	int found_count = FINDACTORGROUP_BYTAG(targets, 64, (const char* []) { logic_data->target });
+	struct Actor* targets[64] = { NULL };
+	int found_count = FINDACTORGROUP_BYTAG(targets, 64, logic_data->target);
 	if (!found_count) // Nothing found, so we failed to trigger
 		return FALSE;
 	for (int i = 0; i < found_count; i++)

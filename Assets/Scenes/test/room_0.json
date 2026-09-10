@@ -48,6 +48,7 @@
 	  },
 	  {
 		"type": "platform",
+		"id_tag": "test_platform",
 		"pos": [-9, 4.5, -7.8]
 	  },
 	  
@@ -89,6 +90,17 @@
 		"next_node": "path_A4",
 		"prev_node": "path_A2",
 		"pos": [8, 12, 0]
+	  },
+	  
+	  {
+		"type": "logic_roomstart",
+		"target": "timer_A"
+	  },
+	  {
+		"type": "logic_timer",
+		"id_tag": "timer_A",
+		"delay": 5,
+		"target": "test_platform"
 	  }
 	]
 }

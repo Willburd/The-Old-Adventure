@@ -21,9 +21,12 @@ typedef struct
 	Vector3 last_node_pos;
 	Quaternion last_node_rot;
 	Vector3 start_pos;
+	int is_moving;
+	int is_reversed;
 } PlatformData;
 ACTOR_PRELOADASSETS(platform);
 ACTOR_JSON_INIT(platform);
+ACTOR_REMOTE_INTERACT(platform);
 ACTOR_PREUPDATE(platform);
 ACTOR_CLEANUP(platform);
 ACTOR_DRAWWORLD(platform);
@@ -38,6 +41,7 @@ ACTOR_INIT(platform)
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
 	ACTOR_REGISTER_PRELOADASSETS(platform);
 	ACTOR_REGISTER_JSON_INIT(platform);
+	ACTOR_REGISTER_REMOTE_INTERACT(platform);
 	ACTOR_REGISTER_PREUPDATE(platform);
 	ACTOR_REGISTER_CLEANUP(platform);
 	ACTOR_REGISTER_DRAWWORLD(platform);
@@ -52,6 +56,8 @@ void InitPlatformData(struct Actor* actor, float speed)
 	platform_data->last_node_pos = actor->position;
 	platform_data->last_node_rot = actor->rotation;
 	platform_data->start_pos = actor->position;
+	platform_data->is_moving = FALSE;
+	platform_data->is_reversed = FALSE;
 }
 
 void InitPlatformJson(struct Actor* actor, cJSON* file_data)
@@ -59,11 +65,14 @@ void InitPlatformJson(struct Actor* actor, cJSON* file_data)
 	PlatformData* platform_data = (PlatformData*)actor->data;
 	JSON_GET_STRING(platform_data->target_node, file_data, PROP_PLATFORM_STARTNODE, NULL);
 	JSON_GET_FLOAT(platform_data->speed, file_data, PROP_PLATFORM_PATHSPEED, 0.0f);
+	platform_data->is_moving = JSON_GET_BOOL(file_data, PROP_PLATFORM_STARTMOVING);
 }
 
 void HandlePlatformMove(struct Actor* actor)
 {
 	PlatformData* platform_data = (PlatformData*)actor->data;
+	if (!platform_data->is_moving)
+		return;
 	if (platform_data->speed == 0)
 		return;
 	if (platform_data->target_node == NULL)
@@ -101,16 +110,34 @@ void HandlePlatformMove(struct Actor* actor)
 	// Next node time! Snap!
 	RELEASE(platform_data->target_node); // Release before we find out if the next node exists
 	InitPlatformData(actor, platform_data->speed);
+
 	// Check if the next node exists
 	NodeData* target_data = target_goal->data;
 	if (target_data->next_node_tag == NULL)
 		return;
-	// Transfer node id
-	struct Actor* next_node = FINDACTOR_BYTAG(target_data->next_node_tag);
-	if (next_node == NULL)
-		return;
-	// Allocate the next goal now that we know it exists
-	CHAR_STR_COPY(platform_data->target_node, next_node->id_tag, NULL);
+
+	// Trigger node linked actions
+	if (target_data->arrival_triggers_tag != NULL)
+	{
+		struct Actor* trigger_actor = FINDACTOR_BYTAG(target_data->arrival_triggers_tag);
+		if (trigger_actor != NULL && ACTOR_HAS(trigger_actor, func_remote_interact))
+			trigger_actor->func_remote_interact(trigger_actor, actor);
+	}
+
+	// Set behavior for platform
+	if (target_data->node_action == NODEACTION_STOP)
+		platform_data->is_moving = FALSE;
+	if (target_data->node_action == NODEACTION_REVERSE)
+		platform_data->is_reversed = FALSE;
+	if (target_data->node_action == NODEACTION_NEXT)
+	{
+		// Transfer node id
+		struct Actor* next_node = FINDACTOR_BYTAG(!platform_data->is_reversed ? target_data->next_node_tag : target_data->prev_node_tag);
+		if (next_node == NULL)
+			return;
+		// Allocate the next goal now that we know it exists
+		CHAR_STR_COPY(platform_data->target_node, next_node->id_tag, NULL);
+	}
 }
 
 void ApplyPlatformRotation(struct Actor* actor, struct Actor* platform, int influence_rotation)
@@ -157,6 +184,12 @@ ACTOR_JSON_INIT(platform)
 	if (file_data == NULL)
 		return;
 	InitPlatformJson(actor, file_data);
+}
+
+ACTOR_REMOTE_INTERACT(platform)
+{
+	PlatformData* platform_data = (PlatformData*)actor->data;
+	platform_data->is_moving = !platform_data->is_moving;
 }
 
 ACTOR_PREUPDATE(platform)

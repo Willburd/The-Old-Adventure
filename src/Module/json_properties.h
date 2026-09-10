@@ -42,6 +42,7 @@
 #define PROP_NEXTNODE "next_node"
 #define PROP_PREVNODE "prev_node"
 #define PROP_ALTNODE "alt_node"
+#define PROP_NODEACTION "action"
 
 // Logic
 #define PROP_TARGETID "target"
@@ -55,5 +56,6 @@
 // Platform
 #define PROP_PLATFORM_STARTNODE "start_node"
 #define PROP_PLATFORM_PATHSPEED "path_speed"
+#define PROP_PLATFORM_STARTMOVING "starts_moving"
 
 #endif
