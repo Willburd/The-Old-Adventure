@@ -1,8 +1,8 @@
 #ifndef __ACTOR_LIBRARY_HEADER__
 #define __ACTOR_LIBRARY_HEADER__
 
-#include "actor.h"
-#include "tools.h"
+#include "../actor.h"
+#include "../tools.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Actor library. Contains all actor polymorphs and where their init function pointers are.
