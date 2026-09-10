@@ -47,7 +47,7 @@ ACTOR_INIT(platform)
 	ACTOR_REGISTER_DRAWWORLD(platform);
 }
 
-void InitPlatformData(struct Actor* actor, float speed)
+void InitPlatformData(struct Actor* actor, float speed, int is_moving, int is_reversed)
 {
 	PlatformData* platform_data = (PlatformData*)actor->data;
 	platform_data->target_node = NULL;
@@ -56,8 +56,8 @@ void InitPlatformData(struct Actor* actor, float speed)
 	platform_data->last_node_pos = actor->position;
 	platform_data->last_node_rot = actor->rotation;
 	platform_data->start_pos = actor->position;
-	platform_data->is_moving = FALSE;
-	platform_data->is_reversed = FALSE;
+	platform_data->is_moving = is_moving;
+	platform_data->is_reversed = is_reversed;
 }
 
 void InitPlatformJson(struct Actor* actor, cJSON* file_data)
@@ -109,7 +109,7 @@ void HandlePlatformMove(struct Actor* actor)
 
 	// Next node time! Snap!
 	RELEASE(platform_data->target_node); // Release before we find out if the next node exists
-	InitPlatformData(actor, platform_data->speed);
+	InitPlatformData(actor, platform_data->speed, platform_data->is_moving, platform_data->is_reversed);
 
 	// Check if the next node exists
 	NodeData* target_data = target_goal->data;
@@ -176,7 +176,7 @@ ACTOR_PRELOADASSETS(platform)
 	// Set data
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;
 	MALLOC_ACTOR_DATA(PlatformData, actor->data);
-	InitPlatformData(actor, 0.0f);
+	InitPlatformData(actor, 0.0f, FALSE, FALSE);
 }
 
 ACTOR_JSON_INIT(platform)

@@ -42,13 +42,13 @@
 	  },
 	  {
 		"type": "platform",
+		"id_tag": "test_platform",
 		"start_node": "path_A1",
 		"path_speed": 0.1,
 		"pos": [-5, 4.5, -7.8]
 	  },
 	  {
 		"type": "platform",
-		"id_tag": "test_platform",
 		"pos": [-9, 4.5, -7.8]
 	  },
 	  
@@ -81,6 +81,7 @@
 		"id_tag": "path_A4",
 		"next_node": "path_A1",
 		"prev_node": "path_A3",
+		"target": "path_A2",
 		"pos": [-5, 12, -7.8],
 		"rot": [ 0, 270, 0]
 	  },

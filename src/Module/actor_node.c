@@ -10,6 +10,7 @@
 // private header
 ACTOR_JSON_INIT(node);
 ACTOR_CLEANUP(node);
+ACTOR_REMOTE_INTERACT(node);
 ACTOR_POSTDRAWWORLD(node);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,6 +20,7 @@ ACTOR_POSTDRAWWORLD(node);
 ACTOR_INIT(node)
 {
 	ACTOR_REGISTER_JSON_INIT(node);
+	ACTOR_REGISTER_REMOTE_INTERACT(node);
 	ACTOR_REGISTER_CLEANUP(node);
 	ACTOR_REGISTER_POSTDRAWWORLD(node);
 
