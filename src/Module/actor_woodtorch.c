@@ -25,7 +25,6 @@ ACTOR_DRAWWORLD(woodtorch);
 ACTOR_INIT(woodtorch)
 {
 	actor->actor_flags = 0;
-	actor->blend_color = ColorToVector4(GOLD);
 	ACTOR_REGISTER_PRELOADASSETS(woodtorch);
 	ACTOR_REGISTER_JSON_INIT(woodtorch);
 	ACTOR_REGISTER_DRAWWORLD(woodtorch);
@@ -51,7 +50,7 @@ ACTOR_JSON_INIT(woodtorch)
 		return;
 
 	// Array4 color
-	JSON_GET_VECTOR4(actor->blend_color, file_data, PROP_FIRECOLOR, Vector4Zero());
+	JSON_GET_VECTOR4(actor->blend_color, file_data, PROP_FIRECOLOR, ColorToVector4(GOLD));
 
 	// Spawn child fire object
 	int burned_out = JSON_GET_BOOL(file_data, PROP_BURNEDOUT);

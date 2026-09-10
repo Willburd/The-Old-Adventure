@@ -11,7 +11,7 @@
 
 // private header
 ACTOR_JSON_INIT(trigger_exit);
-ACTOR_PREUPDATE(trigger_exit);
+ACTOR_UPDATE(trigger_exit);
 ACTOR_DRAWWORLD(trigger_exit);
 static void actor_exit_startleaving(struct Actor* exit, struct Actor* player);
 static void actor_exit_finishleaving(struct Actor* exit);
@@ -26,7 +26,7 @@ ACTOR_INIT(trigger_exit)
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE;
 	ACTOR_REGISTER_JSON_INIT(trigger_exit);
-	ACTOR_REGISTER_PREUPDATE(trigger_exit);
+	ACTOR_REGISTER_UPDATE(trigger_exit);
 	ACTOR_REGISTER_DRAWWORLD(trigger_exit);
 
 	// Set data
@@ -48,7 +48,7 @@ ACTOR_JSON_INIT(trigger_exit)
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ACTOR_PREUPDATE(trigger_exit)
+ACTOR_UPDATE(trigger_exit)
 {
 	TriggerExitData* exit_data = actor->data;
 	struct Actor* fade_actor = FINDACTOR_BYTYPE(act_fadeout);
