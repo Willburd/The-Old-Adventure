@@ -47,7 +47,7 @@
 	  {
 		"type": "platform",
 		"id_tag": "test_platform",
-		"start_node": "path_A1",
+		"start_node": "path_A2",
 		"path_speed": 0.1,
 		"pos": [-5, 4.5, -7.8]
 	  },
