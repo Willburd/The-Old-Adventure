@@ -61,7 +61,7 @@ void ApplyFlatFriction(struct Actor* actor, float amount);
 cJSON* ParseJsonFile(char* path);
 void DrawPivotTexture(Texture tex, Vector2 pos, Vector2 pivot, float angle, float scale, Color color);
 
-#define JSON_GET_BOOL(d, x) (cJSON_GetObjectItem(d, x) && cJSON_GetObjectItem(d, x)->valueint > 0)
+#define JSON_GET_BOOL(data, tag) (cJSON_IsNumber(cJSON_GetObjectItem(data, tag)) && cJSON_GetObjectItem(data, tag)->valueint > 0)
 
 #define JSON_GET_STRING(var, data, tag, def) \
 var = def; \
