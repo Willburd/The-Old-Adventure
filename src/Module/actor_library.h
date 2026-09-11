@@ -17,9 +17,39 @@ typedef enum
 	// Gameengine
 	act_scene,
 	act_camera,
-	// TODO - Your entities here
+	// Adventure
+	act_test,
+	act_animationtest,
+	act_entrance,
+	act_trigger_exit,
+	act_logic_or,
+	act_logic_and,
+	act_logic_counter,
+	act_logic_timer,
+	act_logic_roomstart,
+	act_event_setflag,
+	act_event_clearflag,
+	act_event_toggleflag,
+	act_fadein,
+	act_fadeout,
+	act_skybox,
+	act_textbox,
+	act_player,
+	act_pause_box,
+	act_minimap,
+	act_node,
+	act_mappoi,
+	act_signpost,
+	act_fire,
+	act_woodtorch,
+	act_tree,
+	act_hole,
+	act_crate,
+	act_smallrock,
+	act_roomswap,
+	act_occluder,
+	act_platform,
 	LAST_ACTOR
-
 } ActorTypes;
 
 // debugging
@@ -27,7 +57,38 @@ ACTOR_INIT(debug);
 // Gameengine
 ACTOR_INIT(scene);
 ACTOR_INIT(camera);
-// TODO - Your entities here
+// Adventure
+ACTOR_INIT(test);
+ACTOR_INIT(animationtest);
+ACTOR_INIT(entrance);
+ACTOR_INIT(trigger_exit);
+ACTOR_INIT(logic_or);
+ACTOR_INIT(logic_and);
+ACTOR_INIT(logic_counter);
+ACTOR_INIT(logic_timer);
+ACTOR_INIT(logic_roomstart);
+ACTOR_INIT(event_setflag);
+ACTOR_INIT(event_clearflag);
+ACTOR_INIT(event_toggleflag);
+ACTOR_INIT(fadein);
+ACTOR_INIT(fadeout);
+ACTOR_INIT(skybox);
+ACTOR_INIT(textbox);
+ACTOR_INIT(player);
+ACTOR_INIT(pause_box);
+ACTOR_INIT(minimap);
+ACTOR_INIT(node);
+ACTOR_INIT(mappoi);
+ACTOR_INIT(signpost);
+ACTOR_INIT(fire);
+ACTOR_INIT(woodtorch);
+ACTOR_INIT(tree);
+ACTOR_INIT(hole);
+ACTOR_INIT(crate);
+ACTOR_INIT(smallrock);
+ACTOR_INIT(roomswap);
+ACTOR_INIT(occluder);
+ACTOR_INIT(platform);
 
 #define ACTOR_STRING_CASE(str) if (STRMATCH(string_id, #str)) return act_## str
 inline ActorTypes ACTOR_FROM_STRING(char* string_id)
@@ -37,7 +98,38 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	// Gameengine
 	ACTOR_STRING_CASE(scene);
 	ACTOR_STRING_CASE(camera);
-	// TODO - Your entities here
+	// Adventure
+	ACTOR_STRING_CASE(test);
+	ACTOR_STRING_CASE(animationtest);
+	ACTOR_STRING_CASE(entrance);
+	ACTOR_STRING_CASE(trigger_exit);
+	ACTOR_STRING_CASE(logic_or);
+	ACTOR_STRING_CASE(logic_and);
+	ACTOR_STRING_CASE(logic_counter);
+	ACTOR_STRING_CASE(logic_timer);
+	ACTOR_STRING_CASE(logic_roomstart);
+	ACTOR_STRING_CASE(event_setflag);
+	ACTOR_STRING_CASE(event_clearflag);
+	ACTOR_STRING_CASE(event_toggleflag);
+	ACTOR_STRING_CASE(fadein);
+	ACTOR_STRING_CASE(fadeout);
+	ACTOR_STRING_CASE(skybox);
+	ACTOR_STRING_CASE(textbox);
+	ACTOR_STRING_CASE(player);
+	ACTOR_STRING_CASE(pause_box);
+	ACTOR_STRING_CASE(minimap);
+	ACTOR_STRING_CASE(node);
+	ACTOR_STRING_CASE(mappoi);
+	ACTOR_STRING_CASE(signpost);
+	ACTOR_STRING_CASE(fire);
+	ACTOR_STRING_CASE(woodtorch);
+	ACTOR_STRING_CASE(tree);
+	ACTOR_STRING_CASE(hole);
+	ACTOR_STRING_CASE(crate);
+	ACTOR_STRING_CASE(smallrock);
+	ACTOR_STRING_CASE(roomswap);
+	ACTOR_STRING_CASE(occluder);
+	ACTOR_STRING_CASE(platform);
 	return act_error;
 }
 #undef ACTOR_STRING_CASE
@@ -52,7 +144,38 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 		// Gameengine
 		MAKE_ACTOR_INIT(scene);
 		MAKE_ACTOR_INIT(camera);
-		// TODO - Your entities here
+		// Adventure
+		MAKE_ACTOR_INIT(test);
+		MAKE_ACTOR_INIT(animationtest);
+		MAKE_ACTOR_INIT(entrance);
+		MAKE_ACTOR_INIT(trigger_exit);
+		MAKE_ACTOR_INIT(logic_or);
+		MAKE_ACTOR_INIT(logic_and);
+		MAKE_ACTOR_INIT(logic_counter);
+		MAKE_ACTOR_INIT(logic_timer);
+		MAKE_ACTOR_INIT(logic_roomstart);
+		MAKE_ACTOR_INIT(event_setflag);
+		MAKE_ACTOR_INIT(event_clearflag);
+		MAKE_ACTOR_INIT(event_toggleflag);
+		MAKE_ACTOR_INIT(fadein);
+		MAKE_ACTOR_INIT(fadeout);
+		MAKE_ACTOR_INIT(skybox);
+		MAKE_ACTOR_INIT(textbox);
+		MAKE_ACTOR_INIT(player);
+		MAKE_ACTOR_INIT(pause_box);
+		MAKE_ACTOR_INIT(minimap);
+		MAKE_ACTOR_INIT(node);
+		MAKE_ACTOR_INIT(mappoi);
+		MAKE_ACTOR_INIT(signpost);
+		MAKE_ACTOR_INIT(fire);
+		MAKE_ACTOR_INIT(woodtorch);
+		MAKE_ACTOR_INIT(tree);
+		MAKE_ACTOR_INIT(hole);
+		MAKE_ACTOR_INIT(crate);
+		MAKE_ACTOR_INIT(smallrock);
+		MAKE_ACTOR_INIT(roomswap);
+		MAKE_ACTOR_INIT(occluder);
+		MAKE_ACTOR_INIT(platform);
 	}
 }
 #undef MAKE_ACTOR_INIT

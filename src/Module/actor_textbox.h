@@ -2,7 +2,7 @@
 #define __ACTOR_TEXTBOX_HEADER__
 
 #include "raylib.h"
-#include "actor.h"
+#include "../actor.h"
 
 #define TEXTBOX_DEFAULT_SIZE 16
 

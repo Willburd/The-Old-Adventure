@@ -1,0 +1,5 @@
+// Textures
+#ALBED /Effects/fire_scroll.png FILT_POINT WRAP_REPEAT
+
+// Shader
+#SHADR /unshaded.vert /fire.frag

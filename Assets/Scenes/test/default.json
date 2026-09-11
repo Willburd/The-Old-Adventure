@@ -1,0 +1,24 @@
+{
+   "time_paused": 1,
+   "is_hot": 0,
+   "is_cold": 0,
+   "is_raining": 0,
+   "sky_color": [ 0, 0, 0, 1 ],
+   "actors":[
+	  {
+		"type": "entrance",
+		"is_entrance": "debugentrance",
+		"pos": [-2.35, 0, 10],
+		"end_pos": [-2.35, 0, 4]
+	  },
+	  
+	  {
+		"type": "trigger_exit",
+		"pos": [-2.5,0,22],
+		"to_scene": "fieldtest",
+		"to_entrance": "caveA",
+		"radius": 10
+	  }
+	],
+	"lights":[]
+}
