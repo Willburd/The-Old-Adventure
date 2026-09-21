@@ -190,6 +190,7 @@
     <ClCompile Include="Module\player_state_grounded.c" />
     <ClCompile Include="Module\scene_cavetest.c" />
     <ClCompile Include="Module\scene_fieldtest.c" />
+    <ClCompile Include="Module\scene_lakeside_coast.c" />
     <ClCompile Include="Module\scene_test.c" />
     <ClCompile Include="Module\scene_title.c" />
     <ClCompile Include="Module\world_state.c" />

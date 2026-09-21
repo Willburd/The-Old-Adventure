@@ -267,6 +267,9 @@
     <ClCompile Include="timer.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
+    <ClCompile Include="Module\scene_lakeside_coast.c">
+      <Filter>Source Files\module\scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">

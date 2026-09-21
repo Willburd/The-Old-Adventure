@@ -1,0 +1,112 @@
+{
+   "time_paused": 0,
+   "is_hot": 0,
+   "is_cold": 0,
+   "is_raining": 0,
+   "actors":[
+	  {
+		"type": "skybox"
+	  },
+	  {
+		"type": "minimap",
+		"pos": [40, 0, 80],
+		"scl": [0.25, 0.25, 0.25]
+	  },
+	  
+	  {
+		"type": "entrance",
+		"is_entrance": "debugentrance",
+		"pos": [-18.7, 1.3, 5.28],
+		"end_pos": [-15.2, 0.9, 5.516]
+	  },
+	  
+	  {
+		"type": "mappoi",
+		"pos": [-120, 10, -135]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-66, 5, -164]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [5, 0, -150]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [20, 0, -76]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [24, 0, -40]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [14, 0, 0]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-9, 0, 15]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-12, 0, 0]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-29, 0, 7]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [10, 0, -33]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [10, 0, -42]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-4, 0, -56]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-24, 0, -78]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-44, 0, -84]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-62, 0, -113]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-77, 0, -123]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-93, 0, -135]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-99, 0, -149]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [16, 0, -120]
+	  },
+	  {
+		"type": "mappoi",
+		"pos": [-30, 0, -160]
+	  }
+   ],
+	"lights":[
+		{
+			"pos": [-80.0, 0.0, -14.0],
+			"radius": 62.0,
+			"color": [0,0,0],
+			"influence": 1.0
+		}
+	]
+}
