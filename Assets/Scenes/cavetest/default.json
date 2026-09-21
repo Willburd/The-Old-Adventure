@@ -25,7 +25,7 @@
 		"type": "entrance",
 		"is_entrance": "caveA",
 		"pos": [-5.12, -0.14, 0.24],
-		"end_pos": [5, 0.5, 0]
+		"end_pos": [-12.0, 0.1, 1.08]
 	  },
 	  
 	  {
