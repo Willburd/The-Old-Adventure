@@ -60,7 +60,10 @@ SCENE_PRELOADASSETS(lakeside_coast)
 	LoadAsset_Material(GRAVEL_MAT, FALSE);
 
 	// Set collision data
-	RegisterAllCollisionMeshes(scene, FIELD_MODEL, COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
+	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Grass", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Cliff", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Sand", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_ACTIVATE_ROOM(lakeside_coast)
