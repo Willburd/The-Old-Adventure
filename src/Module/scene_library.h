@@ -2,8 +2,8 @@
 #define __SCENE_LIBRARY_HEADER__
 
 #include <stdio.h>
-#include "actor.h"
-#include "tools.h"
+#include "../actor.h"
+#include "../tools.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Scene library. Contains all scene polymorphs and where their init function pointers are.
