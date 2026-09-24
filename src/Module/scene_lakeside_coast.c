@@ -21,8 +21,9 @@
 #define FIELD_MODEL ASSET_MODELS"/Scenes/lakeside_coast.glb"
 
 #define GRASS_MAT ASSET_MATERIALS"/Natural/grass_A.mat"
-#define STONE_MAT ASSET_MATERIALS"/Natural/stone_A.mat"
-#define GRAVEL_MAT ASSET_MATERIALS"/Natural/gravel_A.mat"
+#define STONE_MAT ASSET_MATERIALS"/Natural/stone_C.mat"
+#define SAND_MAT ASSET_MATERIALS"/Natural/sand_A.mat"
+#define GRASS_EDGE_MAT ASSET_MATERIALS"/Natural/grass_edge_A.mat"
 
 // private header
 SCENE_PRELOADASSETS(lakeside_coast);
@@ -57,13 +58,15 @@ SCENE_PRELOADASSETS(lakeside_coast)
 	// Load Materials
 	LoadAsset_Material(GRASS_MAT, FALSE);
 	LoadAsset_Material(STONE_MAT, FALSE);
-	LoadAsset_Material(GRAVEL_MAT, FALSE);
-
+	LoadAsset_Material(SAND_MAT, FALSE);
+	LoadAsset_Material(GRASS_EDGE_MAT, FALSE);
+	
 	// Set collision data
 	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Grass", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Cliff", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Sand", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Coast", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_ACTIVATE_ROOM(lakeside_coast)
@@ -82,8 +85,9 @@ SCENE_DRAWWORLD(lakeside_coast)
 
 	STANDARD_SHADER_MATERIAL(grass_mat, GRASS_MAT, scene);
 	STANDARD_SHADER_MATERIAL(stone_mat, STONE_MAT, scene);
-	STANDARD_SHADER_MATERIAL(gravel_mat, GRAVEL_MAT, scene);
-
+	STANDARD_SHADER_MATERIAL(gravel_mat, SAND_MAT, scene);
+	STANDARD_SHADER_MATERIAL(grass_edge_mat, GRASS_EDGE_MAT, scene);
+	
 	ToaDrawMesh(
 		model_asset,
 		GetMeshIndex(model_asset->mesh_data, "Shore-Grass"),
@@ -100,6 +104,12 @@ SCENE_DRAWWORLD(lakeside_coast)
 		model_asset,
 		GetMeshIndex(model_asset->mesh_data, "Shore-Sand"),
 		*gravel_mat,
+		GetMatrix(scene)
+	);
+	ToaDrawMesh(
+		model_asset,
+		GetMeshIndex(model_asset->mesh_data, "Shore-Coast"),
+		*grass_edge_mat,
 		GetMatrix(scene)
 	);
 }
