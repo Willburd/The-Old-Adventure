@@ -97,7 +97,10 @@ Material LoadMaterial(Asset* asset, char* path, int is_core_asset)
 			
 			// Creature texture and link it to the material
 			ADVANCETOKEN(tag_data);
-			Texture2D* tex = LoadAsset_Texture(TextFormat("%s%s", ASSET_TEXTURES, tag_data), is_core_asset, path)->tex;
+			Asset* loaded_tex_asset = LoadAsset_Texture(TextFormat("%s%s", ASSET_TEXTURES, tag_data), is_core_asset, path);
+			if (loaded_tex_asset == NULL)
+				loaded_tex_asset = AssetGetPackage(ASSET_TEXTURES"/Engine/no_texture.png");
+			Texture2D* tex = loaded_tex_asset->tex;
 			MaterialMapSet(&mat, map_type, 1.0f, WHITE, tex);
 			MaterialFlagInit(&mat);
 
