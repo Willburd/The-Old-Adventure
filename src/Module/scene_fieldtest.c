@@ -21,7 +21,7 @@
 #define FIELD_MODEL ASSET_MODELS"/Scenes/test_field.glb"
 static const char* loaded_materials[] = {
 	ASSET_MATERIALS"/Natural/grass_A.mat",			// room 0: Grass
-	ASSET_MATERIALS"/Objects/wood_door_a.mat",		// room 0: Misc Structure
+	ASSET_MATERIALS"/Objects/door_wood_A.mat",		// room 0: Misc Structure
 	ASSET_MATERIALS"/Natural/stone_B.mat",			// room 0: Stone Walls
 	ASSET_MATERIALS"/Construction/railway_A.mat"	// room 0: Railway
 };

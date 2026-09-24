@@ -6,7 +6,7 @@
 // Assets
 #define CRATE_MODEL ASSET_MODELS"/Objects/crate.glb"
 static const char* loaded_materials[] = {
-	ASSET_MATERIALS"/Objects/wood_crate_a.mat" // Crate
+	ASSET_MATERIALS"/Objects/crate_wood_A.mat" // Crate
 };
 
 // private header

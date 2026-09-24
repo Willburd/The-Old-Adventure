@@ -9,7 +9,7 @@
 // Assets
 #define WOODTORCH_MODEL ASSET_MODELS"/Objects/wood_torch.glb"
 static const char* loaded_materials[] = {
-	ASSET_MATERIALS"/Objects/wood_door_a.mat" // Torch base
+	ASSET_MATERIALS"/Objects/torch_wood_A.mat" // Torch base
 };
 
 // private header

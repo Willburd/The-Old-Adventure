@@ -13,7 +13,7 @@
 #define CAVE_MODEL ASSET_MODELS"/Scenes/test_cave.glb"
 static const char* loaded_materials[] = {
 	ASSET_MATERIALS"/Construction/rope_A.mat",		// room 0: Bridge-rope
-	ASSET_MATERIALS"/Objects/wood_door_A.mat",		// room 0: wooden poles
+	ASSET_MATERIALS"/Objects/door_wood_A.mat",		// room 0: wooden poles
 	ASSET_MATERIALS"/Natural/stone_B.mat",			// room 0: Stone Walls
 	ASSET_MATERIALS"/Construction/bridge_A.mat",	// room 0: Bridge-wood
 };
