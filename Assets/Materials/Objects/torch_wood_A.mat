@@ -1,5 +1,6 @@
 // Textures
-#ALBED /Objects/door_a.png FILT_BI WRAP_REPEAT BOTH_SIDES
+#ALBED /Objects/barrel_A.png FILT_BI WRAP_REPEAT
+// TEMP ^
 
 // Shader
 #SHADR /standard.vert /standard.frag
