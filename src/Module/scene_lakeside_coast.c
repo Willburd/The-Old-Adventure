@@ -24,6 +24,9 @@
 #define STONE_MAT ASSET_MATERIALS"/Natural/stone_C.mat"
 #define SAND_MAT ASSET_MATERIALS"/Natural/sand_A.mat"
 #define GRASS_EDGE_MAT ASSET_MATERIALS"/Natural/grass_edge_A.mat"
+#define PATH_MAT ASSET_MATERIALS"/Natural/path_A.mat"
+#define DISTANTTREE_MAT ASSET_MATERIALS"/Trees/distant_A.mat"
+#define GRASSBORDER_MAT ASSET_MATERIALS"/Natural/grass_border_A.mat"
 
 // private header
 SCENE_PRELOADASSETS(lakeside_coast);
@@ -60,7 +63,10 @@ SCENE_PRELOADASSETS(lakeside_coast)
 	LoadAsset_Material(STONE_MAT, FALSE);
 	LoadAsset_Material(SAND_MAT, FALSE);
 	LoadAsset_Material(GRASS_EDGE_MAT, FALSE);
-	
+	LoadAsset_Material(PATH_MAT, FALSE);
+	LoadAsset_Material(DISTANTTREE_MAT, FALSE);
+	LoadAsset_Material(GRASSBORDER_MAT, FALSE);
+
 	// Set collision data
 	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Grass", COL_LAYER_WORLD | COL_LAYER_CAMERA);
@@ -87,7 +93,10 @@ SCENE_DRAWWORLD(lakeside_coast)
 	STANDARD_SHADER_MATERIAL(stone_mat, STONE_MAT, scene);
 	STANDARD_SHADER_MATERIAL(gravel_mat, SAND_MAT, scene);
 	STANDARD_SHADER_MATERIAL(grass_edge_mat, GRASS_EDGE_MAT, scene);
-	
+	STANDARD_SHADER_MATERIAL(path_mat, PATH_MAT, scene);
+	STANDARD_SHADER_MATERIAL(distanttree_mat, DISTANTTREE_MAT, scene);
+	STANDARD_SHADER_MATERIAL(grass_border_mat, GRASSBORDER_MAT, scene);
+
 	ToaDrawMesh(
 		model_asset,
 		GetMeshIndex(model_asset->mesh_data, "Shore-Grass"),
@@ -112,4 +121,24 @@ SCENE_DRAWWORLD(lakeside_coast)
 		*grass_edge_mat,
 		GetMatrix(scene)
 	);
+	ToaDrawMesh(
+		model_asset,
+		GetMeshIndex(model_asset->mesh_data, "Shore-Path"),
+		*path_mat,
+		GetMatrix(scene)
+	);
+	ToaDrawMesh(
+		model_asset,
+		GetMeshIndex(model_asset->mesh_data, "Shore-DistantTrees"),
+		*distanttree_mat,
+		GetMatrix(scene)
+	);
+	ToaDrawMesh(
+		model_asset,
+		GetMeshIndex(model_asset->mesh_data, "Shore-GrassBorder"),
+		*grass_border_mat,
+		GetMatrix(scene)
+	);
+
+	
 }
