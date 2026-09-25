@@ -492,7 +492,7 @@ void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix m
 {
 	// Backface culling
 	int show_backface = MaterialFlagGet(&material, MATFLAG_BOTH_FACES);
-	if(show_backface)
+	if (show_backface)
 		rlDisableBackfaceCulling();
 	// Draw
 	DrawMesh(
@@ -519,13 +519,7 @@ void DrawAllModelMeshes(struct Actor* actor, char* model_path, char* material_pa
 		char* mat_path = material_paths[index++];
 		if (mat_path == NULL) // Skip
 			continue;
-		STANDARD_SHADER_MATERIAL(current_mat, mat_path, actor);
-		ToaDrawMesh(
-			model_asset,
-			GetMeshIndex(model_asset->mesh_data, search_mesh->mesh_name),
-			*current_mat,
-			GetMatrix(actor)
-		);
+		STANDARD_SHADER_DRAW(actor, model_asset, mat_path, search_mesh->mesh_name);
 	}
 }
 
