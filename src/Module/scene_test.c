@@ -13,10 +13,7 @@
 
 // Assets
 #define TESTROOM_MODEL ASSET_MODELS"/Scenes/test_room.glb"
-static const char* loaded_materials[] = {
-	NULL,									// Room 0: reference cube
-	ASSET_MATERIALS"/Natural/stone_B.mat"	// Room 0: Walls
-};
+#define STONE_MAT ASSET_MATERIALS"/Natural/stone_B.mat"
 
 // private header
 SCENE_PRELOADASSETS(test);
@@ -43,12 +40,14 @@ SCENE_INIT(test)
 SCENE_PRELOADASSETS(test)
 {
 	// Load model
-	Asset* mdl_asset = LoadAsset_Model(TESTROOM_MODEL, FALSE);
-	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
+	Asset* model_asset = LoadAsset_Model(TESTROOM_MODEL, FALSE);
+
+	// Load Materials
+	LoadAsset_Material(STONE_MAT, FALSE);
 
 	// Set collision data
-	RegisterAllCollisionMeshes(scene, TESTROOM_MODEL, COL_LAYER_WORLD | COL_LAYER_CAMERA);
-	RESIGN_COLLISION_MESH(scene, mdl_asset, "ref_cube-Material.001");
+	REGISTER_COLLISION_MESH(scene, model_asset, "test_room-Main", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "side_room-Main", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_ACTIVATE_ROOM(test)
@@ -59,30 +58,14 @@ SCENE_ACTIVATE_ROOM(test)
 SCENE_DRAWWORLD(test)
 {
 	Asset* model_asset = AssetGetPackage(TESTROOM_MODEL);
-	STANDARD_SHADER_MATERIAL(stone_mat, loaded_materials[1], scene);
-
 	switch (scene->current_room_index)
 	{
 		case 0:
-		{
-			ToaDrawMesh(
-				model_asset,
-				GetMeshIndex(model_asset->mesh_data, "test_room-Main"),
-				*stone_mat,
-				GetMatrix(scene)
-			);
-		}
-		break;
+			STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "test_room-Main");
+			break;
 
 		case 1:
-		{
-			ToaDrawMesh(
-				model_asset,
-				GetMeshIndex(model_asset->mesh_data, "side_room-Main"),
-				*stone_mat,
-				GetMatrix(scene)
-			);
-		}
-		break;
+			STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "side_room-Main");
+			break;
 	}
 }

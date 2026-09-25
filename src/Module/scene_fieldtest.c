@@ -19,12 +19,11 @@
 
 // Assets
 #define FIELD_MODEL ASSET_MODELS"/Scenes/test_field.glb"
-static const char* loaded_materials[] = {
-	ASSET_MATERIALS"/Natural/grass_A.mat",			// room 0: Grass
-	ASSET_MATERIALS"/Objects/door_wood_A.mat",		// room 0: Misc Structure
-	ASSET_MATERIALS"/Natural/stone_B.mat",			// room 0: Stone Walls
-	ASSET_MATERIALS"/Construction/railway_A.mat"	// room 0: Railway
-};
+
+#define GRASS_MAT ASSET_MATERIALS"/Natural/grass_A.mat"
+#define WOOD_MAT ASSET_MATERIALS"/Objects/door_wood_A.mat"
+#define STONE_MAT ASSET_MATERIALS"/Natural/stone_B.mat"
+#define RAILWAY_MAT ASSET_MATERIALS"/Construction/railway_A.mat"
 
 // private header
 SCENE_PRELOADASSETS(fieldtest);
@@ -54,11 +53,19 @@ SCENE_INIT(fieldtest)
 SCENE_PRELOADASSETS(fieldtest)
 {
 	// Load model
-	LoadAsset_Model(FIELD_MODEL, FALSE);
-	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
+	Asset* model_asset = LoadAsset_Model(FIELD_MODEL, FALSE);
+
+	// Load Materials
+	LoadAsset_Material(GRASS_MAT, FALSE);
+	LoadAsset_Material(WOOD_MAT, FALSE);
+	LoadAsset_Material(STONE_MAT, FALSE);
+	LoadAsset_Material(RAILWAY_MAT, FALSE);
 
 	// Set collision data
-	RegisterAllCollisionMeshes(scene, FIELD_MODEL, COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "test_field-Grass", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "test_field-Bridge", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "test_field-Rockwalls", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "test_field-Railway", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_ACTIVATE_ROOM(fieldtest)
@@ -77,5 +84,9 @@ SCENE_PREPARE_ACTORS(fieldtest)
 
 SCENE_DRAWWORLD(fieldtest)
 {
-	DrawAllModelMeshes(scene, FIELD_MODEL, loaded_materials);
+	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
+	STANDARD_SHADER_DRAW(scene, model_asset, GRASS_MAT, "test_field-Grass");
+	STANDARD_SHADER_DRAW(scene, model_asset, WOOD_MAT, "test_field-Bridge");
+	STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "test_field-Rockwalls");
+	STANDARD_SHADER_DRAW(scene, model_asset, RAILWAY_MAT, "test_field-Railway");
 }

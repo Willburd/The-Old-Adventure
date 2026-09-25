@@ -56,7 +56,7 @@ SCENE_INIT(lakeside_coast)
 SCENE_PRELOADASSETS(lakeside_coast)
 {
 	// Load model
-	LoadAsset_Model(FIELD_MODEL, FALSE);
+	Asset* model_asset = LoadAsset_Model(FIELD_MODEL, FALSE);
 	
 	// Load Materials
 	LoadAsset_Material(GRASS_MAT, FALSE);
@@ -68,7 +68,6 @@ SCENE_PRELOADASSETS(lakeside_coast)
 	LoadAsset_Material(GRASSBORDER_MAT, FALSE);
 
 	// Set collision data
-	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Grass", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Cliff", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Sand", COL_LAYER_WORLD | COL_LAYER_CAMERA);
@@ -88,57 +87,11 @@ SCENE_PREPARE_ACTORS(lakeside_coast)
 SCENE_DRAWWORLD(lakeside_coast)
 {
 	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
-
-	STANDARD_SHADER_MATERIAL(grass_mat, GRASS_MAT, scene);
-	STANDARD_SHADER_MATERIAL(stone_mat, STONE_MAT, scene);
-	STANDARD_SHADER_MATERIAL(gravel_mat, SAND_MAT, scene);
-	STANDARD_SHADER_MATERIAL(grass_edge_mat, GRASS_EDGE_MAT, scene);
-	STANDARD_SHADER_MATERIAL(path_mat, PATH_MAT, scene);
-	STANDARD_SHADER_MATERIAL(distanttree_mat, DISTANTTREE_MAT, scene);
-	STANDARD_SHADER_MATERIAL(grass_border_mat, GRASSBORDER_MAT, scene);
-
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "Shore-Grass"),
-		*grass_mat,
-		GetMatrix(scene)
-	);
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "Shore-Cliff"),
-		*stone_mat,
-		GetMatrix(scene)
-	);
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "Shore-Sand"),
-		*gravel_mat,
-		GetMatrix(scene)
-	);
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "Shore-Coast"),
-		*grass_edge_mat,
-		GetMatrix(scene)
-	);
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "Shore-Path"),
-		*path_mat,
-		GetMatrix(scene)
-	);
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "Shore-DistantTrees"),
-		*distanttree_mat,
-		GetMatrix(scene)
-	);
-	ToaDrawMesh(
-		model_asset,
-		GetMeshIndex(model_asset->mesh_data, "Shore-GrassBorder"),
-		*grass_border_mat,
-		GetMatrix(scene)
-	);
-
-	
+	STANDARD_SHADER_DRAW(scene, model_asset, GRASS_MAT, "Shore-Grass");
+	STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "Shore-Cliff");
+	STANDARD_SHADER_DRAW(scene, model_asset, SAND_MAT, "Shore-Sand");
+	STANDARD_SHADER_DRAW(scene, model_asset, GRASS_EDGE_MAT, "Shore-Coast");
+	STANDARD_SHADER_DRAW(scene, model_asset, PATH_MAT, "Shore-Path");
+	STANDARD_SHADER_DRAW(scene, model_asset, DISTANTTREE_MAT, "Shore-DistantTrees");
+	STANDARD_SHADER_DRAW(scene, model_asset, GRASSBORDER_MAT, "Shore-GrassBorder");
 }
