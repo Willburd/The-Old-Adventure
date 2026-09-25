@@ -16,6 +16,16 @@ int draw_collider_info;
 #define FOG_DEFAULT_POWER 7.0f
 
 #define STANDARD_SHADER_MATERIAL(name, material_path, act) Material* name = AssetGet_Material(material_path);ShaderUpdateDefaultUniforms(name->shader, act);ShaderUpdateFogUniforms(name->shader);ShaderUpdateLightUniforms(name->shader);
+#define STANDARD_SHADER_DRAW(_actor, _model_asset, _mat_path, _mesh_id) \
+{ \
+	STANDARD_SHADER_MATERIAL(_mat, _mat_path, _actor); \
+	ToaDrawMesh( \
+		_model_asset, \
+		GetMeshIndex(_model_asset->mesh_data, _mesh_id), \
+		*_mat, \
+		GetMatrix(_actor) \
+	); \
+};
 
 #define RENDER_LAYER_SIZE 4096
 
