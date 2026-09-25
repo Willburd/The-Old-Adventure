@@ -26,7 +26,7 @@ void ProcessTimers()
 		struct Actor* find_actor = FINDACTOR_BYID(timers[i].source_uuid);
 		if (find_actor != NULL)
 			timers[i].func_callback(find_actor);
-		timers[i].active = FALSE;
+		TimerClear(i);
 	}
 	highest_timer = new_highest_timer;
 }
@@ -57,4 +57,17 @@ int TimerAdd(struct Actor* source, double seconds, void(*func_callback)(struct A
 void TimerClear(int timer_index)
 {
 	timers[timer_index].active = FALSE;
+}
+
+void TransitionClearTimers()
+{
+	for (int i = 0; i <= highest_timer; i++)
+	{
+		if (!timers[i].active)
+			continue;
+		struct Actor* find_actor = FINDACTOR_BYID(timers[i].source_uuid);
+		if (find_actor != NULL) // Still exists despite scene transition
+			continue;
+		TimerClear(i);
+	}
 }
