@@ -46,6 +46,10 @@ ACTOR_DRAWWORLD(water_volume)
 {
 	Asset* model_asset = AssetGetPackage(WATER_MODEL);
 	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "Surface");
+
+	if (!draw_debug_info)
+		return;
+	DrawCubeWires(Vector3Subtract(actor->position, Vector3Scale(actor->scale, -0.5f)), actor->scale.x, actor->scale.y, actor->scale.z, BLUE);
 }
 
 ACTOR_CLEANUP(water_volume)
@@ -93,12 +97,7 @@ struct Actor* PointInWaterVolume(Vector3 point)
 			continue;
 
 		struct Actor* water = all_water_volumes[i];
-		if (point.y < water->position.y)
-			return NULL;
-		if (point.y >= (water->position.y + water->scale.y))
-			return NULL;
-		Rectangle xz_rect = (Rectangle){ -water->position.x, -water->position.z, water->scale.x, water->scale.z };
-		if (!CheckCollisionPointRec((Vector2) { point.x, point.z }, xz_rect))
+		if (!PointInCube(point, water->position, water->scale))
 			return NULL;
 		return water;
 	}
