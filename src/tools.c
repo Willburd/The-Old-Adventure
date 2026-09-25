@@ -138,3 +138,15 @@ void DrawPivotTexture(Texture tex, Vector2 pos, Vector2 pivot, float angle, floa
         pos.y - ((sin(angle) * pivot.x) + (cos(angle) * pivot.y))
     }, angle * RAD2DEG, scale, color);
 }
+
+int PointInCube(Vector3 point, Vector3 cube_start, Vector3 cube_size)
+{
+    if (point.y < cube_start.y)
+        return FALSE;
+    if (point.y >= (cube_start.y + cube_size.y))
+        return FALSE;
+    Rectangle xz_rect = (Rectangle){ cube_start.x, cube_start.z, cube_size.x, cube_size.z };
+    if (!CheckCollisionPointRec((Vector2) { point.x, point.z }, xz_rect))
+        return FALSE;
+    return TRUE;
+}
