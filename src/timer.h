@@ -9,5 +9,7 @@ void ProcessTimers();
 int TimerAdd(struct Actor* source, double time, void(*func_callback)(struct Actor* actor));
 // Stops a timer specified by it's timer_index.
 void TimerClear(int timer_index);
+// Cleans up timers on scene transition
+void TransitionClearTimers();
 
 #endif

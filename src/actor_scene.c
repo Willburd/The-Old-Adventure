@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "assets.h"
 #include "tools.h"
+#include "timer.h"
 #include "light_tools.h"
 #include "Module/json_properties.h"
 #include "game_draw.h"
@@ -131,6 +132,7 @@ void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, i
 	if (ACTOR_HAS(scene, func_deactivate_room))
 		scene->func_deactivate_room(scene, scene->current_room_index);
 	ACTOR_DESTROY_IN_ROOM(current_scene->current_room_index);
+	TransitionClearTimers();
 	// Prepare to enter the new room. Will happen next update, unless this was called with instant = TRUE.
 	next_room = new_room_index;
 	printf(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n");
