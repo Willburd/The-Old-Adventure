@@ -270,6 +270,9 @@
     <ClCompile Include="Module\scene_lakeside_coast.c">
       <Filter>Source Files\module\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Module\actor_water_volume.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -379,6 +382,9 @@
     </ClInclude>
     <ClInclude Include="timer.h">
       <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\actor_water_volume.h">
+      <Filter>Header Files\module\actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
