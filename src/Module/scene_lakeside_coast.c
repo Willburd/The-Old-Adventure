@@ -29,6 +29,7 @@
 #define PATH_MAT ASSET_MATERIALS"/Natural/path_A.mat"
 #define DISTANTTREE_MAT ASSET_MATERIALS"/Trees/distant_A.mat"
 #define GRASSBORDER_MAT ASSET_MATERIALS"/Natural/grass_border_A.mat"
+#define TREEBARK_MAT ASSET_MATERIALS"/Trees/bark_A.mat"
 
 // private header
 SCENE_PRELOADASSETS(lakeside_coast);
@@ -70,6 +71,7 @@ SCENE_PRELOADASSETS(lakeside_coast)
 	LoadAsset_Material(PATH_MAT, FALSE);
 	LoadAsset_Material(DISTANTTREE_MAT, FALSE);
 	LoadAsset_Material(GRASSBORDER_MAT, FALSE);
+	LoadAsset_Material(TREEBARK_MAT, FALSE);
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Grass", COL_LAYER_WORLD | COL_LAYER_CAMERA);
@@ -77,6 +79,7 @@ SCENE_PRELOADASSETS(lakeside_coast)
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-CliffMiddle", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Sand", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Coast", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-TreeBark", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
 
 SCENE_ACTIVATE_ROOM(lakeside_coast)
@@ -101,4 +104,5 @@ SCENE_DRAWWORLD(lakeside_coast)
 	STANDARD_SHADER_DRAW(scene, model_asset, PATH_MAT, "Shore-Path");
 	STANDARD_SHADER_DRAW(scene, model_asset, DISTANTTREE_MAT, "Shore-DistantTrees");
 	STANDARD_SHADER_DRAW(scene, model_asset, GRASSBORDER_MAT, "Shore-GrassBorder");
+	STANDARD_SHADER_DRAW(scene, model_asset, TREEBARK_MAT, "Shore-TreeBark");
 }

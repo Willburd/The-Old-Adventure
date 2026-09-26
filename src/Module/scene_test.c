@@ -48,6 +48,9 @@ SCENE_PRELOADASSETS(test)
 	// Set collision data
 	REGISTER_COLLISION_MESH(scene, model_asset, "test_room-Main", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 	REGISTER_COLLISION_MESH(scene, model_asset, "side_room-Main", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+
+	// Preload large actor assets
+	LoadAsset_Model(ASSET_MODELS"/Tools/robot.glb", FALSE);
 }
 
 SCENE_ACTIVATE_ROOM(test)
