@@ -94,7 +94,7 @@ ACTOR_PREUPDATE(camera)
         return;
 
     // Update camera logic
-    struct Actor* player = NULL; // FINDACTOR_BYTYPE(act_player); // TODO - Your player actor here
+    struct Actor* player = FINDACTOR_BYTYPE(act_player); // Adventure edit - Use our player actor
     switch (cam_data->camera_mode)
     {
         case CAMERA_MODE_FOLLOW:

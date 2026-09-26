@@ -1,0 +1,5 @@
+// Textures
+#ALBED /Effects/pit_warp.png FILT_POINT WRAP_REPEAT
+
+// Shader
+#SHADR /standard.vert /standard.frag

@@ -1,0 +1,5 @@
+// Textures
+#ALBED /Skybox/sun.png FILT_BI WRAP_REPEAT
+
+// Shader
+#SHADR /unshaded.vert /unshaded.frag
