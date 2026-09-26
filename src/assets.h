@@ -9,12 +9,10 @@
 #include "Hashmap/hashmap.h"
 #include "cJSON/cJSON.h"
 
-// TODO - Properly set something up for this
-#ifdef _RELEASE
-#define ASSET_PATH "./Assets"
-#else
-#define ASSET_PATH "../Assets"
+#ifndef ROOT_PATH
+#define ROOT_PATH "."
 #endif
+#define ASSET_PATH ROOT_PATH"/Assets"
 
 #define ASSET_TEXTURES ASSET_PATH"/Textures"
 #define ASSET_MODELS ASSET_PATH"/Models"
