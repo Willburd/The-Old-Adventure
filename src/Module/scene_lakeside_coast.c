@@ -21,7 +21,9 @@
 #define FIELD_MODEL ASSET_MODELS"/Scenes/lakeside_coast.glb"
 
 #define GRASS_MAT ASSET_MATERIALS"/Natural/grass_A.mat"
-#define STONE_MAT ASSET_MATERIALS"/Natural/stone_C.mat"
+#define CLIFF_BOT_MAT ASSET_MATERIALS"/Cliffs/cliff_bot_A.mat"
+#define CLIFF_MID_MAT ASSET_MATERIALS"/Cliffs/cliff_mid_A.mat"
+#define CLIFF_BORDER_MAT ASSET_MATERIALS"/Cliffs/cliff_border_A.mat"
 #define SAND_MAT ASSET_MATERIALS"/Natural/sand_A.mat"
 #define GRASS_EDGE_MAT ASSET_MATERIALS"/Natural/grass_edge_A.mat"
 #define PATH_MAT ASSET_MATERIALS"/Natural/path_A.mat"
@@ -60,7 +62,9 @@ SCENE_PRELOADASSETS(lakeside_coast)
 	
 	// Load Materials
 	LoadAsset_Material(GRASS_MAT, FALSE);
-	LoadAsset_Material(STONE_MAT, FALSE);
+	LoadAsset_Material(CLIFF_BOT_MAT, FALSE);
+	LoadAsset_Material(CLIFF_MID_MAT, FALSE);
+	LoadAsset_Material(CLIFF_BORDER_MAT, FALSE);
 	LoadAsset_Material(SAND_MAT, FALSE);
 	LoadAsset_Material(GRASS_EDGE_MAT, FALSE);
 	LoadAsset_Material(PATH_MAT, FALSE);
@@ -69,7 +73,8 @@ SCENE_PRELOADASSETS(lakeside_coast)
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Grass", COL_LAYER_WORLD | COL_LAYER_CAMERA);
-	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Cliff", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-CliffBottom", COL_LAYER_WORLD | COL_LAYER_CAMERA);
+	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-CliffMiddle", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Sand", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 	REGISTER_COLLISION_MESH(scene, model_asset, "Shore-Coast", COL_LAYER_WORLD | COL_LAYER_CAMERA);
 }
@@ -88,7 +93,9 @@ SCENE_DRAWWORLD(lakeside_coast)
 {
 	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
 	STANDARD_SHADER_DRAW(scene, model_asset, GRASS_MAT, "Shore-Grass");
-	STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "Shore-Cliff");
+	STANDARD_SHADER_DRAW(scene, model_asset, CLIFF_BOT_MAT, "Shore-CliffBottom");
+	STANDARD_SHADER_DRAW(scene, model_asset, CLIFF_MID_MAT, "Shore-CliffMiddle");
+	STANDARD_SHADER_DRAW(scene, model_asset, CLIFF_BORDER_MAT, "Shore-CliffBorder");
 	STANDARD_SHADER_DRAW(scene, model_asset, SAND_MAT, "Shore-Sand");
 	STANDARD_SHADER_DRAW(scene, model_asset, GRASS_EDGE_MAT, "Shore-Coast");
 	STANDARD_SHADER_DRAW(scene, model_asset, PATH_MAT, "Shore-Path");
