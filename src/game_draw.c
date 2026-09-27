@@ -460,8 +460,6 @@ int GetLightCount()
 
 void ShaderUpdateDefaultUniforms(Shader shader, struct Actor* actor)
 {
-	int pos_loc = GetShaderLocation(shader, "uWorldPos");
-	SetShaderValue(shader, pos_loc, &actor->position, SHADER_UNIFORM_VEC3);
 }
 
 void ShaderUpdateFogUniforms(Shader shader)
