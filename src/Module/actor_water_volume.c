@@ -106,10 +106,9 @@ struct Actor* PointInWaterVolume(Vector3 point)
 	{
 		if (all_water_volumes[i] == NULL) // Nothing here, move on.
 			continue;
-
 		struct Actor* water = all_water_volumes[i];
 		if (!PointInCube(point, water->position, water->scale))
-			return NULL;
+			continue; // Not in this one, try the next
 		return water;
 	}
 	return NULL;
