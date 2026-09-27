@@ -467,6 +467,9 @@ void ShaderUpdateDefaultUniforms(Shader shader, struct Actor* actor)
 	Vector2 res = (Vector2){ renderWidth, renderHeight };
 	loc = GetShaderLocation(shader, "uRenderResolution");
 	SetShaderValue(shader, loc, &res, RL_SHADER_UNIFORM_VEC2);
+
+	loc = GetShaderLocation(shader, "uIdentity");
+	SetShaderValue(shader, loc, &actor->uuid, SHADER_UNIFORM_INT);
 }
 
 void ShaderUpdateFogUniforms(Shader shader)
