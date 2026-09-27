@@ -21,10 +21,9 @@ void AdvLUTShaderUniforms(PostProcessingPhase phase, struct PostProcessingLayer*
 
 void AdvDitherShaderUniforms(PostProcessingPhase phase, struct PostProcessingLayer* data, Shader* shader, RenderTexture2D* render_tex)
 {
-    int loc = GetShaderLocation(*shader, "dither_width");
-    SetShaderValue(*shader, loc, &renderWidth, RL_SHADER_UNIFORM_INT);
-    loc = GetShaderLocation(*shader, "dither_height");
-    SetShaderValue(*shader, loc, &renderHeight, RL_SHADER_UNIFORM_INT);
+    Vector2 res = (Vector2){ renderWidth, renderHeight };
+    int loc = GetShaderLocation(*shader, "uRenderResolution");
+    SetShaderValue(*shader, loc, &res, RL_SHADER_UNIFORM_VEC2);
 }
 
 #endif

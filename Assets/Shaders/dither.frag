@@ -4,8 +4,7 @@
 in vec2 fragTexCoord;
 
 uniform sampler2D texture0;
-uniform int dither_width;
-uniform int dither_height;
+uniform vec2 uRenderResolution;
 
 out vec4 finalColor;
 
@@ -16,8 +15,8 @@ float random(vec2 c) {
 void main()
 {
     float flip = 0.0;
-    float pix_x = fragTexCoord.x * float(dither_width);
-    float pix_y = fragTexCoord.y * float(dither_height);
+    float pix_x = fragTexCoord.x * uRenderResolution.x;
+    float pix_y = fragTexCoord.y * uRenderResolution.y;
 
     finalColor = texture(texture0, fragTexCoord);
     if(mod(pix_y,2.0) < 1)
