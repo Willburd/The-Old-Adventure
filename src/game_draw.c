@@ -463,6 +463,10 @@ void ShaderUpdateDefaultUniforms(Shader shader, struct Actor* actor)
 	int loc = GetShaderLocation(shader, "uTime");
 	float val = (float)seconds_counter;
 	SetShaderValue(shader, loc, &val, SHADER_UNIFORM_FLOAT);
+
+	Vector2 res = (Vector2){ renderWidth, renderHeight };
+	loc = GetShaderLocation(shader, "uRenderResolution");
+	SetShaderValue(shader, loc, &res, RL_SHADER_UNIFORM_VEC2);
 }
 
 void ShaderUpdateFogUniforms(Shader shader)
