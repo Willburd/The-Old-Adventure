@@ -470,6 +470,9 @@ void ShaderUpdateDefaultUniforms(Shader shader, struct Actor* actor)
 	loc = GetShaderLocation(shader, "uRenderResolution");
 	SetShaderValue(shader, loc, &res, RL_SHADER_UNIFORM_VEC2);
 
+	loc = GetShaderLocation(shader, "uIdentity");
+	SetShaderValue(shader, loc, &actor->uuid, SHADER_UNIFORM_INT);
+	
 	// Adventure edit begin - Animation ticker, but only for when the game isn't paused
 	float animation_ticker = (float)world_tick_counter;
 	loc = GetShaderLocation(shader, "uAnimator");
