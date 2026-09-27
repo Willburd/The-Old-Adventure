@@ -8,11 +8,13 @@
 // Assets
 #define WATER_MODEL ASSET_MODELS"/Objects/water_volume.glb"
 
+#define WATER_MAT ASSET_MATERIALS"/Natural/Water_A.mat"
+
 // private header
 int total_water_volumes = -1;
 static struct Actor* all_water_volumes[WATER_VOLUME_LIMIT];
 ACTOR_PRELOADASSETS(water_volume);
-ACTOR_DRAWWORLD(water_volume);
+ACTOR_TRANSPARENTDRAWWORLD(water_volume);
 ACTOR_CLEANUP(water_volume);
 static void AddWaterVolume(struct Actor* actor);
 static void RemoveWaterVolume(struct Actor* actor);
@@ -26,7 +28,7 @@ ACTOR_INIT(water_volume)
 {
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
 	ACTOR_REGISTER_PRELOADASSETS(water_volume);
-	ACTOR_REGISTER_DRAWWORLD(water_volume);
+	ACTOR_REGISTER_TRANSPARENTDRAWWORLD(water_volume);
 	ACTOR_REGISTER_CLEANUP(water_volume);
 }
 
@@ -39,13 +41,22 @@ ACTOR_PRELOADASSETS(water_volume)
 	// Load model
 	LoadAsset_Model(WATER_MODEL, FALSE);
 
+	// Load Materials
+	LoadAsset_Material(WATER_MAT, FALSE);
+
 	AddWaterVolume(actor);
 }
 
-ACTOR_DRAWWORLD(water_volume)
+ACTOR_TRANSPARENTDRAWWORLD(water_volume)
 {
 	Asset* model_asset = AssetGetPackage(WATER_MODEL);
-	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "Surface");
+	STANDARD_SHADER_MATERIAL(water_mat, WATER_MAT, actor);
+	ToaDrawMesh(
+		model_asset,
+		GetMeshIndex(model_asset->mesh_data, "Surface-Main"),
+		*water_mat,
+		GetMatrix(actor)
+	);
 
 	if (!draw_debug_info)
 		return;
