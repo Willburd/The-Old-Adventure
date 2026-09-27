@@ -4,6 +4,7 @@
 #include "../light_tools.h"
 #include "../camera.h"
 #include "rlgl.h"
+#include "world_state.h"
 
 // Assets
 #define FIRE_MATERIAL		ASSET_MATERIALS"/Effects/fire.mat"
@@ -75,11 +76,11 @@ ACTOR_TRANSPARENTDRAWWORLD(fire)
 	int fire_loc = GetShaderLocation(set_shader, "FireColor");
 	SetShaderValue(set_shader, fire_loc, &actor->blend_color, SHADER_UNIFORM_VEC4);
 
-	fire_loc = GetShaderLocation(set_shader, "Identity");
+	fire_loc = GetShaderLocation(set_shader, "uIdentity");
 	SetShaderValue(set_shader, fire_loc, &actor->uuid, SHADER_UNIFORM_INT);
 
-	float animation_ticker = (float)tick_counter * 0.035f;
-	fire_loc = GetShaderLocation(set_shader, "Animator");
+	float animation_ticker = (float)world_tick_counter;
+	fire_loc = GetShaderLocation(set_shader, "uAnimator");
 	SetShaderValue(set_shader, fire_loc, &animation_ticker, SHADER_UNIFORM_FLOAT);
 
 	ToaDrawMesh(

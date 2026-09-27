@@ -9,6 +9,8 @@
 #include "materials.h"
 #include "scene_entry.h"
 #include "post_processing.h"
+// Adventure
+#include "module/world_state.h"
 
 int draw_debug_info = FALSE;
 int draw_collider_info = FALSE;
@@ -467,6 +469,12 @@ void ShaderUpdateDefaultUniforms(Shader shader, struct Actor* actor)
 	Vector2 res = (Vector2){ renderWidth, renderHeight };
 	loc = GetShaderLocation(shader, "uRenderResolution");
 	SetShaderValue(shader, loc, &res, RL_SHADER_UNIFORM_VEC2);
+
+	// Adventure edit begin - Animation ticker, but only for when the game isn't paused
+	float animation_ticker = (float)world_tick_counter;
+	loc = GetShaderLocation(shader, "uAnimator");
+	SetShaderValue(shader, loc, &animation_ticker, SHADER_UNIFORM_FLOAT);
+	// Adventure edit end
 }
 
 void ShaderUpdateFogUniforms(Shader shader)

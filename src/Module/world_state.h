@@ -3,6 +3,7 @@
 
 #include "../tools.h"
 #include "raylib.h"
+#include <stdint.h>
 
 #define DEFAULT_DAYNIGHT_SPEED 0.000085f;
 
@@ -19,6 +20,8 @@
 float daynight_cycle;
 float daynight_speed;
 float rain_intensity;
+
+uint64_t world_tick_counter;
 
 // Set the default gamestate on file creation
 void InitWorldState();

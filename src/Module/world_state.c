@@ -6,6 +6,9 @@
 
 void InitWorldState()
 {
+	// World ticker
+	world_tick_counter = 0;
+
 	// Start of game daynight cycle
 	daynight_cycle = TIME_DAWN;
 	daynight_speed = DEFAULT_DAYNIGHT_SPEED;
@@ -27,11 +30,16 @@ void UpdateWorldState()
 		scene_config = sdat->config_flags;
 	}
 	// Cycle daynight if our scene doesn't pause time.
-	if (CHECK_GAMESTATE( GAMESTATE_GAMEPLAY ) && !(scene_config & SCENE_CONFIG_TIMEPAUSED))
+	if (CHECK_GAMESTATE(GAMESTATE_GAMEPLAY))
 	{
-		daynight_cycle += daynight_speed;
-		while (daynight_cycle > 1.0f)
-			daynight_cycle -= 1.0f;
+		// For animation, but only during world ticks
+		world_tick_counter += 1;
+		if (!(scene_config & SCENE_CONFIG_TIMEPAUSED))
+		{
+			daynight_cycle += daynight_speed;
+			while (daynight_cycle > 1.0f)
+				daynight_cycle -= 1.0f;
+		}
 	}
 	// If the scene is raining, fade into the rain effect
 	if (CHECK_GAMESTATE( GAMESTATE_GAMEPLAY | GAMESTATE_TEXTBOX | GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE ))
