@@ -189,6 +189,7 @@
     <ClCompile Include="Module\player_state_air.c" />
     <ClCompile Include="Module\player_state_generic.c" />
     <ClCompile Include="Module\player_state_grounded.c" />
+    <ClCompile Include="Module\player_state_swimming.c" />
     <ClCompile Include="Module\scene_cavetest.c" />
     <ClCompile Include="Module\scene_fieldtest.c" />
     <ClCompile Include="Module\scene_lakeside_coast.c" />

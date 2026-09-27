@@ -58,8 +58,6 @@ ACTOR_DRAWWORLD(player)
 	DRAWCAPSULE(ACTOR_POS_DELTA(actor, tick_percent), 1.0f, 0.5f, GREEN);
 	DrawSphere(Vector3Add(ACTOR_POS_DELTA(actor, tick_percent), Vector3Add(Vector3Scale(VEC3UP, 1.9f), Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, 0.3f), ACTOR_ROT_DELTA(actor, tick_percent)))), 0.5, BLUE);
 
-	DrawCube(actor->position, 0.4, 0.4, 0.4, PointInWaterVolume(actor->position) ? BLUE : RED);
-
 	// Additional drawing the state wants
 	PlayerData* player_data = (PlayerData*)actor->data;
 	player_data->func_state_drawworld(actor, tick_percent);

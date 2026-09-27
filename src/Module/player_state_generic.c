@@ -8,17 +8,6 @@
 // Player state control
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define CREATE_STATE(state) \
-void PlayerState_##state##_Enter(struct Actor* player, PlayerData* player_data, int previous_state); \
-void PlayerState_##state##_Update(struct Actor* player); \
-void PlayerState_##state##_DrawWorld(struct Actor* player, double tick_percent); \
-void PlayerState_##state##_DrawHud(struct Actor* player, double tick_percent); \
-void PlayerState_##state##_Exit(struct Actor* player)
-
-CREATE_STATE(Generic); // Misc state just for helpers
-CREATE_STATE(Grounded); // When on the ground and moving
-CREATE_STATE(Air); // Falling through the air
-
 #define STATE_ENTER(id, state) \
 case id: \
 	PlayerState_##state##_Enter(player, player_data, old_state); \
@@ -38,6 +27,7 @@ void PlayerChangeState(struct Actor* player, int new_state)
 	{
 		STATE_ENTER(plysta_grounded, Grounded);
 		STATE_ENTER(plysta_air, Air);
+		STATE_ENTER(plysta_swimming, Swimming);
 	}
 }
 
@@ -190,4 +180,101 @@ void PlayerStandardPauseActivate(struct Actor* player)
 	if (FINDACTOR_BYTYPE(act_pause_box))
 		return;
 	ACTOR_FACTORY(NULL, act_pause_box, GETSCENE(player), Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
+}
+
+void PlayerStandardBehavior(struct Actor* player, int can_accept_input, float max_speed, float acceleration, float slowing_friction, float stoping_friction, float snapturn_friction, float turn_rate)
+{
+	PlayerData* player_data = (PlayerData*)player->data;
+	Vector3 move_velocity = { 0 };
+	if (can_accept_input)
+	{
+		// Pausing
+		if (CHECK_INPUTPRESSED(input_pause))
+		{
+			PlayerStandardPauseActivate(player);
+		}
+
+		// Handle player inputs
+		Quaternion input_rotator = QuaternionFromAxisAngle(VEC3UP, Vector3GetTopDownAngle(VEC3DIRECTION(cam_main.position, player->position)));
+		move_velocity = Vector3Scale(Vector3RotateByQuaternion((Vector3) { input_analog.x, 0.0f, input_analog.y }, input_rotator), acceleration);
+	}
+	else if (CHECK_GAMESTATE(GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE))
+	{
+		// Cutscene movement, use the rungoal vector
+		if (player_data->cutscene_run_goal.x != 0 || player_data->cutscene_run_goal.z != 0)
+			move_velocity = Vector3Scale(Vector3FlatDirection(player->position, player_data->cutscene_run_goal), acceleration * player_data->cutscene_run_factor);
+	}
+
+	// Slowdown over time if not moving.
+	if (Vector3Length(move_velocity) < 0.01f)
+		ApplyFriction(player, stoping_friction);
+
+	// Move as directed
+	int snap_turn = FALSE;
+	float direction_moving_dot = Vector2DotProduct((Vector2) { move_velocity.x, move_velocity.z }, (Vector2) { player->velocity.x, player->velocity.z });
+	if (direction_moving_dot < -0.25) // Hard stop, changing direction.
+	{
+		ApplyFriction(player, snapturn_friction);
+		snap_turn = TRUE;
+	}
+	else
+	{
+		ApplyFriction(player, slowing_friction); // Always apply some slowing.
+	}
+
+	// Accelerate up to full!
+	player->velocity = Vector3Add(player->velocity, move_velocity);
+
+	// Slow the player back down if they go over the cap speed.
+	Vector2 flat_velocity = (Vector2){ player->velocity.x, player->velocity.z };
+	if (Vector2Length(flat_velocity) > max_speed)
+	{
+		Vector2 dirvec = Vector2Scale(Vector2Normalize(flat_velocity), max_speed);
+		player->velocity.x = dirvec.x;
+		player->velocity.z = dirvec.y;
+	}
+
+	// Rotate the player toward the direction being moved
+	if (Vector2Length(flat_velocity) > 0.0f)
+	{
+		Vector2 dirvec = Vector2Normalize(flat_velocity);
+
+		Vector3 facing_dir = Vector3RotateByQuaternion(VEC3FORWARD, player->rotation);
+		Vector2 flat_facing = Vector2Normalize((Vector2) { facing_dir.x, facing_dir.z });
+
+		float turn_modifier = 1.0f;
+		float angle_modifier = Vector2Angle(dirvec, flat_facing);
+		if (snap_turn || (float)fabs(angle_modifier * (float)RAD2DEG) < 9.0f)
+			player->rotation = QuaternionMultiply(player->rotation, QuaternionFromAxisAngle(VEC3UP, angle_modifier)); // Snap to
+		else
+			player->rotation = QuaternionMultiply(player->rotation, QuaternionFromAxisAngle(VEC3UP, SIGN(angle_modifier) * turn_modifier * turn_rate));
+	}
+}
+
+void PlayerStandardInteraction(struct Actor* player, int can_accept_input)
+{
+	PlayerData* player_data = (PlayerData*)player->data;
+
+	// Get the nearest interactable actor and update the hud with it
+	Vector3 ahead_pos = Vector3Add(player->position, Vector3RotateByQuaternion(VEC3FORWARD, player->rotation));
+	struct Actor* nearest_actor = FINDINTERACTIONNEAREST(ahead_pos, player);
+
+	// Interact with other actors
+	player_data->current_action_button_text = ""; // Reset hud text
+	if (ACTOR_EXISTS(nearest_actor) && can_accept_input)
+	{
+		// Check if this actor can be interacted with, if there is no set can_interact function, assume it can because it has ACTOR_FLAG_INTERACTIVE on. 
+		int can_interact = ACTOR_HAS(nearest_actor, func_player_interact) && Vector3Distance(player->position, nearest_actor->position) <= ACTOR_INTERACTION_RANGE;
+		if (can_interact && ACTOR_HAS(nearest_actor, func_can_interact))
+			can_interact = nearest_actor->func_can_interact(nearest_actor, player);
+		// Update hud
+		if (can_interact)
+			player_data->current_action_button_text = GetText(nearest_actor->func_interaction_text(nearest_actor, player));
+		// Handle interaction button pressed
+		if (can_interact && CHECK_INPUTPRESSED(input_interact))
+		{
+			nearest_actor->func_player_interact(nearest_actor, player);
+			return;
+		}
+	}
 }

@@ -13,6 +13,7 @@
 #define PLAYER_COLLISION_MID_HEIGHT 1.0f
 #define PLAYER_COLLISION_TOP_HEIGHT 2.0f
 #define PLAYER_COLLISION_RADIUS 0.45f
+#define PLAYER_SWIM_HEIGHT 1.6f
 
 #define PLAYER_COLLISION_FLOOR_SENSOR_LENGTH 0.15f
 
@@ -22,6 +23,7 @@ enum PlayerState
 {
 	plysta_grounded,
 	plysta_air,
+	plysta_swimming,
 };
 
 typedef struct {
@@ -36,6 +38,18 @@ typedef struct {
 	int disable_collision;
 } PlayerData;
 
+#define CREATE_STATE(state) \
+void PlayerState_##state##_Enter(struct Actor* player, PlayerData* player_data, int previous_state); \
+void PlayerState_##state##_Update(struct Actor* player); \
+void PlayerState_##state##_DrawWorld(struct Actor* player, double tick_percent); \
+void PlayerState_##state##_DrawHud(struct Actor* player, double tick_percent); \
+void PlayerState_##state##_Exit(struct Actor* player)
+
+CREATE_STATE(Generic); // Misc state just for helpers
+CREATE_STATE(Grounded); // When on the ground and moving
+CREATE_STATE(Air); // Falling through the air
+CREATE_STATE(Swimming); // Swimming
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Player utility functions
@@ -47,5 +61,7 @@ int PlayerCollisionEject(struct Actor* player, Vector3 start_offset, Vector3 dir
 int PlayerStandardRadialEjection(struct Actor* player, Vector3 start_offset, float radius);
 void PlayerStandardHudDraw(struct Actor* player, double tick_percent);
 void PlayerStandardPauseActivate(struct Actor* player);
+void PlayerStandardBehavior(struct Actor* player, int can_accept_input, float max_speed, float acceleration, float slowing_friction, float stoping_friction, float snapturn_friction, float turn_rate);
+void PlayerStandardInteraction(struct Actor* player, int can_accept_input);
 
 #endif
