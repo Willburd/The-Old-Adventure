@@ -7,7 +7,9 @@ in vec3 vertexNormal;
 in vec4 vertexColor;
 
 uniform mat4 mvp;
-uniform vec3 uWorldPos;
+uniform mat4 matModel;
+uniform mat4 matView;
+uniform mat4 matNormal;
 
 uniform vec3 uFogColor;
 uniform float uFogDistance;
@@ -20,6 +22,7 @@ uniform vec4 uLightColors[MAX_LIGHTS]; // color + influence
 out vec2 fragTexCoord;
 out vec4 fragColor;
 out vec4 fragLight;
+out vec3 fragWorldPos;
 
 vec3 solve_lights(vec3 pos)
 {
@@ -57,11 +60,12 @@ vec3 solve_lights(vec3 pos)
 void main()
 {
     gl_Position = mvp*vec4(vertexPosition, 1.0);
+    fragWorldPos = vec3(matModel * vec4(vertexPosition, 1.0));
     fragTexCoord = vertexTexCoord;
     // Fog calc
     float dist = distance(vec4(0.0), gl_Position);
     float dist_perc = clamp(dist / uFogDistance, 0.0, 1.0);
     fragColor = mix(vertexColor, vec4(uFogColor.xyz,0.0), pow(dist_perc, uFogPower));
     // Light calc
-    fragLight = vec4( solve_lights(uWorldPos + vertexPosition), 1.0 - pow(dist_perc, 100));
+    fragLight = vec4( solve_lights(fragWorldPos), 1.0 - pow(dist_perc, 100));
 }
