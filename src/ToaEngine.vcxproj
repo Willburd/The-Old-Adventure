@@ -151,6 +151,7 @@
     <ClCompile Include="actor_debug.c" />
     <ClCompile Include="actor_factory.c" />
     <ClCompile Include="actor_scene.c" />
+    <ClCompile Include="Module\actor_door.c" />
     <ClCompile Include="Module\actor_water_volume.c" />
     <ClCompile Include="animation.c" />
     <ClCompile Include="assets.c" />
