@@ -21,6 +21,7 @@ float daynight_cycle;
 float daynight_speed;
 float rain_intensity;
 
+int debug_world_actors; // If true, freecam and layer debug tools are enabled
 uint64_t world_tick_counter;
 
 // Set the default gamestate on file creation

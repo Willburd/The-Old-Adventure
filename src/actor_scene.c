@@ -12,6 +12,7 @@
 #include "game_draw.h"
 // Adventure
 #include "Module/actor_entrance.h"
+#include "Module/world_state.h"
 
 // private header
 static SceneID next_scene;
@@ -69,7 +70,7 @@ ACTOR_INIT(scene)
 
 	// Spawn player
 	ACTOR_DESTROY_TYPE(act_player); // Only a single player
-	if (next_entrance < NO_PLAYER_SCENE)
+	if (next_entrance < NO_PLAYER_SCENE || debug_world_actors)
 	{
 		ACTOR_FACTORY(NULL, act_player, current_scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
 		if (entrance != NULL) // Enter the scene from this entrance if we have one

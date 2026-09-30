@@ -6,6 +6,9 @@
 
 void InitWorldState()
 {
+	// Debug cam
+	debug_world_actors = FALSE;
+
 	// World ticker
 	world_tick_counter = 0;
 

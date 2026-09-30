@@ -5,6 +5,8 @@
 #include "input.h"
 #include "game_draw.h"
 #include "collision.h"
+// Adventure
+#include "Module/world_state.h"
 
 // Utility
 #define CAMERA_FOLLOW_SPEED 0.5f
@@ -90,6 +92,11 @@ ACTOR_PREUPDATE(camera)
     // Update camera delta target
     CameraData* cam_data = (CameraData*)actor->data;
     cam_data->previous_lookpos = cam_data->current_look_pos;
+
+    // Adventure edit begin - Camera modes for the game
+    if(debug_world_actors)
+        cam_data->camera_mode = CAMERA_MODE_FREEMOVE;
+    // Adventure end
 
     if (cam_data->locked)
         return;

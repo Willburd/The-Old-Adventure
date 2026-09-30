@@ -107,7 +107,7 @@ int main(void)
         }
         if (IsKeyPressed(KEY_F7)) // Misc debug
         {
-
+            debug_world_actors = !debug_world_actors; // Adventure edit - Debug camera
         }
 #endif
 
