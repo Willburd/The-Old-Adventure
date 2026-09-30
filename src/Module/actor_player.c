@@ -5,6 +5,11 @@
 // Assets
 #define PLAYER_MODEL ASSET_MODELS"/Characters/player.glb"
 
+#define CLOTHS_FABRIC_MATERIAL		ASSET_MATERIALS"/Characters/player_cloths_fabric.mat"
+#define KIMONO_FABRIC_MATERIAL		ASSET_MATERIALS"/Characters/player_kimono_fabric.mat"
+#define KIMONO_SLEEVE_MATERIAL		ASSET_MATERIALS"/Characters/player_kimono_sleeve.mat"
+#define BELT_MATERIAL				ASSET_MATERIALS"/Characters/player_belt.mat"
+
 // private header
 ACTOR_PRELOADASSETS(player);
 ACTOR_UPDATE(player);
@@ -45,7 +50,10 @@ ACTOR_INIT(player)
 
 ACTOR_PRELOADASSETS(player)
 {
-	
+	LoadAsset_Material(CLOTHS_FABRIC_MATERIAL, TRUE);
+	LoadAsset_Material(KIMONO_FABRIC_MATERIAL, TRUE);
+	LoadAsset_Material(KIMONO_SLEEVE_MATERIAL, TRUE);
+	LoadAsset_Material(BELT_MATERIAL, TRUE);
 }
 
 ACTOR_UPDATE(player)
@@ -62,9 +70,27 @@ ACTOR_DRAWWORLD(player)
 	//DrawSphere(Vector3Add(ACTOR_POS_DELTA(actor, tick_percent), Vector3Add(Vector3Scale(VEC3UP, 1.9f), Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, 0.3f), ACTOR_ROT_DELTA(actor, tick_percent)))), 0.5, BLUE);
 
 	Asset* model_asset = AssetGetPackage(PLAYER_MODEL);
-	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "Player-Material", tick_percent)
-	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "HandRight_Open-Material", tick_percent);
-	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "HandLeft_Open-Material", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, CLOTHS_FABRIC_MATERIAL, "Player-ClothFabric", tick_percent)
+	STANDARD_SHADER_DRAW(actor, model_asset, BELT_MATERIAL, "Player-Belt", tick_percent)
+
+	// Blend kimono color
+	{
+		Vector4 kimono_color = (Vector4){ 1.0f, 0.0f, 0.0f, 1.0f };
+
+		STANDARD_SHADER_MATERIAL(kimon, KIMONO_FABRIC_MATERIAL, actor);
+		int loc = GetShaderLocation(kimon->shader, "uBlendColor"); // Replaces default blend color
+		SetShaderValue(kimon->shader, loc, &kimono_color, SHADER_UNIFORM_VEC4);
+
+		STANDARD_SHADER_MATERIAL(sleeve, KIMONO_SLEEVE_MATERIAL, actor);
+		loc = GetShaderLocation(sleeve->shader, "uBlendColor"); // Replaces default blend color
+		SetShaderValue(sleeve->shader, loc, &kimono_color, SHADER_UNIFORM_VEC4);
+
+		ToaDrawMesh(model_asset, GetMeshIndex(model_asset->mesh_data, "Player-KimonoFabric"), *kimon, GetDrawMatrix(actor, tick_percent));
+		ToaDrawMesh(model_asset, GetMeshIndex(model_asset->mesh_data, "Player-KimonoSleeve"), *sleeve, GetDrawMatrix(actor, tick_percent));
+	};
+
+	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "HandRight_Open-KimonoFabric", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "HandLeft_Open-KimonoFabric", tick_percent);
 
 	// Additional drawing the state wants
 	PlayerData* player_data = (PlayerData*)actor->data;

@@ -73,7 +73,7 @@ ACTOR_TRANSPARENTDRAWWORLD(fire)
 	Shader set_shader = mat->shader;
 	BeginShaderMode(set_shader);
 
-	int fire_loc = GetShaderLocation(set_shader, "FireColor");
+	int fire_loc = GetShaderLocation(set_shader, "uBlendColor");
 	SetShaderValue(set_shader, fire_loc, &actor->blend_color, SHADER_UNIFORM_VEC4);
 
 	fire_loc = GetShaderLocation(set_shader, "uIdentity");
