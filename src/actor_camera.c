@@ -8,6 +8,12 @@
 // Adventure
 #include "Module/world_state.h"
 
+// Utility
+#define CAMERA_FOLLOW_SPEED 0.5f
+#define CAMERA_FOLLOW_DISTANCE 3.8f
+#define CAMERA_HEIGHT_DIST 3.0f
+#define CAMERA_BUBBLE_RADIUS 0.4f
+
 // private header
 ACTOR_PREUPDATE(camera);
 ACTOR_PREDRAWWORLD(camera);
