@@ -31,7 +31,7 @@ ACTOR_DRAWWORLD(debug)
 		return;
 	DrawGrid(100, 10.0f);
 	Asset* model_asset = AssetGetPackage(FORWARD_ARROW_MODEL);
-	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "Arrow-Material");
+	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "Arrow-Material", tick_percent);
 }
 
 ACTOR_POSTDRAWHUD(debug)
