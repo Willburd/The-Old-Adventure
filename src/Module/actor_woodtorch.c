@@ -52,7 +52,7 @@ static Vector3 FirePos(struct Actor* actor)
 		if (fire != NULL)
 			pos_mod = VEC3MAGNITUDE(fire->scale);
 	}
-	return Vector3RotateByQuaternion(Vector3Add(actor->position, Vector3Scale(VEC3UP, 2.0f + pos_mod)), actor->rotation);
+	return Vector3RotateByQuaternion(Vector3Add(actor->position, Vector3Scale(VEC3UP, 1.3f + (pos_mod * 0.4f))), actor->rotation);
 }
 
 ACTOR_PRELOADASSETS(woodtorch)
