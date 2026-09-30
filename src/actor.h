@@ -25,6 +25,7 @@
 #define ACTOR_FLAG_IS_INVISIBLE (1 << 9) // disable drawing
 #define ACTOR_FLAG_INTERACTIVE (1 << 10) // player can trigger interacts with
 #define ACTOR_FLAG_DISABLE_LIGHTS (1 << 11) // Skips actor's lightnodes being queued to the shader
+#define ACTOR_FLAG_BLENDSCOLOR (1 << 12) // blending color is applied in standard shader uniforms
 
 #define ACTOR_HAS_NO_ROOM_INDEX -1
 
@@ -126,7 +127,7 @@ x->uuid = 0;x->id_tag = NULL; x->index = -1; x->actor_type = 0; x->actor_type_na
 x->is_destroying = FALSE; \
 x->parent = NULL; x->current_room_index = ACTOR_HAS_NO_ROOM_INDEX; \
 x->actor_flags = 0; x->triggers_flags = 0; x->flag_group_selector = SCENE_FLAG_GROUP_TEMP; \
-x->draw_range = DEFAULT_MAX_RENDER_RANGE; x->blend_color = (Vector4){ 255, 255, 255, 255}; \
+x->draw_range = DEFAULT_MAX_RENDER_RANGE; x->blend_color = (Vector4){ 1, 1, 1, 1}; \
 x->animlayer_count = -1; \
 x->func_init = NULL; x->func_preloadassets = NULL; \
 x->func_destroy = NULL; \

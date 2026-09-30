@@ -6,6 +6,7 @@ in vec4 fragColor;
 in vec4 fragLight;
 
 uniform sampler2D texture0;
+uniform vec4 uBlendColor;
 
 out vec4 finalColor;
 
@@ -15,7 +16,7 @@ void main()
     finalColor = texture(texture0, fragTexCoord);
     if(finalColor.a < 1.0) discard; // Alpha clip on texture
     // Blend fog
-    finalColor = vec4(fragColor.r * finalColor.r, fragColor.g * finalColor.g, fragColor.b * finalColor.b, finalColor.a);
+    finalColor = vec4(fragColor.r * finalColor.r * uBlendColor.r, fragColor.g * finalColor.g * uBlendColor.g, fragColor.b * finalColor.b * uBlendColor.b, finalColor.a);
     if(finalColor.a < 0.001) discard;
     // Blend lights
     if(fragLight.r > 1.0 || fragLight.g > 1.0 || fragLight.b > 1.0)
