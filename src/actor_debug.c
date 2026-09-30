@@ -4,6 +4,7 @@
 #include "actor_scene.h"
 #include "game_draw.h"
 #include "collision.h"
+#include "Module/core_assets.h"
 
 // private header
 ACTOR_DRAWWORLD(debug);
@@ -29,14 +30,8 @@ ACTOR_DRAWWORLD(debug)
 	if (!draw_debug_info)
 		return;
 	DrawGrid(100, 10.0f);
-
-	DrawCube(VEC3FORWARD, 1.0f, 1.0f, 1.0f, BLUE);
-	DrawCube(VEC3BACKWARD, 0.1f, 0.1f, 0.1f, BLUE);
-	DrawCube(VEC3LEFT, 1.0f, 1.0f, 1.0f, GREEN);
-	DrawCube(VEC3RIGHT, 0.1f, 0.1f, 0.1f, GREEN);
-
-	DrawCube(Vector3RotateByQuaternion(VEC3FORWARD, QuaternionFromAxisAngle(VEC3UP, 0.0f)), 0.25f, 2.5f, 0.25f, RED); // Should be forward
-	DrawCube(Vector3RotateByQuaternion(VEC3FORWARD, QuaternionFromAxisAngle(VEC3UP, 90.0f * DEG2RAD)), 0.25f, 2.5f, 0.25f, YELLOW); // Should be left
+	Asset* model_asset = AssetGetPackage(FORWARD_ARROW_MODEL);
+	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "Arrow-Material");
 }
 
 ACTOR_POSTDRAWHUD(debug)

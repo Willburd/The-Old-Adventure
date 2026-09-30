@@ -51,6 +51,7 @@ void LoadCoreAssets()
     LoadAsset_Model(QUAD_MODEL, TRUE);
     LoadAsset_Model(SPRITE_MODEL, TRUE);
     LoadAsset_Model(CUBE_MODEL, TRUE);
+    LoadAsset_Model(FORWARD_ARROW_MODEL, TRUE);
     // Adventure
     LoadAsset_Model(SIMPLE_ACTOR_COLLISION_MODEL, TRUE);
 
