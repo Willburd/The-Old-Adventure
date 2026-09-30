@@ -64,11 +64,11 @@ SCENE_DRAWWORLD(test)
 	switch (scene->current_room_index)
 	{
 		case 0:
-			STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "test_room-Main");
+			STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "test_room-Main", tick_percent);
 			break;
 
 		case 1:
-			STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "side_room-Main");
+			STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "side_room-Main", tick_percent);
 			break;
 	}
 }

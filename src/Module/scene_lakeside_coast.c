@@ -95,14 +95,14 @@ SCENE_PREPARE_ACTORS(lakeside_coast)
 SCENE_DRAWWORLD(lakeside_coast)
 {
 	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
-	STANDARD_SHADER_DRAW(scene, model_asset, GRASS_MAT, "Shore-Grass");
-	STANDARD_SHADER_DRAW(scene, model_asset, CLIFF_BOT_MAT, "Shore-CliffBottom");
-	STANDARD_SHADER_DRAW(scene, model_asset, CLIFF_MID_MAT, "Shore-CliffMiddle");
-	STANDARD_SHADER_DRAW(scene, model_asset, CLIFF_BORDER_MAT, "Shore-CliffBorder");
-	STANDARD_SHADER_DRAW(scene, model_asset, SAND_MAT, "Shore-Sand");
-	STANDARD_SHADER_DRAW(scene, model_asset, GRASS_EDGE_MAT, "Shore-Coast");
-	STANDARD_SHADER_DRAW(scene, model_asset, PATH_MAT, "Shore-Path");
-	STANDARD_SHADER_DRAW(scene, model_asset, DISTANTTREE_MAT, "Shore-DistantTrees");
-	STANDARD_SHADER_DRAW(scene, model_asset, GRASSBORDER_MAT, "Shore-GrassBorder");
-	STANDARD_SHADER_DRAW(scene, model_asset, TREEBARK_MAT, "Shore-TreeBark");
+	STANDARD_SHADER_DRAW(scene, model_asset, GRASS_MAT, "Shore-Grass", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, CLIFF_BOT_MAT, "Shore-CliffBottom", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, CLIFF_MID_MAT, "Shore-CliffMiddle", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, CLIFF_BORDER_MAT, "Shore-CliffBorder", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, SAND_MAT, "Shore-Sand", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, GRASS_EDGE_MAT, "Shore-Coast", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, PATH_MAT, "Shore-Path", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, DISTANTTREE_MAT, "Shore-DistantTrees", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, GRASSBORDER_MAT, "Shore-GrassBorder", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, TREEBARK_MAT, "Shore-TreeBark", tick_percent);
 }

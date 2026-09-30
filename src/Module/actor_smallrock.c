@@ -49,5 +49,5 @@ ACTOR_DRAWWORLD(smallrock)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	DrawAllModelMeshes(actor, ROCK_MODEL, loaded_materials);
+	DrawAllModelMeshes(actor, ROCK_MODEL, loaded_materials, tick_percent);
 }

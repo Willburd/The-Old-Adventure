@@ -85,8 +85,8 @@ SCENE_PREPARE_ACTORS(fieldtest)
 SCENE_DRAWWORLD(fieldtest)
 {
 	Asset* model_asset = AssetGetPackage(FIELD_MODEL);
-	STANDARD_SHADER_DRAW(scene, model_asset, GRASS_MAT, "test_field-Grass");
-	STANDARD_SHADER_DRAW(scene, model_asset, WOOD_MAT, "test_field-Bridge");
-	STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "test_field-Rockwalls");
-	STANDARD_SHADER_DRAW(scene, model_asset, RAILWAY_MAT, "test_field-Railway");
+	STANDARD_SHADER_DRAW(scene, model_asset, GRASS_MAT, "test_field-Grass", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, WOOD_MAT, "test_field-Bridge", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "test_field-Rockwalls", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, RAILWAY_MAT, "test_field-Railway", tick_percent);
 }

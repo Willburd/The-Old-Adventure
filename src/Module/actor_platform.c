@@ -206,5 +206,5 @@ ACTOR_DRAWWORLD(platform)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	DrawAllModelMeshes(actor, PLATFORM_MODEL, loaded_materials);
+	DrawAllModelMeshes(actor, PLATFORM_MODEL, loaded_materials, tick_percent);
 }

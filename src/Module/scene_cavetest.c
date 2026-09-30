@@ -59,8 +59,8 @@ SCENE_PRELOADASSETS(cavetest)
 SCENE_DRAWWORLD(cavetest)
 {
 	Asset* model_asset = AssetGetPackage(CAVE_MODEL);
-	STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "Cave-Stone");
-	STANDARD_SHADER_DRAW(scene, model_asset, BRIDGE_MAT, "Cave-Bridge");
-	STANDARD_SHADER_DRAW(scene, model_asset, WOOD_MAT, "Cave-Wood");
-	STANDARD_SHADER_DRAW(scene, model_asset, ROPE_MAT, "Cave-Rope");
+	STANDARD_SHADER_DRAW(scene, model_asset, STONE_MAT, "Cave-Stone", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, BRIDGE_MAT, "Cave-Bridge", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, WOOD_MAT, "Cave-Wood", tick_percent);
+	STANDARD_SHADER_DRAW(scene, model_asset, ROPE_MAT, "Cave-Rope", tick_percent);
 }

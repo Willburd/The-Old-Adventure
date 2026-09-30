@@ -102,7 +102,7 @@ ACTOR_DRAWWORLD(signpost)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	DrawAllModelMeshes(actor, SIGN_MODEL, loaded_materials);
+	DrawAllModelMeshes(actor, SIGN_MODEL, loaded_materials, tick_percent);
 }
 
 ACTOR_CLEANUP(signpost)

@@ -44,5 +44,5 @@ ACTOR_DRAWWORLD(crate)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	DrawAllModelMeshes(actor, CRATE_MODEL, loaded_materials);
+	DrawAllModelMeshes(actor, CRATE_MODEL, loaded_materials, tick_percent);
 }

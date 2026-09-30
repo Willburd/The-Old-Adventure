@@ -138,5 +138,5 @@ ACTOR_DRAWWORLD(woodtorch)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	DrawAllModelMeshes(actor, WOODTORCH_MODEL, loaded_materials);
+	DrawAllModelMeshes(actor, WOODTORCH_MODEL, loaded_materials, tick_percent);
 }

@@ -46,5 +46,5 @@ ACTOR_DRAWWORLD(tree)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	DrawAllModelMeshes(actor, TREE_MODEL, loaded_materials);
+	DrawAllModelMeshes(actor, TREE_MODEL, loaded_materials, tick_percent);
 }
