@@ -92,7 +92,7 @@ ACTOR_PLAYER_INTERACT(signpost)
 	// Start camera focus
 	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
 	CameraSetMode(camera, CAMERA_MODE_FOCUS_CUTSCENE_SLOW);
-	SetCutsceneCameraLookPos(camera, Vector3Add(actor->position, VEC3UP));
+	CameraSetForcedLookPos(camera, Vector3Add(actor->position, VEC3UP));
 	// Textbox display
 	SignData* sign_data = actor->data;
 	TEXTBOX_CREATE(actor, player, sign_data->text_entry_id, TEXTBOX_DEFAULT_SPEED);
