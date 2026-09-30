@@ -50,7 +50,7 @@ ACTOR_JSON_INIT(hole)
 	TriggerExitData* exit_data = actor->data;
 	exit_data->dest_scene = SCENE_FROM_STRING(cJSON_GetObjectItem(file_data, PROP_TO_SCENE)->valuestring);
 	exit_data->dest_entrance = ENTRANCE_FROM_STRING(cJSON_GetObjectItem(file_data, PROP_TO_ENTRANCE)->valuestring);
-	exit_data->radius = 1.0f;
+	exit_data->radius = 0.7f;
 }
 
 ACTOR_PRELOADASSETS(hole)
@@ -94,7 +94,7 @@ ACTOR_TRANSPARENTDRAWWORLD(hole)
 	Transform hole_transform = {
 		.translation = Vector3Add(actor->position, (Vector3) { 0.0f, 0.1f, 0.0f }),
 		.rotation = QuaternionMultiply(QuaternionFlatLookAt(actor->position, cam_main.position, VEC3UP), QuaternionFromEuler(90.0f * DEG2RAD, 0.0f, 0.0f)),
-		.scale = Vector3Multiply(actor->scale, (Vector3) { 2.0f, 2.0f, 2.0f })
+		.scale = Vector3Multiply(actor->scale, (Vector3) { 1.5f, 1.5f, 1.5f })
 	};
 
 	DrawMesh(
@@ -117,7 +117,7 @@ static void actor_hole_startleaving(struct Actor* exit, struct Actor* player)
 	PlayerData* player_data = (PlayerData*)player->data;
 	player_data->disable_collision = TRUE;
 	float original_y_vel = player->velocity.y;
-	player->velocity = Vector3Scale(Vector3FlatDirection(player->position, exit->position), 0.46f); // TOWARD the hole
+	player->velocity = Vector3Scale(Vector3FlatDirection(player->position, exit->position), 0.36f); // TOWARD the hole
 	player->velocity.y = original_y_vel - 0.2f;
 
 	// Lock the camera in place
