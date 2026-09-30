@@ -513,7 +513,7 @@ void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix m
 		rlEnableBackfaceCulling();
 }
 
-void DrawAllModelMeshes(struct Actor* actor, char* model_path, char* material_paths[])
+void DrawAllModelMeshes(struct Actor* actor, char* model_path, char* material_paths[], double tick_percent)
 {
 	Asset* model_asset = AssetGetPackage(model_path);
 	if (model_asset == NULL)
@@ -527,8 +527,17 @@ void DrawAllModelMeshes(struct Actor* actor, char* model_path, char* material_pa
 		char* mat_path = material_paths[index++];
 		if (mat_path == NULL) // Skip
 			continue;
-		STANDARD_SHADER_DRAW(actor, model_asset, mat_path, search_mesh->mesh_name);
+		STANDARD_SHADER_DRAW(actor, model_asset, mat_path, search_mesh->mesh_name, tick_percent);
 	}
+}
+
+Matrix GetDrawMatrix(struct Actor* actor, double tick_percent)
+{
+	return MatrixCompose(
+			Vector3Lerp(actor->last_position, actor->position, (float)tick_percent), 
+			QuaternionSlerp(actor->last_rotation, actor->rotation, (float)tick_percent),
+			Vector3Lerp(actor->last_scale, actor->scale, (float)tick_percent)
+	);
 }
 
 void LoadRenderTextures()
