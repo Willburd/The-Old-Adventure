@@ -43,6 +43,8 @@ ACTOR_PRELOADASSETS(door)
 {
 	// Load model
 	LoadAsset_Model(DOOR_MODEL, FALSE);
+
+	// Load Materials
 	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
 
 	// Set collision data

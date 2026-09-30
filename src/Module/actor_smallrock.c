@@ -39,10 +39,12 @@ ACTOR_PRELOADASSETS(smallrock)
 {
 	// Load model
 	LoadAsset_Model(ROCK_MODEL, FALSE);
+
+	// Load Materials
 	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
 
 	// Set collision data
-	REGISTER_COLLISION_MESH(actor, AssetGetPackage(SIMPLE_ACTOR_COLLISION_MODEL), DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
+	REGISTER_COLLISION_MESH(actor, AssetGetPackage(SIMPLE_SMALL_ACTOR_COLLISION_MODEL), DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
 }
 
 ACTOR_DRAWWORLD(smallrock)

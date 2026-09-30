@@ -50,6 +50,10 @@ ACTOR_INIT(player)
 
 ACTOR_PRELOADASSETS(player)
 {
+	// Load model
+	LoadAsset_Model(PLAYER_MODEL, TRUE);
+
+	// Load Materials
 	LoadAsset_Material(CLOTHS_FABRIC_MATERIAL, TRUE);
 	LoadAsset_Material(KIMONO_FABRIC_MATERIAL, TRUE);
 	LoadAsset_Material(KIMONO_SLEEVE_MATERIAL, TRUE);

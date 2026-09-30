@@ -59,6 +59,8 @@ ACTOR_PRELOADASSETS(woodtorch)
 {
 	// Load model
 	LoadAsset_Model(WOODTORCH_MODEL, FALSE);
+
+	// Load Materials
 	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
 
 	// Set data

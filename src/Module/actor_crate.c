@@ -34,6 +34,8 @@ ACTOR_PRELOADASSETS(crate)
 {
 	// Load model
 	LoadAsset_Model(CRATE_MODEL, FALSE);
+
+	// Load Materials
 	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
 
 	// Set collision data
