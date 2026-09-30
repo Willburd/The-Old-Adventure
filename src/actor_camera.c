@@ -6,12 +6,6 @@
 #include "game_draw.h"
 #include "collision.h"
 
-// Utility
-#define CAMERA_FOLLOW_SPEED 0.5f
-#define CAMERA_FOLLOW_DISTANCE 6.5f
-#define CAMERA_HEIGHT_DIST 3.0f
-#define CAMERA_BUBBLE_RADIUS 0.4f
-
 // private header
 ACTOR_PREUPDATE(camera);
 ACTOR_PREDRAWWORLD(camera);
@@ -105,7 +99,7 @@ ACTOR_PREUPDATE(camera)
             // Move actor
             Vector3 axis_move = { -input_analog.x, 0, input_analog.y }; // TODO - Find out why I need to invert the x axis.
             axis_move = Vector3RotateByQuaternion(axis_move, actor->rotation);
-            axis_move = Vector3Scale(axis_move, 0.1f);
+            axis_move = Vector3Scale(axis_move, 0.4f);
             actor->position = Vector3Add(actor->position, axis_move);
             // Focus camera ahead
             UpdateCameraTargetPosition(actor, Vector3Add(actor->position, Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation)));
