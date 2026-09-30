@@ -69,10 +69,10 @@ ACTOR_UPDATE(player)
 
 ACTOR_DRAWWORLD(player)
 {
-	// Draw the player and handle animations
-	//DRAWCAPSULE(ACTOR_POS_DELTA(actor, tick_percent), 1.0f, 0.5f, GREEN);
-	//DrawSphere(Vector3Add(ACTOR_POS_DELTA(actor, tick_percent), Vector3Add(Vector3Scale(VEC3UP, 1.9f), Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, 0.3f), ACTOR_ROT_DELTA(actor, tick_percent)))), 0.5, BLUE);
+	if (draw_debug_info)
+		DRAWCAPSULE(ACTOR_POS_DELTA(actor, tick_percent), PLAYER_COLLISION_TOP_HEIGHT, PLAYER_COLLISION_RADIUS, GREEN);
 
+	// Draw the player and handle animations
 	Asset* model_asset = AssetGetPackage(PLAYER_MODEL);
 	STANDARD_SHADER_DRAW(actor, model_asset, CLOTHS_FABRIC_MATERIAL, "Player-ClothFabric", tick_percent)
 	STANDARD_SHADER_DRAW(actor, model_asset, BELT_MATERIAL, "Player-Belt", tick_percent)

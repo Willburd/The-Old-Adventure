@@ -38,7 +38,7 @@
 
 #define MATRIX_ASSEMBLE(transform) MatrixMultiply(MatrixMultiply(MatrixScale(transform.scale.x, transform.scale.y, transform.scale.z), QuaternionToMatrix(transform.rotation)), MatrixTranslate(transform.translation.x, transform.translation.y, transform.translation.z))
 
-#define DRAWCAPSULE(pos, hig, rad, col) DrawCapsule(Vector3Add(pos, Vector3Scale(VEC3UP, rad)), Vector3Add(pos, Vector3Scale(VEC3UP, rad + hig + rad)), rad, 7, 5, col)
+#define DRAWCAPSULE(pos, hig, rad, col) DrawCapsuleWires(Vector3Add(pos, Vector3Scale(VEC3UP, rad)), Vector3Add(pos, Vector3Scale(VEC3UP, hig)), rad, 7, 5, col)
 
 /// Gets a fake-random value based on the position and a custom offset.
 int GetFixedRandomInt(Vector3 pos, int offset);
