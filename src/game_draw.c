@@ -458,6 +458,8 @@ int GetLightCount()
 	return light_count;
 }
 
+static const Vector4 default_blend_color = { 1.0f, 1.0f, 1.0f, 1.0f };
+
 void ShaderUpdateDefaultUniforms(Shader shader, struct Actor* actor)
 {
 	int loc = GetShaderLocation(shader, "uTime");
@@ -470,6 +472,9 @@ void ShaderUpdateDefaultUniforms(Shader shader, struct Actor* actor)
 
 	loc = GetShaderLocation(shader, "uIdentity");
 	SetShaderValue(shader, loc, &actor->uuid, SHADER_UNIFORM_INT);
+
+	loc = GetShaderLocation(shader, "uBlendColor");
+	SetShaderValue(shader, loc, (actor->actor_flags & ACTOR_FLAG_BLENDSCOLOR) ? &actor->blend_color : &default_blend_color, SHADER_UNIFORM_VEC4);
 }
 
 void ShaderUpdateFogUniforms(Shader shader)
