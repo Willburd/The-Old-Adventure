@@ -1,6 +1,7 @@
 #include "player.h"
 #include "../hud.h"
 #include "inventory.h"
+#include "../text_loading.h"
 
 #define PLAYER_FLOOR_SLOPE_DOTTHRESHOLD 0.6
 
