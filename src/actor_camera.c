@@ -9,10 +9,14 @@
 #include "Module/world_state.h"
 
 // Utility
-#define CAMERA_FOLLOW_SPEED 0.5f
-#define CAMERA_FOLLOW_DISTANCE 3.8f
-#define CAMERA_HEIGHT_DIST 3.0f
-#define CAMERA_BUBBLE_RADIUS 0.4f
+#define CAMERA_FOLLOW_SPEED 2.9f
+#define CAMERA_FOLLOW_DISTANCE 2.1f
+#define CAMERA_HEIGHT_DIST 2.1f
+#define CAMERA_BUBBLE_RADIUS 0.24f
+#define CAMERA_PLAYER_LOOK_HEIGHT 1.0f
+
+#define CAMERA_PITCH_BOTTOM -4.4f
+#define CAMERA_PITCH_TOP -1.9f
 
 // private header
 ACTOR_PREUPDATE(camera);
@@ -133,10 +137,11 @@ ACTOR_PREUPDATE(camera)
             cam_data->follow_angle += input_camera.x;
             cam_data->pitch_angle += input_camera.y;
             // Lock in bounds
-            if (cam_data->pitch_angle < -4.2f)
-                cam_data->pitch_angle = -4.2f;
-            if (cam_data->pitch_angle > -1.8f)
-                cam_data->pitch_angle = -1.8f;
+            if (cam_data->pitch_angle < CAMERA_PITCH_BOTTOM)
+                cam_data->pitch_angle = CAMERA_PITCH_BOTTOM;
+            if (cam_data->pitch_angle > CAMERA_PITCH_TOP) // Top
+                cam_data->pitch_angle = CAMERA_PITCH_TOP;
+            printf("%f", cam_data->pitch_angle);
 
             // Aim camera at player then solve where the camera should be 
             Vector3 look_pos = CameraPlayerLookPos(actor, player);
@@ -229,7 +234,7 @@ static void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos)
 // Adventure edit begin - Camera utility functions
 static Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player)
 {
-    return Vector3Add(player->position, VEC3UP);
+    return Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_PLAYER_LOOK_HEIGHT));
 }
 
 static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player)

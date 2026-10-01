@@ -9,6 +9,9 @@
 #define KIMONO_FABRIC_MATERIAL		ASSET_MATERIALS"/Characters/player_kimono_fabric.mat"
 #define KIMONO_SLEEVE_MATERIAL		ASSET_MATERIALS"/Characters/player_kimono_sleeve.mat"
 #define BELT_MATERIAL				ASSET_MATERIALS"/Characters/player_belt.mat"
+#define FUR_MATERIAL				ASSET_MATERIALS"/Characters/player_fur.mat"
+#define EYES_MATERIAL				ASSET_MATERIALS"/Characters/player_eyes.mat"
+#define NOSE_MATERIAL				ASSET_MATERIALS"/Characters/player_nose.mat"
 
 // private header
 ACTOR_PRELOADASSETS(player);
@@ -58,6 +61,9 @@ ACTOR_PRELOADASSETS(player)
 	LoadAsset_Material(KIMONO_FABRIC_MATERIAL, TRUE);
 	LoadAsset_Material(KIMONO_SLEEVE_MATERIAL, TRUE);
 	LoadAsset_Material(BELT_MATERIAL, TRUE);
+	LoadAsset_Material(FUR_MATERIAL, TRUE);
+	LoadAsset_Material(EYES_MATERIAL, TRUE);
+	LoadAsset_Material(NOSE_MATERIAL, TRUE);
 }
 
 ACTOR_UPDATE(player)
@@ -79,7 +85,7 @@ ACTOR_DRAWWORLD(player)
 
 	// Blend kimono color
 	{
-		Vector4 kimono_color = (Vector4){ 1.0f, 0.0f, 0.0f, 1.0f };
+		Vector4 kimono_color = (Vector4){ 0.9f, 0.4f, 0.0f, 1.0f };
 
 		STANDARD_SHADER_MATERIAL(kimon, KIMONO_FABRIC_MATERIAL, actor);
 		int loc = GetShaderLocation(kimon->shader, "uBlendColor"); // Replaces default blend color
@@ -93,8 +99,12 @@ ACTOR_DRAWWORLD(player)
 		ToaDrawMesh(model_asset, GetMeshIndex(model_asset->mesh_data, "Player-KimonoSleeve"), *sleeve, GetDrawMatrix(actor, tick_percent));
 	};
 
-	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "HandRight_Open-KimonoFabric", tick_percent);
-	STANDARD_SHADER_DRAW(actor, model_asset, ASSET_MATERIALS"/Engine/example.mat", "HandLeft_Open-KimonoFabric", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, FUR_MATERIAL, "Player-Fur", tick_percent)
+	STANDARD_SHADER_DRAW(actor, model_asset, EYES_MATERIAL, "Player-Eyes", tick_percent)
+	STANDARD_SHADER_DRAW(actor, model_asset, NOSE_MATERIAL, "Player-Nose", tick_percent)
+
+	STANDARD_SHADER_DRAW(actor, model_asset, FUR_MATERIAL, "HandRight_Open-Fur", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, FUR_MATERIAL, "HandLeft_Open-Fur", tick_percent);
 
 	// Additional drawing the state wants
 	PlayerData* player_data = (PlayerData*)actor->data;
