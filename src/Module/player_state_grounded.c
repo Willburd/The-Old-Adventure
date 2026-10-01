@@ -8,7 +8,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define PLAYER_GROUND_ACCELERATION 0.08f
-#define PLAYER_GROUND_MAXSPEED 0.21f
+#define PLAYER_GROUND_MAXSPEED 0.14f
 #define PLAYER_GROUND_FRICTION 0.05f
 #define PLAYER_GROUND_STOP_FRICTION 0.2f
 #define PLAYER_GROUND_SNAPTURN_FRICTION 0.7f
