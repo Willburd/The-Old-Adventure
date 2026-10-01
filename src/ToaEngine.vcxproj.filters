@@ -273,11 +273,11 @@
     <ClCompile Include="Module\actor_water_volume.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
-    <ClCompile Include="Module\player_state_swimming.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Module\actor_door.c">
       <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\player_state_swimming.c">
+      <Filter>Source Files\module\actors\StateMachines</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
