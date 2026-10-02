@@ -107,7 +107,7 @@ int main(void)
         }
         if (IsKeyPressed(KEY_F7)) // Misc debug
         {
-            debug_world_actors = !debug_world_actors; // Adventure edit - Debug camera
+            debug_world_actors = TRUE; // Adventure edit - Debug camera
         }
         // Adventure edit begin - Forced scene layer debug
         DebugWorldStateInput();

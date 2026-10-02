@@ -3,6 +3,8 @@
 #include "world_state.h"
 #include "../game_state.h"
 #include "../actor_scene.h"
+#include "../actor_factory.h"
+#include "../camera.h"
 
 void InitWorldState()
 {
@@ -198,5 +200,20 @@ void DebugWorldStateInput()
 			ChangeSceneRoom(current_scene, modifier + 9, FALSE, FALSE);
 		else if (IsKeyPressed(KEY_ZERO))
 			ChangeSceneRoom(current_scene, modifier + 0, FALSE, FALSE);
+
+
+		// Force return to player
+		if (IsKeyPressed(KEY_P))
+		{
+			debug_world_actors = FALSE;
+			struct Actor* cam = FINDACTOR_BYTYPE(act_camera);
+			CameraData* cam_data = (CameraData*)cam->data;
+			cam_data->camera_mode = CAMERA_MODE_FOLLOW;
+
+			struct Actor* player = FINDACTOR_BYTYPE(act_player);
+			if (!ACTOR_EXISTS(player))
+				player = ACTOR_FACTORY(NULL, act_player, current_scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
+			ACTOR_POS_SNAP(player, cam->position);
+		}
 	}
 }
