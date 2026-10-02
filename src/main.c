@@ -36,7 +36,7 @@ int frame_rate = 60;
 int screenWidth = 800;
 int screenHeight = 600;
 
-int renderHeight = 240;
+int renderHeight = 320; // Adventure edit - Raised default res
 int renderWidth = -1;
 
 double update_ticker = 0;

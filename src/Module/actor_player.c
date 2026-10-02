@@ -16,6 +16,7 @@
 #define EARS_MATERIAL				ASSET_MATERIALS"/Characters/player_ears.mat"
 #define CLAWS_MATERIAL				ASSET_MATERIALS"/Characters/player_claws.mat"
 #define SHOES_MATERIAL				ASSET_MATERIALS"/Characters/player_shoes.mat"
+#define HAIR_MATERIAL				ASSET_MATERIALS"/Characters/npc_hair.mat"
 
 // private header
 ACTOR_PRELOADASSETS(player);
@@ -72,6 +73,7 @@ ACTOR_PRELOADASSETS(player)
 	LoadAsset_Material(EARS_MATERIAL, TRUE);
 	LoadAsset_Material(CLAWS_MATERIAL, TRUE);
 	LoadAsset_Material(SHOES_MATERIAL, TRUE);
+	LoadAsset_Material(HAIR_MATERIAL, TRUE);
 }
 
 ACTOR_UPDATE(player)
@@ -105,6 +107,17 @@ ACTOR_DRAWWORLD(player)
 
 		ToaDrawMesh(model_asset, GetMeshIndex(model_asset->mesh_data, "Player-KimonoFabric"), *kimon, GetDrawMatrix(actor, tick_percent));
 		ToaDrawMesh(model_asset, GetMeshIndex(model_asset->mesh_data, "Player-KimonoSleeve"), *sleeve, GetDrawMatrix(actor, tick_percent));
+	};
+
+	// Blend hair color
+	{
+		Vector4 hair_color = (Vector4){ 1.0f, 0.88f, 0.52f, 1.0f };
+
+		STANDARD_SHADER_MATERIAL(hair, HAIR_MATERIAL, actor);
+		int loc = GetShaderLocation(hair->shader, "uBlendColor"); // Replaces default blend color
+		SetShaderValue(hair->shader, loc, &hair_color, SHADER_UNIFORM_VEC4);
+
+		ToaDrawMesh(model_asset, GetMeshIndex(model_asset->mesh_data, "Player-Hair"), *hair, GetDrawMatrix(actor, tick_percent));
 	};
 
 	STANDARD_SHADER_DRAW(actor, model_asset, FUR_MATERIAL, "Player-Fur", tick_percent);
