@@ -201,7 +201,6 @@ void DebugWorldStateInput()
 		else if (IsKeyPressed(KEY_ZERO))
 			ChangeSceneRoom(current_scene, modifier + 0, FALSE, FALSE);
 
-
 		// Force return to player
 		if (IsKeyPressed(KEY_P))
 		{
