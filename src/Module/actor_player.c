@@ -13,6 +13,7 @@
 #define EYES_MATERIAL				ASSET_MATERIALS"/Characters/player_eyes.mat"
 #define NOSE_MATERIAL				ASSET_MATERIALS"/Characters/player_nose.mat"
 #define MOUTH_MATERIAL				ASSET_MATERIALS"/Characters/player_mouth.mat"
+#define EARS_MATERIAL				ASSET_MATERIALS"/Characters/player_ears.mat"
 
 // private header
 ACTOR_PRELOADASSETS(player);
@@ -66,6 +67,7 @@ ACTOR_PRELOADASSETS(player)
 	LoadAsset_Material(EYES_MATERIAL, TRUE);
 	LoadAsset_Material(NOSE_MATERIAL, TRUE);
 	LoadAsset_Material(MOUTH_MATERIAL, TRUE);
+	LoadAsset_Material(EARS_MATERIAL, TRUE);
 }
 
 ACTOR_UPDATE(player)
@@ -105,6 +107,7 @@ ACTOR_DRAWWORLD(player)
 	STANDARD_SHADER_DRAW(actor, model_asset, EYES_MATERIAL, "Player-Eyes", tick_percent);
 	STANDARD_SHADER_DRAW(actor, model_asset, NOSE_MATERIAL, "Player-Nose", tick_percent);
 	STANDARD_SHADER_DRAW(actor, model_asset, MOUTH_MATERIAL, "Player-Mouth", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, EARS_MATERIAL, "Player-Ears", tick_percent);
 
 	STANDARD_SHADER_DRAW(actor, model_asset, FUR_MATERIAL, "HandRight_Open-Fur", tick_percent);
 	STANDARD_SHADER_DRAW(actor, model_asset, FUR_MATERIAL, "HandLeft_Open-Fur", tick_percent);
