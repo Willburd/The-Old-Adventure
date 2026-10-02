@@ -35,6 +35,18 @@ typedef struct {
 // Player state control
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#define CREATE_STATE(state) \
+void PlayerState_##state##_Enter(struct Actor* player, PlayerData* player_data, int previous_state); \
+void PlayerState_##state##_Update(struct Actor* player); \
+void PlayerState_##state##_DrawWorld(struct Actor* player, double tick_percent); \
+void PlayerState_##state##_DrawHud(struct Actor* player, double tick_percent); \
+void PlayerState_##state##_Exit(struct Actor* player)
+
+#define STATE_ENTER(id, state) \
+case id: \
+	PlayerState_##state##_Enter(player, player_data, old_state); \
+	return
+
 enum PlayerState
 {
 	plysta_generic,
@@ -43,22 +55,10 @@ enum PlayerState
 	plysta_swimming,
 };
 
-#define CREATE_STATE(state) \
-void PlayerState_##state##_Enter(struct Actor* player, PlayerData* player_data, int previous_state); \
-void PlayerState_##state##_Update(struct Actor* player); \
-void PlayerState_##state##_DrawWorld(struct Actor* player, double tick_percent); \
-void PlayerState_##state##_DrawHud(struct Actor* player, double tick_percent); \
-void PlayerState_##state##_Exit(struct Actor* player)
-
 CREATE_STATE(Generic); // Misc state just for helpers
 CREATE_STATE(Grounded); // When on the ground and moving
 CREATE_STATE(Air); // Falling through the air
 CREATE_STATE(Swimming); // Swimming
-
-#define STATE_ENTER(id, state) \
-case id: \
-	PlayerState_##state##_Enter(player, player_data, old_state); \
-	return
 
 // State entry and tick functions
 static void inline PlayerChangeState(struct Actor* player, int new_state)
