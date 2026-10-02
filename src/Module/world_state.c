@@ -157,34 +157,46 @@ int IsNight()
 
 void DebugWorldStateInput()
 {
-	int modifier = 0;
+	// Time shifting
+	if (IsKeyDown(KEY_EQUAL))
+		daynight_cycle += 0.001f;
+	if (IsKeyDown(KEY_MINUS))
+	{
+		daynight_cycle -= 0.001f;
+		while (daynight_cycle < 0)
+			daynight_cycle += 1.0f;
+	}
 
-	struct Actor* current_scene = GetCurrentScene();
-	if (IsKeyDown(KEY_LEFT_CONTROL))
-		modifier = 30;
-	else if (IsKeyDown(KEY_LEFT_ALT))
-		modifier = 20;
-	else if (IsKeyDown(KEY_LEFT_SHIFT))
-		modifier = 10;
-
-	if (IsKeyPressed(KEY_ONE))
-		ChangeSceneRoom(current_scene, modifier + 1, FALSE, FALSE);
-	else if (IsKeyPressed(KEY_TWO))
-		ChangeSceneRoom(current_scene, modifier + 2, FALSE, FALSE);
-	else if (IsKeyPressed(KEY_THREE))
-		ChangeSceneRoom(current_scene, modifier + 3, FALSE, FALSE);
-	else if (IsKeyPressed(KEY_FOUR))
-		ChangeSceneRoom(current_scene, modifier + 4, FALSE, FALSE);
-	else if (IsKeyPressed(KEY_FIVE))
-		ChangeSceneRoom(current_scene, modifier + 5, FALSE, FALSE);
-	else if (IsKeyPressed(KEY_SIX))
-		ChangeSceneRoom(current_scene, modifier + 6, FALSE, FALSE);
-	else if (IsKeyPressed(KEY_SEVEN))
-		ChangeSceneRoom(current_scene, modifier + 7, FALSE, FALSE);
-	else if (IsKeyPressed(KEY_EIGHT))
-		ChangeSceneRoom(current_scene, modifier + 8, FALSE, FALSE);
-	else if (IsKeyPressed(KEY_NINE))
-		ChangeSceneRoom(current_scene, modifier + 9, FALSE, FALSE);
-	else if (IsKeyPressed(KEY_ZERO))
-		ChangeSceneRoom(current_scene, modifier + 0, FALSE, FALSE);
+	// Room loading
+	if (debug_world_actors)
+	{
+		int modifier = 0;
+		struct Actor* current_scene = GetCurrentScene();
+		if (IsKeyDown(KEY_LEFT_CONTROL))
+			modifier = 30;
+		else if (IsKeyDown(KEY_LEFT_ALT))
+			modifier = 20;
+		else if (IsKeyDown(KEY_LEFT_SHIFT))
+			modifier = 10;
+		if (IsKeyPressed(KEY_ONE))
+			ChangeSceneRoom(current_scene, modifier + 1, FALSE, FALSE);
+		else if (IsKeyPressed(KEY_TWO))
+			ChangeSceneRoom(current_scene, modifier + 2, FALSE, FALSE);
+		else if (IsKeyPressed(KEY_THREE))
+			ChangeSceneRoom(current_scene, modifier + 3, FALSE, FALSE);
+		else if (IsKeyPressed(KEY_FOUR))
+			ChangeSceneRoom(current_scene, modifier + 4, FALSE, FALSE);
+		else if (IsKeyPressed(KEY_FIVE))
+			ChangeSceneRoom(current_scene, modifier + 5, FALSE, FALSE);
+		else if (IsKeyPressed(KEY_SIX))
+			ChangeSceneRoom(current_scene, modifier + 6, FALSE, FALSE);
+		else if (IsKeyPressed(KEY_SEVEN))
+			ChangeSceneRoom(current_scene, modifier + 7, FALSE, FALSE);
+		else if (IsKeyPressed(KEY_EIGHT))
+			ChangeSceneRoom(current_scene, modifier + 8, FALSE, FALSE);
+		else if (IsKeyPressed(KEY_NINE))
+			ChangeSceneRoom(current_scene, modifier + 9, FALSE, FALSE);
+		else if (IsKeyPressed(KEY_ZERO))
+			ChangeSceneRoom(current_scene, modifier + 0, FALSE, FALSE);
+	}
 }

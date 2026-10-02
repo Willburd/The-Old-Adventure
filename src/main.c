@@ -110,8 +110,7 @@ int main(void)
             debug_world_actors = !debug_world_actors; // Adventure edit - Debug camera
         }
         // Adventure edit begin - Forced scene layer debug
-        if (debug_world_actors)
-            DebugWorldStateInput();
+        DebugWorldStateInput();
         // Adventure end
 #endif
 
