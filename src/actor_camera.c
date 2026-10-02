@@ -10,6 +10,7 @@
 ACTOR_PREUPDATE(camera);
 ACTOR_PREDRAWWORLD(camera);
 ACTOR_DRAWWORLD(camera);
+ACTOR_DRAWHUD(camera);
 static void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,6 +24,7 @@ ACTOR_INIT(camera)
     ACTOR_REGISTER_PREUPDATE(camera);
     ACTOR_REGISTER_PREDRAWWORLD(camera);
     ACTOR_REGISTER_DRAWWORLD(camera);
+    ACTOR_REGISTER_DRAWHUD(camera);
 
     // Configure camera
     cam_main = (Camera)
@@ -115,6 +117,7 @@ ACTOR_PREDRAWWORLD(camera)
     cam_main.position = ACTOR_POS_DELTA(actor, tick_percent);
 }
 
+static Vector3 last_hit_pos = { 0,0,0 };
 ACTOR_DRAWWORLD(camera)
 {
     if (!draw_debug_info)
@@ -136,10 +139,21 @@ ACTOR_DRAWWORLD(camera)
             if (ray_col.ray_col.hit) // Hit a wall, bump out from it!
             {
                 DrawSphere(ray_col.ray_col.point, 0.06f, YELLOW);
+                last_hit_pos = ray_col.ray_col.point;
             }
         }
         break;
     }
+}
+
+ACTOR_DRAWHUD(camera)
+{
+    if (!draw_debug_info)
+        return;
+    CameraData* cam_data = (CameraData*)actor->data;
+    if (cam_data->camera_mode != CAMERA_MODE_FREEMOVE)
+        return;
+    DrawText(TextFormat("[hitpos: %f, %f, %f]", last_hit_pos.x, last_hit_pos.y, last_hit_pos.z), 5, 35, 4, WHITE);
 }
 
 static void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos)
