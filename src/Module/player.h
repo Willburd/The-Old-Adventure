@@ -19,13 +19,6 @@
 
 #define PLAYER_TERMINAL_VELOCITY -1.6f
 
-enum PlayerState
-{
-	plysta_grounded,
-	plysta_air,
-	plysta_swimming,
-};
-
 typedef struct {
 	int current_state;
 	void (*func_state_update)(struct Actor* player);
@@ -37,6 +30,18 @@ typedef struct {
 	char* current_action_button_text;
 	int disable_collision;
 } PlayerData;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Player state control
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+enum PlayerState
+{
+	plysta_generic,
+	plysta_grounded,
+	plysta_air,
+	plysta_swimming,
+};
 
 #define CREATE_STATE(state) \
 void PlayerState_##state##_Enter(struct Actor* player, PlayerData* player_data, int previous_state); \
@@ -50,6 +55,32 @@ CREATE_STATE(Grounded); // When on the ground and moving
 CREATE_STATE(Air); // Falling through the air
 CREATE_STATE(Swimming); // Swimming
 
+#define STATE_ENTER(id, state) \
+case id: \
+	PlayerState_##state##_Enter(player, player_data, old_state); \
+	return
+
+// State entry and tick functions
+static void inline PlayerChangeState(struct Actor* player, int new_state)
+{
+	// Eject the previous state if we are changing to a new one
+	PlayerData* player_data = (PlayerData*)player->data;
+	int old_state = player_data->current_state;
+	if (player_data->current_state != new_state)
+		player_data->func_state_exitstate(player);
+
+	// Change to a new state
+	switch (new_state)
+	{
+		STATE_ENTER(plysta_generic, Generic);
+		STATE_ENTER(plysta_grounded, Grounded);
+		STATE_ENTER(plysta_air, Air);
+		STATE_ENTER(plysta_swimming, Swimming);
+	}
+}
+
+#undef CREATE_STATE
+#undef STATE_ENTER
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Player utility functions
