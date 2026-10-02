@@ -7,13 +7,13 @@
 #include "collision.h"
 // Adventure
 #include "Module/world_state.h"
+#include "Module/player.h"
 
 // Utility
 #define CAMERA_FOLLOW_SPEED 2.9f
 #define CAMERA_FOLLOW_DISTANCE 2.1f
 #define CAMERA_HEIGHT_DIST 2.1f
-#define CAMERA_BUBBLE_RADIUS 0.24f
-#define CAMERA_PLAYER_LOOK_HEIGHT 1.0f
+#define CAMERA_BUBBLE_RADIUS 0.16f
 
 #define CAMERA_PITCH_BOTTOM -4.4f
 #define CAMERA_PITCH_TOP -1.9f
@@ -24,7 +24,6 @@ ACTOR_PREDRAWWORLD(camera);
 ACTOR_DRAWWORLD(camera);
 static void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos);
 // Adventure
-static Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player);
 static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -232,11 +231,6 @@ static void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos)
 }
 
 // Adventure edit begin - Camera utility functions
-static Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player)
-{
-    return Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_PLAYER_LOOK_HEIGHT));
-}
-
 static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player)
 {
     Vector3 player_target_pos = CameraPlayerLookPos(camera, player);

@@ -12,10 +12,12 @@
 #define PLAYER_COLLISION_STEP_HEIGHT 0.33f
 #define PLAYER_COLLISION_MID_HEIGHT 0.8f
 #define PLAYER_COLLISION_TOP_HEIGHT 1.3f
-#define PLAYER_COLLISION_RADIUS 0.30f
-#define PLAYER_SWIM_HEIGHT 0.9f
+#define PLAYER_COLLISION_RADIUS 0.42f
 
+#define CAMERA_PLAYER_LOOK_HEIGHT 1.25f
 #define PLAYER_COLLISION_FLOOR_SENSOR_LENGTH 0.15f
+#define PLAYER_SWIM_HEIGHT 0.9f
+#define PLAYER_FLOOR_SLOPE_DOTTHRESHOLD 0.6
 
 #define PLAYER_TERMINAL_VELOCITY -1.6f
 
@@ -94,5 +96,6 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent);
 void PlayerStandardPauseActivate(struct Actor* player);
 void PlayerStandardBehavior(struct Actor* player, int can_accept_input, float max_speed, float acceleration, float slowing_friction, float stoping_friction, float snapturn_friction, float turn_rate);
 void PlayerStandardInteraction(struct Actor* player, int can_accept_input);
+Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player);
 
 #endif

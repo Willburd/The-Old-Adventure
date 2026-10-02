@@ -12,6 +12,7 @@
 #define FUR_MATERIAL				ASSET_MATERIALS"/Characters/player_fur.mat"
 #define EYES_MATERIAL				ASSET_MATERIALS"/Characters/player_eyes.mat"
 #define NOSE_MATERIAL				ASSET_MATERIALS"/Characters/player_nose.mat"
+#define MOUTH_MATERIAL				ASSET_MATERIALS"/Characters/player_mouth.mat"
 
 // private header
 ACTOR_PRELOADASSETS(player);
@@ -64,6 +65,7 @@ ACTOR_PRELOADASSETS(player)
 	LoadAsset_Material(FUR_MATERIAL, TRUE);
 	LoadAsset_Material(EYES_MATERIAL, TRUE);
 	LoadAsset_Material(NOSE_MATERIAL, TRUE);
+	LoadAsset_Material(MOUTH_MATERIAL, TRUE);
 }
 
 ACTOR_UPDATE(player)
@@ -99,9 +101,10 @@ ACTOR_DRAWWORLD(player)
 		ToaDrawMesh(model_asset, GetMeshIndex(model_asset->mesh_data, "Player-KimonoSleeve"), *sleeve, GetDrawMatrix(actor, tick_percent));
 	};
 
-	STANDARD_SHADER_DRAW(actor, model_asset, FUR_MATERIAL, "Player-Fur", tick_percent)
-	STANDARD_SHADER_DRAW(actor, model_asset, EYES_MATERIAL, "Player-Eyes", tick_percent)
-	STANDARD_SHADER_DRAW(actor, model_asset, NOSE_MATERIAL, "Player-Nose", tick_percent)
+	STANDARD_SHADER_DRAW(actor, model_asset, FUR_MATERIAL, "Player-Fur", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, EYES_MATERIAL, "Player-Eyes", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, NOSE_MATERIAL, "Player-Nose", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, MOUTH_MATERIAL, "Player-Mouth", tick_percent);
 
 	STANDARD_SHADER_DRAW(actor, model_asset, FUR_MATERIAL, "HandRight_Open-Fur", tick_percent);
 	STANDARD_SHADER_DRAW(actor, model_asset, FUR_MATERIAL, "HandLeft_Open-Fur", tick_percent);

@@ -3,8 +3,6 @@
 #include "inventory.h"
 #include "../text_loading.h"
 
-#define PLAYER_FLOOR_SLOPE_DOTTHRESHOLD 0.6
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Generic player state
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -248,4 +246,9 @@ void PlayerStandardInteraction(struct Actor* player, int can_accept_input)
 			return;
 		}
 	}
+}
+
+Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player)
+{
+	return Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_PLAYER_LOOK_HEIGHT));
 }

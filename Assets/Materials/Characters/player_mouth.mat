@@ -1,5 +1,5 @@
 // Textures
-#ALBED /Characters/player_nose.png FILT_BI WRAP_CLAMP
+#ALBED /Characters/player_mouth.png FILT_BI WRAP_CLAMP
 
 // Shader
 #SHADR /standard.vert /standard.frag
