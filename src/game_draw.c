@@ -2,6 +2,7 @@
 #include "camera.h"
 #include "globals.h"
 #include "actor_factory.h"
+#include "Module/core_assets.h"
 #include "rlgl.h"
 #include "tools.h"
 #include "collision.h"
@@ -507,6 +508,9 @@ void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix m
 	int show_backface = MaterialFlagGet(&material, MATFLAG_BOTH_FACES);
 	if (show_backface)
 		rlDisableBackfaceCulling();
+	// Fallback model
+	if (model_asset == NULL)
+		model_asset = AssetGetPackage(CUBE_MODEL);
 	// Draw
 	DrawMesh(
 		model_asset->mdl->meshes[mesh_index],
