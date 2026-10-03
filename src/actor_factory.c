@@ -30,14 +30,6 @@ struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
 	struct Actor* new_actor = ACTOR_FACTORY(actor_data, actor_type, actor_parent, at_position, at_rotation, at_scale, initial_velocity, initial_angular_velocity);
 	if (!new_actor)
 		return NULL;
-
-	// Apply global tags that need the actor to be init first.
-	JSON_GET_STRING(new_actor->id_tag, actor_data, PROP_IDTAG, NULL);
-	JSON_GET_INT(new_actor->triggers_flags, actor_data, PROP_TRIGGERFLAG, 0);
-	JSON_GET_INT(new_actor->flag_group_selector, actor_data, PROP_FLAGGROUP, 0);
-	JSON_GET_STRING(new_actor->skin_select, actor_data, PROP_USESKIN, NULL);
-	JSON_GET_STRING(new_actor->model_select, actor_data, PROP_USEMODEL, NULL);
-
 	return new_actor;
 }
 
@@ -85,11 +77,18 @@ struct Actor* ACTOR_FACTORY(cJSON* actor_data, ActorTypes actor_type, struct Act
 
 	// Configure to type of actor made
 	ACTOR_LIBRARY(actor, actor_type);
-	if (actor_type != act_scene && ACTOR_HAS(actor, func_preloadassets)) // Scenes handle preload assets themselves at a much earlier point
-		actor->func_preloadassets(actor);
-	// Custom actor tags
+	// Apply global tags that need the actor to be init first.
+	JSON_GET_STRING(actor->id_tag, actor_data, PROP_IDTAG, NULL);
+	JSON_GET_INT(actor->triggers_flags, actor_data, PROP_TRIGGERFLAG, 0);
+	JSON_GET_INT(actor->flag_group_selector, actor_data, PROP_FLAGGROUP, 0);
+	JSON_GET_STRING(actor->skin_select, actor_data, PROP_USESKIN, NULL);
+	JSON_GET_STRING(actor->model_select, actor_data, PROP_USEMODEL, NULL);
+	// Apply custom json tags
 	if (ACTOR_HAS(actor, func_json_init)) 
 		actor->func_json_init(actor, actor_data);
+	// Load assets now that we are configured
+	if (actor_type != act_scene && ACTOR_HAS(actor, func_preloadassets)) // Scenes handle preload assets themselves at a much earlier point
+		actor->func_preloadassets(actor);
 
 #ifdef _DEBUG
 		printf("ACTOR SPAWN: [type: %s] slot: %i [%llu]\n", actor->actor_type_name, actor->index, actor->uuid);

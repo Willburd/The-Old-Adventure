@@ -27,6 +27,8 @@ int draw_collider_info;
 	); \
 };
 
+#define ALTSKIN(_prefix, _selector, _suffix) TextFormat("%s%s%s", _prefix, _selector == NULL ? "A" : _selector, _suffix)
+
 #define RENDER_LAYER_SIZE 4096
 
 float fog_distance;
