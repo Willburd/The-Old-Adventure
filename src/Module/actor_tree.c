@@ -2,6 +2,7 @@
 #include "../tools.h"
 #include "../collision.h"
 #include "../game_draw.h"
+#include "json_properties.h"
 
 // Assets
 #define TREE_MODEL_PREFIX ASSET_MODELS"/Trees/tree_"
@@ -11,6 +12,7 @@
 #define BRANCH_MATERIAL_PREFIX ASSET_MATERIALS"/Trees/branches_"
 
 // private header
+ACTOR_JSON_INIT(tree);
 ACTOR_PRELOADASSETS(tree);
 ACTOR_DRAWWORLD(tree);
 
@@ -23,6 +25,7 @@ ACTOR_INIT(tree)
 {
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
 	actor->blend_color = ColorToVector4(GOLD);
+	ACTOR_REGISTER_JSON_INIT(tree);
 	ACTOR_REGISTER_PRELOADASSETS(tree);
 	ACTOR_REGISTER_DRAWWORLD(tree);
 }
@@ -30,6 +33,19 @@ ACTOR_INIT(tree)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ACTOR_JSON_INIT(tree)
+{
+	if (JSON_GET_BOOL(file_data, PROP_RANDOMVARIATION))
+	{
+		actor->rotation = QuaternionMultiply(actor->rotation,
+			QuaternionFromEuler(
+				(-1.0f + fmod(GetFixedRandomFloat(actor->position, 712.3f), 2.0f)) * DEG2RAD,
+				fmod(GetFixedRandomFloat(actor->position, 2321.4f), 360.0f) * DEG2RAD,
+				(-1.0f + fmod(GetFixedRandomFloat(actor->position, 217.3f), 2.0f)) * DEG2RAD));
+		actor->scale = Vector3Scale(actor->scale, 0.95f + fmod(GetFixedRandomFloat(actor->position, 821.2f), 0.1f));
+	}
+}
 
 ACTOR_PRELOADASSETS(tree)
 {

@@ -18,6 +18,9 @@
 
 // Adventure
 
+// General
+#define PROP_RANDOMVARIATION "random_variation"
+
 // Exits
 #define PROP_TO_SCENE "to_scene"
 #define PROP_TO_ENTRANCE "to_entrance"
