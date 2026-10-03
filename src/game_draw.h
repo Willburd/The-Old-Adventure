@@ -21,7 +21,7 @@ int draw_collider_info;
 	STANDARD_SHADER_MATERIAL(_mat, _mat_path, _actor); \
 	ToaDrawMesh( \
 		_model_asset, \
-		GetMeshIndex(_model_asset->mesh_data, _mesh_id), \
+		_model_asset != NULL ? GetMeshIndex(_model_asset->mesh_data, _mesh_id) : 0, \
 		*_mat, \
 		GetDrawMatrix(_actor, _delta) \
 	); \
