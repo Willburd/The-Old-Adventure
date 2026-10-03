@@ -43,6 +43,7 @@ typedef enum
 	act_fire,
 	act_woodtorch,
 	act_tree,
+	act_bush,
 	act_hole,
 	act_crate,
 	act_smallrock,
@@ -85,6 +86,7 @@ ACTOR_INIT(signpost);
 ACTOR_INIT(fire);
 ACTOR_INIT(woodtorch);
 ACTOR_INIT(tree);
+ACTOR_INIT(bush);
 ACTOR_INIT(hole);
 ACTOR_INIT(crate);
 ACTOR_INIT(smallrock);
@@ -128,6 +130,7 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(fire);
 	ACTOR_STRING_CASE(woodtorch);
 	ACTOR_STRING_CASE(tree);
+	ACTOR_STRING_CASE(bush);
 	ACTOR_STRING_CASE(hole);
 	ACTOR_STRING_CASE(crate);
 	ACTOR_STRING_CASE(smallrock);
@@ -176,6 +179,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 		MAKE_ACTOR_INIT(fire);
 		MAKE_ACTOR_INIT(woodtorch);
 		MAKE_ACTOR_INIT(tree);
+		MAKE_ACTOR_INIT(bush);
 		MAKE_ACTOR_INIT(hole);
 		MAKE_ACTOR_INIT(crate);
 		MAKE_ACTOR_INIT(smallrock);

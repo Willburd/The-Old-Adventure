@@ -279,6 +279,9 @@
     <ClCompile Include="Module\player_state_swimming.c">
       <Filter>Source Files\module\actors\StateMachines</Filter>
     </ClCompile>
+    <ClCompile Include="Module\actor_bush.c">
+      <Filter>Source Files\module\actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
