@@ -20,82 +20,23 @@ struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
 	int actor_type = ACTOR_FROM_STRING(cJSON_GetObjectItem(actor_data, "type")->valuestring);
 
 	// Create the actor's spawn transform
-	Vector3 at_position = Vector3Zero();
-	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_POS)))
-	{
-		cJSON* pos_array = cJSON_GetObjectItem(actor_data, PROP_POS);
-		at_position = (Vector3){
-			(float)cJSON_GetArrayItem(pos_array, 0)->valuedouble,
-			(float)cJSON_GetArrayItem(pos_array, 1)->valuedouble,
-			(float)cJSON_GetArrayItem(pos_array, 2)->valuedouble,
-		};
-	}
-	Quaternion at_rotation = QuaternionIdentity();
-	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_ROT)))
-	{
-		cJSON* rot_array = cJSON_GetObjectItem(actor_data, PROP_ROT);
-		at_rotation = QuaternionFromEuler(
-			(float)cJSON_GetArrayItem(rot_array, 0)->valuedouble * DEG2RAD,
-			(float)cJSON_GetArrayItem(rot_array, 1)->valuedouble * DEG2RAD,
-			(float)cJSON_GetArrayItem(rot_array, 2)->valuedouble * DEG2RAD
-		);
-	}
-	Vector3 at_scale = Vector3One();
-	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_SCL)))
-	{
-		cJSON* scl_array = cJSON_GetObjectItem(actor_data, PROP_SCL);
-		at_scale = (Vector3){
-			(float)cJSON_GetArrayItem(scl_array, 0)->valuedouble,
-			(float)cJSON_GetArrayItem(scl_array, 1)->valuedouble,
-			(float)cJSON_GetArrayItem(scl_array, 2)->valuedouble,
-		};
-	}
-	Vector3 initial_velocity = Vector3Zero();
-	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_VEL)))
-	{
-		cJSON* vel_array = cJSON_GetObjectItem(actor_data, PROP_VEL);
-		initial_velocity = (Vector3){
-			(float)cJSON_GetArrayItem(vel_array, 0)->valuedouble,
-			(float)cJSON_GetArrayItem(vel_array, 1)->valuedouble,
-			(float)cJSON_GetArrayItem(vel_array, 2)->valuedouble,
-		};
-
-	}
-	Vector3 initial_angular_velocity = Vector3Zero();
-	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_ANGVEL)))
-	{
-		cJSON* vel_array = cJSON_GetObjectItem(actor_data, PROP_ANGVEL);
-		initial_angular_velocity = (Vector3){
-			(float)cJSON_GetArrayItem(vel_array, 0)->valuedouble * DEG2RAD,
-			(float)cJSON_GetArrayItem(vel_array, 1)->valuedouble * DEG2RAD,
-			(float)cJSON_GetArrayItem(vel_array, 2)->valuedouble * DEG2RAD,
-		};
-
-	}
+	Vector3 JSON_GET_VECTOR3(at_position, actor_data, PROP_POS, Vector3Zero());
+	Quaternion JSON_GET_QUATERNION(at_rotation, actor_data, PROP_ROT, QuaternionIdentity());
+	Vector3 JSON_GET_VECTOR3(at_scale, actor_data, PROP_SCL, Vector3One());
+	Vector3 JSON_GET_VECTOR3(initial_velocity, actor_data, PROP_VEL, Vector3Zero());
+	Vector3 JSON_GET_VECTOR3(initial_angular_velocity, actor_data, PROP_ANGVEL, Vector3Zero());
 
 	// Construct the actor
 	struct Actor* new_actor = ACTOR_FACTORY(actor_data, actor_type, actor_parent, at_position, at_rotation, at_scale, initial_velocity, initial_angular_velocity);
 	if (!new_actor)
 		return NULL;
 
-	// Apply global tags that need the actor init.
-	if (cJSON_IsString(cJSON_GetObjectItem(actor_data, PROP_IDTAG)))
-	{
-		char* idtag_data = cJSON_GetObjectItem(actor_data, PROP_IDTAG)->valuestring;
-		CHAR_STR_COPY(new_actor->id_tag, idtag_data, NULL);
-	}
-
-	// Flag index
-	if (cJSON_IsNumber(cJSON_GetObjectItem(actor_data, PROP_TRIGGERFLAG)))
-	{
-		new_actor->triggers_flags = (int)cJSON_GetObjectItem(actor_data, PROP_TRIGGERFLAG)->valuedouble;
-	}
-
-	// Flag type
-	if (cJSON_IsNumber(cJSON_GetObjectItem(actor_data, PROP_FLAGGROUP)))
-	{
-		new_actor->flag_group_selector = (int)cJSON_GetObjectItem(actor_data, PROP_FLAGGROUP)->valuedouble;
-	}
+	// Apply global tags that need the actor to be init first.
+	JSON_GET_STRING(new_actor->id_tag, actor_data, PROP_IDTAG, NULL);
+	JSON_GET_INT(new_actor->triggers_flags, actor_data, PROP_TRIGGERFLAG, 0);
+	JSON_GET_INT(new_actor->flag_group_selector, actor_data, PROP_FLAGGROUP, 0);
+	JSON_GET_STRING(new_actor->skin_select, actor_data, PROP_USESKIN, NULL);
+	JSON_GET_STRING(new_actor->model_select, actor_data, PROP_USEMODEL, NULL);
 
 	return new_actor;
 }
@@ -270,6 +211,10 @@ void HandleActorFinalCleanup(struct Actor* goner)
 		RELEASE(goner->data);
 	if (ACTOR_HAS(goner, id_tag))
 		RELEASE(goner->id_tag);
+	if (ACTOR_HAS(goner, skin_select))
+		RELEASE(goner->skin_select);
+	if (ACTOR_HAS(goner, model_select))
+		RELEASE(goner->model_select);
 	ACTOR_CLEAR(goner);
 	RELEASE(goner);
 }

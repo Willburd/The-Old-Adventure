@@ -105,6 +105,18 @@ if (cJSON_IsArray(cJSON_GetObjectItem(data, tag))) \
 	}; \
 }
 
+#define JSON_GET_QUATERNION(var, data, tag, def) \
+var = def; \
+if (cJSON_IsArray(cJSON_GetObjectItem(data, tag))) \
+{ \
+	cJSON* array = cJSON_GetObjectItem(data, tag); \
+	var = QuaternionFromEuler( \
+		(float)cJSON_GetArrayItem(array, 0)->valuedouble * DEG2RAD, \
+		(float)cJSON_GetArrayItem(array, 1)->valuedouble * DEG2RAD, \
+		(float)cJSON_GetArrayItem(array, 2)->valuedouble * DEG2RAD \
+	); \
+}
+
 #define JSON_GET_VECTOR4(var, data, tag, def) \
 var = def; \
 if (cJSON_IsArray(cJSON_GetObjectItem(data, tag))) \
