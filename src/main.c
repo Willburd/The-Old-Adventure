@@ -17,6 +17,10 @@
 #include "tools.h"
 #include "game_state.h"
 #include "text_loading.h"
+// Adventure
+#include "Module/world_state.h"
+#include "Module/inventory.h"
+#include "Module/adv_postprocessing.h"
 
 #define RAYMATH_USE_SIMD_INTRINSICS 1
 #define PLATFORM_DESKTOP 1
@@ -32,7 +36,7 @@ int frame_rate = 60;
 int screenWidth = 800;
 int screenHeight = 600;
 
-int renderHeight = 240;
+int renderHeight = 320; // Adventure edit - Raised default res
 int renderWidth = -1;
 
 double update_ticker = 0;
@@ -103,8 +107,11 @@ int main(void)
         }
         if (IsKeyPressed(KEY_F7)) // Misc debug
         {
-
+            debug_world_actors = TRUE; // Adventure edit - Debug camera
         }
+        // Adventure edit begin - Forced scene layer debug
+        DebugWorldStateInput();
+        // Adventure end
 #endif
 
         ticker_rate = 1.0 / update_rate;
@@ -146,6 +153,11 @@ static void game_setup()
     // Setup renderer
     clear_background_color = BLACK;
 
+    // Adventure edit begin - Init inventory and worldstate
+    MALLOC_SET(Inventory, player_inventory, NULL);
+    InitWorldState();
+    // Adventure edit end
+
     // Load text data
     TextHashmapCreate();
     LoadBuiltinText();
@@ -162,6 +174,17 @@ static void game_setup()
 
     // Enter game
     LoadScene(scene_boot, ent_title);
+
+    // Adventure edit begin - Prepare global LUT shaders
+    RegisterWorldPostProcessShader(
+        AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat"), "WorldDither", 10, AdvDitherShaderUniforms);
+    RegisterWorldPostProcessShader(
+        AssetGet_Material(ASSET_MATERIALS"/Effects/look_up_table.mat"), "WorldLUT", 20, AdvLUTShaderUniforms);
+    RegisterWorldPostProcessShader(
+        AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat"), "HudDither", 10, AdvDitherShaderUniforms);
+    RegisterHudPostProcessShader(
+        AssetGet_Material(ASSET_MATERIALS"/Effects/look_up_table.mat"), "HudLUT", 20, AdvLUTShaderUniforms);
+    // Adventure edit end
 }
 
 static void game_shutdown()
@@ -196,4 +219,8 @@ static void game_shutdown()
             continue;
         HandleActorFinalCleanup(end_actor);
     }
+    // Adventure edit begin - Cleanup Adventure
+    // Inventory
+    RELEASE(player_inventory);
+    // Adventure edit end
 }

@@ -1,0 +1,5 @@
+// Textures
+#ALBED /Characters/player_cloths_fabric.png FILT_BI WRAP_REPEAT
+
+// Shader
+#SHADR /standard.vert /standard.frag

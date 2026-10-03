@@ -5,6 +5,18 @@
 #include "input.h"
 #include "game_draw.h"
 #include "collision.h"
+// Adventure
+#include "Module/world_state.h"
+#include "Module/player.h"
+
+// Utility
+#define CAMERA_FOLLOW_SPEED 2.9f
+#define CAMERA_FOLLOW_DISTANCE 2.1f
+#define CAMERA_HEIGHT_DIST 2.1f
+#define CAMERA_BUBBLE_RADIUS 0.16f
+
+#define CAMERA_PITCH_BOTTOM -4.4f
+#define CAMERA_PITCH_TOP -1.9f
 
 // private header
 ACTOR_PREUPDATE(camera);
@@ -12,6 +24,8 @@ ACTOR_PREDRAWWORLD(camera);
 ACTOR_DRAWWORLD(camera);
 ACTOR_DRAWHUD(camera);
 static void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos);
+// Adventure
+static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -48,7 +62,7 @@ ACTOR_INIT(camera)
     MALLOC_ACTOR_DATA(CameraData, actor->data);
     CameraData* cam_data = (CameraData*)actor->data;
     cam_data->locked = FALSE;
-    cam_data->camera_mode = CAMERA_MODE_FREEMOVE;
+    cam_data->camera_mode = CAMERA_MODE_FREEMOVE; // Adventure edit - Follow is base camera mode
     cam_data->follow_angle = 0.0f;
     cam_data->pitch_angle = 0.0f;
 }
@@ -84,6 +98,11 @@ ACTOR_PREUPDATE(camera)
     CameraData* cam_data = (CameraData*)actor->data;
     cam_data->previous_lookpos = cam_data->current_look_pos;
 
+    // Adventure edit begin - Camera modes for the game
+    if(debug_world_actors)
+        cam_data->camera_mode = CAMERA_MODE_FREEMOVE;
+    // Adventure end
+
     if (cam_data->locked)
         return;
 
@@ -107,6 +126,69 @@ ACTOR_PREUPDATE(camera)
             UpdateCameraTargetPosition(actor, Vector3Add(actor->position, Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation)));
         }
         break;
+
+        // Adventure edit begin - Camera modes for the game
+        case CAMERA_MODE_FOLLOW:
+        {
+            struct Actor* player = FINDACTOR_BYTYPE(act_player);
+            if (player == NULL) // Nothing to look at
+                break;
+
+            // Rotate camera around player
+            cam_data->follow_angle += input_camera.x;
+            cam_data->pitch_angle += input_camera.y;
+            // Lock in bounds
+            if (cam_data->pitch_angle < CAMERA_PITCH_BOTTOM)
+                cam_data->pitch_angle = CAMERA_PITCH_BOTTOM;
+            if (cam_data->pitch_angle > CAMERA_PITCH_TOP) // Top
+                cam_data->pitch_angle = CAMERA_PITCH_TOP;
+            // printf("%f", cam_data->pitch_angle);
+
+            // Aim camera at player then solve where the camera should be 
+            Vector3 look_pos = CameraPlayerLookPos(actor, player);
+            UpdateCameraTargetPosition(actor, look_pos);
+
+            // Raycast from lookpos to the camera's follow position and retract if it needs to to avoid being stuck in a wall
+            Vector3 follow_pos = CameraPlayerFollowPos(actor, player);
+            Ray check_ray = {
+                .position = look_pos,
+                .direction = VEC3DIRECTION(look_pos, follow_pos)
+            };
+            RayHitData ray_col = CollisionGetNearest(check_ray, Vector3Distance(look_pos, follow_pos), COL_LAYER_CAMERA);
+            if (ray_col.ray_col.hit) // Hit a wall, bump out from it!
+            {
+                follow_pos = Vector3Add(check_ray.position, Vector3Scale(check_ray.direction, ray_col.ray_col.distance - CAMERA_BUBBLE_RADIUS));
+            }
+            // Apply position to camera
+            actor->position = follow_pos;
+        }
+        break;
+
+        case CAMERA_MODE_ONLYWATCH:
+        {
+            struct Actor* player = FINDACTOR_BYTYPE(act_player);
+            if (player == NULL) // Nothing to look at
+                break;
+            // Aim camera at player
+            Vector3 look_pos = CameraPlayerLookPos(actor, player);
+            UpdateCameraTargetPosition(actor, look_pos);
+        }
+        break;
+
+        case CAMERA_MODE_FOCUS_CUTSCENE_SLOW:
+        {
+            Vector3 look_pos = Vector3MoveTowards(cam_data->current_look_pos, cam_data->forced_look_pos, 0.4f);
+            UpdateCameraTargetPosition(actor, look_pos);
+        }
+        break;
+
+        case CAMERA_MODE_FOCUS_CUTSCENE_FAST:
+        {
+            Vector3 look_pos = Vector3MoveTowards(cam_data->current_look_pos, cam_data->forced_look_pos, 1.2f);
+            UpdateCameraTargetPosition(actor, look_pos);
+        }
+        break;
+        // Adventure edit end
     }
 }
 
@@ -162,3 +244,20 @@ static void UpdateCameraTargetPosition(struct Actor* camera, Vector3 target_pos)
     cam_data->current_look_pos = target_pos;
 }
 
+// Adventure edit begin - Camera utility functions
+static Vector3 CameraPlayerFollowPos(struct Actor* camera, struct Actor* player)
+{
+    Vector3 player_target_pos = CameraPlayerLookPos(camera, player);
+
+    // Rotate up and down, all around the target using an offset
+    CameraData* cam_data = (CameraData*)camera->data;
+    Vector3 follow_offset = Vector3RotateByQuaternion(VEC3BACKWARD, QuaternionFromAxisAngle(VEC3RIGHT, cam_data->pitch_angle));
+    follow_offset = Vector3RotateByQuaternion(follow_offset, QuaternionFromAxisAngle(VEC3UP, cam_data->follow_angle));
+    follow_offset = Vector3Scale(follow_offset, CAMERA_FOLLOW_DISTANCE);
+
+    // Apply offset
+    Vector3 follow_goal = Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_HEIGHT_DIST));
+    //printf("camera offset: a:%f x:%f z:%f \n", cam_data->follow_angle * RAD2DEG, follow_offset.x, follow_offset.z);
+    return Vector3Add(follow_goal, follow_offset);
+}
+// Adventure edit end

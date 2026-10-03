@@ -1,0 +1,101 @@
+#ifndef __ACTOR_PLAYER_HEADER__
+#define __ACTOR_PLAYER_HEADER__
+
+#include "../tools.h"
+#include "../assets.h"
+#include "../actor_factory.h"
+#include "../input.h"
+#include "../camera.h"
+#include "../game_state.h"
+#include "../collision.h"
+
+#define PLAYER_COLLISION_STEP_HEIGHT 0.33f
+#define PLAYER_COLLISION_MID_HEIGHT 0.8f
+#define PLAYER_COLLISION_TOP_HEIGHT 1.3f
+#define PLAYER_COLLISION_RADIUS 0.42f
+
+#define CAMERA_PLAYER_LOOK_HEIGHT 1.25f
+#define PLAYER_COLLISION_FLOOR_SENSOR_LENGTH 0.15f
+#define PLAYER_SWIM_HEIGHT 0.9f
+#define PLAYER_FLOOR_SLOPE_DOTTHRESHOLD 0.6
+
+#define PLAYER_TERMINAL_VELOCITY -1.6f
+
+typedef struct {
+	int current_state;
+	void (*func_state_update)(struct Actor* player);
+	void (*func_state_drawworld)(struct Actor* player, double tick_percent);
+	void (*func_state_drawhud)(struct Actor* player, double tick_percent);
+	void (*func_state_exitstate)(struct Actor* player);
+	Vector3 cutscene_run_goal;
+	float cutscene_run_factor;
+	char* current_action_button_text;
+	int disable_collision;
+} PlayerData;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Player state control
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#define CREATE_STATE(state) \
+void PlayerState_##state##_Enter(struct Actor* player, PlayerData* player_data, int previous_state); \
+void PlayerState_##state##_Update(struct Actor* player); \
+void PlayerState_##state##_DrawWorld(struct Actor* player, double tick_percent); \
+void PlayerState_##state##_DrawHud(struct Actor* player, double tick_percent); \
+void PlayerState_##state##_Exit(struct Actor* player)
+
+#define STATE_ENTER(id, state) \
+case id: \
+	PlayerState_##state##_Enter(player, player_data, old_state); \
+	return
+
+enum PlayerState
+{
+	plysta_generic,
+	plysta_grounded,
+	plysta_air,
+	plysta_swimming,
+};
+
+CREATE_STATE(Generic); // Misc state just for helpers
+CREATE_STATE(Grounded); // When on the ground and moving
+CREATE_STATE(Air); // Falling through the air
+CREATE_STATE(Swimming); // Swimming
+
+// State entry and tick functions
+static void inline PlayerChangeState(struct Actor* player, int new_state)
+{
+	// Eject the previous state if we are changing to a new one
+	PlayerData* player_data = (PlayerData*)player->data;
+	int old_state = player_data->current_state;
+	if (player_data->current_state != new_state)
+		player_data->func_state_exitstate(player);
+
+	// Change to a new state
+	switch (new_state)
+	{
+		STATE_ENTER(plysta_generic, Generic);
+		STATE_ENTER(plysta_grounded, Grounded);
+		STATE_ENTER(plysta_air, Air);
+		STATE_ENTER(plysta_swimming, Swimming);
+	}
+}
+
+#undef CREATE_STATE
+#undef STATE_ENTER
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Player utility functions
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void PlayerChangeState(struct Actor* player, int new_state);
+int PlayerCanAcceptInput(struct Actor* player);
+int PlayerCollisionEject(struct Actor* player, Vector3 start_offset, Vector3 dirvec, float radius);
+int PlayerStandardRadialEjection(struct Actor* player, Vector3 start_offset, float radius);
+void PlayerStandardHudDraw(struct Actor* player, double tick_percent);
+void PlayerStandardPauseActivate(struct Actor* player);
+void PlayerStandardBehavior(struct Actor* player, int can_accept_input, float max_speed, float acceleration, float slowing_friction, float stoping_friction, float snapturn_friction, float turn_rate);
+void PlayerStandardInteraction(struct Actor* player, int can_accept_input);
+Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player);
+
+#endif
