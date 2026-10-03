@@ -6,9 +6,9 @@
 // Assets
 #define TREE_MODEL ASSET_MODELS"/Trees/tree_A.glb"
 static const char* loaded_materials[] = {
-	ASSET_MATERIALS"/Trees/leaves_A.mat", // Leaves
 	ASSET_MATERIALS"/Trees/bark_A.mat", // Bark
-	ASSET_MATERIALS"/Trees/branches_A.mat" // Branches
+	ASSET_MATERIALS"/Trees/branches_A.mat", // Branches
+	ASSET_MATERIALS"/Trees/mulch_A.mat" // Mulch
 };
 
 // private header
