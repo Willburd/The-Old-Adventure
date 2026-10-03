@@ -5,11 +5,10 @@
 
 // Assets
 #define TREE_MODEL ASSET_MODELS"/Trees/tree_A.glb"
-static const char* loaded_materials[] = {
-	ASSET_MATERIALS"/Trees/bark_A.mat", // Bark
-	ASSET_MATERIALS"/Trees/branches_A.mat", // Branches
-	ASSET_MATERIALS"/Trees/mulch_A.mat" // Mulch
-};
+
+#define BARK_MATERIAL ASSET_MATERIALS"/Trees/bark_A.mat"
+#define MULCH_MATERIAL ASSET_MATERIALS"/Trees/mulch_A.mat"
+#define BRANCH_MATERIAL_PREFIX ASSET_MATERIALS"/Trees/branches_"
 
 // private header
 ACTOR_PRELOADASSETS(tree);
@@ -38,7 +37,9 @@ ACTOR_PRELOADASSETS(tree)
 	Asset* model_asset = LoadAsset_Model(TREE_MODEL, FALSE);
 
 	// Load Materials
-	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
+	LoadAsset_Material(BARK_MATERIAL, FALSE);
+	LoadAsset_Material(MULCH_MATERIAL, FALSE);
+	LoadAsset_Material(BRANCH_MATERIAL_PREFIX"A.mat", FALSE);
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(actor, model_asset, DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
@@ -48,5 +49,8 @@ ACTOR_DRAWWORLD(tree)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	DrawAllModelMeshes(actor, TREE_MODEL, loaded_materials, tick_percent);
+	Asset* model_asset = AssetGetPackage(TREE_MODEL);
+	STANDARD_SHADER_DRAW(actor, model_asset, BARK_MATERIAL, "Tree-Bark", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, MULCH_MATERIAL, "Tree-Mulch", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, BRANCH_MATERIAL_PREFIX"A.mat", "Tree-Branches", tick_percent);
 }

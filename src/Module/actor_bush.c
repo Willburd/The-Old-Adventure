@@ -5,9 +5,7 @@
 
 // Assets
 #define BUSH_MODEL ASSET_MODELS"/Trees/bush_A.glb"
-static const char* loaded_materials[] = {
-	ASSET_MATERIALS"/Trees/branches_B.mat" // Branches
-};
+#define BRANCH_MATERIAL_PREFIX ASSET_MATERIALS"/Trees/branches_"
 
 // private header
 ACTOR_PRELOADASSETS(bush);
@@ -36,12 +34,13 @@ ACTOR_PRELOADASSETS(bush)
 	Asset* model_asset = LoadAsset_Model(BUSH_MODEL, FALSE);
 
 	// Load Materials
-	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
+	LoadAsset_Material(BRANCH_MATERIAL_PREFIX"A.mat", FALSE);
 }
 
 ACTOR_DRAWWORLD(bush)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	DrawAllModelMeshes(actor, BUSH_MODEL, loaded_materials, tick_percent);
+	Asset* model_asset = AssetGetPackage(BUSH_MODEL);
+	STANDARD_SHADER_DRAW(actor, model_asset, BRANCH_MATERIAL_PREFIX"A.mat", "Bush-Branches", tick_percent);
 }
