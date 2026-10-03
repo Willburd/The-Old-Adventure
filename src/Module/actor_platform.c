@@ -45,6 +45,11 @@ ACTOR_INIT(platform)
 	ACTOR_REGISTER_PREUPDATE(platform);
 	ACTOR_REGISTER_CLEANUP(platform);
 	ACTOR_REGISTER_DRAWWORLD(platform);
+
+	// Set data
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;
+	MALLOC_ACTOR_DATA(PlatformData, actor->data);
+	InitPlatformData(actor, 0.0f, FALSE, FALSE);
 }
 
 void InitPlatformData(struct Actor* actor, float speed, int is_moving, int is_reversed)
@@ -174,11 +179,6 @@ ACTOR_PRELOADASSETS(platform)
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(actor, model_asset, DEFAULT_COLLISION_MESH, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM | COL_LAYER_CAMERA);
-
-	// Set data
-	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;
-	MALLOC_ACTOR_DATA(PlatformData, actor->data);
-	InitPlatformData(actor, 0.0f, FALSE, FALSE);
 }
 
 ACTOR_JSON_INIT(platform)

@@ -8,7 +8,6 @@
 // Assets
 
 // private header
-ACTOR_PRELOADASSETS(roomswap);
 ACTOR_JSON_INIT(roomswap);
 ACTOR_TRANSPARENTDRAWWORLD(roomswap);
 ACTOR_POSTUPDATE(roomswap);
@@ -27,23 +26,19 @@ ACTOR_INIT(roomswap)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;
 	actor->blend_color = ColorToVector4(BLACK);
-	ACTOR_REGISTER_PRELOADASSETS(roomswap);
 	ACTOR_REGISTER_JSON_INIT(roomswap);
 	ACTOR_REGISTER_POSTUPDATE(roomswap);
 	ACTOR_REGISTER_TRANSPARENTDRAWWORLD(roomswap);
-}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Private functions
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-ACTOR_PRELOADASSETS(roomswap)
-{
 	// Set data
 	MALLOC_ACTOR_DATA(RoomSwapData, actor->data);
 	RoomSwapData* fade_data = actor->data;
 	fade_data->goal_room = 0;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Private functions
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ACTOR_JSON_INIT(roomswap)
 {

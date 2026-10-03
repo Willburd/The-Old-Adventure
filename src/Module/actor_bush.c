@@ -34,7 +34,7 @@ ACTOR_PRELOADASSETS(bush)
 	Asset* model_asset = LoadAsset_Model(BUSH_MODEL, FALSE);
 
 	// Load Materials
-	LoadAsset_Material(BRANCH_MATERIAL_PREFIX"A.mat", FALSE);
+	LoadAsset_Material(ALTSKIN(BRANCH_MATERIAL_PREFIX, actor->skin_select, ".mat"), FALSE);
 }
 
 ACTOR_DRAWWORLD(bush)
@@ -42,5 +42,5 @@ ACTOR_DRAWWORLD(bush)
 	if (OutOfRenderRange(actor))
 		return;
 	Asset* model_asset = AssetGetPackage(BUSH_MODEL);
-	STANDARD_SHADER_DRAW(actor, model_asset, BRANCH_MATERIAL_PREFIX"A.mat", "Bush-Branches", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, ALTSKIN(BRANCH_MATERIAL_PREFIX, actor->skin_select, ".mat"), "Bush-Branches", tick_percent);
 }

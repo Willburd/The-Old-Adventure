@@ -3,6 +3,7 @@
 	  {
 		"type": "tree",
 		"id_tag": "test_tree",
+		"use_skin": "B",
 		"pos": [34.24, -8.18, 8.59]
 	  }
    ]

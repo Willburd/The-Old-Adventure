@@ -36,6 +36,12 @@ ACTOR_INIT(woodtorch)
 	ACTOR_REGISTER_UPDATE(woodtorch);
 	ACTOR_REGISTER_REMOTE_INTERACT(woodtorch);
 	ACTOR_REGISTER_DRAWWORLD(woodtorch);
+
+	// Set data
+	MALLOC_ACTOR_DATA(TorchData, actor->data);
+	TorchData* torch_data = (TorchData*)actor->data;
+	torch_data->torch_burning = TRUE;
+	torch_data->fire_uuid = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,12 +68,6 @@ ACTOR_PRELOADASSETS(woodtorch)
 
 	// Load Materials
 	LoadMaterialArray(loaded_materials, ARRAY_LENGTH(loaded_materials));
-
-	// Set data
-	MALLOC_ACTOR_DATA(TorchData, actor->data);
-	TorchData* torch_data = (TorchData*)actor->data;
-	torch_data->torch_burning = TRUE;
-	torch_data->fire_uuid = 0;
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(actor, AssetGetPackage(SIMPLE_ACTOR_COLLISION_MODEL), DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);

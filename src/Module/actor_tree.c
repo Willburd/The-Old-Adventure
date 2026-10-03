@@ -4,7 +4,7 @@
 #include "../game_draw.h"
 
 // Assets
-#define TREE_MODEL ASSET_MODELS"/Trees/tree_A.glb"
+#define TREE_MODEL_PREFIX ASSET_MODELS"/Trees/tree_"
 
 #define BARK_MATERIAL ASSET_MATERIALS"/Trees/bark_A.mat"
 #define MULCH_MATERIAL ASSET_MATERIALS"/Trees/mulch_A.mat"
@@ -34,12 +34,12 @@ ACTOR_INIT(tree)
 ACTOR_PRELOADASSETS(tree)
 {
 	// Load model
-	Asset* model_asset = LoadAsset_Model(TREE_MODEL, FALSE);
+	Asset* model_asset = LoadAsset_Model(ALTSKIN(TREE_MODEL_PREFIX, actor->model_select, ".glb"), FALSE);
 
 	// Load Materials
 	LoadAsset_Material(BARK_MATERIAL, FALSE);
 	LoadAsset_Material(MULCH_MATERIAL, FALSE);
-	LoadAsset_Material(BRANCH_MATERIAL_PREFIX"A.mat", FALSE);
+	LoadAsset_Material(ALTSKIN(BRANCH_MATERIAL_PREFIX, actor->skin_select, ".mat"), FALSE);
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(actor, model_asset, DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
@@ -49,8 +49,8 @@ ACTOR_DRAWWORLD(tree)
 {
 	if (OutOfRenderRange(actor))
 		return;
-	Asset* model_asset = AssetGetPackage(TREE_MODEL);
+	Asset* model_asset = AssetGetPackage(ALTSKIN(TREE_MODEL_PREFIX, actor->model_select, ".glb"));
 	STANDARD_SHADER_DRAW(actor, model_asset, BARK_MATERIAL, "Tree-Bark", tick_percent);
 	STANDARD_SHADER_DRAW(actor, model_asset, MULCH_MATERIAL, "Tree-Mulch", tick_percent);
-	STANDARD_SHADER_DRAW(actor, model_asset, BRANCH_MATERIAL_PREFIX"A.mat", "Tree-Branches", tick_percent);
+	STANDARD_SHADER_DRAW(actor, model_asset, ALTSKIN(BRANCH_MATERIAL_PREFIX, actor->skin_select, ".mat"), "Tree-Branches", tick_percent);
 }

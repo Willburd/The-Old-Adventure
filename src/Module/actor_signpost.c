@@ -42,6 +42,11 @@ ACTOR_INIT(signpost)
 	ACTOR_REGISTER_PLAYER_INTERACT(signpost);
 	ACTOR_REGISTER_INTERACT_TEXT(signpost);
 	ACTOR_REGISTER_CLEANUP(signpost);
+
+	// Set data
+	MALLOC_ACTOR_DATA(SignData, actor->data);
+	SignData* sign_data = actor->data;
+	sign_data->text_entry_id = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,11 +63,6 @@ ACTOR_PRELOADASSETS(signpost)
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(actor, AssetGetPackage(SIMPLE_ACTOR_COLLISION_MODEL), DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
-
-	// Set data
-	MALLOC_ACTOR_DATA(SignData, actor->data);
-	SignData* sign_data = actor->data;
-	sign_data->text_entry_id = NULL;
 }
 
 ACTOR_JSON_INIT(signpost)
