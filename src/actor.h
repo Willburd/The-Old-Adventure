@@ -63,6 +63,10 @@ struct Actor {
 	float draw_range;
 	// Color used various actors and shaders for actor defined reasons.
 	Vector4 blend_color;
+	// Allows json data to assign a skin for rendering
+	char* skin_select;
+	// Allows json data to assign a model for rendering
+	char* model_select;
 	// Scene flags set when this actor triggers a actor defined event.
 	uint64_t triggers_flags;
 	// Sets which flag group is written to when SceneFlagToggle() is called.
@@ -127,7 +131,7 @@ x->uuid = 0;x->id_tag = NULL; x->index = -1; x->actor_type = 0; x->actor_type_na
 x->is_destroying = FALSE; \
 x->parent = NULL; x->current_room_index = ACTOR_HAS_NO_ROOM_INDEX; \
 x->actor_flags = 0; x->triggers_flags = 0; x->flag_group_selector = SCENE_FLAG_GROUP_TEMP; \
-x->draw_range = DEFAULT_MAX_RENDER_RANGE; x->blend_color = (Vector4){ 1, 1, 1, 1}; \
+x->draw_range = DEFAULT_MAX_RENDER_RANGE; x->blend_color = (Vector4){ 1, 1, 1, 1}; x->skin_select = NULL; x->model_select = NULL; \
 x->animlayer_count = -1; \
 x->func_init = NULL; x->func_preloadassets = NULL; \
 x->func_destroy = NULL; \
