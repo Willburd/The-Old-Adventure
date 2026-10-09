@@ -89,6 +89,10 @@ struct Actor* ACTOR_FACTORY(cJSON* actor_data, ActorTypes actor_type, struct Act
 	// Load assets now that we are configured
 	if (actor_type != act_scene && ACTOR_HAS(actor, func_preloadassets)) // Scenes handle preload assets themselves at a much earlier point
 		actor->func_preloadassets(actor);
+	// Set these based off the actor's setup, so they can be used later for stuff like animation, or returning to a home position
+	actor->home_position = at_position;
+	actor->home_rotation = at_rotation;
+	actor->home_scale = at_scale;
 
 #ifdef _DEBUG
 		printf("ACTOR SPAWN: [type: %s] slot: %i [%llu]\n", actor->actor_type_name, actor->index, actor->uuid);
