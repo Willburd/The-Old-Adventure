@@ -57,6 +57,11 @@ struct Actor {
 	Vector3 last_scale;
 	Vector3 last_velocity;
 
+	// Set at the end of actor spawn after json init.
+	Vector3 home_position;
+	Quaternion home_rotation;
+	Vector3 home_scale;
+
 	// Generic flags for actor defined behaviors.
 	unsigned int actor_flags;
 	// Maximum range an actor is drawn at.
