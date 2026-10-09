@@ -46,7 +46,7 @@ ACTOR_PRELOADASSETS(minimap)
 ACTOR_POSTUPDATE(minimap)
 {
 	struct Actor* player = FINDACTOR_BYTYPE(act_player);
-	if (player == NULL)
+	if (!ACTOR_EXISTS(player))
 	{
 		actor->actor_flags |= ACTOR_FLAG_IS_INVISIBLE;
 		return;
@@ -77,7 +77,7 @@ ACTOR_DRAWHUD(minimap)
 	}
 
 	struct Actor* player = FINDACTOR_BYTYPE(act_player);
-	if (player != NULL)
+	if (ACTOR_EXISTS(player))
 	{
 		// Draw player position
 		Texture* tex = AssetGet_Texture(ARROW_TEXTURE);

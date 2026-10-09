@@ -52,7 +52,7 @@ ACTOR_UPDATE(trigger_exit)
 {
 	TriggerExitData* exit_data = actor->data;
 	struct Actor* fade_actor = FINDACTOR_BYTYPE(act_fadeout);
-	if (fade_actor)
+	if (ACTOR_EXISTS(fade_actor))
 	{
 		// Wait for fadeout before entering the new scene
 		FadeInData* fade_data = fade_actor->data;
@@ -66,7 +66,7 @@ ACTOR_UPDATE(trigger_exit)
 	}
 	// Wait for player to enter trigger
 	struct Actor* player = FINDACTOR_BYTYPE(act_player);
-	if (!player)
+	if (!ACTOR_EXISTS(player))
 		return;
 	if (Vector3Distance(actor->position, player->position) > exit_data->radius)
 		return;
@@ -99,7 +99,7 @@ static void actor_exit_startleaving(struct Actor* exit, struct Actor* player)
 
 	// Lock the camera in place
 	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
-	if (camera)
+	if (ACTOR_EXISTS(camera))
 		CameraSetMode(camera, CAMERA_MODE_ONLYWATCH);
 }
 

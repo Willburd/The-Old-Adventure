@@ -90,7 +90,7 @@ ACTOR_REMOTE_INTERACT(event_movecamera)
 	if (camera_data->percent > 0)
 		return;
 	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
-	if (!camera)
+	if (!ACTOR_EXISTS(camera))
 		return;
 	camera_data->percent = 0.001f;
 	camera_data->start_pos = camera->position;
@@ -102,7 +102,7 @@ ACTOR_UPDATE(event_movecamera)
 	if (camera_data->percent <= 0)
 		return;
 	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
-	if (!camera)
+	if (!ACTOR_EXISTS(camera))
 		return;
 
 	// Move the cameras as needed

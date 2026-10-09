@@ -146,7 +146,7 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 
 void PlayerStandardPauseActivate(struct Actor* player)
 {
-	if (FINDACTOR_BYTYPE(act_pause_box))
+	if (ACTOR_EXISTS(FINDACTOR_BYTYPE(act_pause_box)))
 		return;
 	ACTOR_FACTORY(NULL, act_pause_box, GETSCENE(player), Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
 }

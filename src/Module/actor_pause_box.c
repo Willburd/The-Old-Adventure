@@ -45,7 +45,7 @@ ACTOR_INIT(pause_box)
 	ENTER_GAMESTATE(GAMESTATE_PAUSED);
 
 	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
-	if (camera)
+	if (ACTOR_EXISTS(camera))
 	{
 		CameraData* cam_data = (CameraData*)camera->data;
 		cam_data->locked = TRUE;
@@ -133,7 +133,7 @@ ACTOR_CLEANUP(pause_box)
 	ENTER_GAMESTATE(GAMESTATE_GAMEPLAY);
 
 	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
-	if (camera)
+	if (ACTOR_EXISTS(camera))
 	{
 		CameraData* cam_data = (CameraData*)camera->data;
 		cam_data->locked = FALSE;

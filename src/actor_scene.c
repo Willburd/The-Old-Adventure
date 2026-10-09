@@ -151,7 +151,7 @@ void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, i
 	if (keep_player)
 	{
 		struct Actor* player = FINDACTOR_BYTYPE(act_player); // Adventure edit - Use our player actor
-		if (player)
+		if (ACTOR_EXISTS(player))
 			player->current_room_index = ACTOR_HAS_NO_ROOM_INDEX;
 	}
 	// Clear puzzle flag

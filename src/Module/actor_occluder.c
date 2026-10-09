@@ -37,7 +37,7 @@ ACTOR_INIT(occluder)
 ACTOR_POSTUPDATE(occluder)
 {
 	struct Actor* player = FINDACTOR_BYTYPE(act_player);
-	if (player == NULL)
+	if (!ACTOR_EXISTS(player))
 		return;
 	float dist = Vector3FlatDistance(player->position, actor->position);
 	if (dist > FADE_LIMIT)

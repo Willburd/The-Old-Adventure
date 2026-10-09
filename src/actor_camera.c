@@ -131,7 +131,7 @@ ACTOR_PREUPDATE(camera)
         case CAMERA_MODE_FOLLOW:
         {
             struct Actor* player = FINDACTOR_BYTYPE(act_player);
-            if (player == NULL) // Nothing to look at
+            if (!ACTOR_EXISTS(player)) // Nothing to look at
                 break;
 
             // Rotate camera around player
@@ -167,7 +167,7 @@ ACTOR_PREUPDATE(camera)
         case CAMERA_MODE_ONLYWATCH:
         {
             struct Actor* player = FINDACTOR_BYTYPE(act_player);
-            if (player == NULL) // Nothing to look at
+            if (!ACTOR_EXISTS(player)) // Nothing to look at
                 break;
             // Aim camera at player
             Vector3 look_pos = CameraPlayerLookPos(actor, player);
