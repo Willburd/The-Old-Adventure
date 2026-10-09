@@ -4,6 +4,8 @@
 #include "../game_draw.h"
 #include "json_properties.h"
 
+#define WOBBLE_DURATION 90
+
 // Assets
 #define BUSH_MODEL ASSET_MODELS"/Trees/bush_A.glb"
 #define BRANCH_MATERIAL_PREFIX ASSET_MATERIALS"/Trees/branches_"
@@ -11,7 +13,13 @@
 // private header
 ACTOR_JSON_INIT(bush);
 ACTOR_PRELOADASSETS(bush);
+ACTOR_UPDATE(bush);
 ACTOR_DRAWWORLD(bush);
+
+typedef struct
+{
+	unsigned int wobble_counter;
+} BushData;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -20,11 +28,17 @@ ACTOR_DRAWWORLD(bush);
 
 ACTOR_INIT(bush)
 {
-	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
-	actor->blend_color = ColorToVector4(GOLD);
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME|ACTOR_FLAG_TICKDURING_CUTSCENE|ACTOR_FLAG_TICKDURING_TRANSITION;
+	actor->draw_range = DEFAULT_MAX_RENDER_RANGE * 0.30f;
 	ACTOR_REGISTER_JSON_INIT(bush);
 	ACTOR_REGISTER_PRELOADASSETS(bush);
+	ACTOR_REGISTER_UPDATE(bush);
 	ACTOR_REGISTER_DRAWWORLD(bush);
+
+	// Set data
+	MALLOC_ACTOR_DATA(BushData, actor->data);
+	BushData* bush_data = actor->data;
+	bush_data->wobble_counter = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +65,46 @@ ACTOR_PRELOADASSETS(bush)
 
 	// Load Materials
 	LoadAsset_Material(ALTSKIN(BRANCH_MATERIAL_PREFIX, actor->skin_select, ".mat"), FALSE);
+}
+
+ACTOR_UPDATE(bush)
+{
+	BushData* bush_data = actor->data;
+	if (OutOfRenderRange(actor))
+	{
+		bush_data->wobble_counter = 0;
+		return;
+	}
+	if (bush_data->wobble_counter > 0)
+	{
+		// Wobble animation
+		bush_data->wobble_counter += 1;
+		float intensity = 1.0f - ((float)bush_data->wobble_counter / (float)WOBBLE_DURATION);
+		intensity *= 2.5f; // angle of wobble
+		actor->rotation = QuaternionMultiply(actor->home_rotation, QuaternionFromAxisAngle(VEC3FORWARD, sinf((float)bush_data->wobble_counter / 6.0f) * intensity * DEG2RAD));
+		actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromAxisAngle(VEC3RIGHT, cosf((float)bush_data->wobble_counter / 7.0f) * intensity * DEG2RAD));
+
+		if (bush_data->wobble_counter < WOBBLE_DURATION)
+			return;
+		bush_data->wobble_counter = WOBBLE_DURATION;
+
+		// Try to reset our wobble
+		struct Actor* player = FINDACTOR_BYTYPE(act_player);
+		if (!ACTOR_EXISTS(player))
+			return;
+		if (Vector3Distance(actor->position, player->position) <= 1.1f) // Don't reset if player is still standing in us
+			return;
+		bush_data->wobble_counter = 0;
+		actor->rotation = actor->home_rotation;
+	}
+
+	// Check if the player has crossed the bush
+	struct Actor* player = FINDACTOR_BYTYPE(act_player);
+	if (!ACTOR_EXISTS(player))
+		return;
+	if (Vector3Distance(actor->position, player->position) > 1.0f)
+		return;
+	bush_data->wobble_counter = 1;
 }
 
 ACTOR_DRAWWORLD(bush)
