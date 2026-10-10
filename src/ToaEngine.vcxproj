@@ -186,6 +186,7 @@
     <ClCompile Include="Module\actor_tree.c" />
     <ClCompile Include="Module\actor_trigger_exit.c" />
     <ClCompile Include="Module\actor_woodtorch.c" />
+    <ClCompile Include="Module\adv_utility.c" />
     <ClCompile Include="Module\core_assets.c" />
     <ClCompile Include="Module\inventory.c" />
     <ClCompile Include="Module\player_state_air.c" />
@@ -237,6 +238,7 @@
     <ClInclude Include="Module\actor_textbox.h" />
     <ClInclude Include="Module\actor_trigger_exit.h" />
     <ClInclude Include="Module\adv_postprocessing.h" />
+    <ClInclude Include="Module\adv_utility.h" />
     <ClInclude Include="Module\inventory.h" />
     <ClInclude Include="Module\player.h" />
     <ClInclude Include="Module\world_state.h" />

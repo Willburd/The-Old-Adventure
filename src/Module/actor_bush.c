@@ -3,6 +3,7 @@
 #include "../collision.h"
 #include "../game_draw.h"
 #include "json_properties.h"
+#include "adv_utility.h"
 
 #define WOBBLE_DURATION 90
 
@@ -28,7 +29,7 @@ typedef struct
 
 ACTOR_INIT(bush)
 {
-	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME|ACTOR_FLAG_TICKDURING_CUTSCENE|ACTOR_FLAG_TICKDURING_TRANSITION;
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_TRANSITION;
 	actor->draw_range = DEFAULT_MAX_RENDER_RANGE * 0.30f;
 	ACTOR_REGISTER_JSON_INIT(bush);
 	ACTOR_REGISTER_PRELOADASSETS(bush);
@@ -78,12 +79,7 @@ ACTOR_UPDATE(bush)
 	if (bush_data->wobble_counter > 0)
 	{
 		// Wobble animation
-		bush_data->wobble_counter += 1;
-		float intensity = 1.0f - ((float)bush_data->wobble_counter / (float)WOBBLE_DURATION);
-		intensity *= 2.5f; // angle of wobble
-		actor->rotation = QuaternionMultiply(actor->home_rotation, QuaternionFromAxisAngle(VEC3FORWARD, sinf((float)bush_data->wobble_counter / 6.0f) * intensity * DEG2RAD));
-		actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromAxisAngle(VEC3RIGHT, cosf((float)bush_data->wobble_counter / 7.0f) * intensity * DEG2RAD));
-
+		actor->rotation = WobbleRotation(actor->home_rotation, ++bush_data->wobble_counter, WOBBLE_DURATION, 2.5f);
 		if (bush_data->wobble_counter < WOBBLE_DURATION)
 			return;
 		bush_data->wobble_counter = WOBBLE_DURATION;

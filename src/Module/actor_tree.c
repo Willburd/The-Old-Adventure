@@ -3,6 +3,9 @@
 #include "../collision.h"
 #include "../game_draw.h"
 #include "json_properties.h"
+#include "adv_utility.h"
+
+#define WOBBLE_DURATION 70
 
 // Assets
 #define TREE_MODEL_PREFIX ASSET_MODELS"/Trees/tree_"
@@ -14,8 +17,15 @@
 // private header
 ACTOR_JSON_INIT(tree);
 ACTOR_PRELOADASSETS(tree);
+ACTOR_UPDATE(tree);
+ACTOR_PLAYER_INTERACT(tree);
 ACTOR_DRAWWORLD(tree);
 
+typedef struct
+{
+	unsigned int wobble_counter;
+	int has_dropped_items;
+} TreeData;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -23,11 +33,19 @@ ACTOR_DRAWWORLD(tree);
 
 ACTOR_INIT(tree)
 {
-	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
-	actor->blend_color = ColorToVector4(GOLD);
+	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_TRANSITION;
+	actor->draw_range = DEFAULT_MAX_RENDER_RANGE * 0.80f;
 	ACTOR_REGISTER_JSON_INIT(tree);
 	ACTOR_REGISTER_PRELOADASSETS(tree);
+	ACTOR_REGISTER_UPDATE(tree);
+	ACTOR_REGISTER_PLAYER_INTERACT(tree);
 	ACTOR_REGISTER_DRAWWORLD(tree);
+
+	// Set data
+	MALLOC_ACTOR_DATA(TreeData, actor->data);
+	TreeData* tree_data = actor->data;
+	tree_data->wobble_counter = 0;
+	tree_data->has_dropped_items = FALSE;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,6 +77,37 @@ ACTOR_PRELOADASSETS(tree)
 
 	// Set collision data
 	REGISTER_COLLISION_MESH(actor, model_asset, DEFAULT_COLLISION_MESH, COL_LAYER_WORLD);
+}
+
+ACTOR_UPDATE(tree)
+{
+	TreeData* tree_data = actor->data;
+	if (OutOfRenderRange(actor))
+	{
+		tree_data->wobble_counter = 0;
+		return;
+	}
+	if (tree_data->wobble_counter == 0)
+		return;
+	// Wobble animation
+	actor->rotation = WobbleRotation(actor->home_rotation, ++tree_data->wobble_counter, WOBBLE_DURATION, 1.5f);
+	// End wobble
+	if (tree_data->wobble_counter < WOBBLE_DURATION)
+		return;
+	tree_data->wobble_counter = 0;
+	actor->rotation = actor->home_rotation;
+}
+
+ACTOR_PLAYER_INTERACT(tree)
+{
+	// Bonking trees
+	TreeData* tree_data = actor->data;
+	tree_data->wobble_counter = 1;
+	// Drop items
+	if (tree_data->has_dropped_items)
+		return;
+	tree_data->has_dropped_items = TRUE;
+
 }
 
 ACTOR_DRAWWORLD(tree)

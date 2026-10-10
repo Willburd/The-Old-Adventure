@@ -282,6 +282,9 @@
     <ClCompile Include="Module\actor_bush.c">
       <Filter>Source Files\module\actors</Filter>
     </ClCompile>
+    <ClCompile Include="Module\adv_utility.c">
+      <Filter>Source Files\module\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -394,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="Module\actor_water_volume.h">
       <Filter>Header Files\module\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\adv_utility.h">
+      <Filter>Header Files\module\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
