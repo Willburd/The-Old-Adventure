@@ -1,0 +1,5 @@
+// Textures
+#ALBED /Cliffs/cliff_bot_A.png FILT_BI WRAP_REPEAT
+
+// Shader
+#SHADR /standard.vert /standard.frag

@@ -1,0 +1,5 @@
+// Textures
+#ALBED /Natural/sand_B.png FILT_BI WRAP_REPEAT
+
+// Shader
+#SHADR /standard.vert /standard.frag
