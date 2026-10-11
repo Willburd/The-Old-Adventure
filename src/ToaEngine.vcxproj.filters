@@ -306,6 +306,9 @@
     <ClCompile Include="Module\actor_occluder.c">
       <Filter>Source Files\module\actors\SceneTransitions</Filter>
     </ClCompile>
+    <ClCompile Include="audio.c">
+      <Filter>Source Files\engine\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -421,6 +424,9 @@
     </ClInclude>
     <ClInclude Include="Module\adv_utility.h">
       <Filter>Header Files\module\game</Filter>
+    </ClInclude>
+    <ClInclude Include="audio.h">
+      <Filter>Header Files\engine\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
