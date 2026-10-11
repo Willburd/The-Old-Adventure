@@ -1,6 +1,7 @@
 #include "../game_draw.h"
 #include "actor_water_volume.h"
 #include "player.h"
+#include "../audio.h"
 
 // Assets
 #define PLAYER_MODEL ASSET_MODELS"/Characters/player.glb"
@@ -81,6 +82,7 @@ ACTOR_UPDATE(player)
 	// Update our current state each tick
 	PlayerData* player_data = (PlayerData*)actor->data;
 	player_data->func_state_update(actor);
+	SetListener(actor->position, Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation));
 }
 
 ACTOR_DRAWWORLD(player)

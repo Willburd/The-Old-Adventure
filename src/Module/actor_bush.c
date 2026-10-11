@@ -4,6 +4,7 @@
 #include "../game_draw.h"
 #include "json_properties.h"
 #include "adv_utility.h"
+#include "../audio.h"
 
 #define WOBBLE_DURATION 70
 
@@ -105,9 +106,7 @@ ACTOR_UPDATE(bush)
 	if (Vector3Distance(actor->position, player->position) > 1.0f)
 		return;
 	bush_data->wobble_counter = 1;
-	// Play rustling
-	Sound* rustle = AssetGet_Sound(SOUND_RUSTLE);
-	PlaySound(LoadSoundAlias(*rustle)); // TODO - A proper meta sound channel system
+	ChannelPlay3DSound(SOUND_RUSTLE, actor->position, ChannelSoundEffects, 12.0f, 0.75f, RAND_FRANGE(0.8f, 1.0f));
 }
 
 ACTOR_DRAWWORLD(bush)
