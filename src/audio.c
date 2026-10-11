@@ -1,9 +1,8 @@
 #include "audio.h"
 
-Vector3 listener_forward = { 0.0f };
-Vector3 listener_position = { 0.0f };
-
-float channel_volume[ChannelLowPiority] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+static Vector3 listener_forward = { 0.0f };
+static Vector3 listener_position = { 0.0f };
+static float channel_volume[ChannelLowPiority] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
 void SetListener(Vector3 pos, Vector3 facing)
 {
