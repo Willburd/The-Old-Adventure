@@ -151,6 +151,7 @@
     <ClCompile Include="actor_debug.c" />
     <ClCompile Include="actor_factory.c" />
     <ClCompile Include="actor_scene.c" />
+    <ClCompile Include="audio.c" />
     <ClCompile Include="animation.c" />
     <ClCompile Include="assets.c" />
     <ClCompile Include="cJSON\cJSON.c" />
@@ -176,6 +177,7 @@
     <ClInclude Include="actor.h" />
     <ClInclude Include="actor_factory.h" />
     <ClInclude Include="actor_scene.h" />
+    <ClInclude Include="audio.h" />
     <ClInclude Include="animation.h" />
     <ClInclude Include="assets.h" />
     <ClInclude Include="camera.h" />
