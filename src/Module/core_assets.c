@@ -33,6 +33,10 @@ void LoadCoreAssets()
     LoadAsset_Model(FORWARD_ARROW_MODEL, TRUE);
     // TODO - Your default models here
 
+    // Load default sounds
+    LoadAsset_Sound(ASSET_SOUND"/error.ogg", TRUE);
+    // TODO - Your default sounds here
+
     // Set font
     default_font = LoadFontEx(ASSET_FONT"/PressStart2P-Regular.ttf", 16, NULL, 0); // TODO - Your font here
     
