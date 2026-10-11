@@ -7,11 +7,11 @@
 // Grounded player state
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define PLAYER_GROUND_ACCELERATION 0.08f
+#define PLAYER_GROUND_ACCELERATION 0.04f
 #define PLAYER_GROUND_MAXSPEED 0.14f
-#define PLAYER_GROUND_FRICTION 0.05f
-#define PLAYER_GROUND_STOP_FRICTION 0.2f
-#define PLAYER_GROUND_SNAPTURN_FRICTION 0.7f
+#define PLAYER_GROUND_FRICTION 0.01f
+#define PLAYER_GROUND_STOP_FRICTION 0.06f
+#define PLAYER_GROUND_SNAPTURN_FRICTION 0.1f
 #define PLAYER_GROUND_TURN_RATE 0.2f
 
 void PlayerState_Grounded_Update(struct Actor* player);

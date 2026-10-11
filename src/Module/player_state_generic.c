@@ -164,7 +164,7 @@ void PlayerStandardBehavior(struct Actor* player, int can_accept_input, float ma
 		}
 
 		// Handle player inputs
-		Quaternion input_rotator = QuaternionFromAxisAngle(VEC3UP, Vector3GetTopDownAngle(VEC3DIRECTION(cam_main.position, player->position)));
+		Quaternion input_rotator = QuaternionFromAxisAngle(VEC3UP, Vector3GetTopDownAngle(VEC3DIRECTION(cam_main.position, cam_main.target)));
 		move_velocity = Vector3Scale(Vector3RotateByQuaternion((Vector3) { input_analog.x, 0.0f, input_analog.y }, input_rotator), acceleration);
 	}
 	else if (CHECK_GAMESTATE(GAMESTATE_TRANSITION | GAMESTATE_CUTSCENE))
