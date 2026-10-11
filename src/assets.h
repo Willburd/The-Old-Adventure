@@ -18,6 +18,8 @@
 #define ASSET_MODELS ASSET_PATH"/Models"
 #define ASSET_MATERIALS ASSET_PATH"/Materials"
 #define ASSET_SHADERS ASSET_PATH"/Shaders"
+#define ASSET_SOUND ASSET_PATH"/Audio/SFX"
+#define ASSET_MUSIC ASSET_PATH"/Audio/Music"
 #define ASSET_TEXT ASSET_PATH"/Text"
 #define ASSET_FONT ASSET_PATH"/Font"
 #define ASSET_SCENE ASSET_PATH"/Scenes"

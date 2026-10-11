@@ -56,6 +56,10 @@ void LoadCoreAssets()
     LoadAsset_Model(SIMPLE_ACTOR_COLLISION_MODEL, TRUE);
     LoadAsset_Model(SIMPLE_SMALL_ACTOR_COLLISION_MODEL, TRUE);
 
+    // Load default sounds
+    LoadAsset_Sound(ASSET_SOUND"/error.ogg", TRUE);
+    // TODO - Your default sounds here
+
     // Set font
     default_font = LoadFontEx(ASSET_FONT"/LinBiolinum_Rah.ttf", 16, NULL, 0); // Adventure edit - Use a different font
 
