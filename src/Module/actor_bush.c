@@ -106,7 +106,7 @@ ACTOR_UPDATE(bush)
 	if (Vector3Distance(actor->position, player->position) > 1.0f)
 		return;
 	bush_data->wobble_counter = 1;
-	ChannelPlay3DSound(SOUND_RUSTLE, actor->position, ChannelSoundEffects, AUDIO_RANGE_AVERAGE, AUDIO_VOLUME_LOW, RAND_FRANGE(0.8f, 1.0f));
+	ChannelPlay3DSound(SOUND_RUSTLE, actor->position, ChannelSoundEffects, AUDIO_RANGE_AVERAGE, AUDIO_VOLUME_LOW, RAND_FRANGE(0.5f, 0.6f));
 }
 
 ACTOR_DRAWWORLD(bush)
