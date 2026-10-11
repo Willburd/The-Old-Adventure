@@ -7,9 +7,11 @@
 #include "../actor_factory.h"
 #include "world_state.h"
 #include "json_properties.h"
+#include "../audio.h"
 
 static int is_cave = FALSE;
 static float cave_light = 0;
+static Music* rain_music;
 
 // Assets
 #define SKYSPHERE_MODEL				ASSET_MODELS"/Tools/skysphere.glb"
@@ -23,6 +25,7 @@ ACTOR_JSON_INIT(skybox);
 ACTOR_UPDATE(skybox);
 ACTOR_LIGHTNODES(skybox);
 ACTOR_PREDRAWWORLD(skybox);
+ACTOR_CLEANUP(skybox);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -37,6 +40,7 @@ ACTOR_INIT(skybox)
 	ACTOR_REGISTER_UPDATE(skybox);
 	ACTOR_REGISTER_LIGHTNODES(skybox);
 	ACTOR_REGISTER_PREDRAWWORLD(skybox);
+	ACTOR_REGISTER_CLEANUP(skybox);
 	actor->scale = Vector3Scale(actor->scale, 1200.0f);
 }
 
@@ -50,6 +54,10 @@ ACTOR_PRELOADASSETS(skybox)
 	LoadAsset_Material(SKYBOX_MATERIAL_CYCLE, FALSE);
 	LoadAsset_Material(SKYBOX_MATERIAL_SUN, FALSE);
 	LoadAsset_Material(SKYBOX_MATERIAL_MOON, FALSE);
+
+	// Keep it loaded as it needs to play relatively often
+	rain_music = LoadAsset_Music(ASSET_MUSIC"/DarkRainyNight.ogg", TRUE)->mus; 
+	PlayMusicStream(*rain_music);
 }
 
 ACTOR_JSON_INIT(skybox)
@@ -72,6 +80,7 @@ ACTOR_JSON_INIT(skybox)
 
 ACTOR_UPDATE(skybox)
 {
+	SetMusicVolume(*rain_music, GetRainIntensity() * AUDIO_VOLUME_HALF);
 	if (is_cave)
 		return;
 	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler( 0.0f, 0.01f * DEG2RAD, 0.0f));
@@ -90,6 +99,9 @@ ACTOR_LIGHTNODES(skybox)
 
 ACTOR_PREDRAWWORLD(skybox)
 {
+	if (rain_music != NULL)
+		UpdateMusicStream(*rain_music);
+
 	if (is_cave)
 		return;
 
@@ -144,4 +156,9 @@ ACTOR_PREDRAWWORLD(skybox)
 		*AssetGet_Material(SKYBOX_MATERIAL_MOON),
 		MATRIX_ASSEMBLE(moon_transform)
 	);
+}
+
+ACTOR_CLEANUP(skybox)
+{
+	StopMusicStream(*rain_music);
 }

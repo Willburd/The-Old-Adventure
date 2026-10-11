@@ -13,6 +13,7 @@
 // Adventure
 #include "Module/actor_entrance.h"
 #include "Module/world_state.h"
+#include "Module/actor_musicplayer.h"
 
 // private header
 static SceneID next_scene;
@@ -76,6 +77,10 @@ ACTOR_INIT(scene)
 		if (entrance != NULL) // Enter the scene from this entrance if we have one
 			actor_entrance_startentry(entrance);
 	}
+
+	// Start scene's music
+	PlayerHighestPriorityMusic();
+
 	// Adventure edit end
 
 	printf("\n..............................................................................\n");

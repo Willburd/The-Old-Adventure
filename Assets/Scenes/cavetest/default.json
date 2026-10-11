@@ -14,6 +14,11 @@
 		"pos": [-400, 0, 0],
 		"scl": [0.065, 0.065, 0.065]
 	  },
+	  {
+		"type": "musicplayer",
+		"music_id": "CavesOfSorrow",
+		"priority": 1
+	  },
 	  
 	  {
 		"type": "entrance",

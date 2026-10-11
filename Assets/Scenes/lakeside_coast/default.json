@@ -12,6 +12,11 @@
 		"pos": [40, 0, 80],
 		"scl": [0.25, 0.25, 0.25]
 	  },
+	  {
+		"type": "musicplayer",
+		"music_id": "ForestTheme_24",
+		"priority": 1
+	  },
 	  
 	  {
 		"type": "entrance",

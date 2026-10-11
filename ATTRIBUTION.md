@@ -13,3 +13,7 @@ All non-attributed code is licensed under MIT, unless otherwise specified.
 | Audio/SFX/error.ogg | EZduzziteh | https://opengameart.org/content/error | CC0 |
 | Audio/SFX/sfx_step_grass_l.ogg, Audio/SFX/sfx_step_grass_r.ogg | Blender Foundation | https://opengameart.org/content/grass-foot-step-sounds-yo-frankie | CC-BY 3.0 |
 | Audio/SFX/paper_rustling_short.ogg | scorcher24 | https://opengameart.org/content/scorchers-foley-sounds | CC0 |
+| Audio/Music/CavesOfSorrow.ogg | Alexandr Zhelanov | https://opengameart.org/content/caves-of-sorrow | CC-BY 3.0 |
+| Audio/Music/Swamp.ogg | LokiF | https://opengameart.org/content/swamp-environment-audio | CC0 |
+| Audio/Music/ForestTheme_24.ogg | cynicmusic | https://opengameart.org/content/dark-forest-theme | CC0 |
+| Audio/Music/DarkRainyNight.ogg | kindland | https://opengameart.org/content/rain-and-thunders | CC0 |

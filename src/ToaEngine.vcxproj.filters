@@ -309,6 +309,9 @@
     <ClCompile Include="audio.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
+    <ClCompile Include="Module\actor_musicplayer.c">
+      <Filter>Source Files\module\actors\GameControl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -427,6 +430,9 @@
     </ClInclude>
     <ClInclude Include="audio.h">
       <Filter>Header Files\engine\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\actor_musicplayer.h">
+      <Filter>Header Files\module\actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

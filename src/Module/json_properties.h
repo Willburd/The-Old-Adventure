@@ -29,6 +29,10 @@
 #define PROP_IS_ENTRANCE "is_entrance"
 #define PROP_ENDPOS "end_pos"
 
+// Music
+#define PROP_MUSIC_ID "music_id"
+#define PROP_MUSIC_PRIORITY "priority"
+
 // Torchs
 #define PROP_FIRECOLOR "fire_color"
 #define PROP_BURNEDOUT "burned_out"

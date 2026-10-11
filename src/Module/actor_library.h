@@ -22,6 +22,7 @@ typedef enum
 	act_animationtest,
 	act_entrance,
 	act_trigger_exit,
+	act_musicplayer,
 	act_logic_or,
 	act_logic_and,
 	act_logic_counter,
@@ -65,6 +66,7 @@ ACTOR_INIT(test);
 ACTOR_INIT(animationtest);
 ACTOR_INIT(entrance);
 ACTOR_INIT(trigger_exit);
+ACTOR_INIT(musicplayer);
 ACTOR_INIT(logic_or);
 ACTOR_INIT(logic_and);
 ACTOR_INIT(logic_counter);
@@ -109,6 +111,7 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(animationtest);
 	ACTOR_STRING_CASE(entrance);
 	ACTOR_STRING_CASE(trigger_exit);
+	ACTOR_STRING_CASE(musicplayer);
 	ACTOR_STRING_CASE(logic_or);
 	ACTOR_STRING_CASE(logic_and);
 	ACTOR_STRING_CASE(logic_counter);
@@ -158,6 +161,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 		MAKE_ACTOR_INIT(animationtest);
 		MAKE_ACTOR_INIT(entrance);
 		MAKE_ACTOR_INIT(trigger_exit);
+		MAKE_ACTOR_INIT(musicplayer);
 		MAKE_ACTOR_INIT(logic_or);
 		MAKE_ACTOR_INIT(logic_and);
 		MAKE_ACTOR_INIT(logic_counter);
