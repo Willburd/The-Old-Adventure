@@ -5,11 +5,12 @@
 #include "json_properties.h"
 #include "adv_utility.h"
 
-#define WOBBLE_DURATION 90
+#define WOBBLE_DURATION 70
 
 // Assets
 #define BUSH_MODEL ASSET_MODELS"/Trees/bush_A.glb"
 #define BRANCH_MATERIAL_PREFIX ASSET_MATERIALS"/Trees/branches_"
+#define SOUND_RUSTLE ASSET_SOUND"/paper_rustling_short.ogg"
 
 // private header
 ACTOR_JSON_INIT(bush);
@@ -66,6 +67,9 @@ ACTOR_PRELOADASSETS(bush)
 
 	// Load Materials
 	LoadAsset_Material(ALTSKIN(BRANCH_MATERIAL_PREFIX, actor->skin_select, ".mat"), FALSE);
+
+	// Load Sounds
+	LoadAsset_Sound(SOUND_RUSTLE, FALSE);
 }
 
 ACTOR_UPDATE(bush)
@@ -88,7 +92,7 @@ ACTOR_UPDATE(bush)
 		struct Actor* player = FINDACTOR_BYTYPE(act_player);
 		if (!ACTOR_EXISTS(player))
 			return;
-		if (Vector3Distance(actor->position, player->position) <= 1.1f) // Don't reset if player is still standing in us
+		if (Vector3Distance(actor->position, player->position) <= 1.03f) // Don't reset if player is still standing in us
 			return;
 		bush_data->wobble_counter = 0;
 		actor->rotation = actor->home_rotation;
@@ -101,6 +105,9 @@ ACTOR_UPDATE(bush)
 	if (Vector3Distance(actor->position, player->position) > 1.0f)
 		return;
 	bush_data->wobble_counter = 1;
+	// Play rustling
+	Sound* rustle = AssetGet_Sound(SOUND_RUSTLE);
+	PlaySound(LoadSoundAlias(*rustle)); // TODO - A proper meta sound channel system
 }
 
 ACTOR_DRAWWORLD(bush)
