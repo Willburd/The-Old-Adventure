@@ -10,9 +10,9 @@
 #include "Module/player.h"
 
 // Utility
-#define CAMERA_FOLLOW_SPEED 2.9f
-#define CAMERA_FOLLOW_DISTANCE 2.1f
-#define CAMERA_HEIGHT_DIST 2.1f
+#define CAMERA_FOLLOW_SPEED 12.9f
+#define CAMERA_FOLLOW_DISTANCE 1.8f
+#define CAMERA_HEIGHT_DIST 1.7f
 #define CAMERA_BUBBLE_RADIUS 0.16f
 
 #define CAMERA_PITCH_BOTTOM -4.4f
