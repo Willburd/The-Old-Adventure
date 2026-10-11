@@ -58,7 +58,9 @@ void LoadCoreAssets()
 
     // Load default sounds
     LoadAsset_Sound(ASSET_SOUND"/error.ogg", TRUE);
-    // TODO - Your default sounds here
+    // Adventure
+    LoadAsset_Sound(ASSET_SOUND"/sfx_step_grass_l.ogg", TRUE);
+    LoadAsset_Sound(ASSET_SOUND"/sfx_step_grass_r.ogg", TRUE);
 
     // Set font
     default_font = LoadFontEx(ASSET_FONT"/LinBiolinum_Rah.ttf", 16, NULL, 0); // Adventure edit - Use a different font
