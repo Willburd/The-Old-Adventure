@@ -46,6 +46,4 @@ Color GetSkyColor();
 float GetFogDistance();
 Color GetFogColor();
 
-void DebugWorldStateInput();
-
 #endif
