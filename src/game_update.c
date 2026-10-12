@@ -11,6 +11,7 @@
 #include "scene_entry.h"
 #include "globals.h"
 #include "input.h"
+#include "audio.h"
 #include "game_state.h"
 // Adventure
 #include "Module/world_state.h"
@@ -41,6 +42,7 @@ void game_update()
 	ResetLightCount();
 	HandleLoadNextScene();
 	ProcessTimers();
+	ProcessMusic();
 
 	////////////////////////////////////////////////////////////////////////
 	// Preupdate and state control

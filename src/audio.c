@@ -4,6 +4,15 @@ static Vector3 listener_forward = { 0.0f };
 static Vector3 listener_position = { 0.0f };
 static float channel_volume[ChannelLowPiority] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
+#define MAX_MUSIC_TRACKS 128
+static Music* playing_music[MAX_MUSIC_TRACKS] = { NULL };
+int playing_music_count = -1;
+
+int GetMusicPlayingCount()
+{
+	return playing_music_count + 1;
+}
+
 void SetListener(Vector3 pos, Vector3 facing)
 {
 	listener_position = pos;
@@ -68,4 +77,73 @@ void ChannelPlaySound(char* path, int channel, float volume, float pan, float pi
 void ChannelPlay3DSound(char* path, Vector3 position, int channel, float range, float volume, float pitch)
 {
 	TOA_Play3DSound(path, position, range, volume * channel_volume[channel], pitch);
+}
+
+Music* ChannelPreloadMusic(char* path, int is_core, float volume, float pan, float pitch)
+{
+	return ChannelPlayMusic(LoadAsset_Music(path, is_core)->mus, volume, pan, pitch);
+}
+
+Music* ChannelStartMusic(char* path, float volume, float pan, float pitch)
+{
+	return ChannelPlayMusic(AssetGet_Music(path), volume, pan, pitch);
+}
+
+Music* ChannelPlayMusic(Music* music, float volume, float pan, float pitch)
+{
+	SetMusicVolume(*music, volume * channel_volume[ChannelMusic]);
+	SetMusicPan(*music, pan);
+	SetMusicPitch(*music, pitch);
+	if(!IsMusicStreamPlaying(*music))
+		PlayMusicStream(*music);
+	for (int i = 0; i < MAX_MUSIC_TRACKS; i++)
+	{
+		if (playing_music[i] == music) // Found ourselves
+			break;
+		if (playing_music[i] != NULL) // occupied slot
+			continue;
+		// Append to new slot
+		playing_music[i] = music;
+		if (i > playing_music_count)
+			playing_music_count = i;
+		break;
+	}
+	return music;
+}
+
+void ChannelUpdateMusic(Music* music, float volume, float pan, float pitch)
+{
+	SetMusicVolume(*music, volume * channel_volume[ChannelMusic]);
+	SetMusicPan(*music, pan);
+	SetMusicPitch(*music, pitch);
+}
+
+void ChannelStopMusic(Music* music)
+{
+	SetMusicVolume(*music, 0.0f);
+	StopMusicStream(*music);
+	for (int i = 0; i <= playing_music_count; i++)
+	{
+		if (playing_music[i] != music)
+			continue;
+		playing_music[i] = NULL;
+		break;
+	}
+}
+
+void ProcessMusic()
+{
+	if (playing_music_count < 0)
+		return;
+	int new_count = -1;
+	for (int i = 0; i <= playing_music_count; i++)
+	{
+		if (playing_music[i] == NULL)
+			continue;
+		if (!IsMusicValid(*playing_music[i]))
+			continue;
+		UpdateMusicStream(*playing_music[i]);
+		new_count = i;
+	}
+	playing_music_count = new_count;
 }
