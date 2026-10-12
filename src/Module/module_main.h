@@ -3,6 +3,8 @@
 
 // Called during game's initilization in main()
 void ModuleInit();
+// Called at the end of game's initilization in main() once core assets have finished loading
+void ModuleLateInit();
 // Called during each update loop before checking if the gameupdate tick should happen
 void ModuleInternalUpdate();
 // Called during each gametick before actors update

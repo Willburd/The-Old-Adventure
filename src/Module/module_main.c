@@ -6,6 +6,11 @@ void ModuleInit()
 
 }
 
+void ModuleLateInit()
+{
+
+}
+
 void ModuleInternalUpdate()
 {
 #ifdef _DEBUG 
