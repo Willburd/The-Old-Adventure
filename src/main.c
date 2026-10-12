@@ -102,14 +102,8 @@ int main(void)
         {
             draw_collider_info = !draw_collider_info;
         }
-        if (IsKeyPressed(KEY_F7)) // Misc debug
-        {
-            debug_world_actors = TRUE; // Adventure edit - Debug camera
-        }
-        // Adventure edit begin - Forced scene layer debug
-        DebugWorldStateInput();
-        // Adventure end
 #endif
+        ModuleInternalUpdate();
 
         ticker_rate = 1.0 / update_rate;
         while (update_ticker >= ticker_rate)
