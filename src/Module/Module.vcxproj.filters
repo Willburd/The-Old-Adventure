@@ -285,7 +285,7 @@
       <Filter>Source Files\scenes\base</Filter>
     </ClCompile>
     <ClCompile Include="scene_actor.c">
-      <Filter>Source Files\actors\base</Filter>
+      <Filter>Source Files\scenes</Filter>
     </ClCompile>
     <ClCompile Include="scene_actor.c">
       <Filter>Source Files\scenes</Filter>
