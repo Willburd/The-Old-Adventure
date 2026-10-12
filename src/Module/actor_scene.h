@@ -3,6 +3,6 @@
 
 #include "../scene_entry.h"
 
-void SceneFinalizeEntry();
+void SceneFinalizeEntry(struct Actor* current_scene, SceneID next_scene, EntranceID next_entrance);
 
 #endif

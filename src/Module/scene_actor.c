@@ -5,9 +5,9 @@
 #include "world_state.h"
 #include "actor_musicplayer.h"
 
-void SceneFinalizeEntry()
+void SceneFinalizeEntry(struct Actor* current_scene, SceneID next_scene, EntranceID next_entrance)
 {
-	// Adventure edit begin - Check for entrance actors, find the one we're using.
+	// Check for entrance actors, find the one we're using.
 	struct Actor* found_group[LAST_ENTRANCE] = { 0 };
 	FINDACTORGROUP_BYTYPE(found_group, LAST_ENTRANCE, act_entrance);
 	struct Actor* entrance = NULL;
