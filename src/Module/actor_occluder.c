@@ -2,7 +2,7 @@
 #include "../tools.h"
 #include "../game_draw.h"
 #include "core_assets.h"
-#include "../actor_scene.h"
+#include "../scene_entry.h"
 #include "json_properties.h"
 #include <math.h>
 

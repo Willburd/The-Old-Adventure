@@ -47,7 +47,7 @@ ACTOR_INIT(scene)
 		scene->func_preloadassets(scene);
 	ChangeSceneRoom(scene, 0, FALSE, TRUE); // Activate the first room inside the scene.
 
-	SceneFinalizeEntry();
+	SceneFinalizeEntry(current_scene, next_scene, next_entrance);
 
 	printf("\n..............................................................................\n");
 	printf("CHANGE FINISHED ==> %s \n", scene->actor_type_name);

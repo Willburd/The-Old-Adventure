@@ -2,8 +2,8 @@
 #include "../game_draw.h"
 #include "world_state.h"
 #include "../game_state.h"
-#include "../actor_scene.h"
 #include "../actor_factory.h"
+#include "../scene_entry.h"
 #include "../camera.h"
 
 void InitWorldState()

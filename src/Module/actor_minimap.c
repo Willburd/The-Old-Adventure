@@ -1,7 +1,7 @@
 #include "../actor_factory.h"
 #include "../tools.h"
 #include "../game_draw.h"
-#include "../actor_scene.h"
+#include "../scene_entry.h"
 #include "../game_state.h"
 #include "../hud.h"
 

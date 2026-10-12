@@ -4,7 +4,7 @@
 #include "../game_state.h"
 #include "actor_trigger_exit.h"
 #include "actor_fade.h"
-#include "../actor_scene.h"
+#include "../scene_entry.h"
 #include "player.h"
 #include "core_assets.h"
 #include "../game_draw.h"

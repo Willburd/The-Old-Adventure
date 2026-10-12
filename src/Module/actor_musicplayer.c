@@ -1,7 +1,7 @@
 #include "../tools.h"
 #include "../assets.h"
 #include "../actor_factory.h"
-#include "../actor_scene.h"
+#include "../scene_entry.h"
 #include "../game_draw.h"
 #include "../collision.h"
 #include "json_properties.h"
