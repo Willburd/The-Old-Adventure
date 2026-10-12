@@ -36,6 +36,39 @@
     <ClInclude Include="scene_library.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="actor_fade.h">
+      <Filter>Source Files\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_musicplayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_node.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_textbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_trigger_exit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_water_volume.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="adv_postprocessing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="adv_utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inventory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene_boot.c">
@@ -46,6 +79,111 @@
     </ClCompile>
     <ClCompile Include="core_assets.c">
       <Filter>Source Files\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_animationtest.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_bush.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_crate.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_door.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_entrance.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_event.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_fadein.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_fadeout.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_fire.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_hole.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_logical.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_mappoi.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_minimap.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_musicplayer.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_node.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_occluder.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_pause_box.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_platform.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_player.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_roomswap.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_signpost.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_skybox.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_smallrock.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_test.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_textbox.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_tree.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_trigger_exit.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_water_volume.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_woodtorch.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="adv_utility.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="inventory.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_air.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_generic.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_grounded.c">
+      <Filter>Source Files\actors</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_swimming.c">
+      <Filter>Source Files\actors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
