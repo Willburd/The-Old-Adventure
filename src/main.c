@@ -9,7 +9,7 @@
 #include "game_update.h"
 #include "game_draw.h"
 #include "post_processing.h"
-#include "camera.h"
+#include "Module/actor_camera.h"
 #include "globals.h"
 #include "actor_factory.h"
 #include "scene_entry.h"

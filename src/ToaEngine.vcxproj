@@ -148,7 +148,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="actor.c" />
-    <ClCompile Include="actor_camera.c" />
     <ClCompile Include="actor_debug.c" />
     <ClCompile Include="actor_factory.c" />
     <ClCompile Include="actor_scene.c" />
@@ -177,7 +176,6 @@
     <ClInclude Include="audio.h" />
     <ClInclude Include="animation.h" />
     <ClInclude Include="assets.h" />
-    <ClInclude Include="camera.h" />
     <ClInclude Include="cJSON\cJSON.h" />
     <ClInclude Include="cJSON\cJSON_Utils.h" />
     <ClInclude Include="collision.h" />

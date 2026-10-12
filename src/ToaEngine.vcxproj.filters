@@ -90,9 +90,6 @@
     <ClCompile Include="input.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
-    <ClCompile Include="actor_camera.c">
-      <Filter>Source Files\engine\actors</Filter>
-    </ClCompile>
     <ClCompile Include="materials.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
@@ -154,9 +151,6 @@
     </ClInclude>
     <ClInclude Include="scene_entry.h">
       <Filter>Header Files\engine\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="camera.h">
-      <Filter>Header Files\engine\game</Filter>
     </ClInclude>
     <ClInclude Include="materials.h">
       <Filter>Header Files\engine\game</Filter>

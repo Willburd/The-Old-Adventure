@@ -6,7 +6,7 @@
 #include "../Module/scene_library.h"
 #include "../scene_entry.h"
 #include "../game_draw.h"
-#include "../camera.h"
+#include "actor_camera.h"
 #include "../globals.h"
 #include "../input.h"
 

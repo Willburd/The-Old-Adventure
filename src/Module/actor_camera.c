@@ -1,10 +1,10 @@
-#include "tools.h"
-#include "assets.h"
-#include "actor_factory.h"
-#include "camera.h"
-#include "input.h"
-#include "game_draw.h"
-#include "collision.h"
+#include "../tools.h"
+#include "../assets.h"
+#include "../actor_factory.h"
+#include "actor_camera.h"
+#include "../input.h"
+#include "../game_draw.h"
+#include "../collision.h"
 // Adventure
 #include "Module/world_state.h"
 #include "Module/player.h"
@@ -144,7 +144,7 @@ ACTOR_PREUPDATE(camera)
                 cam_data->pitch_angle = CAMERA_PITCH_TOP;
             // printf("%f", cam_data->pitch_angle);
 
-            // Aim camera at player then solve where the camera should be 
+            // Aim camera at player then solve where the camera should be
             Vector3 look_pos = CameraPlayerLookPos(actor, player);
             UpdateCameraTargetPosition(actor, look_pos);
 

@@ -108,6 +108,9 @@
     <ClInclude Include="actor_scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="actor_camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene_boot.c">
@@ -244,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="scene_actor.c">
       <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_camera.c">
+      <Filter>Source Files\actors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
