@@ -161,5 +161,6 @@ ACTOR_PREDRAWWORLD(skybox)
 
 ACTOR_CLEANUP(skybox)
 {
-	ChannelStopMusic(rain_music);
+	if (!is_cave)
+		ChannelStopMusic(rain_music);
 }
