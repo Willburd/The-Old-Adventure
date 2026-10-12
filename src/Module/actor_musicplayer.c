@@ -109,7 +109,9 @@ ACTOR_JSON_INIT(musicplayer)
 ACTOR_PRELOADASSETS(musicplayer)
 {
 	MusicData* music_data = (MusicData*)actor->data;
-	music_data->music_data = ChannelPreloadMusic(TextFormat("%s%s%s", ASSET_MUSIC"/", music_data->asset_path, ".ogg"), FALSE, music_data->volume, AUDIO_PAN_CENTER, 1.0f);
+	const char* music_path = TextFormat("%s%s%s", ASSET_MUSIC"/", music_data->asset_path, ".ogg");
+	LoadAsset_Music(music_path, TRUE);
+	music_data->music_data = ChannelStartMusic(music_path, music_data->volume, AUDIO_PAN_CENTER, 1.0f);
 	RELEASE(music_data->asset_path);
 }
 

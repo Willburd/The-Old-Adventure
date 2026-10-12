@@ -56,8 +56,12 @@ ACTOR_PRELOADASSETS(skybox)
 	LoadAsset_Material(SKYBOX_MATERIAL_MOON, FALSE);
 
 	// Keep it loaded as it needs to play relatively often
-	if(!is_cave)
-		rain_music = ChannelPreloadMusic(ASSET_MUSIC"/DarkRainyNight.ogg", TRUE, AUDIO_VOLUME_HALF, AUDIO_PAN_CENTER, 1.0f);
+	if (!is_cave)
+	{
+		const char* rain_path = ASSET_MUSIC"/DarkRainyNight.ogg";
+		LoadAsset_Music(rain_path, TRUE);
+		rain_music = ChannelStartMusic(rain_path, AUDIO_VOLUME_HALF, AUDIO_PAN_CENTER, 1.0f);
+	}
 }
 
 ACTOR_JSON_INIT(skybox)

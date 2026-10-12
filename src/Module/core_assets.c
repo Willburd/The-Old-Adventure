@@ -58,6 +58,7 @@ void LoadCoreAssets()
 
     // Load default sounds
     LoadAsset_Sound(ASSET_SOUND"/error.ogg", TRUE);
+    LoadAsset_Music(ASSET_MUSIC"/error.ogg", TRUE);
     // Adventure
     LoadAsset_Sound(ASSET_SOUND"/sfx_step_grass_l.ogg", TRUE);
     LoadAsset_Sound(ASSET_SOUND"/sfx_step_grass_r.ogg", TRUE);
