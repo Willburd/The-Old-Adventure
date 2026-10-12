@@ -19,7 +19,7 @@ const int inputkeys[INPUT_LAST] = {
 	// Adventure
 };
 
-const int inputpads[INPUT_LAST] = { 
+const int inputpads[INPUT_LAST] = {
 	0,								// Move vec
 	0,
 	0,
