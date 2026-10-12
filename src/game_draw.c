@@ -490,7 +490,7 @@ void ShaderUpdateFogUniforms(Shader shader)
 	fog_loc = GetShaderLocation(shader, "uFogDistance");
 	SetShaderValue(shader, fog_loc, &fog_distance, SHADER_UNIFORM_FLOAT);
 
-	ModuleShaderUpdateFogUniforms(shader);
+	ModuleExtendShaderFogUniforms(shader);
 }
 
 void ShaderUpdateLightUniforms(Shader shader)
