@@ -161,6 +161,9 @@ static void game_setup()
     // Prepare render layers for 2D games
     LoadRenderLayers();
 
+    // Handle late init stuff
+    ModuleLateInit();
+
     // Enter game
     LoadScene(scene_boot, ent_title);
 }

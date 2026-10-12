@@ -20,6 +20,11 @@ void ModuleInit()
         AssetGet_Material(ASSET_MATERIALS"/Effects/look_up_table.mat"), "HudLUT", 20, AdvLUTShaderUniforms);
 }
 
+void ModuleLateInit()
+{
+
+}
+
 void ModuleInternalUpdate()
 {
 #ifdef _DEBUG
