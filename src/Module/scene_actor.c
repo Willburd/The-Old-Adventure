@@ -1,5 +1,5 @@
-#include "../scene_entry.h"
 #include "actor_library.h"
+#include "actor_scene.h"
 // Adventure
 #include "actor_entrance.h"
 #include "world_state.h"
@@ -36,4 +36,24 @@ void SceneFinalizeEntry(struct Actor* current_scene, SceneID next_scene, Entranc
 
 	// Start scene's music
 	PlayerHighestPriorityMusic();
+}
+
+void SceneRoomChangeStart(struct Actor* scene, int new_room_index, int keep_player, int instant)
+{
+	if (keep_player)
+	{
+		struct Actor* player = FINDACTOR_BYTYPE(act_player); // Adventure
+		if (player)
+			player->current_room_index = ACTOR_HAS_NO_ROOM_INDEX;
+	}
+}
+
+void SceneRoomChangeEnd(struct Actor* scene, int new_room_index, int keep_player, int instant)
+{
+	if (keep_player)
+	{
+		struct Actor* player = FINDACTOR_BYTYPE(act_player); // Adventure
+		if (player)
+			player->current_room_index = new_room_index;
+	}
 }

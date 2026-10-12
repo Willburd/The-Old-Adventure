@@ -1,3 +1,4 @@
+#include "actor_library.h"
 #include "module_main.h"
 #include "world_state.h"
 #include "inventory.h"
@@ -6,6 +7,11 @@
 #include "actor_camera.h"
 #include "adv_postprocessing.h"
 #include <raylib.h>
+
+const char* ModuleGameName()
+{
+    return "The Old Adventures - An Engine For Nostalgia"; // TODO - Your game name here
+}
 
 void ModuleInit()
 {
