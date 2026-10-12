@@ -105,6 +105,6 @@ void ModuleCleanup()
 void ModuleExtendShaderDefaultUniforms()
 {
 	float animation_ticker = (float)world_tick_counter;
-	loc = GetShaderLocation(shader, "uAnimator");
+	int loc = GetShaderLocation(shader, "uAnimator");
 	SetShaderValue(shader, loc, &animation_ticker, SHADER_UNIFORM_FLOAT);
 }
