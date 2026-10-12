@@ -10,7 +10,7 @@
 
 const char* ModuleGameName()
 {
-    return "The Old Adventures - An Engine For Nostalgia"; // TODO - Your game name here
+    return "The Old Adventures - Classic Adventure"; // Adventure
 }
 
 void ModuleInit()
