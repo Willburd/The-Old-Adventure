@@ -1,5 +1,4 @@
 #include "module_main.h"
-#include <raylib.h>
 
 void ModuleInit()
 {
@@ -31,7 +30,17 @@ void ModuleCleanup()
 
 }
 
-void ModuleExtendShaderDefaultUniforms()
+void ModuleExtendShaderDefaultUniforms(Shader shader)
+{
+
+}
+
+void ModuleExtendShaderFogUniforms(Shader shader)
+{
+
+}
+
+void ModuleExtendShaderLightUniforms(Shader shader)
 {
 
 }

@@ -46,9 +46,7 @@ ACTOR_INIT(scene)
 	if (ACTOR_HAS(scene, func_preloadassets))
 		scene->func_preloadassets(scene);
 	ChangeSceneRoom(scene, 0, FALSE, TRUE); // Activate the first room inside the scene.
-
-	// TODO - Your player scene entry logic here
-	SceneFinalizeEntry();
+	SceneFinalizeEntry(current_scene, next_scene, next_entrance);
 
 	printf("\n..............................................................................\n");
 	printf("CHANGE FINISHED ==> %s \n", scene->actor_type_name);
