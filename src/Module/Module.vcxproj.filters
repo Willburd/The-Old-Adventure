@@ -266,9 +266,6 @@
     <ClCompile Include="scene_title.c">
       <Filter>Source Files\scenes\world</Filter>
     </ClCompile>
-    <ClCompile Include="scene_actor.c">
-      <Filter>Source Files\scenes</Filter>
-    </ClCompile>
     <ClCompile Include="module_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -289,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="scene_actor.c">
       <Filter>Source Files\actors\base</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_actor.c">
+      <Filter>Source Files\scenes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
