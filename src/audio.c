@@ -79,11 +79,6 @@ void ChannelPlay3DSound(char* path, Vector3 position, int channel, float range, 
 	TOA_Play3DSound(path, position, range, volume * channel_volume[channel], pitch);
 }
 
-Music* ChannelPreloadMusic(char* path, int is_core, float volume, float pan, float pitch)
-{
-	return ChannelPlayMusic(LoadAsset_Music(path, is_core)->mus, volume, pan, pitch);
-}
-
 Music* ChannelStartMusic(char* path, float volume, float pan, float pitch)
 {
 	return ChannelPlayMusic(AssetGet_Music(path), volume, pan, pitch);

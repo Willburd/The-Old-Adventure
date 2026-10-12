@@ -34,7 +34,7 @@ void LoadCoreAssets()
     LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Shaded.png", TRUE, NULL);
     LoadAsset_Texture(ASSET_TEXTURES"/LUTs/Sickening.png", TRUE, NULL);
     LoadAsset_Texture(ASSET_TEXTURES"/LUTs/UnderWater.png", TRUE, NULL);
-    
+
     // Load default materials
     LoadAsset_Material(ASSET_MATERIALS"/Engine/no_material.mat", TRUE);
     LoadAsset_Material(ASSET_MATERIALS"/Engine/example.mat", TRUE);
