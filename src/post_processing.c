@@ -1,6 +1,6 @@
 #include "post_processing.h"
 #include "game_draw.h"
-#include "camera.h"
+#include "Module/actor_camera.h"
 #include "tools.h"
 
 // Processing layers
