@@ -9,7 +9,10 @@ void ModuleInit()
 {
 	MALLOC_SET(Inventory, player_inventory, NULL);
 	InitWorldState();
+}
 
+void ModuleLateInit()
+{
     RegisterWorldPostProcessShader(
         AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat"), "WorldDither", 10, AdvDitherShaderUniforms);
     RegisterWorldPostProcessShader(
@@ -18,11 +21,6 @@ void ModuleInit()
         AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat"), "HudDither", 10, AdvDitherShaderUniforms);
     RegisterHudPostProcessShader(
         AssetGet_Material(ASSET_MATERIALS"/Effects/look_up_table.mat"), "HudLUT", 20, AdvLUTShaderUniforms);
-}
-
-void ModuleLateInit()
-{
-
 }
 
 void ModuleInternalUpdate()
