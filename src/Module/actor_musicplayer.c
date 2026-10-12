@@ -11,12 +11,11 @@
 // private header
 ACTOR_JSON_INIT(musicplayer);
 ACTOR_PRELOADASSETS(musicplayer);
-ACTOR_PREDRAWWORLD(musicplayer);
 ACTOR_CLEANUP(musicplayer);
 
 typedef struct {
 	char* asset_path;
-	Asset* music_asset;
+	Music* music_data;
 	float volume;
 	int priority;
 } MusicData;
@@ -27,57 +26,50 @@ typedef struct {
 
 ACTOR_INIT(musicplayer)
 {
-	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
+	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE;
 	ACTOR_REGISTER_JSON_INIT(musicplayer);
 	ACTOR_REGISTER_PRELOADASSETS(musicplayer);
-	ACTOR_REGISTER_PREDRAWWORLD(musicplayer);
 	ACTOR_REGISTER_CLEANUP(musicplayer);
 
 	MALLOC_ACTOR_DATA(MusicData, actor->data);
 	MusicData* music_data = (MusicData*)actor->data;
 	music_data->asset_path = NULL;
-	music_data->music_asset = NULL;
+	music_data->music_data = NULL;
 	music_data->volume = AUDIO_VOLUME_HALF;
 	music_data->priority = 0;
 }
 
-void MusicPlay(struct Actor* actor)
+void MusicPlayerPlay(struct Actor* actor)
 {
 	if (actor->is_destroying)
 		return;
-	if (MusicIsPlaying(actor))
-		return;
 	MusicData* music_data = (MusicData*)actor->data;
-	SetMusicVolume(*music_data->music_asset->mus, music_data->volume);
-	SetMusicPan(*music_data->music_asset->mus, 0.0f);
-	PlayMusicStream(*music_data->music_asset->mus);
+	ChannelPlayMusic(music_data->music_data, music_data->volume, AUDIO_PAN_CENTER, 1.0f);
 }
 
-void MusicStop(struct Actor* actor)
+void MusicPlayerStop(struct Actor* actor)
 {
-	if (!MusicIsPlaying(actor))
+	if (!MusicPlayerIsPlaying(actor))
 		return;
 	MusicData* music_data = (MusicData*)actor->data;
-	StopMusicStream(*music_data->music_asset->mus);
+	ChannelStopMusic(music_data->music_data);
 }
 
-int MusicIsPlaying(struct Actor* actor)
+int MusicPlayerIsPlaying(struct Actor* actor)
 {
-	if (actor->is_destroying)
-		return FALSE;
 	MusicData* music_data = (MusicData*)actor->data;
-	return IsMusicStreamPlaying(*music_data->music_asset->mus);
+	return IsMusicStreamPlaying(*music_data->music_data);
 }
 
 #define SEARCH_COUNT 32
-void MusicStopAll()
+void MusicPlayerStopAll()
 {
 	struct Actor* music_players[SEARCH_COUNT] = { NULL };
 	int found_count = FINDACTORGROUP_BYTYPE(music_players, SEARCH_COUNT, act_musicplayer);
 	for (int i = 0; i < found_count; i++)
 	{
 		struct Actor* target = music_players[i];
-		MusicStop(target);
+		MusicPlayerStop(target);
 	}
 }
 
@@ -99,7 +91,7 @@ void PlayerHighestPriorityMusic()
 	}
 	// Play ours
 	if (ACTOR_EXISTS(highest_player))
-		MusicPlay(highest_player);
+		MusicPlayerPlay(highest_player);
 }
 #undef SEARCH_COUNT
 
@@ -117,21 +109,13 @@ ACTOR_JSON_INIT(musicplayer)
 ACTOR_PRELOADASSETS(musicplayer)
 {
 	MusicData* music_data = (MusicData*)actor->data;
-	music_data->music_asset = LoadAsset_Music(TextFormat("%s%s%s", ASSET_MUSIC"/", music_data->asset_path, ".ogg"), FALSE);
+	music_data->music_data = ChannelPreloadMusic(TextFormat("%s%s%s", ASSET_MUSIC"/", music_data->asset_path, ".ogg"), FALSE, music_data->volume, AUDIO_PAN_CENTER, 1.0f);
 	RELEASE(music_data->asset_path);
-}
-
-ACTOR_PREDRAWWORLD(musicplayer)
-{
-	// Using this to update every render, not just gameticks
-	MusicData* music_data = (MusicData*)actor->data;
-	if(music_data->music_asset != NULL)
-		UpdateMusicStream(*music_data->music_asset->mus);
 }
 
 ACTOR_CLEANUP(musicplayer)
 {
-	MusicStop(actor);
+	MusicPlayerStop(actor);
 	MusicData* music_data = (MusicData*)actor->data;
-	music_data->music_asset = NULL; // Do not release it, that's for the asset loader code to handle.
+	music_data->music_data = NULL; // Do not release it, that's for the asset loader code to handle.
 }

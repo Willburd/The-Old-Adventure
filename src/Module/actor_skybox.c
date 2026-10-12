@@ -56,8 +56,7 @@ ACTOR_PRELOADASSETS(skybox)
 	LoadAsset_Material(SKYBOX_MATERIAL_MOON, FALSE);
 
 	// Keep it loaded as it needs to play relatively often
-	rain_music = LoadAsset_Music(ASSET_MUSIC"/DarkRainyNight.ogg", TRUE)->mus; 
-	PlayMusicStream(*rain_music);
+	rain_music = ChannelPreloadMusic(ASSET_MUSIC"/DarkRainyNight.ogg", TRUE, AUDIO_VOLUME_HALF, AUDIO_PAN_CENTER, 1.0f);
 }
 
 ACTOR_JSON_INIT(skybox)
@@ -80,7 +79,7 @@ ACTOR_JSON_INIT(skybox)
 
 ACTOR_UPDATE(skybox)
 {
-	SetMusicVolume(*rain_music, GetRainIntensity() * AUDIO_VOLUME_HALF);
+	ChannelUpdateMusic(rain_music, GetRainIntensity() * AUDIO_VOLUME_HALF, 0.0f, 1.0f);
 	if (is_cave)
 		return;
 	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler( 0.0f, 0.01f * DEG2RAD, 0.0f));
@@ -99,9 +98,6 @@ ACTOR_LIGHTNODES(skybox)
 
 ACTOR_PREDRAWWORLD(skybox)
 {
-	if (rain_music != NULL)
-		UpdateMusicStream(*rain_music);
-
 	if (is_cave)
 		return;
 
@@ -160,5 +156,5 @@ ACTOR_PREDRAWWORLD(skybox)
 
 ACTOR_CLEANUP(skybox)
 {
-	StopMusicStream(*rain_music);
+	ChannelStopMusic(rain_music);
 }
