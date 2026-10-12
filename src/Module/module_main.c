@@ -32,7 +32,7 @@ void ModuleInternalUpdate()
     {
         debug_world_actors = TRUE;
     }
-	
+
 	// Time shifting
 	if (IsKeyDown(KEY_EQUAL))
 		daynight_cycle += 0.001f;
@@ -100,4 +100,11 @@ void ModuleGameUpdate()
 void ModuleCleanup()
 {
 	RELEASE(player_inventory);
+}
+
+void ModuleExtendShaderDefaultUniforms()
+{
+	float animation_ticker = (float)world_tick_counter;
+	loc = GetShaderLocation(shader, "uAnimator");
+	SetShaderValue(shader, loc, &animation_ticker, SHADER_UNIFORM_FLOAT);
 }

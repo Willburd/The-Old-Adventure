@@ -11,5 +11,7 @@ void ModuleInternalUpdate();
 void ModuleGameUpdate();
 // Called during game cleanup at the end of main()
 void ModuleCleanup();
+// Called at the end of ShaderUpdateDefaultUniforms(), allowing custom global uniforms to be set
+void ModuleExtendShaderDefaultUniforms();
 
 #endif

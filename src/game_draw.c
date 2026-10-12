@@ -10,8 +10,7 @@
 #include "materials.h"
 #include "scene_entry.h"
 #include "post_processing.h"
-// Adventure
-#include "module/world_state.h"
+#include "Module/module_main.h"
 
 int draw_debug_info = FALSE;
 int draw_collider_info = FALSE;
@@ -58,7 +57,7 @@ void game_draw(double tick_percent)
 		// Invalid tex
 		want_resize = TRUE;
 	}
-	
+
 	if (want_resize)
 	{
 		UnloadRenderTextures();
@@ -430,8 +429,8 @@ void AppendLight(Vector3 pos, float radius, Color col, float influence)
 			if (world_light_positions[i].w < LIGHT_WORLD_RANGE)
 			{
 				float dist = Clamp(
-								Vector3Distance(cam_main.position, (Vector3) { world_light_positions[i].x, world_light_positions[i].y, world_light_positions[i].z }) / world_light_positions[i].w, 
-								0, 
+								Vector3Distance(cam_main.position, (Vector3) { world_light_positions[i].x, world_light_positions[i].y, world_light_positions[i].z }) / world_light_positions[i].w,
+								0,
 								1
 							);
 				influence *= dist;
@@ -479,11 +478,7 @@ void ShaderUpdateDefaultUniforms(Shader shader, struct Actor* actor)
 	loc = GetShaderLocation(shader, "uBlendColor");
 	SetShaderValue(shader, loc, (actor->actor_flags & ACTOR_FLAG_BLENDSCOLOR) ? &actor->blend_color : &default_blend_color, SHADER_UNIFORM_VEC4);
 
-	// Adventure edit begin - Animation ticker, but only for when the game isn't paused
-	float animation_ticker = (float)world_tick_counter;
-	loc = GetShaderLocation(shader, "uAnimator");
-	SetShaderValue(shader, loc, &animation_ticker, SHADER_UNIFORM_FLOAT);
-	// Adventure edit end
+	ModuleExtendShaderDefaultUniforms();
 }
 
 void ShaderUpdateFogUniforms(Shader shader)
@@ -551,7 +546,7 @@ void DrawAllModelMeshes(struct Actor* actor, char* model_path, char* material_pa
 Matrix GetDrawMatrix(struct Actor* actor, double tick_percent)
 {
 	return MatrixCompose(
-			Vector3Lerp(actor->last_position, actor->position, (float)tick_percent), 
+			Vector3Lerp(actor->last_position, actor->position, (float)tick_percent),
 			QuaternionSlerp(actor->last_rotation, actor->rotation, (float)tick_percent),
 			Vector3Lerp(actor->last_scale, actor->scale, (float)tick_percent)
 	);
