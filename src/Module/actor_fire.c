@@ -2,7 +2,7 @@
 #include "../tools.h"
 #include "core_assets.h"
 #include "../light_tools.h"
-#include "../camera.h"
+#include "actor_camera.h"
 #include "rlgl.h"
 #include "world_state.h"
 

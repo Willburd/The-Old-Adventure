@@ -3,7 +3,7 @@
 #include "../actor_factory.h"
 #include "../input.h"
 #include "../game_state.h"
-#include "../camera.h"
+#include "actor_camera.h"
 #include "core_assets.h"
 
 // Assets

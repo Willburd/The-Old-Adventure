@@ -4,7 +4,7 @@
 #include "../game_state.h"
 #include "../actor_factory.h"
 #include "../scene_entry.h"
-#include "../camera.h"
+#include "actor_camera.h"
 
 void InitWorldState()
 {

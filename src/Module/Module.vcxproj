@@ -141,6 +141,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="actor_camera.h" />
     <ClInclude Include="actor_fade.h" />
     <ClInclude Include="actor_library.h" />
     <ClInclude Include="actor_musicplayer.h" />
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClCompile Include="actor_animationtest.c" />
     <ClCompile Include="actor_bush.c" />
+    <ClCompile Include="actor_camera.c" />
     <ClCompile Include="actor_crate.c" />
     <ClCompile Include="actor_door.c" />
     <ClCompile Include="actor_entrance.c" />

@@ -7,7 +7,7 @@
 #include "../input.h"
 #include <string.h>
 #include "../text_loading.h"
-#include "../camera.h"
+#include "actor_camera.h"
 
 // Private Data
 typedef struct

@@ -5,7 +5,7 @@
 #include "../assets.h"
 #include "../actor_factory.h"
 #include "../input.h"
-#include "../camera.h"
+#include "actor_camera.h"
 #include "../game_state.h"
 #include "../collision.h"
 

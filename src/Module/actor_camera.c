@@ -6,8 +6,8 @@
 #include "../game_draw.h"
 #include "../collision.h"
 // Adventure
-#include "Module/world_state.h"
-#include "Module/player.h"
+#include "world_state.h"
+#include "player.h"
 
 // Utility
 #define CAMERA_FOLLOW_SPEED 12.9f

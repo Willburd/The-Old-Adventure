@@ -3,7 +3,7 @@
 #include "inventory.h"
 #include "../assets.h"
 #include "../actor_factory.h"
-#include "../camera.h"
+#include "actor_camera.h"
 #include "adv_postprocessing.h"
 #include <raylib.h>
 

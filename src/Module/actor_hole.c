@@ -1,6 +1,6 @@
 #include "../actor_factory.h"
 #include "../tools.h"
-#include "../camera.h"
+#include "actor_camera.h"
 #include "../game_state.h"
 #include "actor_trigger_exit.h"
 #include "actor_fade.h"

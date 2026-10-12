@@ -4,7 +4,7 @@
 #include "../tools.h"
 #include "actor_textbox.h"
 #include "../game_draw.h"
-#include "../camera.h"
+#include "actor_camera.h"
 #include "json_properties.h"
 #include "../text_loading.h"
 

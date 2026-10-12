@@ -2,7 +2,7 @@
 #include "../assets.h"
 #include "core_assets.h"
 #include "../actor.h"
-#include "../camera.h"
+#include "actor_camera.h"
 #include "../light_tools.h"
 #include "../actor_factory.h"
 #include "world_state.h"

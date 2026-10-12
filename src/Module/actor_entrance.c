@@ -2,7 +2,7 @@
 #include "../tools.h"
 #include "../actor_factory.h"
 #include "actor_entrance.h"
-#include "../camera.h"
+#include "actor_camera.h"
 #include "../collision.h"
 #include "../game_draw.h"
 #include "../scene_entry.h"
