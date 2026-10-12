@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "input.h"
-#include "globals.h"
+#include "../globals.h"
 #include "raymath.h"
 
 const int inputkeys[INPUT_LAST] = {

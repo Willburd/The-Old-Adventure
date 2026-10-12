@@ -160,7 +160,6 @@
     <ClCompile Include="models.c" />
     <ClCompile Include="game_draw.c" />
     <ClCompile Include="game_update.c" />
-    <ClCompile Include="input.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="materials.c" />
     <ClCompile Include="post_processing.c" />
@@ -197,7 +196,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
-    <None Include="input.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Module\Module.vcxproj">

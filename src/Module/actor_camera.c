@@ -2,7 +2,7 @@
 #include "../assets.h"
 #include "../actor_factory.h"
 #include "actor_camera.h"
-#include "../input.h"
+#include "input.h"
 #include "../game_draw.h"
 #include "../collision.h"
 // Adventure

@@ -154,6 +154,7 @@
     <ClInclude Include="adv_postprocessing.h" />
     <ClInclude Include="adv_utility.h" />
     <ClInclude Include="core_assets.h" />
+    <ClInclude Include="input.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="json_properties.h" />
     <ClInclude Include="player.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="actor_woodtorch.c" />
     <ClCompile Include="adv_utility.c" />
     <ClCompile Include="core_assets.c" />
+    <ClCompile Include="input.c" />
     <ClCompile Include="inventory.c" />
     <ClCompile Include="player_state_air.c" />
     <ClCompile Include="player_state_generic.c" />
