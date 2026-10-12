@@ -73,8 +73,8 @@ int main(void)
 
         update_ticker += delta_time;
         seconds_counter += delta_time;
-
-#ifdef _DEBUG
+        
+#ifdef _DEBUG 
         if (IsKeyPressed(KEY_F2)) // Debug info
         {
             draw_debug_info = !draw_debug_info;
