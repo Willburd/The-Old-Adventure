@@ -129,30 +129,6 @@
     <ClCompile Include="audio.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
-    <ClCompile Include="Module\scene_cavetest.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Module\scene_fieldtest.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Module\scene_lakeside_coast.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Module\scene_test.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Module\scene_title.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Module\world_state.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Module\scene_boot.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Module\scene_debugmenu.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
