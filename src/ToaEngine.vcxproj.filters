@@ -87,9 +87,6 @@
     <ClCompile Include="actor.c">
       <Filter>Source Files\engine\actors</Filter>
     </ClCompile>
-    <ClCompile Include="input.c">
-      <Filter>Source Files\engine\game</Filter>
-    </ClCompile>
     <ClCompile Include="materials.c">
       <Filter>Source Files\engine\game</Filter>
     </ClCompile>
@@ -194,8 +191,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
-    <None Include="input.h">
-      <Filter>Header Files\engine\game</Filter>
-    </None>
   </ItemGroup>
 </Project>

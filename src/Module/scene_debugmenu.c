@@ -8,7 +8,7 @@
 #include "../game_draw.h"
 #include "actor_camera.h"
 #include "../globals.h"
-#include "../input.h"
+#include "input.h"
 
 // Assets
 static const char* loaded_materials[] = { NULL };

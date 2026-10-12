@@ -25,6 +25,15 @@
     <Filter Include="Source Files\actors\base">
       <UniqueIdentifier>{1f6ea3f7-e2a8-4110-a19d-d0a8a3b2ca1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game">
+      <UniqueIdentifier>{8021b5b7-336d-48cd-bfc4-19bf96f7b3f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game">
+      <UniqueIdentifier>{1e5d2e1e-f95c-44b7-9028-7d62e8564f02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\actors">
+      <UniqueIdentifier>{b58b9820-39d7-49b2-907e-86e63e000423}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor_library.h">
@@ -42,11 +51,14 @@
     <ClInclude Include="module_main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="actor_scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="actor_camera.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_scene.h">
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>Header Files\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="actor_debug.c">
       <Filter>Source Files\actors\base</Filter>
+    </ClCompile>
+    <ClCompile Include="input.c">
+      <Filter>Source Files\game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

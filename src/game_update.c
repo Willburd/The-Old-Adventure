@@ -10,7 +10,7 @@
 #include "game_draw.h"
 #include "scene_entry.h"
 #include "globals.h"
-#include "input.h"
+#include "Module/input.h"
 #include "audio.h"
 #include "game_state.h"
 #include "Module/module_main.h"
