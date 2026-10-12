@@ -167,6 +167,7 @@
     <ClCompile Include="actor_bush.c" />
     <ClCompile Include="actor_camera.c" />
     <ClCompile Include="actor_crate.c" />
+    <ClCompile Include="actor_death_zone.c" />
     <ClCompile Include="actor_debug.c" />
     <ClCompile Include="actor_door.c" />
     <ClCompile Include="actor_entrance.c" />

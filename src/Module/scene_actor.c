@@ -34,6 +34,14 @@ void SceneFinalizeEntry(struct Actor* current_scene, SceneID next_scene, Entranc
 			actor_entrance_startentry(entrance);
 	}
 
+	// Reset respawn position
+	struct Actor* player = FINDACTOR_BYTYPE(act_player);
+	if (ACTOR_EXISTS(player))
+	{
+		player->home_position = player->position;
+		player->home_rotation = player->rotation;
+	}
+
 	// Start scene's music
 	PlayerHighestPriorityMusic();
 }

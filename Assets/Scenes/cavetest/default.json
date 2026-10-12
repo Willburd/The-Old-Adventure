@@ -21,6 +21,11 @@
 	  },
 	  
 	  {
+		"type": "death_zone",
+		"pos": [-100, -80, -100],
+		"scl": [200, 60, 200]
+	  },
+	  {
 		"type": "entrance",
 		"is_entrance": "debugentrance",
 		"pos": [-63.7, -7.10, 1.9],
