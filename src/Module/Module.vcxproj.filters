@@ -22,6 +22,9 @@
     <Filter Include="Source Files\assets">
       <UniqueIdentifier>{6bcc4193-03db-4ffc-9a9b-87034683c245}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\actors\base">
+      <UniqueIdentifier>{1f6ea3f7-e2a8-4110-a19d-d0a8a3b2ca1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor_library.h">
@@ -63,7 +66,10 @@
       <Filter>Source Files\scenes</Filter>
     </ClCompile>
     <ClCompile Include="actor_camera.c">
-      <Filter>Source Files\actors</Filter>
+      <Filter>Source Files\actors\base</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_debug.c">
+      <Filter>Source Files\actors\base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

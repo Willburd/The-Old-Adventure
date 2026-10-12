@@ -151,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="actor_camera.c" />
+    <ClCompile Include="actor_debug.c" />
     <ClCompile Include="core_assets.c" />
     <ClCompile Include="module_main.c" />
     <ClCompile Include="scene_actor.c" />
