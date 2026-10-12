@@ -13,7 +13,7 @@ void ModuleLateInit()
 
 void ModuleInternalUpdate()
 {
-#ifdef _DEBUG 
+#ifdef _DEBUG
     if (IsKeyPressed(KEY_F7)) // Misc debug
     {
 
@@ -27,6 +27,11 @@ void ModuleGameUpdate()
 }
 
 void ModuleCleanup()
+{
+
+}
+
+void ModuleExtendShaderDefaultUniforms()
 {
 
 }
