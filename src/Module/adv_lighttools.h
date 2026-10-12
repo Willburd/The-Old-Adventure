@@ -1,7 +1,7 @@
 #ifndef __LIGHT_TOOLS_HEADER__
 #define __LIGHT_TOOLS_HEADER__
 
-#include "raymath.h"
+#include "../tools.h"
 #include "../game_draw.h"
 
 #define LIGHT_NODE_SKYBOX AppendLight( Vector3Zero(), LIGHT_WORLD_RANGE, GetSunColor(), GetSunIntensity());
