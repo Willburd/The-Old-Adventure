@@ -104,6 +104,8 @@
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>Header Files\actors</Filter>
+    <ClInclude Include="module_main.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +240,8 @@
     </ClCompile>
     <ClCompile Include="scene_title.c">
       <Filter>Source Files\scenes\world</Filter>
+    <ClCompile Include="module_main.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

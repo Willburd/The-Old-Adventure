@@ -155,6 +155,7 @@
     <ClInclude Include="inventory.h" />
     <ClInclude Include="json_properties.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="module_main.h" />
     <ClInclude Include="scene_library.h" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +195,7 @@
     <ClCompile Include="player_state_generic.c" />
     <ClCompile Include="player_state_grounded.c" />
     <ClCompile Include="player_state_swimming.c" />
+    <ClCompile Include="module_main.c" />
     <ClCompile Include="scene_boot.c" />
     <ClCompile Include="scene_cavetest.c" />
     <ClCompile Include="scene_debugmenu.c" />
