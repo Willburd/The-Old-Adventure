@@ -58,6 +58,9 @@
     <Filter Include="Source Files\scenes\world">
       <UniqueIdentifier>{75d95904-740c-4cd1-b62f-eb69eaaed068}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\actors\base">
+      <UniqueIdentifier>{2ea247e2-1ca1-4f8a-8984-64f8a1197c26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor_library.h">
@@ -255,7 +258,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="actor_camera.c">
-      <Filter>Source Files\actors</Filter>
+      <Filter>Source Files\actors\base</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_debug.c">
+      <Filter>Source Files\actors\base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
