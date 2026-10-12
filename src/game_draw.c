@@ -478,7 +478,7 @@ void ShaderUpdateDefaultUniforms(Shader shader, struct Actor* actor)
 	loc = GetShaderLocation(shader, "uBlendColor");
 	SetShaderValue(shader, loc, (actor->actor_flags & ACTOR_FLAG_BLENDSCOLOR) ? &actor->blend_color : &default_blend_color, SHADER_UNIFORM_VEC4);
 
-	ModuleExtendShaderDefaultUniforms();
+	ModuleExtendShaderDefaultUniforms(shader);
 }
 
 void ShaderUpdateFogUniforms(Shader shader)
@@ -489,6 +489,8 @@ void ShaderUpdateFogUniforms(Shader shader)
 	SetShaderValue(shader, fog_loc, &fog_power, SHADER_UNIFORM_FLOAT);
 	fog_loc = GetShaderLocation(shader, "uFogDistance");
 	SetShaderValue(shader, fog_loc, &fog_distance, SHADER_UNIFORM_FLOAT);
+
+	ModuleShaderUpdateFogUniforms(shader);
 }
 
 void ShaderUpdateLightUniforms(Shader shader)
@@ -503,6 +505,8 @@ void ShaderUpdateLightUniforms(Shader shader)
 	SetShaderValueV(shader, light_loc, &world_light_positions, SHADER_UNIFORM_VEC4, light_count);
 	light_loc = GetShaderLocation(shader, "uLightColors");
 	SetShaderValueV(shader, light_loc, &world_light_colors, SHADER_UNIFORM_VEC4, light_count);
+
+	ModuleExtendShaderLightUniforms(shader);
 }
 
 void ToaDrawMesh(Asset* model_asset, int mesh_index, Material material, Matrix matrix)

@@ -102,9 +102,19 @@ void ModuleCleanup()
 	RELEASE(player_inventory);
 }
 
-void ModuleExtendShaderDefaultUniforms()
+void ModuleExtendShaderDefaultUniforms(Shader shader)
 {
 	float animation_ticker = (float)world_tick_counter;
 	int loc = GetShaderLocation(shader, "uAnimator");
 	SetShaderValue(shader, loc, &animation_ticker, SHADER_UNIFORM_FLOAT);
+}
+
+void ModuleExtendShaderFogUniforms(Shader shader)
+{
+
+}
+
+void ModuleExtendShaderLightUniforms(Shader shader)
+{
+
 }
