@@ -36,6 +36,9 @@
     <ClInclude Include="scene_library.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="module_main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene_boot.c">
@@ -46,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="core_assets.c">
       <Filter>Source Files\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="module_main.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

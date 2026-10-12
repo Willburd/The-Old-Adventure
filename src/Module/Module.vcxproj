@@ -144,10 +144,12 @@
     <ClInclude Include="actor_library.h" />
     <ClInclude Include="core_assets.h" />
     <ClInclude Include="json_properties.h" />
+    <ClInclude Include="module_main.h" />
     <ClInclude Include="scene_library.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core_assets.c" />
+    <ClCompile Include="module_main.c" />
     <ClCompile Include="scene_boot.c" />
     <ClCompile Include="scene_debugmenu.c" />
   </ItemGroup>
