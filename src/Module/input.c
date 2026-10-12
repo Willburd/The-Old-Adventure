@@ -16,6 +16,7 @@ const int inputkeys[INPUT_LAST] = {
 	KEY_BACKSPACE,					// cancel
 	KEY_ENTER,						// pause
 	KEY_E,							// interact
+	// Adventure
 };
 
 const int inputpads[INPUT_LAST] = { 
@@ -31,6 +32,7 @@ const int inputpads[INPUT_LAST] = {
 	GAMEPAD_BUTTON_RIGHT_FACE_RIGHT,// cancel
 	GAMEPAD_BUTTON_MIDDLE_RIGHT,	// pause
 	GAMEPAD_BUTTON_RIGHT_FACE_DOWN, // interact
+	// Adventure
 };
 
 int current_gamepad = 0;
