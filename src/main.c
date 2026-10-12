@@ -169,17 +169,6 @@ static void game_setup()
 
     // Enter game
     LoadScene(scene_boot, ent_title);
-
-    // Adventure edit begin - Prepare global LUT shaders
-    RegisterWorldPostProcessShader(
-        AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat"), "WorldDither", 10, AdvDitherShaderUniforms);
-    RegisterWorldPostProcessShader(
-        AssetGet_Material(ASSET_MATERIALS"/Effects/look_up_table.mat"), "WorldLUT", 20, AdvLUTShaderUniforms);
-    RegisterWorldPostProcessShader(
-        AssetGet_Material(ASSET_MATERIALS"/Effects/dither.mat"), "HudDither", 10, AdvDitherShaderUniforms);
-    RegisterHudPostProcessShader(
-        AssetGet_Material(ASSET_MATERIALS"/Effects/look_up_table.mat"), "HudLUT", 20, AdvLUTShaderUniforms);
-    // Adventure edit end
 }
 
 static void game_shutdown()

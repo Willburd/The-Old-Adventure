@@ -1,8 +1,8 @@
 #ifndef __ADV_LUT_SHADER_HEADER__
 #define __ADV_LUT_SHADER_HEADER__
 
-#include "game_draw.h"
-#include "post_processing.h"
+#include "../game_draw.h"
+#include "../post_processing.h"
 #include <raylib.h>
 
 void AdvLUTShaderUniforms(PostProcessingPhase phase, struct PostProcessingLayer* data, Shader* shader, RenderTexture2D* render_tex)
