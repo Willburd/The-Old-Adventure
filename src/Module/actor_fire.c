@@ -1,7 +1,7 @@
 #include "../actor_factory.h"
 #include "../tools.h"
 #include "core_assets.h"
-#include "../light_tools.h"
+#include "adv_lighttools.h"
 #include "actor_camera.h"
 #include "rlgl.h"
 #include "world_state.h"

@@ -3,7 +3,7 @@
 #include "core_assets.h"
 #include "../actor.h"
 #include "actor_camera.h"
-#include "../light_tools.h"
+#include "adv_lighttools.h"
 #include "../actor_factory.h"
 #include "world_state.h"
 #include "json_properties.h"

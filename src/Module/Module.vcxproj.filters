@@ -132,6 +132,9 @@
     <ClInclude Include="actor_scene.h">
       <Filter>Header Files\actors\base</Filter>
     </ClInclude>
+    <ClInclude Include="adv_lighttools.h">
+      <Filter>Source Files\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene_boot.c">

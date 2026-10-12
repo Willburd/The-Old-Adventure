@@ -151,6 +151,7 @@
     <ClInclude Include="actor_textbox.h" />
     <ClInclude Include="actor_trigger_exit.h" />
     <ClInclude Include="actor_water_volume.h" />
+    <ClInclude Include="adv_lighttools.h" />
     <ClInclude Include="adv_postprocessing.h" />
     <ClInclude Include="adv_utility.h" />
     <ClInclude Include="core_assets.h" />
