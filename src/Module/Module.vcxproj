@@ -146,12 +146,12 @@
     <ClInclude Include="actor_musicplayer.h" />
     <ClInclude Include="actor_node.h" />
     <ClInclude Include="actor_platform.h" />
+    <ClInclude Include="actor_scene.h" />
     <ClInclude Include="actor_textbox.h" />
     <ClInclude Include="actor_trigger_exit.h" />
     <ClInclude Include="actor_water_volume.h" />
     <ClInclude Include="adv_postprocessing.h" />
     <ClInclude Include="adv_utility.h" />
-    <ClInclude Include="actor_scene.h" />
     <ClInclude Include="core_assets.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="json_properties.h" />

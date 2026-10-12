@@ -10,10 +10,6 @@
 #include "light_tools.h"
 #include "Module/json_properties.h"
 #include "game_draw.h"
-// Adventure
-#include "Module/actor_entrance.h"
-#include "Module/world_state.h"
-#include "Module/actor_musicplayer.h"
 
 // private header
 static SceneID next_scene;
