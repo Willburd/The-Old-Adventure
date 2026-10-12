@@ -1,11 +1,11 @@
-#include "tools.h"
-#include "assets.h"
-#include "actor_factory.h"
-#include "Module/actor_scene.h"
-#include "game_draw.h"
-#include "collision.h"
-#include "Module/core_assets.h"
-#include "audio.h"
+#include "../tools.h"
+#include "../assets.h"
+#include "../actor_factory.h"
+#include "actor_scene.h"
+#include "../game_draw.h"
+#include "../collision.h"
+#include "core_assets.h"
+#include "../audio.h"
 
 // private header
 ACTOR_DRAWWORLD(debug);
