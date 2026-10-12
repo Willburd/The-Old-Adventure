@@ -174,7 +174,6 @@
   <ItemGroup>
     <ClInclude Include="actor.h" />
     <ClInclude Include="actor_factory.h" />
-    <ClInclude Include="actor_scene.h" />
     <ClInclude Include="audio.h" />
     <ClInclude Include="animation.h" />
     <ClInclude Include="assets.h" />

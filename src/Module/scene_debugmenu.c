@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "../tools.h"
 #include "../actor_factory.h"
-#include "../actor_scene.h"
+#include "actor_scene.h"
 #include "../Module/scene_library.h"
 #include "../scene_entry.h"
 #include "../game_draw.h"

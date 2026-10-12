@@ -152,9 +152,6 @@
     <ClInclude Include="globals.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
-    <ClInclude Include="actor_scene.h">
-      <Filter>Header Files\engine\actors</Filter>
-    </ClInclude>
     <ClInclude Include="scene_entry.h">
       <Filter>Header Files\engine\scenes</Filter>
     </ClInclude>
