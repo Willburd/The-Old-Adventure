@@ -73,7 +73,7 @@ int main(void)
 
         update_ticker += delta_time;
         seconds_counter += delta_time;
-
+        
 #ifdef _DEBUG 
         if (IsKeyPressed(KEY_F2)) // Debug info
         {
@@ -102,11 +102,8 @@ int main(void)
         {
             draw_collider_info = !draw_collider_info;
         }
-        if (IsKeyPressed(KEY_F7)) // Misc debug
-        {
-
-        }
 #endif
+        ModuleInternalUpdate();
 
         ticker_rate = 1.0 / update_rate;
         while (update_ticker >= ticker_rate)
