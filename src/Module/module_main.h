@@ -16,7 +16,7 @@ void ModuleCleanup();
 // Called at the end of ShaderUpdateDefaultUniforms(), allowing custom global uniforms to be set
 void ModuleExtendShaderDefaultUniforms(Shader shader);
 // Called at the end of ShaderUpdateDefaultUniforms(), allowing custom fog uniforms to be set
-void ModuleShaderUpdateFogUniforms(Shader shader);
+void ModuleExtendShaderFogUniforms(Shader shader);
 // Called at the end of ShaderUpdateLightUniforms(), allowing custom light uniforms to be set
 void ModuleExtendShaderLightUniforms(Shader shader);
 
