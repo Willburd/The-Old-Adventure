@@ -17,6 +17,7 @@
 #include "tools.h"
 #include "game_state.h"
 #include "text_loading.h"
+#include "Module/module_main.h"
 
 #define RAYMATH_USE_SIMD_INTRINSICS 1
 #define PLATFORM_DESKTOP 1
@@ -146,6 +147,9 @@ static void game_setup()
     // Setup renderer
     clear_background_color = BLACK;
 
+    // Init game module
+    ModuleInit();
+
     // Load text data
     TextHashmapCreate();
     LoadBuiltinText();
@@ -196,4 +200,5 @@ static void game_shutdown()
             continue;
         HandleActorFinalCleanup(end_actor);
     }
+    ModuleCleanup();
 }

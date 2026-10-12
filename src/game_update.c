@@ -13,6 +13,7 @@
 #include "input.h"
 #include "audio.h"
 #include "game_state.h"
+#include "Module/module_main.h"
 
 
 int current_actor_cap = 0;
@@ -37,6 +38,8 @@ void game_update()
 	HandleLoadNextScene();
 	ProcessTimers();
 	ProcessMusic();
+	// Handle module update last
+	ModuleGameUpdate();
 
 	////////////////////////////////////////////////////////////////////////
 	// Preupdate and state control
