@@ -17,10 +17,7 @@
 #include "tools.h"
 #include "game_state.h"
 #include "text_loading.h"
-// Adventure
-#include "Module/world_state.h"
-#include "Module/inventory.h"
-#include "Module/adv_postprocessing.h"
+#include "Module/module_main.h"
 
 #define RAYMATH_USE_SIMD_INTRINSICS 1
 #define PLATFORM_DESKTOP 1
@@ -77,7 +74,7 @@ int main(void)
         update_ticker += delta_time;
         seconds_counter += delta_time;
 
-#ifdef _DEBUG 
+#ifdef _DEBUG
         if (IsKeyPressed(KEY_F2)) // Debug info
         {
             draw_debug_info = !draw_debug_info;
@@ -153,10 +150,8 @@ static void game_setup()
     // Setup renderer
     clear_background_color = BLACK;
 
-    // Adventure edit begin - Init inventory and worldstate
-    MALLOC_SET(Inventory, player_inventory, NULL);
-    InitWorldState();
-    // Adventure edit end
+    // Init game module
+    ModuleInit();
 
     // Load text data
     TextHashmapCreate();
@@ -219,8 +214,5 @@ static void game_shutdown()
             continue;
         HandleActorFinalCleanup(end_actor);
     }
-    // Adventure edit begin - Cleanup Adventure
-    // Inventory
-    RELEASE(player_inventory);
-    // Adventure edit end
+    ModuleCleanup();
 }

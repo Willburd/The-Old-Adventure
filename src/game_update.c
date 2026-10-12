@@ -13,8 +13,7 @@
 #include "input.h"
 #include "audio.h"
 #include "game_state.h"
-// Adventure
-#include "Module/world_state.h"
+#include "Module/module_main.h"
 
 
 int current_actor_cap = 0;
@@ -34,15 +33,13 @@ void game_update()
 	// Prepare world and renderer
 	////////////////////////////////////////////////////////////////////////
 
-	// Adventure edit begin - Update adventure's abstract data
-	UpdateWorldState();
-	// Adventure edit end
-
 	ResetDebugRayCount();
 	ResetLightCount();
 	HandleLoadNextScene();
 	ProcessTimers();
 	ProcessMusic();
+	// Handle module update last
+	ModuleGameUpdate();
 
 	////////////////////////////////////////////////////////////////////////
 	// Preupdate and state control
