@@ -4,7 +4,7 @@
 #include "actor_textbox.h"
 #include "../game_state.h"
 #include "../hud.h"
-#include "../input.h"
+#include "input.h"
 #include <string.h>
 #include "../text_loading.h"
 #include "actor_camera.h"

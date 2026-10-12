@@ -1,7 +1,7 @@
 #include "../tools.h"
 #include "../actor.h"
 #include "../animation.h"
-#include "../input.h"
+#include "input.h"
 #include "../game_draw.h"
 
 // Assets
