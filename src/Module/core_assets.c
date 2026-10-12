@@ -35,6 +35,7 @@ void LoadCoreAssets()
 
     // Load default sounds
     LoadAsset_Sound(ASSET_SOUND"/error.ogg", TRUE);
+    LoadAsset_Music(ASSET_MUSIC"/error.ogg", TRUE);
     // TODO - Your default sounds here
 
     // Set font

@@ -48,7 +48,6 @@ void TOA_Play3DSound(char* path, Vector3 position, float range, float volume, fl
 void ChannelPlaySound(char* path, int channel, float volume, float pan, float pitch);
 void ChannelPlay3DSound(char* path, Vector3 position, int channel, float range, float volume, float pitch);
 
-Music* ChannelPreloadMusic(char* path, int is_core, float volume, float pan, float pitch);
 Music* ChannelStartMusic(char* path, float volume, float pan, float pitch);
 Music* ChannelPlayMusic(Music* music, float volume, float pan, float pitch);
 void ChannelUpdateMusic(Music* music, float volume, float pan, float pitch);

@@ -383,7 +383,7 @@ Asset* AssetGetPackage(char* path)
 Texture2D* AssetGet_Texture(char* path) ASSET_FALLBACK(path,ASSET_TEXTURES"/Engine/no_texture.png", tex);
 Model* AssetGet_Model(char* path) ASSET_FALLBACK(path, ASSET_MODELS"/Tools/unit_cube.glb", mdl);
 Sound* AssetGet_Sound(char* path) ASSET_FALLBACK(path, ASSET_SOUND"/error.ogg", snd);
-Music* AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_SOUND"/error.ogg", mus);
+Music* AssetGet_Music(char* path) ASSET_FALLBACK(path, ASSET_MUSIC"/error.ogg", mus);
 Material* AssetGet_Material(char* path) ASSET_FALLBACK(path, ASSET_MATERIALS"/Engine/no_material.mat", mat);
 
 void LoadMaterialArray(char* mat_list[], int length)
