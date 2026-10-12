@@ -17,6 +17,7 @@ typedef enum
 	input_cancel,
 	input_pause,
 	input_interact,
+	// TODO - Your custom inputs here
 	INPUT_LAST
 
 } InputID;
