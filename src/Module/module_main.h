@@ -3,6 +3,8 @@
 
 #include <raylib.h>
 
+// Name of the module, as it will appear in the window title
+const char* ModuleGameName();
 // Called during game's initilization in main()
 void ModuleInit();
 // Called at the end of game's initilization in main() once core assets have finished loading

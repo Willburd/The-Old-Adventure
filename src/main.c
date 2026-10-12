@@ -55,7 +55,7 @@ int main(void)
     printf("==============================================================================\n");
 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_ALWAYS_RUN);
-    InitWindow(screenWidth, screenHeight, "The Old Adventures");
+    InitWindow(screenWidth, screenHeight, ModuleGameName());
     InitAudioDevice();
 
     SetTargetFPS(frame_rate);

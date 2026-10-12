@@ -1,5 +1,4 @@
 #include "Module/actor_scene.h"
-#include "scene_entry.h"
 #include "Module/scene_library.h"
 #include "actor_factory.h"
 #include "raylib.h"
@@ -10,6 +9,7 @@
 #include "light_tools.h"
 #include "Module/json_properties.h"
 #include "game_draw.h"
+#include "Module/module_main.h"
 
 // private header
 static SceneID next_scene;
@@ -116,14 +116,7 @@ void LoadCustomLayer(struct Actor* scene, char* custom_layer)
 // Loads the specified room index of the current scene, while deleting all actors outside of it. Resets the current room if used to go to the same index as current. Instant argument should only be used when loading a newly created scene actor, and not during room changes.
 void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, int instant)
 {
-	// If we're retaining the player we need to do some magic.
-	struct Actor* player = NULL;
-	if (keep_player)
-	{
-		struct Actor* player = NULL; // FINDACTOR_BYTYPE(act_player); // TODO - Your player actor type here
-		if (player)
-			player->current_room_index = ACTOR_HAS_NO_ROOM_INDEX;
-	}
+	SceneRoomChangeStart(scene, new_room_index, keep_player, instant);
 	// Clear puzzle flag
 	SceneData* scene_data = (SceneData*)scene->data;
 	scene_data->room_flags = 0; // Clear puzzle flags on room change
@@ -137,8 +130,7 @@ void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, i
 	printf(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n");
 	printf("CHANGED ROOM: %i -> %i \n", scene->current_room_index, next_room);
 	printf("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''\n");
-	if (player)
-		player->current_room_index = next_room;
+	SceneRoomChangeEnd(scene, new_room_index, keep_player, instant);
 	if (instant)
 		FinalizeRoomChange();
 }
