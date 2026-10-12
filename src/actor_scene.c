@@ -1,4 +1,4 @@
-#include "actor_scene.h"
+#include "Module/actor_scene.h"
 #include "scene_entry.h"
 #include "Module/scene_library.h"
 #include "actor_factory.h"
@@ -48,6 +48,7 @@ ACTOR_INIT(scene)
 	ChangeSceneRoom(scene, 0, FALSE, TRUE); // Activate the first room inside the scene.
 
 	// TODO - Your player scene entry logic here
+	SceneFinalizeEntry();
 
 	printf("\n..............................................................................\n");
 	printf("CHANGE FINISHED ==> %s \n", scene->actor_type_name);
