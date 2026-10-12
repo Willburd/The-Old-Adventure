@@ -73,6 +73,9 @@
     <Filter Include="Header Files\actors\base">
       <UniqueIdentifier>{3a002cb0-f9fc-4f75-9cc6-94ea76ca62ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\scenes\base">
+      <UniqueIdentifier>{ffbae98d-223d-4f4f-8d07-7d36146f84e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor_library.h">
@@ -137,12 +140,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="scene_boot.c">
-      <Filter>Source Files\scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="scene_debugmenu.c">
-      <Filter>Source Files\scenes</Filter>
-    </ClCompile>
     <ClCompile Include="core_assets.c">
       <Filter>Source Files\assets</Filter>
     </ClCompile>
@@ -283,6 +280,15 @@
     </ClCompile>
     <ClCompile Include="input.c">
       <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_boot.c">
+      <Filter>Source Files\scenes\base</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_debugmenu.c">
+      <Filter>Source Files\scenes\base</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_actor.c">
+      <Filter>Source Files\actors\base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
