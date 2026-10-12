@@ -77,6 +77,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\darkl\OneDrive\Desktop\Tools\raylib-6.0_win64_msvc16\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -259,6 +260,11 @@
   <ItemGroup>
     <None Include="cpp.hint" />
     <None Include="input.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Module\Module.vcxproj">
+      <Project>{3abb6105-e886-4b91-a164-20ca7d84b457}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
