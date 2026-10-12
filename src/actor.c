@@ -1,5 +1,5 @@
 #include "actor.h"
-#include "camera.h"
+#include "Module/actor_camera.h"
 #include "tools.h"
 #include "scene_entry.h"
 

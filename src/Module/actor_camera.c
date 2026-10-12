@@ -1,10 +1,10 @@
-#include "tools.h"
-#include "assets.h"
-#include "actor_factory.h"
-#include "camera.h"
-#include "input.h"
-#include "game_draw.h"
-#include "collision.h"
+#include "../tools.h"
+#include "../assets.h"
+#include "../actor_factory.h"
+#include "actor_camera.h"
+#include "../input.h"
+#include "../game_draw.h"
+#include "../collision.h"
 
 // private header
 ACTOR_PREUPDATE(camera);
