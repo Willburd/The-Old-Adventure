@@ -1,5 +1,5 @@
 #include "game_draw.h"
-#include "camera.h"
+#include "Module/actor_camera.h"
 #include "globals.h"
 #include "actor_factory.h"
 #include "Module/core_assets.h"

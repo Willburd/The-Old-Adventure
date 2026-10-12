@@ -6,7 +6,6 @@
 #include "assets.h"
 #include "tools.h"
 #include "timer.h"
-#include "light_tools.h"
 #include "Module/json_properties.h"
 #include "game_draw.h"
 #include "Module/module_main.h"

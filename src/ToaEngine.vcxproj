@@ -183,7 +183,6 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="Hashmap\hashmap.h" />
     <ClInclude Include="hud.h" />
-    <ClInclude Include="light_tools.h" />
     <ClInclude Include="materials.h" />
     <ClInclude Include="models.h" />
     <ClInclude Include="Module\world_state.h" />
