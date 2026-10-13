@@ -29,35 +29,43 @@ out vec4 fragLight;
 
 vec3 solve_lights(vec3 pos)
 {
-    vec3 total_light_blend = vec3(0.0, 0.0, 0.0);
-    float remaining = 1.0;
-
+    // Collect static and dynamic lights
+    int static_light_count = 0;
+    int dynamic_light_count = 0;
+    float total_static_influence = 0.0;
+    float darkness_void_influence = 0.0;
+    vec3 static_light_blend = vec3(0.0, 0.0, 0.0);
+    vec3 dynamic_light_blend = vec3(0.0, 0.0, 0.0);
     for(int j = 0; j < uLightCount; j++)
     {
         vec4 light_pos = uLightPositions[j];
         vec4 light_col = uLightColors[j];
-
-        // Get the amount of influence our light has
-        float rad_influence = light_col.a;
-        if(light_pos.w < 9999.0) // Lights larger than 10000 are world lights
+        if(light_col.xyz == vec3(0.0,0.0,0.0)) // Special cave darkness handling
         {
-            rad_influence = 1.0 - clamp(distance(light_pos.xyz, pos) / light_pos.w, 0.0, 1.0) * light_col.a;
-            if(rad_influence < 0.05)
-                continue;
+            float influence = 1.0 - clamp(distance(light_pos.xyz, pos) / light_pos.w, 0.0, 1.0);
+            if(influence > darkness_void_influence)
+                darkness_void_influence = influence;
         }
-
-        // If we are worth considering, put us into the mix with the other lights
-        float affect_remain = remaining;
-        vec3 light_affect = light_col.rgb;
-        if(light_affect == vec3(0.0,0.0,0.0)) // Special cave darkness handling
+        else if(light_pos.w < 9999.0) // Lights larger than 10000 are world lights
         {
-            light_affect = vec3(-10.0,-10.0,-10.0);
-            affect_remain = 1.0; // Force full intensity regardless of other lights
+            light_col.w *= 1.0 - clamp(distance(light_pos.xyz, pos) / light_pos.w, 0.0, 1.0);
+            dynamic_light_blend += (light_col.xyz * light_col.w);
+            dynamic_light_count += 1;
         }
-        total_light_blend += light_affect * rad_influence * affect_remain;
-        remaining *= (1.0 - rad_influence);
+        else
+        {
+            static_light_blend += light_col.xyz;
+            total_static_influence += light_col.w;
+            static_light_count += 1;
+        }
     }
-    return clamp(total_light_blend, 0.0, 1.0);
+    // Static lights are summed together, and the remaining difference in alpha after averaging is dispersed to the dynamic lights
+    dynamic_light_blend = vec3(dynamic_light_blend.x / dynamic_light_count, dynamic_light_blend.y / dynamic_light_count, dynamic_light_blend.z / dynamic_light_count);
+    static_light_blend = vec3(static_light_blend.x / static_light_count, static_light_blend.y / static_light_count, static_light_blend.z / static_light_count);
+    float static_light_influence = total_static_influence / static_light_count;
+    float dynamic_light_influence = 1.0 - static_light_influence;
+
+    return clamp(mix((static_light_blend * static_light_influence) + (dynamic_light_blend * dynamic_light_influence), vec3(0.0,0.0,0.0), darkness_void_influence), 0.0, 1.0);
 }
 
 void main()
