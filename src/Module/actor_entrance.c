@@ -7,6 +7,7 @@
 #include "../game_draw.h"
 #include "../scene_entry.h"
 #include "json_properties.h"
+#include "player.h"
 
 // private header
 static void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endpos);
@@ -14,7 +15,6 @@ ACTOR_JSON_INIT(entrance);
 ACTOR_DRAWWORLD(entrance);
 static Vector3 actor_entrance_get_start(struct Actor* entrance);
 static Vector3 actor_entrance_get_end(struct Actor* entrance);
-static Vector3 actor_entrance_get_camerastart(struct Actor* entrance);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -51,7 +51,7 @@ ACTOR_JSON_INIT(entrance)
 void actor_entrance_startentry(struct Actor* entrance)
 {
 	Vector3 end_pos = actor_entrance_get_end(entrance);
-	Vector3 cam_pos = actor_entrance_get_camerastart(entrance);
+	Vector3 cam_pos = CameraBehindPlayerPosition(entrance);
 
 	struct Actor* player = FINDACTOR_BYTYPE(act_player);
 	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
@@ -83,7 +83,7 @@ ACTOR_DRAWWORLD(entrance)
 	DrawCube(actor->position, 0.2f, 0.2f, 0.2f, PURPLE);
 	Vector3 end_pos = actor_entrance_get_end(actor);
 	DrawLine3D(actor->position, end_pos, PURPLE);
-	Vector3 cam_pos = actor_entrance_get_camerastart(actor);
+	Vector3 cam_pos = CameraBehindPlayerPosition(actor);
 	DrawLine3D(actor->position, cam_pos, GREEN);
 }
 
@@ -116,11 +116,4 @@ static Vector3 actor_entrance_get_end(struct Actor* entrance)
 	if (collision.ray_col.hit)
 		return collision.ray_col.point;
 	return raycast.position;
-}
-
-static Vector3 actor_entrance_get_camerastart(struct Actor* entrance)
-{
-	Vector3 offset = Vector3Scale(VEC3BACKWARD, 5.0f);
-	offset = Vector3Add(offset, Vector3Scale(VEC3UP, 3.0f));
-	return Vector3Add(entrance->position, Vector3RotateByQuaternion(offset, entrance->rotation));
 }

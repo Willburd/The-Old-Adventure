@@ -252,3 +252,10 @@ Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player)
 {
 	return Vector3Add(player->position, Vector3Scale(VEC3UP, CAMERA_PLAYER_LOOK_HEIGHT));
 }
+
+Vector3 CameraBehindPlayerPosition(struct Actor* player)
+{
+	Vector3 offset = Vector3Scale(VEC3BACKWARD, 5.0f);
+	offset = Vector3Add(offset, Vector3Scale(VEC3UP, 3.0f));
+	return Vector3Add(player->position, Vector3RotateByQuaternion(offset, player->rotation));
+}

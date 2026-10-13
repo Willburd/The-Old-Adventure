@@ -7,6 +7,7 @@
 #include "../game_state.h"
 #include "actor_fade.h"
 #include "actor_camera.h"
+#include "player.h"
 
 // private header
 ACTOR_UPDATE(death_zone);
@@ -91,10 +92,19 @@ static void RestartRoomFromDeath(struct Actor* exit)
 	// Reset the scene
 	struct Actor* scene = GetCurrentScene();
 	ChangeSceneRoom(scene, scene->current_room_index, FALSE, FALSE);
-	ACTOR_FACTORY(NULL, act_player, scene, respawn_point, respawn_rot, Vector3One(), Vector3Zero(), Vector3Zero());
+	player = ACTOR_FACTORY(NULL, act_player, scene, respawn_point, respawn_rot, Vector3One(), Vector3Zero(), Vector3Zero());
 
 	// Reset the camera
 	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);
 	if (ACTOR_EXISTS(camera))
+	{
+		// Snap behind player at entrance
+		Vector3 cam_pos = CameraBehindPlayerPosition(player);
+		ACTOR_POS_SNAP(camera, cam_pos);
+		cam_main.position = cam_pos; // snap this too
+		float point_angle = QuaternionToEuler(player->rotation).y + (180.0f * DEG2RAD);
+		CameraResetAngleToTarget(camera, point_angle);
+		// Restore camera to default state
 		CameraSetMode(camera, CAMERA_MODE_FOLLOW);
+	}
 }

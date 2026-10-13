@@ -97,5 +97,6 @@ void PlayerStandardPauseActivate(struct Actor* player);
 void PlayerStandardBehavior(struct Actor* player, int can_accept_input, float max_speed, float acceleration, float slowing_friction, float stoping_friction, float snapturn_friction, float turn_rate);
 void PlayerStandardInteraction(struct Actor* player, int can_accept_input);
 Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player);
+Vector3 CameraBehindPlayerPosition(struct Actor* player);
 
 #endif
