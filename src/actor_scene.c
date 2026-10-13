@@ -8,6 +8,7 @@
 #include "timer.h"
 #include "Module/json_properties.h"
 #include "game_draw.h"
+#include "game_update.h"
 #include "Module/module_main.h"
 
 // private header
@@ -85,6 +86,7 @@ void HandleLoadNextScene()
 		next_scene = -1;
 	}
 	FinalizeRoomChange();
+	UpdateFinalizeActors();
 }
 
 // Destroys all actors that are children of the current scene, and the scene itself. Optionally unloading all non-core loaded assets with it.
@@ -132,6 +134,7 @@ void ChangeSceneRoom(struct Actor* scene, int new_room_index, int keep_player, i
 	SceneRoomChangeEnd(scene, new_room_index, keep_player, instant);
 	if (instant)
 		FinalizeRoomChange();
+	UpdateFinalizeActors();
 }
 
 void DefaultSceneLightAppend(struct Actor* scene)
