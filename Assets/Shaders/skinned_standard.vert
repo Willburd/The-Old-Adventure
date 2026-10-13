@@ -42,7 +42,7 @@ vec3 solve_lights(vec3 pos)
         vec4 light_col = uLightColors[j];
         if(light_col.xyz == vec3(0.0,0.0,0.0)) // Special cave darkness handling
         {
-            float influence = 1.0 - clamp(distance(light_pos.xyz, pos) / light_pos.w, 0.0, 1.0);
+            float influence = 1.0 - pow(clamp(distance(light_pos.xyz, pos) / light_pos.w, 0.0, 1.0), 6.0);
             if(influence > darkness_void_influence)
                 darkness_void_influence = influence;
         }
