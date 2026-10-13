@@ -46,7 +46,10 @@ RenderTexture2D render_tex_tilemap;
 Vector2 renderlayer_pos_foreground;
 RenderTexture2D render_tex_foreground;
 
-void game_draw(double tick_percent);
+void UpdateClearDrawActors();
+void UpdatePrepareDrawActor(struct Actor* draw_actor);
+void UpdateSortTransparentDrawActors();
+void GameDraw(double tick_percent);
 
 void fog_set(Color col, float power, float dist);
 /// Lights are updated each frame and do not persist between them. Lights need to be "appended" to the light list each update to render. This is easier than juggling light references when wanting to animate lights.

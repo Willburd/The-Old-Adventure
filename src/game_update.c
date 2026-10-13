@@ -20,7 +20,7 @@ int current_actor_cap = 0;
 int total_actors = 0;
 uint64_t current_unique_id = 0;
 
-void game_update()
+void GameUpdate()
 {
 	// Update controller
 	UpdateInputState();
@@ -140,10 +140,14 @@ void game_update()
 			UpdateAnimLayers(update_actor);
 	}
 
-	////////////////////////////////////////////////////////////////////////
-	// Finalize before draw
-	////////////////////////////////////////////////////////////////////////
+	// Hand it off to the draw event
+	UpdateFinalizeActors();
+}
 
+// Finalize draw data and cleanup destroyed actors
+void UpdateFinalizeActors()
+{
+	UpdateClearDrawActors();
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
 		struct Actor* finalize_actor = world_actors[i];
@@ -155,8 +159,7 @@ void game_update()
 			HandleActorFinalCleanup(finalize_actor);
 			continue;
 		}
-		// Light update
-		if (!(finalize_actor->actor_flags & ACTOR_FLAG_DISABLE_LIGHTS) && ACTOR_HAS(finalize_actor, func_append_lights))
-			finalize_actor->func_append_lights(finalize_actor);
+		UpdatePrepareDrawActor(finalize_actor);
 	}
+	UpdateSortTransparentDrawActors();
 }

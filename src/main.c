@@ -40,8 +40,8 @@ double update_ticker = 0;
 uint64_t tick_counter = 0;
 double seconds_counter = 0;
 
-static void game_setup();
-static void game_shutdown();
+static void GameSetup();
+static void GameShutdown();
 
 int main(void)
 {
@@ -59,7 +59,7 @@ int main(void)
     InitAudioDevice();
 
     SetTargetFPS(frame_rate);
-    game_setup();
+    GameSetup();
 
     printf("==============================================================================\n");
     printf("                                BEGIN GAME LOOP                               \n");
@@ -110,23 +110,23 @@ int main(void)
         {
             tick_counter++;
             update_ticker -= ticker_rate;
-            game_update();
+            GameUpdate();
             if (update_ticker > 10 || NewSceneOrRoomRequested()) // So we don't jitter when we finish loading
                 update_ticker = fmod(update_ticker, ticker_rate);
         }
-        game_draw(update_ticker / ticker_rate);
+        GameDraw(update_ticker / ticker_rate);
     }
 
     printf("==============================================================================\n");
     printf("                                 END GAME LOOP                                \n");
     printf("==============================================================================\n");
 
-    game_shutdown();
+    GameShutdown();
     CloseWindow();
     return ERR_SUCCESS;
 }
 
-static void game_setup()
+static void GameSetup()
 {
     if (world_actors == NULL) {
         perror("Actor array allocation failed!\n");
@@ -168,7 +168,7 @@ static void game_setup()
     LoadScene(scene_boot, ent_title);
 }
 
-static void game_shutdown()
+static void GameShutdown()
 {
     // Clear the actors entirely
     for (int i = 0; i < ACTOR_LIMIT; i++)

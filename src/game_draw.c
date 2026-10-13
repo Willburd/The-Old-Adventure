@@ -35,11 +35,97 @@ RenderTexture2D render_tex_background = { 0 };
 RenderTexture2D render_tex_tilemap = { 0 };
 RenderTexture2D render_tex_foreground = { 0 };
 
+static int main_predraw_actor_count = 0;
+static struct Actor* main_predraw_array[ACTOR_LIMIT] = { 0 };
+
+static int main_draw_actor_count = 0;
+static struct Actor* main_draw_array[ACTOR_LIMIT] = { 0 };
+
+static int main_postdraw_actor_count = 0;
+static struct Actor* main_postdraw_array[ACTOR_LIMIT] = { 0 };
+
+static int hud_predraw_actor_count = 0;
+static struct Actor* hud_predraw_array[ACTOR_LIMIT] = { 0 };
+
+static int hud_draw_actor_count = 0;
+static struct Actor* hud_draw_array[ACTOR_LIMIT] = { 0 };
+
+static int hud_postdraw_actor_count = 0;
+static struct Actor* hud_postdraw_array[ACTOR_LIMIT] = { 0 };
+
 static int transparent_draw_actor_count = 0;
 static struct Actor* transparent_draw_array[ACTOR_LIMIT] = { 0 };
 static struct Actor* transparent_sort_array[ACTOR_LIMIT] = { 0 };
 
-void game_draw(double tick_percent)
+void UpdateClearDrawActors()
+{
+	main_predraw_actor_count = 0;
+	main_draw_actor_count = 0;
+	main_postdraw_actor_count = 0;
+	hud_predraw_actor_count = 0;
+	hud_draw_actor_count = 0;
+	hud_postdraw_actor_count = 0;
+	transparent_draw_actor_count = 0;
+}
+
+void UpdatePrepareDrawActor(struct Actor* draw_actor)
+{
+	// Light update
+	if (!(draw_actor->actor_flags & ACTOR_FLAG_DISABLE_LIGHTS) && ACTOR_HAS(draw_actor, func_append_lights))
+		draw_actor->func_append_lights(draw_actor);
+	if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
+		return;
+	// Check for future draw events. We don't need to loop over all actors in the future if we check now!
+	if (ACTOR_HAS(draw_actor, func_predrawworld))
+		main_predraw_array[main_predraw_actor_count++] = draw_actor;
+	if (ACTOR_HAS(draw_actor, func_drawworld))
+		main_draw_array[main_draw_actor_count++] = draw_actor;
+	if (ACTOR_HAS(draw_actor, func_transparentdrawworld))
+		transparent_draw_array[transparent_draw_actor_count++] = draw_actor;
+	if (ACTOR_HAS(draw_actor, func_postdrawworld))
+		main_postdraw_array[main_postdraw_actor_count++] = draw_actor;
+	if (ACTOR_HAS(draw_actor, func_predrawhud))
+		hud_predraw_array[hud_predraw_actor_count++] = draw_actor;
+	if (ACTOR_HAS(draw_actor, func_drawhud))
+		hud_draw_array[hud_draw_actor_count++] = draw_actor;
+	if (ACTOR_HAS(draw_actor, func_postdrawhud))
+		hud_postdraw_array[hud_postdraw_actor_count++] = draw_actor;
+}
+
+void UpdateSortTransparentDrawActors()
+{
+	// Transparent sort order
+	int sorted_count = 0;
+	while (sorted_count < transparent_draw_actor_count)
+	{
+		int furthest_actor_index = -1;
+		for (int i = 0; i < transparent_draw_actor_count; i++)
+		{
+			struct Actor* current_actor = transparent_draw_array[i];
+			if (transparent_draw_array[i] == NULL)
+				continue;
+			if (furthest_actor_index == -1)
+			{
+				furthest_actor_index = i;
+				continue;
+			}
+			struct Actor* compare_actor = transparent_draw_array[furthest_actor_index];
+			if (Vector3Distance(cam_main.position, current_actor->position) < Vector3Distance(cam_main.position, compare_actor->position))
+				continue;
+			furthest_actor_index = i;
+		}
+		transparent_sort_array[sorted_count++] = transparent_draw_array[furthest_actor_index];
+		transparent_draw_array[furthest_actor_index] = NULL;
+	}
+}
+
+#define DRAWACTORARRAY(_arr, _coun, _tickperc, _func) \
+for (int i = 0; i < _coun; i++) { \
+	struct Actor* draw_actor = _arr[i]; \
+	draw_actor->_func(draw_actor, _tickperc); \
+}
+
+void GameDraw(double tick_percent)
 {
 	// Recalculate render size
 	float window_aspect = (float)screenWidth / (float)screenHeight;
@@ -72,42 +158,17 @@ void game_draw(double tick_percent)
 	////////////////////////////////////////////////////////////////////////
 	// Predraw
 	////////////////////////////////////////////////////////////////////////
-	int has_main_draw = FALSE;
-	int has_main_postdraw = FALSE;
-	int has_hud_predraw = FALSE;
-	int has_hud_draw = FALSE;
-	int has_hud_postdraw = FALSE;
-	transparent_draw_actor_count = 0;
 	BeginTextureMode(render_tex_pre);
 	ClearBackground(clear_background_color);
-	BeginMode3D(cam_main);
-	// Prep shaders
-	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
-	BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-	for (int i = 0; i <= current_actor_cap; i++)
+	if (main_predraw_actor_count > 0)
 	{
-		struct Actor* draw_actor = world_actors[i];
-		if (!ACTOR_EXISTS(draw_actor))
-			continue;
-		if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
-			continue;
-		if (ACTOR_HAS(draw_actor, func_predrawworld))
-			draw_actor->func_predrawworld(draw_actor, tick_percent);
-		// Check for future draw events. We don't need to loop over all actors in the future if we check now!
-		if (ACTOR_HAS(draw_actor, func_drawworld))
-			has_main_draw = TRUE;
-		if (ACTOR_HAS(draw_actor, func_transparentdrawworld))
-			transparent_draw_array[transparent_draw_actor_count++] = draw_actor;
-		if (ACTOR_HAS(draw_actor, func_postdrawworld))
-			has_main_postdraw = TRUE;
-		if (ACTOR_HAS(draw_actor, func_predrawhud))
-			has_hud_predraw = TRUE;
-		if (ACTOR_HAS(draw_actor, func_drawhud))
-			has_hud_draw = TRUE;
-		if (ACTOR_HAS(draw_actor, func_postdrawhud))
-			has_hud_postdraw = TRUE;
+		BeginMode3D(cam_main);
+		// Prep shaders
+		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
+		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
+		DRAWACTORARRAY(main_predraw_array, main_predraw_actor_count, tick_percent, func_predrawworld);
+		EndMode3D();
 	}
-	EndMode3D();
 	EndTextureMode();
 
 	if (!draw_collider_info)
@@ -117,57 +178,19 @@ void game_draw(double tick_percent)
 		////////////////////////////////////////////////////////////////////////
 		BeginTextureMode(render_tex_main);
 		ClearBackground(draw_clear_col);
-		if (has_main_draw)
+		if (main_draw_actor_count > 0)
 		{
 			BeginMode3D(cam_main);
 			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
 			BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-			// Base pass
-			for (int i = 0; i <= current_actor_cap; i++)
-			{
-				struct Actor* draw_actor = world_actors[i];
-				if (!ACTOR_EXISTS(draw_actor))
-					continue;
-				if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
-					continue;
-				if (ACTOR_HAS(draw_actor, func_drawworld))
-					draw_actor->func_drawworld(draw_actor, tick_percent);
-			}
+			DRAWACTORARRAY(main_draw_array, main_draw_actor_count, tick_percent, func_drawworld);
 			EndMode3D();
 		}
 		if (transparent_draw_actor_count > 0)
 		{
 			BeginMode3D(cam_main);
 			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE, RL_FUNC_ADD, RL_FUNC_ADD);
-			// Transparent sort order
-			int sorted_count = 0;
-			while (sorted_count < transparent_draw_actor_count)
-			{
-				int furthest_actor_index = -1;
-				for (int i = 0; i < transparent_draw_actor_count; i++)
-				{
-					if (transparent_draw_array[i] == NULL)
-						continue;
-					struct Actor* current_actor = transparent_draw_array[i];
-					if (furthest_actor_index == -1)
-					{
-						furthest_actor_index = i;
-						continue;
-					}
-					struct Actor* compare_actor = transparent_draw_array[furthest_actor_index];
-					if (Vector3Distance(cam_main.position, current_actor->position) < Vector3Distance(cam_main.position, compare_actor->position))
-						continue;
-					furthest_actor_index = i;
-				}
-				transparent_sort_array[sorted_count++] = transparent_draw_array[furthest_actor_index];
-				transparent_draw_array[furthest_actor_index] = NULL;
-			}
-			// Transparent render pass
-			for (int i = 0; i < transparent_draw_actor_count; i++)
-			{
-				struct Actor* draw_actor = transparent_sort_array[i];
-				draw_actor->func_transparentdrawworld(draw_actor, tick_percent);
-			}
+			DRAWACTORARRAY(transparent_sort_array, transparent_draw_actor_count, tick_percent, func_transparentdrawworld);
 			EndMode3D();
 		}
 		EndTextureMode();
@@ -179,21 +202,12 @@ void game_draw(double tick_percent)
 
 		BeginTextureMode(render_tex_post);
 		ClearBackground(draw_clear_col);
-		if (has_main_postdraw)
+		if (main_postdraw_actor_count > 0)
 		{
 			BeginMode3D(cam_main);
 			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
 			BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-			for (int i = 0; i <= current_actor_cap; i++)
-			{
-				struct Actor* draw_actor = world_actors[i];
-				if (!ACTOR_EXISTS(draw_actor))
-					continue;
-				if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
-					continue;
-				if (ACTOR_HAS(draw_actor, func_postdrawworld))
-					draw_actor->func_postdrawworld(draw_actor, tick_percent);
-			}
+			DRAWACTORARRAY(main_postdraw_array, main_postdraw_actor_count, tick_percent, func_postdrawworld);
 			EndMode3D();
 		}
 		EndTextureMode();
@@ -267,48 +281,12 @@ void game_draw(double tick_percent)
 	{
 		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
 		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-		// predraw hud
-		if (has_hud_predraw)
-		{
-			for (int i = 0; i <= current_actor_cap; i++)
-			{
-				struct Actor* draw_actor = world_actors[i];
-				if (!ACTOR_EXISTS(draw_actor))
-					continue;
-				if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
-					continue;
-				if (ACTOR_HAS(draw_actor, func_predrawhud))
-					draw_actor->func_predrawhud(draw_actor, tick_percent);
-			}
-		}
-		// draw hud
-		if (has_hud_draw)
-		{
-			for (int i = 0; i <= current_actor_cap; i++)
-			{
-				struct Actor* draw_actor = world_actors[i];
-				if (!ACTOR_EXISTS(draw_actor))
-					continue;
-				if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
-					continue;
-				if (ACTOR_HAS(draw_actor, func_drawhud))
-					draw_actor->func_drawhud(draw_actor, tick_percent);
-			}
-		}
-		// postdraw hud
-		if (has_hud_postdraw)
-		{
-			for (int i = 0; i <= current_actor_cap; i++)
-			{
-				struct Actor* draw_actor = world_actors[i];
-				if (!ACTOR_EXISTS(draw_actor))
-					continue;
-				if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
-					continue;
-				if (ACTOR_HAS(draw_actor, func_postdrawhud))
-					draw_actor->func_postdrawhud(draw_actor, tick_percent);
-			}
-		}
+		if (hud_predraw_actor_count > 0) // predraw hud
+			DRAWACTORARRAY(hud_predraw_array, hud_predraw_actor_count, tick_percent, func_predrawhud);
+		if (hud_draw_actor_count > 0) // draw hud
+			DRAWACTORARRAY(hud_draw_array, hud_draw_actor_count, tick_percent, func_drawhud);
+		if (hud_postdraw_actor_count > 0) // postdraw hud
+			DRAWACTORARRAY(hud_postdraw_array, hud_postdraw_actor_count, tick_percent, func_postdrawhud);
 	}
 	EndMode2D();
 	EndTextureMode();
@@ -395,6 +373,7 @@ void game_draw(double tick_percent)
 	}
 	EndDrawing();
 }
+#undef DRAWACTORARRAY
 
 void fog_set(Color col, float power, float dist)
 {
