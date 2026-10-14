@@ -4,6 +4,15 @@
 #include "json_properties.h"
 #include "../collision.h"
 
+/*******************************************
+		   Custom multi-actor spawner
+Spawns actors in a spiral pattern dependant
+upon a stride min/max, and the orbit gap between
+spirals. The spiral will grow outwards as the
+stride grows randomly between steps until the
+specified number of actors is reached.
+********************************************/
+
 // private header
 ACTOR_JSON_INIT(customspawner);
 ACTOR_CLEANUP(customspawner);
@@ -89,14 +98,15 @@ static void SpawnAction(struct Actor* actor)
 		return;
 	if (spawner_data->spawn_count <= 0)
 		return;
-	float total_stride = 0;
+	float total_stride = 0.0f;
 	for (int i = 0; i < spawner_data->spawn_count; i++)
 	{
-		float spawn_stride = spawner_data->min_stride + fabs(fmod(GetFixedRandomFloat(actor->position, 2342 + (i * 63223)), spawner_data->max_stride - spawner_data->min_stride));
-		total_stride += spawn_stride;
-
 		float rotation_count = total_stride / 360.0f;
 		float center_out_distance = rotation_count * spawner_data->orbit_gap_distance;
+		float spawn_stride = spawner_data->min_stride + fabs(fmod(GetFixedRandomFloat(actor->position, 2342 + (i * 63223)), spawner_data->max_stride - spawner_data->min_stride));
+		float spawn_percent = (float)i / spawner_data->spawn_count;
+		total_stride += spawn_stride * Lerp(2.0f, 1.0f - pow(spawn_percent, PI), spawn_percent);
+
 		Vector3 final_pos = Vector3Add(actor->position, Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, center_out_distance), QuaternionFromAxisAngle(VEC3UP, total_stride * DEG2RAD)));
 		if (spawner_data->ground_snap)
 		{
