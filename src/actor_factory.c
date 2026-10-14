@@ -12,6 +12,34 @@
 #include "scene_entry.h"
 #include "Module/json_properties.h"
 
+// Assign an actor's skin and model based on json data
+static void SetActorSkin(struct Actor* actor, cJSON* actor_data)
+{
+	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_USESKIN)))
+	{
+		cJSON* array = cJSON_GetObjectItem(actor_data, PROP_USESKIN);
+		int pick_index = GetFixedRandomInt(actor->position, 5632) % cJSON_GetArraySize(array);
+		char* skin_chosen = cJSON_GetArrayItem(array, pick_index)->valuestring;
+		CHAR_STR_COPY(actor->skin_select, skin_chosen, NULL);
+	}
+	else if (cJSON_IsString(cJSON_GetObjectItem(actor_data, PROP_USESKIN)))
+	{
+		JSON_GET_STRING(actor->skin_select, actor_data, PROP_USESKIN, NULL);
+	}
+
+	if (cJSON_IsArray(cJSON_GetObjectItem(actor_data, PROP_USEMODEL)))
+	{
+		cJSON* array = cJSON_GetObjectItem(actor_data, PROP_USEMODEL);
+		int pick_index = GetFixedRandomInt(actor->position, 2354) % cJSON_GetArraySize(array);
+		char* skin_chosen = cJSON_GetArrayItem(array, pick_index)->valuestring;
+		CHAR_STR_COPY(actor->model_select, skin_chosen, NULL);
+	}
+	else if (cJSON_IsString(cJSON_GetObjectItem(actor_data, PROP_USEMODEL)))
+	{
+		JSON_GET_STRING(actor->model_select, actor_data, PROP_USEMODEL, NULL);
+	}
+}
+
 struct Actor* JSON_ACTOR_FACTORY(cJSON* actor_data, struct Actor* actor_parent)
 {
 	// Get the type of actor being created
@@ -81,8 +109,7 @@ struct Actor* ACTOR_FACTORY(cJSON* actor_data, ActorTypes actor_type, struct Act
 	JSON_GET_STRING(actor->id_tag, actor_data, PROP_IDTAG, NULL);
 	JSON_GET_INT(actor->triggers_flags, actor_data, PROP_TRIGGERFLAG, 0);
 	JSON_GET_INT(actor->flag_group_selector, actor_data, PROP_FLAGGROUP, 0);
-	JSON_GET_STRING(actor->skin_select, actor_data, PROP_USESKIN, NULL);
-	JSON_GET_STRING(actor->model_select, actor_data, PROP_USEMODEL, NULL);
+	SetActorSkin(actor, actor_data);
 	// Apply custom json tags
 	if (ACTOR_HAS(actor, func_json_init)) 
 		actor->func_json_init(actor, actor_data);
