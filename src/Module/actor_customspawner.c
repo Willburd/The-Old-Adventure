@@ -62,5 +62,6 @@ ACTOR_JSON_INIT(customspawner)
 	}
 	
 	// We're finished, mark us for destruction
+	RELEASE(actor_type);
 	ACTOR_DESTROY(actor);
 }
