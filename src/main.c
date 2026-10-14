@@ -156,7 +156,7 @@ static void GameSetup()
     LoadCoreAssets();
 
     // Spawn camera
-    ACTOR_FACTORY(NULL, act_camera, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
+    FAST_ACTOR(act_camera, NULL);
 
     // Prepare render layers for 2D games
     LoadRenderLayers();

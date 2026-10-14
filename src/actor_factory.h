@@ -9,6 +9,10 @@
 
 struct Actor;
 
+#define FAST_ACTOR(_type, _parent) ACTOR_FACTORY(NULL, _type, _parent, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero())
+#define FAST_ACTOR_POS(_type, _parent, _position) ACTOR_FACTORY(NULL, _type, _parent, _position, QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero())
+#define FAST_ACTOR_ROT(_type, _parent, _position, _rotation) ACTOR_FACTORY(NULL, _type, _parent, _position, _rotation, Vector3One(), Vector3Zero(), Vector3Zero())
+
 // Creates an actor from json provided
 struct Actor* JSON_ACTOR_FACTORY(cJSON* file_data, struct Actor* actor_parent);
 // Creates an actor in the world.

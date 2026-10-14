@@ -82,7 +82,7 @@ void HandleLoadNextScene()
 {
 	if (next_scene >= 0)
 	{
-		ACTOR_FACTORY(NULL, act_scene, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
+		FAST_ACTOR(act_scene, NULL);
 		next_scene = -1;
 	}
 	FinalizeRoomChange();
