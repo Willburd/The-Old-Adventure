@@ -5,7 +5,7 @@
 #include "../collision.h"
 
 /*******************************************
-		   Custom multi-actor spawner
+		   Multi-actor spawner
 Spawns actors in a spiral pattern dependant
 upon a stride min/max, and the orbit gap between
 spirals. The spiral will grow outwards as the
