@@ -148,7 +148,7 @@ void PlayerStandardPauseActivate(struct Actor* player)
 {
 	if (ACTOR_EXISTS(FINDACTOR_BYTYPE(act_pause_box)))
 		return;
-	ACTOR_FACTORY(NULL, act_pause_box, GETSCENE(player), Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
+	FAST_ACTOR(act_pause_box, GETSCENE(player));
 }
 
 void PlayerStandardBehavior(struct Actor* player, int can_accept_input, float max_speed, float acceleration, float slowing_friction, float stoping_friction, float snapturn_friction, float turn_rate)

@@ -92,7 +92,6 @@ static void SpawnAction(struct Actor* actor)
 	float total_stride = 0;
 	for (int i = 0; i < spawner_data->spawn_count; i++)
 	{
-		struct Actor* spawned = ACTOR_FACTORY(spawner_data->json_cache, ACTOR_FROM_STRING(spawner_data->actor_type), actor->parent, actor->position, actor->rotation, actor->scale, Vector3Zero(), Vector3Zero());
 		float spawn_stride = spawner_data->min_stride + fabs(fmod(GetFixedRandomFloat(actor->position, 2342 + (i * 63223)), spawner_data->max_stride - spawner_data->min_stride));
 		total_stride += spawn_stride;
 
@@ -109,13 +108,9 @@ static void SpawnAction(struct Actor* actor)
 			RayHitData ray_col = CollisionGetNearest(check_ray, snap_dist, COL_LAYER_WORLD);
 			if (ray_col.ray_col.hit)
 				final_pos = ray_col.ray_col.point;
+			else // We don't want to place anything if it's out of bounds
+				continue; 
 		}
-		ACTOR_POS_SNAP(spawned, final_pos);
-		// Reapply random variation
-		if (ACTOR_HAS(spawned, func_json_init))
-			spawned->func_json_init(spawned, spawner_data->json_cache);
-		// Update this too for animations
-		spawned->home_position = spawned->position;
-		spawned->home_rotation = spawned->rotation;
+		ACTOR_FACTORY(spawner_data->json_cache, ACTOR_FROM_STRING(spawner_data->actor_type), actor->parent, final_pos, actor->rotation, actor->scale, Vector3Zero(), Vector3Zero());
 	}
 }

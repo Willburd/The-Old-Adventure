@@ -43,7 +43,7 @@ SCENE_ACTIVATE_ROOM(debugmenu)
 {
 	// Debug info actor
 	if (!FINDACTOR_BYTYPE(act_debug))
-		ACTOR_FACTORY(NULL, act_debug, NULL, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
+		FAST_ACTOR(act_debug, NULL);
 }
 
 SCENE_UPDATE(debugmenu)

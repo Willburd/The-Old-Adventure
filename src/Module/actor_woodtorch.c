@@ -84,7 +84,7 @@ ACTOR_JSON_INIT(woodtorch)
 	// Spawn child fire object
 	TorchData* torch_data = (TorchData*)actor->data;
 	torch_data->torch_burning = !JSON_GET_BOOL(file_data, PROP_BURNEDOUT);
-	struct Actor* actor_fire = ACTOR_FACTORY(NULL, act_fire, actor, FirePos(actor), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
+	struct Actor* actor_fire = FAST_ACTOR_POS(act_fire, actor, FirePos(actor));
 	torch_data->fire_uuid = actor_fire->uuid;
 	if (!torch_data->torch_burning)
 		ACTOR_SCALE_SNAP(actor_fire, Vector3Zero());

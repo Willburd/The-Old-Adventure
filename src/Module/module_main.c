@@ -91,7 +91,7 @@ void ModuleInternalUpdate()
 
 			struct Actor* player = FINDACTOR_BYTYPE(act_player);
 			if (!ACTOR_EXISTS(player))
-				player = ACTOR_FACTORY(NULL, act_player, current_scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
+				player = FAST_ACTOR(act_player, current_scene);
 			ACTOR_POS_SNAP(player, cam->position);
 		}
 	}

@@ -1,6 +1,7 @@
 #include "actor_library.h"
 #include "actor_scene.h"
 // Adventure
+#include "../actor_factory.h"
 #include "actor_entrance.h"
 #include "world_state.h"
 #include "actor_musicplayer.h"
@@ -29,7 +30,7 @@ void SceneFinalizeEntry(struct Actor* current_scene, SceneID next_scene, Entranc
 	ACTOR_DESTROY_TYPE(act_player); // Only a single player
 	if (next_entrance < NO_PLAYER_SCENE || debug_world_actors)
 	{
-		ACTOR_FACTORY(NULL, act_player, current_scene, Vector3Zero(), QuaternionIdentity(), Vector3One(), Vector3Zero(), Vector3Zero());
+		FAST_ACTOR(act_player, current_scene);
 		if (entrance != NULL) // Enter the scene from this entrance if we have one
 			actor_entrance_startentry(entrance);
 	}
