@@ -6,6 +6,13 @@
 #include "rlgl.h"
 #include "world_state.h"
 
+/*******************************************
+				Fire
+Glowing flames that do not hurt the player.
+Used by other actors to have glowing fires
+without needing to manage the assets themselves.
+********************************************/
+
 // Assets
 #define FIRE_MATERIAL		ASSET_MATERIALS"/Effects/fire.mat"
 

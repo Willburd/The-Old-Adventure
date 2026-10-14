@@ -5,6 +5,14 @@
 #include "core_assets.h"
 #include "actor_water_volume.h"
 
+/*******************************************
+				Water Volume
+Triggers swimming behaviors upon the player's 
+position entering inside of it.
+Trigger's size is a cube with the scale of the
+actor starting from it's position.
+********************************************/
+
 // Assets
 #define WATER_MODEL ASSET_MODELS"/Objects/water_volume.glb"
 

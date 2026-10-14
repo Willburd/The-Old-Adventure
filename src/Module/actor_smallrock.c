@@ -5,6 +5,12 @@
 #include "core_assets.h"
 #include <math.h>
 
+/*******************************************
+				Small Rock
+Small rock actor that can be picked up by
+the player and thrown to create pickups.
+********************************************/
+
 // Assets
 #define ROCK_MODEL ASSET_MODELS"/Objects/smallrock.glb"
 static const char* loaded_materials[] = {

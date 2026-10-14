@@ -9,6 +9,15 @@
 #include "json_properties.h"
 #include "../audio.h"
 
+/*******************************************
+				Skybox
+Performs the day/night cycle, as well as skylight
+and sky cloud rotation. When inside caves it 
+handles the ambient light of the scene as if it
+was lit by the skylight value. Handles rain 
+and other weather effects as well.
+********************************************/
+
 static int is_cave = FALSE;
 static float cave_light = 0;
 static Music* rain_music;

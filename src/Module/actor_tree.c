@@ -5,6 +5,12 @@
 #include "json_properties.h"
 #include "adv_utility.h"
 
+/*******************************************
+				Tree
+Generic tree actor with many models and 
+alternative skins. Intended for mass-reuse.
+********************************************/
+
 #define WOBBLE_DURATION 70
 
 // Assets

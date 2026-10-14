@@ -3,6 +3,13 @@
 #include "../collision.h"
 #include "../game_draw.h"
 
+/*******************************************
+				Crate
+None-specific crate actor. Can be broken to
+provide the player with resources. Comes in
+multiple sizes based on the scale of the actor.
+********************************************/
+
 // Assets
 #define CRATE_MODEL ASSET_MODELS"/Objects/crate.glb"
 static const char* loaded_materials[] = {

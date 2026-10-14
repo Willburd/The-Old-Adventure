@@ -6,6 +6,12 @@
 #include "actor_node.h"
 #include "json_properties.h"
 
+/*******************************************
+			Simple moving platform
+A moving platform that the player can ride.
+Used as a basis for other moving objects.
+********************************************/
+
 // Assets
 #define PLATFORM_MODEL ASSET_MODELS"/Objects/simple_platform.glb"
 static const char* loaded_materials[] = {

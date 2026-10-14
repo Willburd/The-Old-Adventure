@@ -6,6 +6,13 @@
 #include "json_properties.h"
 #include "core_assets.h"
 
+/*******************************************
+				Wooden torch
+A generic wooden torch that can be lit by burning
+objects the player creates. Attaches a fire actor
+to itself when lit.
+********************************************/
+
 // Assets
 #define WOODTORCH_MODEL ASSET_MODELS"/Objects/wood_torch.glb"
 static const char* loaded_materials[] = {

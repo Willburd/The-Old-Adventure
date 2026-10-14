@@ -6,6 +6,13 @@
 #include "adv_utility.h"
 #include "../audio.h"
 
+/*******************************************
+				Bushes
+Simple flora actor that jostles when walked 
+through by the player. Has no unique behaviors
+and exists purely as a wilderness cosmetic.
+********************************************/
+
 #define WOBBLE_DURATION 70
 
 // Assets

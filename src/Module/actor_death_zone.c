@@ -9,6 +9,14 @@
 #include "actor_camera.h"
 #include "player.h"
 
+/*******************************************
+				Death zone
+Triggers a room restart, and damages the player
+upon the player's position entering inside of it.
+Trigger's size is a cube with the scale of the 
+actor starting from it's position.
+********************************************/
+
 // private header
 ACTOR_UPDATE(death_zone);
 ACTOR_TRANSPARENTDRAWWORLD(death_zone);
