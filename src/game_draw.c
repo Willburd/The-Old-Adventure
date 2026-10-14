@@ -352,6 +352,7 @@ void GameDraw(double tick_percent)
 	EndDrawing();
 }
 #undef DRAWACTORARRAY
+#undef DRAWPHASE
 
 void fog_set(Color col, float power, float dist)
 {
