@@ -51,7 +51,7 @@ void UpdatePrepareDrawActor(struct Actor* draw_actor);
 void UpdateSortTransparentDrawActors();
 void GameDraw(double tick_percent);
 
-void fog_set(Color col, float power, float dist);
+void FogSet(Color col, float power, float dist);
 /// Lights are updated each frame and do not persist between them. Lights need to be "appended" to the light list each update to render. This is easier than juggling light references when wanting to animate lights.
 void AppendLight(Vector3 pos, float radius, Color col, float influence);
 void ResetLightCount();

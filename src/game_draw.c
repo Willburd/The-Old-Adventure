@@ -354,7 +354,7 @@ void GameDraw(double tick_percent)
 #undef DRAWACTORARRAY
 #undef DRAWPHASE
 
-void fog_set(Color col, float power, float dist)
+void FogSet(Color col, float power, float dist)
 {
 	fog_distance = dist;
 	fog_power = power;
