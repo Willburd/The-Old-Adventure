@@ -55,6 +55,7 @@ void CollisionRegister(struct Actor* owner, Mesh* collider, unsigned int collisi
 		world_colliders[i].owner = owner;
 		world_colliders[i].mesh = collider;
 		world_colliders[i].flags = collision_flags;
+		world_colliders[i].box = GetMeshBoundingBox(*collider);
 		if (max_collision < i)
 			max_collision = i;
 		return;
@@ -128,6 +129,10 @@ static void CollisionTest(Ray raycast, float max_dist, unsigned int mask)
 	for (int i = 0; i <= max_collision; i++)
 	{
 		if (!(world_colliders[i].flags & mask)) // Masked out
+			continue;
+		Vector3 min_pos = Vector3Add(world_colliders[i].owner->position, world_colliders[i].box.min);
+		Vector3 max_pos = Vector3Add(world_colliders[i].owner->position, world_colliders[i].box.max);
+		if (!GetRayCollisionBox(raycast, (BoundingBox){ min_pos, max_pos}).hit)
 			continue;
 		RayCollision hit = GetRayCollisionMesh(raycast, *world_colliders[i].mesh, GetMatrix(world_colliders[i].owner));
 		if (!hit.hit)

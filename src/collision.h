@@ -28,6 +28,7 @@ struct ColliderData {
 	struct Actor* owner;
 	Mesh* mesh;
 	unsigned int flags;
+	BoundingBox box;
 };
 
 typedef struct {
