@@ -54,6 +54,7 @@ typedef enum
 	act_water_volume,
 	act_death_zone,
 	act_door,
+	act_customspawner,
 	LAST_ACTOR
 } ActorTypes;
 
@@ -99,6 +100,7 @@ ACTOR_INIT(platform);
 ACTOR_INIT(water_volume);
 ACTOR_INIT(death_zone);
 ACTOR_INIT(door);
+ACTOR_INIT(customspawner);
 
 #define ACTOR_STRING_CASE(str) if (STRMATCH(string_id, #str)) return act_## str
 inline ActorTypes ACTOR_FROM_STRING(char* string_id)
@@ -145,6 +147,7 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(water_volume);
 	ACTOR_STRING_CASE(death_zone);
 	ACTOR_STRING_CASE(door);
+	ACTOR_STRING_CASE(customspawner);
 	return act_error;
 }
 #undef ACTOR_STRING_CASE
@@ -196,6 +199,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 		MAKE_ACTOR_INIT(water_volume);
 		MAKE_ACTOR_INIT(death_zone);
 		MAKE_ACTOR_INIT(door);
+		MAKE_ACTOR_INIT(customspawner);
 	}
 }
 #undef MAKE_ACTOR_INIT

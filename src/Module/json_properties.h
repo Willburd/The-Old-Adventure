@@ -67,4 +67,12 @@
 #define PROP_PLATFORM_PATHSPEED "path_speed"
 #define PROP_PLATFORM_STARTMOVING "starts_moving"
 
+// Custom spawner
+#define PROP_SPAWN_ACTOR_TYPE "actor_type"
+#define PROP_SPAWN_STRIDE_MIN "stride_min"
+#define PROP_SPAWN_STRIDE_MAX "stride_max"
+#define PROP_SPAWN_ORBIT_GAP_DISTANCE "orbit_gap_size"
+#define PROP_SPAWN_ACTOR_COUNT "spawn_count"
+#define PROP_SPAWN_GROUNDSNAP "ground_snap"
+
 #endif

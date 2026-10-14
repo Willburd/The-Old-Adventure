@@ -293,5 +293,8 @@
     <ClCompile Include="actor_death_zone.c">
       <Filter>Source Files\actors\gamecontrol</Filter>
     </ClCompile>
+    <ClCompile Include="actor_customspawner.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
