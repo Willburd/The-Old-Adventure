@@ -59,6 +59,9 @@ ACTOR_JSON_INIT(customspawner)
 		// Reapply random variation
 		if (ACTOR_HAS(spawned, func_json_init))
 			spawned->func_json_init(spawned, file_data);
+		// Update this too for animations
+		spawned->home_position = spawned->position;
+		spawned->home_rotation = spawned->rotation;
 	}
 	
 	// We're finished, mark us for destruction
