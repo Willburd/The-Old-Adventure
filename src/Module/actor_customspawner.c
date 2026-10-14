@@ -6,6 +6,21 @@
 
 // private header
 ACTOR_JSON_INIT(customspawner);
+ACTOR_CLEANUP(customspawner);
+ACTOR_PLAYER_INTERACT(customspawner);
+ACTOR_REMOTE_INTERACT(customspawner);
+ACTOR_CLEANUP(customspawner);
+static void SpawnAction(struct Actor* actor);
+
+typedef struct {
+	char* actor_type;
+	float min_stride;
+	float max_stride;
+	float orbit_gap_distance;
+	int spawn_count;
+	int ground_snap;
+	cJSON* json_cache;
+} SpawnerData;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -15,6 +30,19 @@ ACTOR_INIT(customspawner)
 {
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE;
 	ACTOR_REGISTER_JSON_INIT(customspawner);
+	ACTOR_REGISTER_PLAYER_INTERACT(customspawner);
+	ACTOR_REGISTER_REMOTE_INTERACT(customspawner);
+	ACTOR_REGISTER_CLEANUP(customspawner);
+
+	// Set data
+	MALLOC_ACTOR_DATA(SpawnerData, actor->data);
+	SpawnerData* spawner_data = (SpawnerData*)actor->data;
+	spawner_data->actor_type = NULL;
+	spawner_data->min_stride = 0;
+	spawner_data->max_stride = 1;
+	spawner_data->orbit_gap_distance = 1;
+	spawner_data->ground_snap = 1;
+	spawner_data->json_cache = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,28 +51,55 @@ ACTOR_INIT(customspawner)
 
 ACTOR_JSON_INIT(customspawner)
 {
-	char* JSON_GET_STRING(actor_type, file_data, PROP_SPAWN_ACTOR_TYPE, NULL);
-	float JSON_GET_FLOAT(min_stride, file_data, PROP_SPAWN_STRIDE_MIN, 0.0f);
-	float JSON_GET_FLOAT(max_stride, file_data, PROP_SPAWN_STRIDE_MAX, 1.0f);
-	float JSON_GET_FLOAT(orbit_gap_distance, file_data, PROP_SPAWN_ORBIT_GAP_DISTANCE, 1.0f);
-	float JSON_GET_INT(spawn_count, file_data, PROP_SPAWN_ACTOR_COUNT, 0);
-	int ground_snap = JSON_GET_BOOL(file_data, PROP_SPAWN_GROUNDSNAP);
+	SpawnerData* spawner_data = (SpawnerData*)actor->data;
+	JSON_GET_STRING(spawner_data->actor_type, file_data, PROP_SPAWN_ACTOR_TYPE, NULL);
+	JSON_GET_FLOAT(spawner_data->min_stride, file_data, PROP_SPAWN_STRIDE_MIN, 0.0f);
+	JSON_GET_FLOAT(spawner_data->max_stride, file_data, PROP_SPAWN_STRIDE_MAX, 1.0f);
+	JSON_GET_FLOAT(spawner_data->orbit_gap_distance, file_data, PROP_SPAWN_ORBIT_GAP_DISTANCE, 1.0f);
+	JSON_GET_INT(spawner_data->spawn_count, file_data, PROP_SPAWN_ACTOR_COUNT, 0);
+	spawner_data->ground_snap = JSON_GET_BOOL(file_data, PROP_SPAWN_GROUNDSNAP);
+	spawner_data->json_cache = cJSON_Duplicate(file_data, TRUE);
 
-	if (actor_type == NULL)
+	// Perform roomstart spawn
+	SpawnAction(actor);
+}
+
+ACTOR_PLAYER_INTERACT(customspawner)
+{
+	SpawnAction(actor);
+}
+
+ACTOR_REMOTE_INTERACT(customspawner)
+{
+	SpawnAction(actor);
+}
+
+ACTOR_CLEANUP(customspawner)
+{
+	SpawnerData* spawner_data = (SpawnerData*)actor->data;
+	RELEASE(spawner_data->actor_type);
+	cJSON_Delete(spawner_data->json_cache);
+	spawner_data->json_cache = NULL;
+}
+
+static void SpawnAction(struct Actor* actor)
+{
+	SpawnerData* spawner_data = (SpawnerData*)actor->data;
+	if (spawner_data->actor_type == NULL)
 		return;
-	if (spawn_count <= 0)
+	if (spawner_data->spawn_count <= 0)
 		return;
 	float total_stride = 0;
-	for (int i = 0; i < spawn_count; i++)
+	for (int i = 0; i < spawner_data->spawn_count; i++)
 	{
-		struct Actor* spawned = ACTOR_FACTORY(file_data, ACTOR_FROM_STRING(actor_type), actor->parent, actor->position, actor->rotation, actor->scale, Vector3Zero(), Vector3Zero());
-		float spawn_stride = min_stride + fabs(fmod(GetFixedRandomFloat(actor->position, 2342 + (i * 63223)), max_stride - min_stride));
+		struct Actor* spawned = ACTOR_FACTORY(spawner_data->json_cache, ACTOR_FROM_STRING(spawner_data->actor_type), actor->parent, actor->position, actor->rotation, actor->scale, Vector3Zero(), Vector3Zero());
+		float spawn_stride = spawner_data->min_stride + fabs(fmod(GetFixedRandomFloat(actor->position, 2342 + (i * 63223)), spawner_data->max_stride - spawner_data->min_stride));
 		total_stride += spawn_stride;
-		
+
 		float rotation_count = total_stride / 360.0f;
-		float center_out_distance = rotation_count * orbit_gap_distance;
+		float center_out_distance = rotation_count * spawner_data->orbit_gap_distance;
 		Vector3 final_pos = Vector3Add(actor->position, Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, center_out_distance), QuaternionFromAxisAngle(VEC3UP, total_stride * DEG2RAD)));
-		if (ground_snap)
+		if (spawner_data->ground_snap)
 		{
 			float snap_dist = 10.0f;
 			Ray check_ray = {
@@ -58,13 +113,9 @@ ACTOR_JSON_INIT(customspawner)
 		ACTOR_POS_SNAP(spawned, final_pos);
 		// Reapply random variation
 		if (ACTOR_HAS(spawned, func_json_init))
-			spawned->func_json_init(spawned, file_data);
+			spawned->func_json_init(spawned, spawner_data->json_cache);
 		// Update this too for animations
 		spawned->home_position = spawned->position;
 		spawned->home_rotation = spawned->rotation;
 	}
-	
-	// We're finished, mark us for destruction
-	RELEASE(actor_type);
-	ACTOR_DESTROY(actor);
 }
