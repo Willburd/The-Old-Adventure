@@ -125,6 +125,15 @@ for (int i = 0; i < _coun; i++) { \
 	draw_actor->_func(draw_actor, _tickperc); \
 }
 
+#define DRAWPHASE(_arr, _coun, _tickperc, _func) \
+if (_coun > 0) { \
+	BeginMode3D(cam_main); \
+	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD); \
+	BeginBlendMode(BLEND_CUSTOM_SEPARATE); \
+	DRAWACTORARRAY(_arr, _coun, _tickperc, _func); \
+	EndMode3D(); \
+}
+
 void GameDraw(double tick_percent)
 {
 	// Recalculate render size
@@ -160,15 +169,7 @@ void GameDraw(double tick_percent)
 	////////////////////////////////////////////////////////////////////////
 	BeginTextureMode(render_tex_pre);
 	ClearBackground(clear_background_color);
-	if (main_predraw_actor_count > 0)
-	{
-		BeginMode3D(cam_main);
-		// Prep shaders
-		rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
-		BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-		DRAWACTORARRAY(main_predraw_array, main_predraw_actor_count, tick_percent, func_predrawworld);
-		EndMode3D();
-	}
+	DRAWPHASE(main_predraw_array, main_predraw_actor_count, tick_percent, func_predrawworld);
 	EndTextureMode();
 
 	if (!draw_collider_info)
@@ -178,38 +179,16 @@ void GameDraw(double tick_percent)
 		////////////////////////////////////////////////////////////////////////
 		BeginTextureMode(render_tex_main);
 		ClearBackground(draw_clear_col);
-		if (main_draw_actor_count > 0)
-		{
-			BeginMode3D(cam_main);
-			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
-			BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-			DRAWACTORARRAY(main_draw_array, main_draw_actor_count, tick_percent, func_drawworld);
-			EndMode3D();
-		}
-		if (transparent_draw_actor_count > 0)
-		{
-			BeginMode3D(cam_main);
-			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE, RL_FUNC_ADD, RL_FUNC_ADD);
-			DRAWACTORARRAY(transparent_sort_array, transparent_draw_actor_count, tick_percent, func_transparentdrawworld);
-			EndMode3D();
-		}
+		DRAWPHASE(main_draw_array, main_draw_actor_count, tick_percent, func_drawworld);
+		DRAWPHASE(transparent_sort_array, transparent_draw_actor_count, tick_percent, func_transparentdrawworld);
 		EndTextureMode();
-
 
 		////////////////////////////////////////////////////////////////////////
 		// Post draw
 		////////////////////////////////////////////////////////////////////////
-
 		BeginTextureMode(render_tex_post);
 		ClearBackground(draw_clear_col);
-		if (main_postdraw_actor_count > 0)
-		{
-			BeginMode3D(cam_main);
-			rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
-			BeginBlendMode(BLEND_CUSTOM_SEPARATE);
-			DRAWACTORARRAY(main_postdraw_array, main_postdraw_actor_count, tick_percent, func_postdrawworld);
-			EndMode3D();
-		}
+		DRAWPHASE(main_postdraw_array, main_postdraw_actor_count, tick_percent, func_postdrawworld);
 		EndTextureMode();
 	}
 	else
@@ -217,7 +196,6 @@ void GameDraw(double tick_percent)
 		////////////////////////////////////////////////////////////////////////
 		// Collider debug drawing
 		////////////////////////////////////////////////////////////////////////
-
 		BeginTextureMode(render_tex_main);
 		ClearBackground(draw_clear_col);
 		BeginMode3D(cam_main);

@@ -42,7 +42,7 @@ vec3 solve_lights(vec3 pos)
         {
             float influence = 1.0 - pow(clamp(distance(light_pos.xyz, pos) / light_pos.w, 0.0, 1.0), 6.0);
             if(influence > darkness_void_influence)
-                darkness_void_influence = influence;
+                darkness_void_influence = influence * light_col.w;
         }
         else if(light_pos.w < 9999.0) // Lights larger than 10000 are world lights
         {
