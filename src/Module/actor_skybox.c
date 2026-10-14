@@ -76,7 +76,7 @@ ACTOR_JSON_INIT(skybox)
 	// Is a cave! Set some default values so shaders are happy
 	is_cave = TRUE;
 	clear_background_color = BLACK;
-	fog_set(BLACK, FOG_DEFAULT_POWER, FOG_DEFAULT_RANGE);
+	FogSet(BLACK, FOG_DEFAULT_POWER, FOG_DEFAULT_RANGE);
 
 	// Set cave lighting
 	JSON_GET_FLOAT(cave_light, file_data, PROP_SKYCAVE_LIGHT, 0.0f);
@@ -88,7 +88,7 @@ ACTOR_UPDATE(skybox)
 		return;
 	ChannelUpdateMusic(rain_music, GetRainIntensity() * AUDIO_VOLUME_HALF, 0.0f, 1.0f);
 	actor->rotation = QuaternionMultiply(actor->rotation, QuaternionFromEuler( 0.0f, 0.01f * DEG2RAD, 0.0f));
-	fog_set(GetFogColor(), FOG_DEFAULT_POWER, GetFogDistance()); // maintain fog state with sky
+	FogSet(GetFogColor(), FOG_DEFAULT_POWER, GetFogDistance()); // maintain fog state with sky
 }
 
 ACTOR_LIGHTNODES(skybox)
