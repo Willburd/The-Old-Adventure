@@ -16,8 +16,8 @@
 
 typedef struct {
 	// Health
-	unsigned int health;
-	unsigned int max_hearts;
+	int health;
+	int max_hearts;
 	// Inventory
 	unsigned int item[MAX_INVENTORY_SLOTS];
 	unsigned int ammo[MAX_INVENTORY_SLOTS];

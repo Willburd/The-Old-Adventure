@@ -1,5 +1,6 @@
 #include "inventory.h"
 #include "../globals.h"
+#include <stdio.h>
 
 static void HandlePlayerHealthUpdate(int modify);
 
@@ -28,6 +29,7 @@ static void HandlePlayerHealthUpdate(int modify)
 	if (player_inventory->health > 0) // Still alive
 		return;
 	player_inventory->health = 0;
+	printf("Player Death\n");
 	// TODO - Inform player actor of death
 	
 }

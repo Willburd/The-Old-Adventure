@@ -86,7 +86,6 @@ static void RestartRoomFromDeath(struct Actor* exit)
 	EXIT_GAMESTATE(GAMESTATE_TRANSITION);
 	ENTER_GAMESTATE(GAMESTATE_GAMEPLAY);
 	// Triggered death, do damage and restart the current room
-	PlayerDamage(QUARTER_HEART, TRUE);
 	FADEIN_CREATE(BLACK);
 
 	// Kill the player and remake them at a respawn point
@@ -103,6 +102,7 @@ static void RestartRoomFromDeath(struct Actor* exit)
 	struct Actor* scene = GetCurrentScene();
 	ChangeSceneRoom(scene, scene->current_room_index, FALSE, FALSE);
 	player = FAST_ACTOR_ROT(act_player, scene, respawn_point, respawn_rot);
+	PlayerDamage(QUARTER_HEART, TRUE);
 
 	// Reset the camera
 	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);

@@ -99,8 +99,8 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 
 	// Draw health
 	const int heart_gap = 12;
-	unsigned int heart_count = 0;
-	unsigned int health_remaining = player_inventory->health;
+	int heart_count = 0;
+	int health_remaining = player_inventory->health;
 	while (heart_count < player_inventory->max_hearts) {
 		// Put on hud
 		int xpos = HUD_LEFT + 5 + ((heart_count % 10) * heart_gap);
@@ -128,6 +128,8 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 		else if (health_remaining > 0)
 			DrawTextureEx(*quarter_tex, pos, 0.0f, draw_scale, WHITE);
 		health_remaining -= HEALTH_PER_HEART;
+		if (health_remaining < 0)
+			health_remaining = 0;
 		heart_count++;
 	}
 
