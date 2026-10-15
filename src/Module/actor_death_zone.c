@@ -8,6 +8,7 @@
 #include "actor_fade.h"
 #include "actor_camera.h"
 #include "player.h"
+#include "inventory.h"
 
 /*******************************************
 				Death zone
@@ -85,6 +86,7 @@ static void RestartRoomFromDeath(struct Actor* exit)
 	EXIT_GAMESTATE(GAMESTATE_TRANSITION);
 	ENTER_GAMESTATE(GAMESTATE_GAMEPLAY);
 	// Triggered death, do damage and restart the current room
+	PlayerDamage(QUARTER_HEART, TRUE);
 	FADEIN_CREATE(BLACK);
 
 	// Kill the player and remake them at a respawn point

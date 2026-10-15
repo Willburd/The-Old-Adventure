@@ -72,7 +72,6 @@ ACTOR_POSTUPDATE(roomswap)
 	// We should ONLY ever exist for THAT room! Don't be in a global layer!!
 	if (Vector3DotProduct(Vector3RotateByQuaternion(VEC3FORWARD, actor->rotation), VEC3DIRECTION(actor->position, player->position)) > 0)
 		return;
-	RoomSwapData* swap_data = actor->data;
 	ChangeSceneRoom(GetCurrentScene(), swap_data->goal_room, TRUE, FALSE);
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
 }

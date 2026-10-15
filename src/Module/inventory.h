@@ -6,6 +6,14 @@
 #define HEALTH_STARTING_HEARTS 3
 #define HEALTH_PER_HEART 32
 
+#define EIGHT_HEART (HEALTH_PER_HEART / 8)
+#define QUARTER_HEART (HEALTH_PER_HEART / 4)
+#define HALF_HEART (HEALTH_PER_HEART / 2)
+#define ONE_HEART (HEALTH_PER_HEART)
+#define TWO_HEARTS (HEALTH_PER_HEART * 2)
+#define THREE_HEARTS (HEALTH_PER_HEART * 3)
+#define FOUR_HEARTS (HEALTH_PER_HEART * 4)
+
 typedef struct {
 	// Health
 	unsigned int health;
@@ -21,5 +29,8 @@ typedef struct {
 } Inventory;
 
 Inventory* player_inventory;
+
+int PlayerDamage(int damage, int forced);
+int PlayerHeal(int amount);
 
 #endif
