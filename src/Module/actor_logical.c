@@ -121,7 +121,7 @@ static int ProcessTrigger(struct Actor* actor)
 	return TRUE;
 }
 
-static int TriggerSendSignal(struct Actor* actor)
+static int TriggerSendSignal(struct Actor* actor, int send_signal)
 {
 	LogicData* logic_data = (LogicData*)actor->data;
 
@@ -139,13 +139,16 @@ static int TriggerSendSignal(struct Actor* actor)
 	int found_count = FINDACTORGROUP_BYTAG(targets, 64, logic_data->target);
 	if (!found_count) // Nothing found, so we failed to trigger
 		return FALSE;
-	for (int i = 0; i < found_count; i++)
+	if (send_signal)
 	{
-		struct Actor* target = targets[i];
-		if (target == NULL)
-			continue;
-		if (ACTOR_HAS(target, func_remote_interact))
-			target->func_remote_interact(target, actor);
+		for (int i = 0; i < found_count; i++)
+		{
+			struct Actor* target = targets[i];
+			if (target == NULL)
+				continue;
+			if (ACTOR_HAS(target, func_remote_interact))
+				target->func_remote_interact(target, actor);
+		}
 	}
 	return TRUE;
 }
@@ -155,7 +158,7 @@ static int TriggerEvent(struct Actor* actor)
 	LogicData* logic_data = (LogicData*)actor->data;
 	if (!ProcessTrigger(actor))
 		return FALSE;
-	return TriggerSendSignal(actor);
+	return TriggerSendSignal(actor, TRUE);
 }
 
 
@@ -204,12 +207,16 @@ ACTOR_UPDATE(logic_counter) {}
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Starts a timer when triggered that fires at the end.
 //////////////////////////////////////////////////////////////////////////////////////////////////
+static void TimerHandleTimer(struct Actor* actor) // Wrapper for args
+{
+	TriggerSendSignal(actor, TRUE);
+}
 ACTOR_REMOTE_INTERACT(logic_timer)
 {
 	LogicData* logic_data = (LogicData*)actor->data;
 	if (!ProcessTrigger(actor))
 		return;
-	TimerAdd(actor, logic_data->timer_seconds, TriggerSendSignal);
+	TimerAdd(actor, logic_data->timer_seconds, TimerHandleTimer);
 }
 ACTOR_UPDATE(logic_timer) { }
 
@@ -220,6 +227,27 @@ ACTOR_UPDATE(logic_timer) { }
 ACTOR_REMOTE_INTERACT(logic_roomstart) { }
 ACTOR_UPDATE(logic_roomstart)
 {
-	TriggerSendSignal(actor);
+	TriggerSendSignal(actor, TRUE);
 	ACTOR_DESTROY(actor);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Destroys the target actors by id_tag.
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ACTOR_REMOTE_INTERACT(logic_destroyactor);
+ACTOR_INIT(logic_destroyactor) {
+	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE;
+	ACTOR_REGISTER_REMOTE_INTERACT(logic_destroyactor);
+}
+ACTOR_REMOTE_INTERACT(logic_destroyactor)
+{
+	if (!ProcessTrigger(actor))
+		return;
+	LogicData* logic_data = (LogicData*)actor->data;
+	int successful_trigger = TriggerSendSignal(actor, FALSE);
+	if (!successful_trigger)
+		return;
+	ACTOR_DESTROY_IDTAG(logic_data->target);
 }

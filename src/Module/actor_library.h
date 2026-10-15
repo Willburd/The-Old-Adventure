@@ -28,6 +28,7 @@ typedef enum
 	act_logic_counter,
 	act_logic_timer,
 	act_logic_roomstart,
+	act_logic_destroyactor,
 	act_event_setflag,
 	act_event_clearflag,
 	act_event_toggleflag,
@@ -74,6 +75,7 @@ ACTOR_INIT(logic_and);
 ACTOR_INIT(logic_counter);
 ACTOR_INIT(logic_timer);
 ACTOR_INIT(logic_roomstart);
+ACTOR_INIT(logic_destroyactor);
 ACTOR_INIT(event_setflag);
 ACTOR_INIT(event_clearflag);
 ACTOR_INIT(event_toggleflag);
@@ -121,6 +123,7 @@ inline ActorTypes ACTOR_FROM_STRING(char* string_id)
 	ACTOR_STRING_CASE(logic_counter);
 	ACTOR_STRING_CASE(logic_timer);
 	ACTOR_STRING_CASE(logic_roomstart);
+	ACTOR_STRING_CASE(logic_destroyactor);
 	ACTOR_STRING_CASE(event_setflag);
 	ACTOR_STRING_CASE(event_clearflag);
 	ACTOR_STRING_CASE(event_toggleflag);
@@ -173,6 +176,7 @@ inline void ACTOR_LIBRARY(struct Actor* actor, ActorTypes actor_type)
 		MAKE_ACTOR_INIT(logic_counter);
 		MAKE_ACTOR_INIT(logic_timer);
 		MAKE_ACTOR_INIT(logic_roomstart);
+		MAKE_ACTOR_INIT(logic_destroyactor);
 		MAKE_ACTOR_INIT(event_setflag);
 		MAKE_ACTOR_INIT(event_clearflag);
 		MAKE_ACTOR_INIT(event_toggleflag);
