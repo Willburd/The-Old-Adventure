@@ -73,6 +73,7 @@
 #define PROP_SPAWN_STRIDE_MAX "stride_max"
 #define PROP_SPAWN_ORBIT_GAP_DISTANCE "orbit_gap_size"
 #define PROP_SPAWN_ACTOR_COUNT "spawn_count"
+#define PROP_SPAWN_AT_CENTER "at_center"
 #define PROP_SPAWN_GROUNDSNAP "ground_snap"
 
 #endif

@@ -294,7 +294,7 @@
       <Filter>Source Files\actors\gamecontrol</Filter>
     </ClCompile>
     <ClCompile Include="actor_customspawner.c">
-      <Filter>Source Files\actors\environment</Filter>
+      <Filter>Source Files\actors\gamecontrol</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

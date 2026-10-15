@@ -28,6 +28,7 @@ typedef struct {
 	float orbit_gap_distance;
 	int spawn_count;
 	int ground_snap;
+	int at_center;
 	cJSON* json_cache;
 } SpawnerData;
 
@@ -51,6 +52,7 @@ ACTOR_INIT(customspawner)
 	spawner_data->max_stride = 1.0f;
 	spawner_data->orbit_gap_distance = 1.0f;
 	spawner_data->ground_snap = TRUE;
+	spawner_data->at_center = FALSE;
 	spawner_data->json_cache = NULL;
 }
 
@@ -66,6 +68,7 @@ ACTOR_JSON_INIT(customspawner)
 	JSON_GET_FLOAT(spawner_data->max_stride, file_data, PROP_SPAWN_STRIDE_MAX, 1.0f);
 	JSON_GET_FLOAT(spawner_data->orbit_gap_distance, file_data, PROP_SPAWN_ORBIT_GAP_DISTANCE, 1.0f);
 	JSON_GET_INT(spawner_data->spawn_count, file_data, PROP_SPAWN_ACTOR_COUNT, 0);
+	spawner_data->at_center = JSON_GET_BOOL(file_data, PROP_SPAWN_AT_CENTER);
 	spawner_data->ground_snap = JSON_GET_BOOL(file_data, PROP_SPAWN_GROUNDSNAP);
 	spawner_data->json_cache = cJSON_Duplicate(file_data, TRUE);
 
@@ -107,7 +110,9 @@ static void SpawnAction(struct Actor* actor)
 		float spawn_percent = (float)i / spawner_data->spawn_count;
 		total_stride += spawn_stride * Lerp(2.0f, 1.0f - pow(spawn_percent, PI), spawn_percent);
 
-		Vector3 final_pos = Vector3Add(actor->position, Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, center_out_distance), QuaternionFromAxisAngle(VEC3UP, total_stride * DEG2RAD)));
+		Vector3 final_pos = actor->position;
+		if (spawner_data->spawn_count > 1 && !spawner_data->at_center) // If only one actor spawns, it will be at the direct location of the a spawner
+			final_pos = Vector3Add(actor->position, Vector3RotateByQuaternion(Vector3Scale(VEC3FORWARD, center_out_distance), QuaternionFromAxisAngle(VEC3UP, total_stride * DEG2RAD)));
 		if (spawner_data->ground_snap)
 		{
 			float snap_dist = 10.0f;
