@@ -3,6 +3,13 @@
 #include "json_properties.h"
 #include "../timer.h"
 
+/*******************************************
+			Logical Events
+Contains multiple actors that perform logic
+checks when interacted with, then trigger the
+next interaction by target id_tag when true.
+********************************************/
+
 // private header
 typedef struct {
 	char* target;
@@ -153,9 +160,10 @@ static int TriggerEvent(struct Actor* actor)
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+// Any input is relayed ahead to the target, allowing multiple inputs to one actor.
+//////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR_REMOTE_INTERACT(logic_or)
 {
-	// Any input is relayed ahead to the target, allowing multiple inputs to one actor.
 	LogicData* logic_data = (LogicData*)actor->data;
 	TriggerEvent(actor);
 }
@@ -163,9 +171,10 @@ ACTOR_UPDATE(logic_or) {}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+// Requires two different trigger actors 
+//////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR_REMOTE_INTERACT(logic_and)
 {
-	// Requires two different trigger actors 
 	LogicData* logic_data = (LogicData*)actor->data;
 
 	// First triggering. Await second
@@ -183,14 +192,17 @@ ACTOR_UPDATE(logic_and) {}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+// Counts up the number of triggers, then fires if it meets the minimum needed.
+//////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR_REMOTE_INTERACT(logic_counter)
 {
-	// Counts up the number of triggers, then fires if it meets the minimum needed.
 	TriggerEvent(actor);
 }
 ACTOR_UPDATE(logic_counter) {}
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Starts a timer when triggered that fires at the end.
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR_REMOTE_INTERACT(logic_timer)
 {
@@ -202,6 +214,8 @@ ACTOR_REMOTE_INTERACT(logic_timer)
 ACTOR_UPDATE(logic_timer) { }
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Fires when a scenes' room finishes loading all actors.
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR_REMOTE_INTERACT(logic_roomstart) { }
 ACTOR_UPDATE(logic_roomstart)

@@ -5,6 +5,14 @@
 #include "actor_node.h"
 #include "json_properties.h"
 
+/*******************************************
+			Path Node
+Node for actor paths, has id_tags to the next
+previous and alternative nodes. Allowing actors
+to travel down constructed paths. Useful for 
+moving platforms, etc.
+********************************************/
+
 // Assets
 
 // private header

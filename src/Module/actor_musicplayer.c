@@ -8,9 +8,21 @@
 #include "actor_musicplayer.h"
 #include "../audio.h"
 
+/*******************************************
+			Music Player
+Plays a specified music track, by default the
+highest priority music player will play upon
+being loaded by the first room in the scene.
+Can be interacted with to start playing.
+Destroying the actor will stop it playing.
+Negative priority will prevent autoplaying.
+********************************************/
+
 // private header
 ACTOR_JSON_INIT(musicplayer);
 ACTOR_PRELOADASSETS(musicplayer);
+ACTOR_REMOTE_INTERACT(musicplayer);
+ACTOR_PLAYER_INTERACT(musicplayer);
 ACTOR_CLEANUP(musicplayer);
 
 typedef struct {
@@ -29,6 +41,8 @@ ACTOR_INIT(musicplayer)
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE;
 	ACTOR_REGISTER_JSON_INIT(musicplayer);
 	ACTOR_REGISTER_PRELOADASSETS(musicplayer);
+	ACTOR_REGISTER_REMOTE_INTERACT(musicplayer);
+	ACTOR_REGISTER_PLAYER_INTERACT(musicplayer);
 	ACTOR_REGISTER_CLEANUP(musicplayer);
 
 	MALLOC_ACTOR_DATA(MusicData, actor->data);
@@ -84,6 +98,8 @@ void PlayerHighestPriorityMusic()
 	{
 		struct Actor* target = music_players[i];
 		MusicData* music_data = (MusicData*)target->data;
+		if (music_data->priority < 0) // Do not play if negative
+			continue;
 		if (music_data->priority <= highest_priority)
 			return;
 		highest_player = music_data->priority;
@@ -113,6 +129,16 @@ ACTOR_PRELOADASSETS(musicplayer)
 	LoadAsset_Music(music_path, TRUE);
 	music_data->music_data = ChannelStartMusic(music_path, music_data->volume, AUDIO_PAN_CENTER, 1.0f);
 	RELEASE(music_data->asset_path);
+}
+
+ACTOR_REMOTE_INTERACT(musicplayer)
+{
+	MusicPlayerPlay(actor);
+}
+
+ACTOR_PLAYER_INTERACT(musicplayer)
+{
+	MusicPlayerPlay(actor);
 }
 
 ACTOR_CLEANUP(musicplayer)

@@ -5,6 +5,20 @@
 #include "../game_draw.h"
 #include "../collision.h"
 
+/*******************************************
+				Door
+Actor used for cosmetically entering and exiting
+rooms. Player actor "interlocks" with another door
+upon entering the newly loaded room, if no room is
+loaded. The player will simply finish the animation.
+This does not load scenes, the player must enter
+a scene trigger placed behind the door during the
+opening animation. This is so the doors can be used
+without triggering scene load/unloads.
+
+-TODO
+********************************************/
+
 // Assets
 #define DOOR_MODEL ASSET_MODELS"/Objects/door.glb"
 static const char* loaded_materials[] = {

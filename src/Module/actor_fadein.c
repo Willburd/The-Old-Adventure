@@ -3,6 +3,12 @@
 #include "../actor_factory.h"
 #include "actor_fade.h"
 
+/*******************************************
+				Fade In
+Black hud layer effect that fades to transparent
+then destroys itself.
+********************************************/
+
 // private header
 ACTOR_UPDATE(fadein);
 ACTOR_POSTDRAWHUD(fadein);

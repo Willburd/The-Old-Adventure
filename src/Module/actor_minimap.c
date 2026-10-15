@@ -5,6 +5,23 @@
 #include "../game_state.h"
 #include "../hud.h"
 
+/*******************************************
+				Minimap
+Displays a texture in the bottom right of the
+screen that shows the player's position.
+This actor's scale and position act as offset
+and scale factor to the player's position.
+Allowing any scale of minimap to room size.
+
+Easiest method to make a map is to place POI
+objects in the corners of a room, then scale 
+the minimap actor until a desired shape is 
+reached. Draw the minimap and remove the POIS.
+
+Minimap textures can be any size, they will be
+scaled to match the correct scale on the hud.
+********************************************/
+
 // Utility
 #define MAP_RESOLUTION 64.0f
 #define MAP_EDGE_BORDER 10.0f

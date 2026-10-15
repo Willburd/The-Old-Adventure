@@ -3,6 +3,11 @@
 #include "../actor_factory.h"
 #include "actor_fade.h"
 
+/*******************************************
+				Fade Out
+Hud layer effect that fades to black and holds.
+********************************************/
+
 // private header
 ACTOR_UPDATE(fadeout);
 ACTOR_POSTDRAWHUD(fadeout);

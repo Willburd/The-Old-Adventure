@@ -48,9 +48,9 @@ ACTOR_INIT(customspawner)
 	SpawnerData* spawner_data = (SpawnerData*)actor->data;
 	spawner_data->actor_type = NULL;
 	spawner_data->min_stride = 0;
-	spawner_data->max_stride = 1;
-	spawner_data->orbit_gap_distance = 1;
-	spawner_data->ground_snap = 1;
+	spawner_data->max_stride = 1.0f;
+	spawner_data->orbit_gap_distance = 1.0f;
+	spawner_data->ground_snap = TRUE;
 	spawner_data->json_cache = NULL;
 }
 

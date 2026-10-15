@@ -6,6 +6,15 @@
 #include "actor_camera.h"
 #include "core_assets.h"
 
+/*******************************************
+			Pause Menu
+Pause menu contains various screens for game
+item and quest management. Also options menu
+interaction.
+
+-TODO
+********************************************/
+
 // Assets
 #define PAUSEBOX_MODEL				ASSET_MODELS"/Tools/pausebox.glb"
 

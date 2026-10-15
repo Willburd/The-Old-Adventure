@@ -11,6 +11,8 @@
 A generic wooden torch that can be lit by burning
 objects the player creates. Attaches a fire actor
 to itself when lit.
+
+-TODO
 ********************************************/
 
 // Assets

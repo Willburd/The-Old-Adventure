@@ -3,6 +3,12 @@
 #include "json_properties.h"
 #include "actor_camera.h"
 
+/*******************************************
+			Triggered Events
+Contains multiple actors that perform events
+when triggered by outside interactions. Such
+as player or other actor interactions.
+********************************************/
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Set flag event
@@ -50,8 +56,8 @@ ACTOR_REMOTE_INTERACT(event_toggleflag)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// X event
-// Description
+// Move camera event
+// Moves camera from it's current position and rotation to the actor's position and rotation with a set speed.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 typedef struct {
