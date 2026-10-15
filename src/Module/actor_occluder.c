@@ -6,6 +6,15 @@
 #include "json_properties.h"
 #include <math.h>
 
+/*******************************************
+				Occluder
+A black transparent plane that becomes more 
+transparent the closer the player gets to it.
+When the player is far enough away it will
+appear to be fully black. Used to hide 
+transitions between rooms inside a scene.
+********************************************/
+
 // Utility
 #define FADE_LIMIT actor->scale.z
 

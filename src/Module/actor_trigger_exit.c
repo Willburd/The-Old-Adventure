@@ -9,6 +9,15 @@
 #include "actor_fade.h"
 #include "json_properties.h"
 
+/*******************************************
+				Exit Trigger
+A spherical trigger zone with a radius and 
+specified scene and entrance that will be used
+when the player enters the next scene.
+See: scene_library.h for destination list
+See: scene_entry.h for entrance list
+********************************************/
+
 // private header
 ACTOR_JSON_INIT(trigger_exit);
 ACTOR_UPDATE(trigger_exit);

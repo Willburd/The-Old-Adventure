@@ -9,6 +9,20 @@
 #include "json_properties.h"
 #include "player.h"
 
+/*******************************************
+				Entrance Node
+Entrance spawn point for a player. Each entrance
+can be assigned an entrance id. Exits that 
+lead to this scene will use that to locate the 
+entrance they will use.
+See: ENTRANCE_FROM_STRING()
+
+The entrance has an end_pos property, this is
+the goal position that player will run to upon
+using the entrance. The camera will be placed
+directly behind the player in this direction.
+********************************************/
+
 // private header
 static void actor_entrance_setup(struct Actor* entrance, Vector3 startpos, Vector3 endpos);
 ACTOR_JSON_INIT(entrance);

@@ -10,6 +10,13 @@
 #include "../game_draw.h"
 #include "json_properties.h"
 
+/*******************************************
+				Warp Hole
+A hole in the ground that sends the player to
+another scene as if it was an exit trigger.
+See: actor_trigger_exit.c
+********************************************/
+
 // Assets
 #define HOLE_MATERIAL_MAIN ASSET_MATERIALS"/Effects/pit_warp.mat"
 
