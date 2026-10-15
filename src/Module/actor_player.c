@@ -3,6 +3,25 @@
 #include "player.h"
 #include "../audio.h"
 
+/*******************************************
+				Player
+A highly complex actor with multiple state machines
+that are swapped out. Each state machine is responsible
+for fully controlling the actor when active. Each
+state machine is group of polymorphic function swapped 
+into the actor data's various state machine pointers. 
+See: PlayerChangeState()
+
+Generic player state is used as a container for shared 
+behaviors. Such as simple movement, that only needs 
+different acceleration or speeds.
+
+This actor is ONLY responsible for state machine management,
+and does not directly control meta information about
+the player. Such as health, or inventory. Those are
+dedicated systems this actor requests information to/from.
+********************************************/
+
 // Assets
 #define PLAYER_MODEL ASSET_MODELS"/Characters/player.glb"
 

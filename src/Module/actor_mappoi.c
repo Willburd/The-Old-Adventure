@@ -1,13 +1,12 @@
 #include "../tools.h"
 #include "../assets.h"
 #include "../actor_factory.h"
-#include "../scene_entry.h"
-#include "../game_draw.h"
-#include "../collision.h"
 
 /*******************************************
 				Map POI
 Adds a white dot to minimap actor's display.
+Extremely basic actor that does nothing.
+Good as copypaste actor boilerplate!
 ********************************************/
 
 // private header

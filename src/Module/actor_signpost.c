@@ -8,6 +8,13 @@
 #include "json_properties.h"
 #include "../text_loading.h"
 
+/*******************************************
+				Signpost
+Very basic "npc" actor that displays a textbox
+when interacted with. Puts the game in textbox
+mode. Text_id is provided by json init.
+********************************************/
+
 // Assets
 #define SIGN_MODEL ASSET_MODELS"/Objects/wood_sign.glb"
 static const char* loaded_materials[] = {
@@ -97,7 +104,7 @@ ACTOR_PLAYER_INTERACT(signpost)
 	CameraSetForcedLookPos(camera, Vector3Add(actor->position, VEC3UP));
 	// Textbox display
 	SignData* sign_data = actor->data;
-	TEXTBOX_CREATE(actor, player, sign_data->text_entry_id, TEXTBOX_DEFAULT_SPEED);
+	TEXTBOX_CREATE(actor, player, sign_data->text_entry_id, TRUE);
 }
 
 ACTOR_DRAWWORLD(signpost)

@@ -9,6 +9,26 @@
 #include "../text_loading.h"
 #include "actor_camera.h"
 
+/*******************************************
+				Textbox
+Displayed text assets as multiple segments of
+dialog on screen. Text can contain tokens that
+change the state of the textbox.
+
+Tokens:
+Segment ending tokens:
+[A > Waits for the player to advance text, used to end segments without closing the textbox.
+[E > End of text, the next advance given will close and destroy the textbox.
+[I:id_tag > Triggers the id_tag provided when the player advances the text.
+[C:id_tag > Triggers the id_tag provided when the player advances while starting cutscene gamemode. Destroys the current textbox.
+
+Mid segment tokens:
+[S > Slow text speed.
+[N > Normal text speed.
+[F > Fast text speed.
+
+********************************************/
+
 // Private Data
 typedef struct
 {
@@ -38,10 +58,6 @@ static void AdvanceText(struct Actor* textbox);
 
 ACTOR_INIT(textbox)
 {
-	// Lock to textbox gamestate
-	EXIT_GAMESTATE(GAMESTATE_GAMEPLAY);
-	ENTER_GAMESTATE(GAMESTATE_TEXTBOX);
-
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_TEXTBOX;
 	ACTOR_REGISTER_UPDATE(textbox);
@@ -61,8 +77,15 @@ ACTOR_INIT(textbox)
 	MALLOC_SET_SIZE(char, SEGMENT_BUFFER_SIZE, textbox_data->current_segment_buffer, '\0', NULL);
 }
 
-struct Actor* TEXTBOX_CREATE(struct Actor* owner, struct Actor* player, char* text_id, float text_speed)
+struct Actor* TEXTBOX_CREATE(struct Actor* owner, struct Actor* player, char* text_id, int blocking)
 {
+	if (blocking)
+	{
+		// Lock to textbox gamestate
+		EXIT_GAMESTATE(GAMESTATE_GAMEPLAY);
+		ENTER_GAMESTATE(GAMESTATE_TEXTBOX);
+	}
+
 	// Remove previous textboxes
 	ACTOR_DESTROY_TYPE(act_textbox);
 	
@@ -70,7 +93,6 @@ struct Actor* TEXTBOX_CREATE(struct Actor* owner, struct Actor* player, char* te
 	struct Actor* textbox = FAST_ACTOR(act_textbox, NULL);
 	TextboxData* textbox_data = (TextboxData*)textbox->data;
 	textbox_data->current_text = GetText(text_id);
-	textbox_data->text_speed = text_speed;
 	ProgressSegment(textbox);
 	return textbox;
 }
