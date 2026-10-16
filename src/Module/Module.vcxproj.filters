@@ -138,6 +138,9 @@
     <ClInclude Include="adv_lighttools.h">
       <Filter>Source Files\game</Filter>
     </ClInclude>
+    <ClInclude Include="actor_minimap.h">
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core_assets.c">
@@ -295,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="actor_customspawner.c">
       <Filter>Source Files\actors\gamecontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_death.c">
+      <Filter>Source Files\actors\player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

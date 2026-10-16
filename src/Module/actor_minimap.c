@@ -4,6 +4,7 @@
 #include "../scene_entry.h"
 #include "../game_state.h"
 #include "../hud.h"
+#include "actor_minimap.h"
 
 /*******************************************
 				Minimap
@@ -33,7 +34,6 @@ scaled to match the correct scale on the hud.
 // private header
 ACTOR_PRELOADASSETS(minimap);
 ACTOR_POSTUPDATE(minimap);
-ACTOR_DRAWHUD(minimap);
 Vector2 ScaleToMap(struct Actor* actor, Vector3 pos);
 
 
@@ -46,7 +46,6 @@ ACTOR_INIT(minimap)
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_TEXTBOX;
 	ACTOR_REGISTER_PRELOADASSETS(minimap);
 	ACTOR_REGISTER_POSTUPDATE(minimap);
-	ACTOR_REGISTER_DRAWHUD(minimap);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,7 +71,7 @@ ACTOR_POSTUPDATE(minimap)
 
 }
 
-ACTOR_DRAWHUD(minimap)
+void DrawMinimapActor(struct Actor* actor, double tick_percent)
 {
 	if (!CHECK_GAMESTATE(GAMESTATE_GAMEPLAY))
 		return;
@@ -99,7 +98,7 @@ ACTOR_DRAWHUD(minimap)
 		// Draw player position
 		Texture* tex = AssetGet_Texture(ARROW_TEXTURE);
 		Vector2 pos = ScaleToMap(actor, player->position);
-		DrawPivotTexture(*tex, pos, (Vector2){ 4, 4}, QuaternionGetTopDownAngle(player->rotation), 1.0f, YELLOW);
+		DrawPivotTexture(*tex, pos, (Vector2) { 4, 4 }, QuaternionGetTopDownAngle(QuaternionLerp(player->last_rotation, player->rotation, (float)tick_percent)), 1.0f, YELLOW);
 	}
 
 	{	// Draw POIs
@@ -112,7 +111,7 @@ ACTOR_DRAWHUD(minimap)
 				struct Actor* poi = found_pois[i];
 				if (poi == NULL)
 					continue;
-				Vector2 pos = ScaleToMap(actor, poi->position);
+				Vector2 pos = ScaleToMap(actor, Vector3Lerp(poi->last_position, poi->position, (float)tick_percent));
 				DrawCircle(pos.x, pos.y, 1, WHITE);
 			}
 		}

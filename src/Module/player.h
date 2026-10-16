@@ -55,12 +55,14 @@ enum PlayerState
 	plysta_grounded,
 	plysta_air,
 	plysta_swimming,
+	plysta_death,
 };
 
 CREATE_STATE(Generic); // Misc state just for helpers
 CREATE_STATE(Grounded); // When on the ground and moving
 CREATE_STATE(Air); // Falling through the air
 CREATE_STATE(Swimming); // Swimming
+CREATE_STATE(Death); // Gameover
 
 // State entry and tick functions
 static void inline PlayerChangeState(struct Actor* player, int new_state)
@@ -78,6 +80,7 @@ static void inline PlayerChangeState(struct Actor* player, int new_state)
 		STATE_ENTER(plysta_grounded, Grounded);
 		STATE_ENTER(plysta_air, Air);
 		STATE_ENTER(plysta_swimming, Swimming);
+		STATE_ENTER(plysta_death, Death);
 	}
 }
 
@@ -96,6 +99,7 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent);
 void PlayerStandardPauseActivate(struct Actor* player);
 void PlayerStandardBehavior(struct Actor* player, int can_accept_input, float max_speed, float acceleration, float slowing_friction, float stoping_friction, float snapturn_friction, float turn_rate);
 void PlayerStandardInteraction(struct Actor* player, int can_accept_input);
+void PlayerApplyGravity(struct Actor* player);
 Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player);
 Vector3 CameraBehindPlayerPosition(struct Actor* player);
 

@@ -144,6 +144,7 @@
     <ClInclude Include="actor_camera.h" />
     <ClInclude Include="actor_fade.h" />
     <ClInclude Include="actor_library.h" />
+    <ClInclude Include="actor_minimap.h" />
     <ClInclude Include="actor_musicplayer.h" />
     <ClInclude Include="actor_node.h" />
     <ClInclude Include="actor_platform.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="input.c" />
     <ClCompile Include="inventory.c" />
     <ClCompile Include="player_state_air.c" />
+    <ClCompile Include="player_state_death.c" />
     <ClCompile Include="player_state_generic.c" />
     <ClCompile Include="player_state_grounded.c" />
     <ClCompile Include="player_state_swimming.c" />

@@ -102,7 +102,7 @@ static void RestartRoomFromDeath(struct Actor* exit)
 	struct Actor* scene = GetCurrentScene();
 	ChangeSceneRoom(scene, scene->current_room_index, FALSE, FALSE);
 	player = FAST_ACTOR_ROT(act_player, scene, respawn_point, respawn_rot);
-	PlayerDamage(QUARTER_HEART, TRUE);
+	PlayerDamage(ONE_HEART, TRUE);
 
 	// Reset the camera
 	struct Actor* camera = FINDACTOR_BYTYPE(act_camera);

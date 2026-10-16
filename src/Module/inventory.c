@@ -1,6 +1,7 @@
 #include "inventory.h"
 #include "../globals.h"
 #include <stdio.h>
+#include "player.h"
 
 static void HandlePlayerHealthUpdate(int modify);
 
@@ -29,7 +30,9 @@ static void HandlePlayerHealthUpdate(int modify)
 	if (player_inventory->health > 0) // Still alive
 		return;
 	player_inventory->health = 0;
-	printf("Player Death\n");
-	// TODO - Inform player actor of death
-	
+	// Enter death animation
+	struct Actor* player = FINDACTOR_BYTYPE(act_player);
+	if (!ACTOR_EXISTS(player))
+		return;
+	PlayerChangeState(player, plysta_death);
 }

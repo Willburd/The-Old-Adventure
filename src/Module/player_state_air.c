@@ -49,8 +49,7 @@ void PlayerState_Air_Update(struct Actor* player)
 	if (player_data->disable_collision || !collision.ray_col.hit)
 	{
 		// Falling down!
-		if (player->velocity.y > PLAYER_TERMINAL_VELOCITY)
-			player->velocity.y += GRAVITY;
+		PlayerApplyGravity(player);
 		return;
 	}
 	// Snap to floor on landing

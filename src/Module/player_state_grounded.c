@@ -59,23 +59,26 @@ void PlayerState_Grounded_Update(struct Actor* player)
 		return;
 	}
 
-	// Handle gravity
-	Ray downray = {
-		.position = Vector3Add(player->position, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT)),
-		.direction = VEC3DOWN
-	};
-	RayHitData collision = CollisionGetNearest(downray, PLAYER_COLLISION_MID_HEIGHT + PLAYER_COLLISION_FLOOR_SENSOR_LENGTH, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
-	if (player_data->disable_collision || !collision.ray_col.hit)
+	if (!player_data->disable_collision)
 	{
-		// We must fall...
-		PlayerChangeState(player, plysta_air);
-		return;
-	}
+		// Handle gravity
+		Ray downray = {
+			.position = Vector3Add(player->position, Vector3Scale(VEC3UP, PLAYER_COLLISION_MID_HEIGHT)),
+			.direction = VEC3DOWN
+		};
+		RayHitData collision = CollisionGetNearest(downray, PLAYER_COLLISION_MID_HEIGHT + PLAYER_COLLISION_FLOOR_SENSOR_LENGTH, COL_LAYER_WORLD | COL_LAYER_MOVINGPLATFORM);
+		if (player_data->disable_collision || !collision.ray_col.hit)
+		{
+			// We must fall...
+			PlayerChangeState(player, plysta_air);
+			return;
+		}
 
-	// Snap to floors and go up steps
-	player->position = collision.ray_col.point;
-	if (collision.hit_colider->flags & COL_LAYER_MOVINGPLATFORM) // Moving platforms make us move too
-		ApplyPlatformRotation(player, collision.hit_colider->owner, TRUE);
+		// Snap to floors and go up steps
+		player->position = collision.ray_col.point;
+		if (collision.hit_colider->flags & COL_LAYER_MOVINGPLATFORM) // Moving platforms make us move too
+			ApplyPlatformRotation(player, collision.hit_colider->owner, TRUE);
+	}
 
 	// Handle interactions
 	PlayerStandardInteraction(player, can_accept_input);

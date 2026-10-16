@@ -2,6 +2,7 @@
 #include "../hud.h"
 #include "inventory.h"
 #include "../text_loading.h"
+#include "actor_minimap.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Generic player state
@@ -144,6 +145,11 @@ void PlayerStandardHudDraw(struct Actor* player, double tick_percent)
 	DrawTextureEx(*button_tex, (Vector2) { (float)(item_start_x), (float)(HUD_TOP + 10) }, 0.0f, 0.40f, YELLOW);
 	DrawTextureEx(*button_tex, (Vector2) { (float)(item_start_x + 25), (float)(HUD_TOP + 20) }, 0.0f, 0.40f, YELLOW);
 	DrawTextureEx(*button_tex, (Vector2) { (float)(item_start_x + 50), (float)(HUD_TOP + 10) }, 0.0f, 0.40f, YELLOW);
+
+	// Minimap
+	struct Actor* minimap = FINDACTOR_BYTYPE(act_minimap);
+	if(ACTOR_EXISTS(minimap))
+		DrawMinimapActor(minimap, tick_percent);
 }
 
 void PlayerStandardPauseActivate(struct Actor* player)
@@ -248,6 +254,12 @@ void PlayerStandardInteraction(struct Actor* player, int can_accept_input)
 			return;
 		}
 	}
+}
+
+void PlayerApplyGravity(struct Actor* player)
+{
+	if (player->velocity.y > PLAYER_TERMINAL_VELOCITY)
+		player->velocity.y += GRAVITY;
 }
 
 Vector3 CameraPlayerLookPos(struct Actor* camera, struct Actor* player)
