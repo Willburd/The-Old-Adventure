@@ -87,7 +87,6 @@ int main(void)
         if (IsKeyPressed(KEY_F4)) // Debug warp
         {
             TransferScene(scene_debugmenu, ent_title);
-            UpdateFinalizeActors(); // This may be called between updates, so the draw data will have invalid actors still. Wipe them.
         }
         if (IsKeyPressed(KEY_F5)) // Reload game data
         {
