@@ -185,8 +185,10 @@
     <ClInclude Include="hud.h" />
     <ClInclude Include="materials.h" />
     <ClInclude Include="models.h" />
+    <ClInclude Include="Module\world_state.h" />
     <ClInclude Include="post_processing.h" />
     <ClInclude Include="scene_entry.h" />
+    <ClInclude Include="Module\scene_library.h" />
     <ClInclude Include="text_loading.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="tools.h" />

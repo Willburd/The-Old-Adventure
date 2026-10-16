@@ -1,0 +1,5 @@
+// Textures
+#ALBED /Objects/door_wood_D.png FILT_BI WRAP_REPEAT
+
+// Shader
+#SHADR /standard.vert /standard.frag

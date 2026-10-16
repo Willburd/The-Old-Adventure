@@ -22,8 +22,44 @@
     <Filter Include="Source Files\assets">
       <UniqueIdentifier>{6bcc4193-03db-4ffc-9a9b-87034683c245}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game">
+      <UniqueIdentifier>{12a77453-505e-4415-9051-95a15d5b6a46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\actors">
+      <UniqueIdentifier>{d432fb6d-eea4-4ee6-b9a7-99718194c73f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game">
+      <UniqueIdentifier>{61aad37e-6a65-4840-8ced-a0edb4460425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\actors\gamecontrol">
+      <UniqueIdentifier>{c69e21a5-7c0c-4749-b42e-8e9adc4d2d7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\actors\hud">
+      <UniqueIdentifier>{74205f97-c63b-4a57-b2de-7b441e5e85fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\actors\environment">
+      <UniqueIdentifier>{ac6b7e83-abae-4412-a21e-8f2e2d65ed6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\actors\debug">
+      <UniqueIdentifier>{9056fc33-382e-409c-a171-db139a624e47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\actors\player">
+      <UniqueIdentifier>{0906bdcc-9a2b-4eb2-b919-97d248254a14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\actors\scenetransitions">
+      <UniqueIdentifier>{aff0d436-bf19-4f8f-a085-2ac451739355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\actors\npcs">
+      <UniqueIdentifier>{1bbddf5d-f810-4dee-a204-38a500f5245d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scenes\testing">
+      <UniqueIdentifier>{22e86cff-88bb-49d2-a615-685963810fd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scenes\world">
+      <UniqueIdentifier>{75d95904-740c-4cd1-b62f-eb69eaaed068}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\actors\base">
-      <UniqueIdentifier>{1f6ea3f7-e2a8-4110-a19d-d0a8a3b2ca1c}</UniqueIdentifier>
+      <UniqueIdentifier>{2ea247e2-1ca1-4f8a-8984-64f8a1197c26}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\game">
       <UniqueIdentifier>{8021b5b7-336d-48cd-bfc4-19bf96f7b3f4}</UniqueIdentifier>
@@ -54,6 +90,39 @@
     <ClInclude Include="scene_library.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="actor_fade.h">
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_musicplayer.h">
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_platform.h">
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_textbox.h">
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_node.h">
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_trigger_exit.h">
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_water_volume.h">
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="adv_utility.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="adv_postprocessing.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="inventory.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
     <ClInclude Include="module_main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,10 +135,139 @@
     <ClInclude Include="actor_scene.h">
       <Filter>Header Files\actors\base</Filter>
     </ClInclude>
+    <ClInclude Include="adv_lighttools.h">
+      <Filter>Source Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="actor_minimap.h">
+      <Filter>Header Files\actors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core_assets.c">
       <Filter>Source Files\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="inventory.c">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="adv_utility.c">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="world_state.c">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_signpost.c">
+      <Filter>Source Files\actors\npcs</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_entrance.c">
+      <Filter>Source Files\actors\scenetransitions</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_event.c">
+      <Filter>Source Files\actors\gamecontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_fadein.c">
+      <Filter>Source Files\actors\hud</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_fadeout.c">
+      <Filter>Source Files\actors\hud</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_bush.c">
+      <Filter>Source Files\actors\environment</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_crate.c">
+      <Filter>Source Files\actors\environment</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_fire.c">
+      <Filter>Source Files\actors\environment</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_hole.c">
+      <Filter>Source Files\actors\scenetransitions</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_mappoi.c">
+      <Filter>Source Files\actors\hud</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_minimap.c">
+      <Filter>Source Files\actors\hud</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_musicplayer.c">
+      <Filter>Source Files\actors\gamecontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_logical.c">
+      <Filter>Source Files\actors\gamecontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_occluder.c">
+      <Filter>Source Files\actors\scenetransitions</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_pause_box.c">
+      <Filter>Source Files\actors\gamecontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_platform.c">
+      <Filter>Source Files\actors\environment</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_roomswap.c">
+      <Filter>Source Files\actors\scenetransitions</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_skybox.c">
+      <Filter>Source Files\actors\environment</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_door.c">
+      <Filter>Source Files\actors\environment</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_node.c">
+      <Filter>Source Files\actors\gamecontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_smallrock.c">
+      <Filter>Source Files\actors\environment</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_textbox.c">
+      <Filter>Source Files\actors\hud</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_tree.c">
+      <Filter>Source Files\actors\environment</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_trigger_exit.c">
+      <Filter>Source Files\actors\scenetransitions</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_water_volume.c">
+      <Filter>Source Files\actors\gamecontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_woodtorch.c">
+      <Filter>Source Files\actors\environment</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_player.c">
+      <Filter>Source Files\actors\player</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_air.c">
+      <Filter>Source Files\actors\player</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_generic.c">
+      <Filter>Source Files\actors\player</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_grounded.c">
+      <Filter>Source Files\actors\player</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_swimming.c">
+      <Filter>Source Files\actors\player</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_animationtest.c">
+      <Filter>Source Files\actors\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_test.c">
+      <Filter>Source Files\actors\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_test.c">
+      <Filter>Source Files\scenes\testing</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_lakeside_coast.c">
+      <Filter>Source Files\scenes\world</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_fieldtest.c">
+      <Filter>Source Files\scenes\testing</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_cavetest.c">
+      <Filter>Source Files\scenes\testing</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_title.c">
+      <Filter>Source Files\scenes\world</Filter>
     </ClCompile>
     <ClCompile Include="module_main.c">
       <Filter>Source Files</Filter>
@@ -91,6 +289,18 @@
     </ClCompile>
     <ClCompile Include="scene_actor.c">
       <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_actor.c">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_death_zone.c">
+      <Filter>Source Files\actors\gamecontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="actor_customspawner.c">
+      <Filter>Source Files\actors\gamecontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="player_state_death.c">
+      <Filter>Source Files\actors\player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

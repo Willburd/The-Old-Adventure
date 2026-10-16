@@ -4,6 +4,11 @@
 #include "raylib.h"
 
 #define CAMERA_MODE_FREEMOVE 0
+// Adventure
+#define CAMERA_MODE_FOLLOW 1
+#define CAMERA_MODE_ONLYWATCH 2
+#define CAMERA_MODE_FOCUS_CUTSCENE_SLOW 3
+#define CAMERA_MODE_FOCUS_CUTSCENE_FAST 4
 
 typedef struct {
     int locked;

@@ -1,0 +1,5 @@
+// Textures
+#ALBED /Characters/player_belt.png FILT_BI WRAP_MIRROR
+
+// Shader
+#SHADR /standard.vert /standard.frag
