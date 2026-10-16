@@ -6,6 +6,8 @@
 #include "../actor_factory.h"
 #include "actor_camera.h"
 #include "adv_postprocessing.h"
+#include "../scene_entry.h"
+#include "../game_update.h"
 #include <raylib.h>
 
 const char* ModuleGameName()
@@ -61,25 +63,55 @@ void ModuleInternalUpdate()
 		else if (IsKeyDown(KEY_LEFT_SHIFT))
 			modifier = 10;
 		if (IsKeyPressed(KEY_ONE))
+		{
 			ChangeSceneRoom(current_scene, modifier + 1, FALSE, FALSE);
+			UpdateFinalizeActors();
+		}
 		else if (IsKeyPressed(KEY_TWO))
+		{
 			ChangeSceneRoom(current_scene, modifier + 2, FALSE, FALSE);
+			UpdateFinalizeActors();
+		}
 		else if (IsKeyPressed(KEY_THREE))
+		{
 			ChangeSceneRoom(current_scene, modifier + 3, FALSE, FALSE);
+			UpdateFinalizeActors();
+		}
 		else if (IsKeyPressed(KEY_FOUR))
+		{
 			ChangeSceneRoom(current_scene, modifier + 4, FALSE, FALSE);
+			UpdateFinalizeActors();
+		}
 		else if (IsKeyPressed(KEY_FIVE))
+		{
 			ChangeSceneRoom(current_scene, modifier + 5, FALSE, FALSE);
+			UpdateFinalizeActors();
+		}
 		else if (IsKeyPressed(KEY_SIX))
+		{
 			ChangeSceneRoom(current_scene, modifier + 6, FALSE, FALSE);
+			UpdateFinalizeActors();
+		}
 		else if (IsKeyPressed(KEY_SEVEN))
+		{
 			ChangeSceneRoom(current_scene, modifier + 7, FALSE, FALSE);
+			UpdateFinalizeActors();
+		}
 		else if (IsKeyPressed(KEY_EIGHT))
+		{
 			ChangeSceneRoom(current_scene, modifier + 8, FALSE, FALSE);
+			UpdateFinalizeActors();
+		}
 		else if (IsKeyPressed(KEY_NINE))
+		{
 			ChangeSceneRoom(current_scene, modifier + 9, FALSE, FALSE);
+			UpdateFinalizeActors();
+		}
 		else if (IsKeyPressed(KEY_ZERO))
+		{
 			ChangeSceneRoom(current_scene, modifier + 0, FALSE, FALSE);
+			UpdateFinalizeActors();
+		}
 
 		// Force return to player
 		if (IsKeyPressed(KEY_P))
