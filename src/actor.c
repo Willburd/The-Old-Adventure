@@ -100,7 +100,7 @@ int FINDACTORGROUP_BYTYPE(const struct Actor* found_group[], int max_count, int 
 
 struct Actor* FINDACTORNEAREST(Vector3 at_pos, struct Actor* ignored_actor)
 {
-	float distance = FP_INFINITE;
+	float distance = INFINITY;
 	struct Actor* nearest_actor = NULL;
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
@@ -138,7 +138,7 @@ struct Actor* FINDACTORFURTHEST(Vector3 at_pos, struct Actor* ignored_actor)
 
 struct Actor* FINDINTERACTIONNEAREST(Vector3 at_pos, struct Actor* ignored_actor)
 {
-	float distance = FP_INFINITE;
+	float distance = INFINITY;
 	struct Actor* nearest_actor = NULL;
 	for (int i = 0; i <= current_actor_cap; i++)
 	{
@@ -250,9 +250,19 @@ Transform GetTransform(struct Actor* actor)
 
 int OutOfRenderRange(struct Actor* actor)
 {
-	return (Vector3Distance(cam_main.position, actor->position) > actor->draw_range);
+	float distance = Vector3Distance(cam_main.position, actor->position);
+	if (!(actor->actor_flags & ACTOR_FLAG_IGNORE_FRUSTUM_CULL) 
+		&& distance > IGNORE_FRUSTUM_CULL_RANGE 
+		&& Vector3DotProduct(VEC3DIRECTION(cam_main.position, cam_main.target), VEC3DIRECTION(cam_main.position, actor->position)) < -0.1f
+		&& actor->draw_range < INFINITY)
+		return TRUE;
+	return (distance > actor->draw_range);
 }
 
+int OutOfCollisionRange(Vector3 ray_pos, struct Actor* actor)
+{
+	return (Vector3Distance(ray_pos, actor->position) > actor->collision_range);
+}
 void SceneFlagTrigger(struct Actor* actor)
 {
 	struct Actor* scene = GETSCENE(actor);
