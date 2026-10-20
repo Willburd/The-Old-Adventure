@@ -60,6 +60,7 @@ ACTOR_INIT(textbox)
 {
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_TEXTBOX;
+	actor->draw_range = INFINITY;
 	ACTOR_REGISTER_UPDATE(textbox);
 	ACTOR_REGISTER_POSTDRAWHUD(textbox);
 	ACTOR_REGISTER_CLEANUP(textbox);

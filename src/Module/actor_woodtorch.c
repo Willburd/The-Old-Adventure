@@ -40,6 +40,8 @@ ACTOR_DRAWWORLD(woodtorch);
 ACTOR_INIT(woodtorch)
 {
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
+	actor->draw_range = DEFAULT_SMALL_RENDER_RANGE;
+	actor->collision_range = DEFAULT_SMALL_COLLISION_RANGE;
 	ACTOR_REGISTER_PRELOADASSETS(woodtorch);
 	ACTOR_REGISTER_JSON_INIT(woodtorch);
 	ACTOR_REGISTER_UPDATE(woodtorch);
@@ -147,7 +149,5 @@ ACTOR_UPDATE(woodtorch)
 
 ACTOR_DRAWWORLD(woodtorch)
 {
-	if (OutOfRenderRange(actor))
-		return;
 	DrawAllModelMeshes(actor, WOODTORCH_MODEL, loaded_materials, tick_percent);
 }

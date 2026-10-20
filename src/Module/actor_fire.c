@@ -62,8 +62,6 @@ ACTOR_LIGHTNODES(fire)
 
 ACTOR_TRANSPARENTDRAWWORLD(fire)
 {
-	if (OutOfRenderRange(actor))
-		return;
 	if (VEC3MAGNITUDE(actor->scale) < 0.001)
 		return;
 

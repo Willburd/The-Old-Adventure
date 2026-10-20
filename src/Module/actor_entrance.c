@@ -38,6 +38,7 @@ ACTOR_INIT(entrance)
 {
     // Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_TRANSITION | ACTOR_FLAG_TICKDURING_CUTSCENE;
+	actor->draw_range = INFINITY;
 	ACTOR_REGISTER_JSON_INIT(entrance);
 	ACTOR_REGISTER_DRAWWORLD(entrance);
 

@@ -34,6 +34,7 @@ ACTOR_INIT(trigger_exit)
 {
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE;
+	actor->draw_range = INFINITY;
 	ACTOR_REGISTER_JSON_INIT(trigger_exit);
 	ACTOR_REGISTER_UPDATE(trigger_exit);
 	ACTOR_REGISTER_DRAWWORLD(trigger_exit);

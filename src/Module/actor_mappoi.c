@@ -18,6 +18,7 @@ Good as copypaste actor boilerplate!
 ACTOR_INIT(mappoi)
 {
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK | ACTOR_FLAG_IS_INVISIBLE;
+	actor->draw_range = INFINITY;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

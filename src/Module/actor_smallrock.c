@@ -31,6 +31,8 @@ ACTOR_DRAWWORLD(smallrock);
 ACTOR_INIT(smallrock)
 {
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
+	actor->draw_range = DEFAULT_SMALL_RENDER_RANGE;
+	actor->collision_range = DEFAULT_SMALL_COLLISION_RANGE;
 	actor->blend_color = ColorToVector4(GOLD);
 	ACTOR_REGISTER_PRELOADASSETS(smallrock);
 	ACTOR_REGISTER_DRAWWORLD(smallrock);
@@ -57,7 +59,5 @@ ACTOR_PRELOADASSETS(smallrock)
 
 ACTOR_DRAWWORLD(smallrock)
 {
-	if (OutOfRenderRange(actor))
-		return;
 	DrawAllModelMeshes(actor, ROCK_MODEL, loaded_materials, tick_percent);
 }

@@ -35,6 +35,7 @@ static void RemoveWaterVolume(struct Actor* actor);
 ACTOR_INIT(water_volume)
 {
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
+	actor->draw_range = INFINITY;
 	ACTOR_REGISTER_PRELOADASSETS(water_volume);
 	ACTOR_REGISTER_TRANSPARENTDRAWWORLD(water_volume);
 	ACTOR_REGISTER_CLEANUP(water_volume);

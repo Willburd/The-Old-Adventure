@@ -118,8 +118,6 @@ ACTOR_UPDATE(bush)
 
 ACTOR_DRAWWORLD(bush)
 {
-	if (OutOfRenderRange(actor))
-		return;
 	Asset* model_asset = AssetGetPackage(BUSH_MODEL);
 	STANDARD_SHADER_DRAW(actor, model_asset, ALTSKIN(BRANCH_MATERIAL_PREFIX, actor->skin_select, ".mat"), "Bush-Branches", tick_percent);
 }

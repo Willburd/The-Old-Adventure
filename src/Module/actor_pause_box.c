@@ -37,6 +37,7 @@ ACTOR_INIT(pause_box)
 {
 	// Configure actor
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_PAUSED | ACTOR_FLAG_HAS_ANIMATIONS;
+	actor->draw_range = INFINITY;
 	ACTOR_REGISTER_PRELOADASSETS(pause_box);
 	ACTOR_REGISTER_UPDATE(pause_box);
 	ACTOR_REGISTER_ANIMATION_END(pause_box);

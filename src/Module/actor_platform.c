@@ -45,6 +45,7 @@ ACTOR_DRAWWORLD(platform);
 ACTOR_INIT(platform)
 {
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
+	actor->collision_range = DEFAULT_SMALL_COLLISION_RANGE;
 	ACTOR_REGISTER_PRELOADASSETS(platform);
 	ACTOR_REGISTER_JSON_INIT(platform);
 	ACTOR_REGISTER_REMOTE_INTERACT(platform);
@@ -212,7 +213,5 @@ ACTOR_CLEANUP(platform)
 
 ACTOR_DRAWWORLD(platform)
 {
-	if (OutOfRenderRange(actor))
-		return;
 	DrawAllModelMeshes(actor, PLATFORM_MODEL, loaded_materials, tick_percent);
 }

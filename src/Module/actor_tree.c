@@ -40,7 +40,8 @@ typedef struct
 ACTOR_INIT(tree)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_TRANSITION;
-	actor->draw_range = DEFAULT_MAX_RENDER_RANGE * 0.80f;
+	actor->draw_range = DEFAULT_MEDIUM_RENDER_RANGE;
+	actor->collision_range = DEFAULT_MEDIUM_COLLISION_RANGE;
 	ACTOR_REGISTER_JSON_INIT(tree);
 	ACTOR_REGISTER_PRELOADASSETS(tree);
 	ACTOR_REGISTER_UPDATE(tree);
@@ -118,8 +119,6 @@ ACTOR_PLAYER_INTERACT(tree)
 
 ACTOR_DRAWWORLD(tree)
 {
-	if (OutOfRenderRange(actor))
-		return;
 	Asset* model_asset = AssetGetPackage(ALTSKIN(TREE_MODEL_PREFIX, actor->model_select, ".glb"));
 	STANDARD_SHADER_DRAW(actor, model_asset, BARK_MATERIAL, "Tree-Bark", tick_percent);
 	STANDARD_SHADER_DRAW(actor, model_asset, MULCH_MATERIAL, "Tree-Mulch", tick_percent);

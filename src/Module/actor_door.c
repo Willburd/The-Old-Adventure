@@ -67,7 +67,5 @@ ACTOR_PRELOADASSETS(door)
 
 ACTOR_DRAWWORLD(door)
 {
-	if (OutOfRenderRange(actor))
-		return;
 	DrawAllModelMeshes(actor, DOOR_MODEL, loaded_materials, tick_percent);
 }

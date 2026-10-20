@@ -95,8 +95,6 @@ ACTOR_UPDATE(hole)
 
 ACTOR_TRANSPARENTDRAWWORLD(hole)
 {
-	if (OutOfRenderRange(actor))
-		return;
 	STANDARD_SHADER_MATERIAL(hole_mat, HOLE_MATERIAL_MAIN, actor);
 	Transform hole_transform = {
 		.translation = Vector3Add(actor->position, (Vector3) { 0.0f, 0.1f, 0.0f }),

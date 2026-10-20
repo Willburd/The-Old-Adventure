@@ -34,6 +34,7 @@ typedef struct
 ACTOR_INIT(roomswap)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;
+	actor->draw_range = INFINITY;
 	actor->blend_color = ColorToVector4(BLACK);
 	ACTOR_REGISTER_JSON_INIT(roomswap);
 	ACTOR_REGISTER_POSTUPDATE(roomswap);

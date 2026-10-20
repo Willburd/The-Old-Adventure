@@ -30,6 +30,7 @@ static void RestartRoomFromDeath(struct Actor* exit);
 ACTOR_INIT(death_zone)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME;
+	actor->draw_range = INFINITY;
 	ACTOR_REGISTER_UPDATE(death_zone);
 	ACTOR_REGISTER_TRANSPARENTDRAWWORLD(death_zone);
 }

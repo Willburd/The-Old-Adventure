@@ -44,6 +44,7 @@ Vector2 ScaleToMap(struct Actor* actor, Vector3 pos);
 ACTOR_INIT(minimap)
 {
 	actor->actor_flags = ACTOR_FLAG_TICKDURING_GAME | ACTOR_FLAG_TICKDURING_CUTSCENE | ACTOR_FLAG_TICKDURING_TEXTBOX;
+	actor->draw_range = INFINITY;
 	ACTOR_REGISTER_PRELOADASSETS(minimap);
 	ACTOR_REGISTER_POSTUPDATE(minimap);
 }

@@ -28,6 +28,8 @@ ACTOR_DRAWWORLD(crate);
 ACTOR_INIT(crate)
 {
 	actor->actor_flags = ACTOR_FLAG_DOES_NOT_TICK;
+	actor->draw_range = DEFAULT_MEDIUM_RENDER_RANGE;
+	actor->collision_range = DEFAULT_SMALL_COLLISION_RANGE;
 	actor->blend_color = ColorToVector4(GOLD);
 	ACTOR_REGISTER_PRELOADASSETS(crate);
 	ACTOR_REGISTER_DRAWWORLD(crate);
@@ -51,7 +53,5 @@ ACTOR_PRELOADASSETS(crate)
 
 ACTOR_DRAWWORLD(crate)
 {
-	if (OutOfRenderRange(actor))
-		return;
 	DrawAllModelMeshes(actor, CRATE_MODEL, loaded_materials, tick_percent);
 }

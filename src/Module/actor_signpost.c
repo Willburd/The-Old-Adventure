@@ -109,8 +109,6 @@ ACTOR_PLAYER_INTERACT(signpost)
 
 ACTOR_DRAWWORLD(signpost)
 {
-	if (OutOfRenderRange(actor))
-		return;
 	DrawAllModelMeshes(actor, SIGN_MODEL, loaded_materials, tick_percent);
 }
 
