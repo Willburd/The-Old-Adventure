@@ -75,6 +75,8 @@ void UpdatePrepareDrawActor(struct Actor* draw_actor)
 		draw_actor->func_append_lights(draw_actor);
 	if (draw_actor->actor_flags & ACTOR_FLAG_IS_INVISIBLE)
 		return;
+	if (OutOfRenderRange(draw_actor))
+		return;
 	// Check for future draw events. We don't need to loop over all actors in the future if we check now!
 	if (ACTOR_HAS(draw_actor, func_predrawworld))
 		main_predraw_array[main_predraw_actor_count++] = draw_actor;
@@ -207,6 +209,8 @@ void GameDraw(double tick_percent)
 		for (int i = 0; i <= GetColliderCount(); i++)
 		{
 			struct ColliderData* col = GetCollider(i);
+			if (OutOfCollisionRange(cam_main.position, col->owner))
+				continue;
 			Matrix position = GetMatrix(col->owner);
 			DrawMesh(
 				*col->mesh,
@@ -235,7 +239,7 @@ void GameDraw(double tick_percent)
 				continue;
 			Transform facing_transform = {
 				.translation = draw_actor->position,
-				.rotation = QuaternionLookAt(cam_main.position, draw_actor->position, VEC3UP),
+				.rotation = QuaternionLookAt(draw_actor->position, cam_main.position, VEC3UP),
 				.scale = Vector3Scale(Vector3One(),0.2f)
 			};
 			DrawMesh(

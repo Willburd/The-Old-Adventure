@@ -130,8 +130,12 @@ static void CollisionTest(Ray raycast, float max_dist, unsigned int mask)
 	{
 		if (!(world_colliders[i].flags & mask)) // Masked out
 			continue;
-		Vector3 min_pos = Vector3Add(world_colliders[i].owner->position, world_colliders[i].box.min);
-		Vector3 max_pos = Vector3Add(world_colliders[i].owner->position, world_colliders[i].box.max);
+		float max_scale = VEC3MAGNITUDE(world_colliders[i].owner->scale);
+		Vector3 min_pos = Vector3Add(world_colliders[i].owner->position, Vector3Scale(world_colliders[i].box.min, max_scale));
+		Vector3 max_pos = Vector3Add(world_colliders[i].owner->position, Vector3Scale(world_colliders[i].box.max, max_scale));
+		Vector3 end_pos = Vector3Add(raycast.position, Vector3Scale(raycast.direction, max_dist));
+		if (OutOfCollisionRange(raycast.position, world_colliders[i].owner))
+			continue;
 		if (!GetRayCollisionBox(raycast, (BoundingBox){ min_pos, max_pos}).hit)
 			continue;
 		RayCollision hit = GetRayCollisionMesh(raycast, *world_colliders[i].mesh, GetMatrix(world_colliders[i].owner));

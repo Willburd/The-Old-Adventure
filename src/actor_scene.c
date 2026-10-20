@@ -42,6 +42,10 @@ ACTOR_INIT(scene)
 	// Default light appending function
 	scene->func_append_lights = DefaultSceneLightAppend;
 
+	// Default render range
+	scene->draw_range = INFINITY;
+	scene->collision_range = INFINITY;
+
 	// Load assets. This has polymorphed to the SCENE'S assets since the initial call to preloadassets in actor library.
 	if (ACTOR_HAS(scene, func_preloadassets))
 		scene->func_preloadassets(scene);

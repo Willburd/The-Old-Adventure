@@ -7,7 +7,16 @@
 #include "animation.h"
 
 #define ANIMATION_LAYER_MAX 24
+
+#define IGNORE_FRUSTUM_CULL_RANGE 5.0f
+#define DEFAULT_SMALL_RENDER_RANGE 50.0f
+#define DEFAULT_MEDIUM_RENDER_RANGE 100.0f
 #define DEFAULT_MAX_RENDER_RANGE 200.0f
+
+#define DEFAULT_SMALL_COLLISION_RANGE 5.0f
+#define DEFAULT_MEDIUM_COLLISION_RANGE 15.0f
+#define DEFAULT_MAX_COLLISION_RANGE 30.0f
+
 
 #define ACTOR_FLAG_DOES_NOT_TICK 0
 // Must match gamestate flags
@@ -26,6 +35,7 @@
 #define ACTOR_FLAG_INTERACTIVE (1 << 10) // player can trigger interacts with
 #define ACTOR_FLAG_DISABLE_LIGHTS (1 << 11) // Skips actor's lightnodes being queued to the shader
 #define ACTOR_FLAG_BLENDSCOLOR (1 << 12) // blending color is applied in standard shader uniforms
+#define ACTOR_FLAG_IGNORE_FRUSTUM_CULL (1 << 13) // Actor will not be culled from drawing when behind the camera
 
 #define ACTOR_HAS_NO_ROOM_INDEX -1
 
@@ -66,6 +76,8 @@ struct Actor {
 	unsigned int actor_flags;
 	// Maximum range an actor is drawn at.
 	float draw_range;
+	// Maximum range an actor checks collisions at.
+	float collision_range;
 	// Color used various actors and shaders for actor defined reasons.
 	Vector4 blend_color;
 	// Allows json data to assign a skin for rendering
@@ -136,7 +148,7 @@ x->uuid = 0;x->id_tag = NULL; x->index = -1; x->actor_type = 0; x->actor_type_na
 x->is_destroying = FALSE; \
 x->parent = NULL; x->current_room_index = ACTOR_HAS_NO_ROOM_INDEX; \
 x->actor_flags = 0; x->triggers_flags = 0; x->flag_group_selector = SCENE_FLAG_GROUP_TEMP; \
-x->draw_range = DEFAULT_MAX_RENDER_RANGE; x->blend_color = (Vector4){ 1, 1, 1, 1}; x->skin_select = NULL; x->model_select = NULL; \
+x->draw_range = DEFAULT_MAX_RENDER_RANGE; x->blend_color = (Vector4){ 1, 1, 1, 1}; x->skin_select = NULL; x->model_select = NULL; x->collision_range = DEFAULT_MAX_COLLISION_RANGE; \
 x->animlayer_count = -1; \
 x->func_init = NULL; x->func_preloadassets = NULL; \
 x->func_destroy = NULL; \
@@ -209,6 +221,8 @@ Matrix GetMatrix(struct Actor* actor);
 Transform GetTransform(struct Actor* actor);
 // Check if we are in range of the camera before drawing
 int OutOfRenderRange(struct Actor* actor);
+// Check if we are in the range of the camera before checking collision
+int OutOfCollisionRange(Vector3 ray_pos, struct Actor* actor);
 
 // Automatically activates the current scene's flags based on the flags configured in the actor.
 void SceneFlagTrigger(struct Actor* actor);
